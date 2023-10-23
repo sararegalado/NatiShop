@@ -4,5 +4,6 @@ public class Prueba {
 	private int numero;
 	private String zaloa;
 	private String Sara;
+	private String Janire;
 	
 }
