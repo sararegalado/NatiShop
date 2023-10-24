@@ -1,8 +1,6 @@
 package clases;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
 
 public class Tienda {
