@@ -1,5 +1,5 @@
 package clases;
 
 public enum Categoria {
-	nino, nina, mujer, hombre
+	NINO, NINA, MUJER, HOMBRE
 }
