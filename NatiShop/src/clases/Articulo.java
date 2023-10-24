@@ -1,5 +1,6 @@
 package clases;
 
+
 public class Articulo implements Comparable<Articulo>{
 	protected String id;
 	protected int unidades;
