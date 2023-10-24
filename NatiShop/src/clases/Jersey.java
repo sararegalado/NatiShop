@@ -1,6 +1,6 @@
 
 package clases;
 
-public class Jersey {
+public class Jersey extends Articulo {
 
 }
