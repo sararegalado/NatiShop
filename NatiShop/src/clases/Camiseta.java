@@ -1,6 +1,7 @@
 package clases;
 
 public class Camiseta extends Articulo {
+		
 
 	public Camiseta() {
 		super();
