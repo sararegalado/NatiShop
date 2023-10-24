@@ -83,7 +83,7 @@ public class Usuario implements Comparable<Usuario> {
 	@Override
 	public int compareTo(Usuario o) {
 		
-		return this.dni.compareTo(o.dni);
+	return this.dni.compareTo(o.dni);
 	}
 	
 	
