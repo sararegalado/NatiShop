@@ -1,5 +1,5 @@
 package clases;
 
-public class Zapato {
+public class Zapato extends Articulo {
 
 }
