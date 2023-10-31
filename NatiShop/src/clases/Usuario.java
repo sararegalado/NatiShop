@@ -1,5 +1,6 @@
 package clases;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,14 +19,38 @@ public class Usuario implements Comparable<Usuario> {
 	
 	}
 
-	public Usuario(String dni, String nombre, Date fNac, String contrasenia, String correo) {
+	public Usuario(String dni, String nombre, Date fNac,String correo, String contrasenia) {
 		super();
 		this.dni = dni;
 		this.nombre = nombre;
 		this.fNac = fNac;
-		this.contrasenia = contrasenia;
 		this.correo = correo;
+		this.contrasenia = contrasenia;
+		
 	}
+	/**
+	 * Contructor de usuario que cambia el formato Date de la fNac a formato String
+	 * @param dni: string
+	 * @param nombre: string
+	 * @param fNac : De Date a String
+	 * @param correo: String
+	 * @param contrasenia: String
+	 */
+	
+	public Usuario(String dni, String nombre, String fNac,String correo, String contrasenia) {
+		super();
+		this.dni = dni;
+		this.nombre = nombre;
+		try {
+			this.fNac= sdf.parse(fNac);
+		}catch (ParseException e) {
+			this.fNac= new Date(0);
+		}
+		this.correo = correo;
+		this.contrasenia = contrasenia;
+		
+	}
+	
 
 	public String getDni() {
 		return dni;
@@ -48,7 +73,7 @@ public class Usuario implements Comparable<Usuario> {
 	}
 
 	public void setfNac(Date fNac) {
-		this.fNac = fNac;
+		this.fNac= fNac;
 	}
 
 	public String getContrasenia() {
@@ -67,17 +92,15 @@ public class Usuario implements Comparable<Usuario> {
 		this.correo = correo;
 	}
 
-	public SimpleDateFormat getSdf() {
-		return sdf;
+	
+	public String getfNacStr() {
+		return sdf.format(fNac);
 	}
-
-	public void setSdf(SimpleDateFormat sdf) {
-		this.sdf = sdf;
-	}
+	
 
 	@Override
 	public String toString() {
-		return "Usuario [dni=" + dni + ", nombre=" + nombre + ", fNac=" + fNac + ", correo=" + correo + "]";
+		return "Usuario [dni=" + dni + ", nombre=" + nombre + ", fNac=" + getfNacStr() + ", correo=" + correo + "]";
 	}
 
 	@Override
