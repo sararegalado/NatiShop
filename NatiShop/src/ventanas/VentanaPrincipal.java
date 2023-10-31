@@ -49,9 +49,8 @@ public class VentanaPrincipal extends JFrame {
 		
 	}
 	public VentanaPrincipal() {
-		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 778, 455);
+		setBounds(100, 100, 1042, 693);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -59,12 +58,12 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.setLayout(null);
         
         JPanel panel = new JPanel();
-        panel.setBounds(72, 97, 563, 50);
+        panel.setBounds(72, 97, 900, 43);
         contentPane.add(panel);
         panel.setLayout(null);
         
         JMenuBar menuBar = new JMenuBar();
-        menuBar.setBounds(0, 0, 604, 44);
+        menuBar.setBounds(0, 0, 901, 44);
         panel.add(menuBar);
         menuBar.setFont(new Font("Baskerville", Font.PLAIN, 14));
         
@@ -72,16 +71,60 @@ public class VentanaPrincipal extends JFrame {
         menuHombre.setFont(new Font("Baskerville", Font.PLAIN, 14));
         menuBar.add(menuHombre);
         
-        JMenuItem mntmNewMenuItem = new JMenuItem("New menu item");
-        mntmNewMenuItem.setFont(new Font("Baskerville", Font.PLAIN, 14));
-        menuHombre.add(mntmNewMenuItem);
+        JMenuItem menuItemCamiH = new JMenuItem("Camisetas");
+        menuItemCamiH.setFont(new Font("Baskerville", Font.PLAIN, 14));
+        menuHombre.add(menuItemCamiH);
+        
+        JMenuItem menuItemJersH = new JMenuItem("Jerséis");
+        menuItemJersH.setFont(new Font("Baskerville", Font.PLAIN, 14));
+        menuHombre.add(menuItemJersH);
+        
+        JMenuItem menuItemPantH = new JMenuItem("Pantalones");
+        menuItemPantH.setFont(new Font("Baskerville", Font.PLAIN, 14));
+        menuHombre.add(menuItemPantH);
+        
+        JMenuItem menuItemCalzH = new JMenuItem("Calzado");
+        menuItemCalzH.setFont(new Font("Baskerville", Font.PLAIN, 14));
+        menuHombre.add(menuItemCalzH);
         JMenu menuMujer = new JMenu("Mujer");
         menuMujer.setFont(new Font("Baskerville", Font.PLAIN, 14));
         menuBar.add(menuMujer);
         
+        JMenuItem menuItemCamiM = new JMenuItem("Camisetas");
+        menuMujer.add(menuItemCamiM);
+        menuItemCamiM.setFont(new Font("Baskerville", Font.PLAIN, 14));
+        
+        JMenuItem menuItemJersM = new JMenuItem("Jerséis");
+        menuMujer.add(menuItemJersM);
+        menuItemJersM.setFont(new Font("Baskerville", Font.PLAIN, 14));
+        
+        JMenuItem menuItemPantM = new JMenuItem("Pantalones");
+        menuMujer.add(menuItemPantM);
+        menuItemPantM.setFont(new Font("Baskerville", Font.PLAIN, 14));
+        
+        JMenuItem menuItemCalzM = new JMenuItem("Calzado");
+        menuMujer.add(menuItemCalzM);
+        menuItemCalzM.setFont(new Font("Baskerville", Font.PLAIN, 14));
+        
         JMenu menuNinos = new JMenu("Niños");
         menuNinos.setFont(new Font("Baskerville", Font.PLAIN, 14));
         menuBar.add(menuNinos);
+        
+        JMenuItem menuItemCamiN = new JMenuItem("Camisetas");
+        menuItemCamiN.setFont(new Font("Baskerville", Font.PLAIN, 14));
+        menuNinos.add(menuItemCamiN);
+        
+        JMenuItem menuItemJersN = new JMenuItem("Jerséis");
+        menuItemJersN.setFont(new Font("Baskerville", Font.PLAIN, 14));
+        menuNinos.add(menuItemJersN);
+        
+        JMenuItem menuItemPantN = new JMenuItem("Pantalones");
+        menuItemPantN.setFont(new Font("Baskerville", Font.PLAIN, 14));
+        menuNinos.add(menuItemPantN);
+        
+        JMenuItem menuItemCalzN = new JMenuItem("Calzado");
+        menuItemCalzN.setFont(new Font("Baskerville", Font.PLAIN, 14));
+        menuNinos.add(menuItemCalzN);
         
         JLabel lblNewLabel = new JLabel("NatiShop");
         lblNewLabel.setBounds(72, 24, 258, 72);
@@ -91,12 +134,13 @@ public class VentanaPrincipal extends JFrame {
         lblNewLabel.setFont(new Font("Baskerville", Font.PLAIN, 40));
         
         JPanel panel_1 = new JPanel();
-        panel_1.setBounds(181, 192, 324, 207);
+        panel_1.setBounds(82, 159, 423, 240);
         contentPane.add(panel_1);
         panel_1.setLayout(null);
         
         JLabel lblUsuario = new JLabel("");
-        lblUsuario.setBounds(717, 6, 55, 50);
+        lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+        lblUsuario.setBounds(981, 6, 55, 50);
         contentPane.add(lblUsuario);
         lblUsuario.setIcon(new ImageIcon("/Users/sararegalado/Downloads/Captura de pantalla 2023-10-31 a las 13.25.31.png"));
         lblUsuario.addMouseListener(new MouseAdapter() {
