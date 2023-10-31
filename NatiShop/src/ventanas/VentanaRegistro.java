@@ -35,6 +35,7 @@ public class VentanaRegistro extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 778, 455);
 		contentPane = new JPanel();
+		contentPane.setForeground(new Color(254, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
@@ -42,6 +43,8 @@ public class VentanaRegistro extends JFrame {
 
 		
 		JPanel pnlInicioSesion = new JPanel();
+		pnlInicioSesion.setBackground(new Color(254, 255, 255));
+		pnlInicioSesion.setForeground(new Color(254, 255, 255));
 		pnlInicioSesion.setLayout(null);
 		pnlInicioSesion.setBounds(145, 16, 433, 365);
 		contentPane.add(pnlInicioSesion);
