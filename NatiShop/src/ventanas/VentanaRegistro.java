@@ -72,7 +72,7 @@ public class VentanaRegistro extends JFrame {
 		JLabel lblContraseña = new JLabel("Crea una nueva contraseña");
 		lblContraseña.setHorizontalAlignment(SwingConstants.CENTER);
 		lblContraseña.setFont(new Font("Baskerville", Font.PLAIN, 15));
-		lblContraseña.setBounds(43, 90, 167, 26);
+		lblContraseña.setBounds(31, 90, 206, 26);
 		panel_1.add(lblContraseña);
 		
 		pfConstrasena = new JPasswordField();
