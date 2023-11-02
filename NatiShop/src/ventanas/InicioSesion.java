@@ -29,8 +29,10 @@ public class InicioSesion extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField textNom;
 	private JPasswordField passwordField;
+	
+	private String nombreUsuario;
 	
 	
 	
@@ -67,10 +69,10 @@ public class InicioSesion extends JFrame {
 		lblNewLabel_1.setBounds(61, 22, 61, 16);
 		pnlDatos.add(lblNewLabel_1);
 		
-		textField = new JTextField();
-		textField.setBounds(33, 51, 130, 26);
-		pnlDatos.add(textField);
-		textField.setColumns(10);
+		textNom = new JTextField();
+		textNom.setBounds(33, 51, 130, 26);
+		pnlDatos.add(textNom);
+		textNom.setColumns(10);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("Contraseña");
 		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -85,6 +87,19 @@ public class InicioSesion extends JFrame {
 		JButton btnNewButton = new JButton("Iniciar sesión");
 		btnNewButton.setBounds(33, 157, 117, 29);
 		pnlDatos.add(btnNewButton);
+		
+		
+		/**
+		 * Dependiendo si del dominio del correo del usuario se abrira una ventana o otra
+		 * si el dominio del correo del usuario que inicia sesion es @Natyshop será un trabajador el que abrá iniciado sesion 
+		 * y por lo tanto la ventana que se ejecutara no será la principal sino la Ventana Admin conn otras funciones distintas
+		 */
+		nombreUsuario= textNom.getText();
+		if(nombreUsuario.indexOf("Natyshop")!= -1) {
+			new VentanaAdmin();
+		}else {
+			new VentanaPrincipal();
+		}
 		
 		
 	}
