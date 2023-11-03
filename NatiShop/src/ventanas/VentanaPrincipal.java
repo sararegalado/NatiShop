@@ -30,10 +30,10 @@ public class VentanaPrincipal extends JFrame {
 	
 	
 	public static void main(String[] args) {
-		/*
+		
 		VentanaPrincipal vent = new VentanaPrincipal();
 		vent.setVisible(true);
-		ventanaInicio = new InicioSesion();
+		/*ventanaInicio = new InicioSesion();
 		ventanaInicio.setVisible(true);
 		JButton btnAccederRegistro = new JButton("¿No tienes cuenta? Haz click aqui para registrarte");
 		btnAccederRegistro.setBounds(202, 355, 334, 43);
@@ -46,8 +46,8 @@ public class VentanaPrincipal extends JFrame {
 				
 			}
 	});
-	ventanaInicio.getContentPane().add(btnAccederRegistro);
-		*/
+	ventanaInicio.getContentPane().add(btnAccederRegistro);*/
+		
 	}
 	public VentanaPrincipal() {
 		setResizable(false);
