@@ -94,12 +94,12 @@ public class InicioSesion extends JFrame {
 		 * si el dominio del correo del usuario que inicia sesion es @Natyshop será un trabajador el que abrá iniciado sesion 
 		 * y por lo tanto la ventana que se ejecutara no será la principal sino la Ventana Admin conn otras funciones distintas
 		 */
-		nombreUsuario= textNom.getText();
-		if(nombreUsuario.indexOf("Natyshop")!= -1) {
-			new VentanaAdmin();
-		}else {
-			new VentanaPrincipal();
-		}
+//		nombreUsuario= textNom.getText();
+//		if(nombreUsuario.indexOf("Natyshop")!= -1) {
+//			new VentanaAdmin();
+//		}else {
+//			new VentanaPrincipal();
+//		}
 		
 		
 	}
