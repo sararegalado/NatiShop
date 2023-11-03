@@ -141,9 +141,9 @@ public class VentanaPrincipal extends JFrame {
         
         JLabel lblUsuario = new JLabel("");
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-        lblUsuario.setBounds(981, 6, 55, 50);
+        lblUsuario.setBounds(984, 6, 52, 52);
         contentPane.add(lblUsuario);
-        lblUsuario.setIcon(new ImageIcon("/Users/sararegalado/Downloads/Captura de pantalla 2023-10-31 a las 13.25.31.png"));
+        lblUsuario.setIcon(new ImageIcon("/Users/sararegalado/Desktop/Captura de pantalla 2023-10-31 a las 13.25.31.png"));
         lblUsuario.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
