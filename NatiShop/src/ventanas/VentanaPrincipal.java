@@ -140,7 +140,7 @@ public class VentanaPrincipal extends JFrame {
         panel_1.setLayout(null);
         
         JLabel lblUsuario = new JLabel("");
-        lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/ventanas/Captura de pantalla 2023-10-31 a las 13.25.31.png")));
+        lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/ventanas/fotoUsuario.png")));
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
         lblUsuario.setBounds(984, 6, 52, 52);
         contentPane.add(lblUsuario);
