@@ -29,8 +29,8 @@ public class InicioSesion extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textNom;
-	private JPasswordField passwordField;
+	private JTextField tfNombre;
+	private JPasswordField tfContrasena;
 	
 	private String nombreUsuario;
 	
@@ -51,11 +51,11 @@ public class InicioSesion extends JFrame {
 		contentPane.add(pnlInicioSesion);
 		pnlInicioSesion.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("ACCEDE A TU CUENTA");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(17, 6, 226, 23);
-		lblNewLabel.setFont(new Font("Baskerville", Font.PLAIN, 20));
-		pnlInicioSesion.add(lblNewLabel);
+		JLabel lblTitulo = new JLabel("ACCEDE A TU CUENTA");
+		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitulo.setBounds(17, 6, 226, 23);
+		lblTitulo.setFont(new Font("Baskerville", Font.PLAIN, 20));
+		pnlInicioSesion.add(lblTitulo);
 		
 		JPanel pnlDatos = new JPanel();
 		pnlDatos.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 0, 0), null, null, null));
@@ -63,30 +63,30 @@ public class InicioSesion extends JFrame {
 		pnlInicioSesion.add(pnlDatos);
 		pnlDatos.setLayout(null);
 		
-		JLabel lblNewLabel_1 = new JLabel("Email");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(new Font("Baskerville", Font.PLAIN, 15));
-		lblNewLabel_1.setBounds(61, 22, 61, 16);
-		pnlDatos.add(lblNewLabel_1);
+		JLabel lblEmail = new JLabel("Email");
+		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEmail.setFont(new Font("Baskerville", Font.PLAIN, 15));
+		lblEmail.setBounds(61, 22, 61, 16);
+		pnlDatos.add(lblEmail);
 		
-		textNom = new JTextField();
-		textNom.setBounds(33, 51, 130, 26);
-		pnlDatos.add(textNom);
-		textNom.setColumns(10);
+		tfNombre = new JTextField();
+		tfNombre.setBounds(33, 51, 130, 26);
+		pnlDatos.add(tfNombre);
+		tfNombre.setColumns(10);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("Contraseña");
-		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1_1.setFont(new Font("Baskerville", Font.PLAIN, 15));
-		lblNewLabel_1_1.setBounds(43, 89, 103, 16);
-		pnlDatos.add(lblNewLabel_1_1);
+		JLabel lblContrasena = new JLabel("Contraseña");
+		lblContrasena.setHorizontalAlignment(SwingConstants.CENTER);
+		lblContrasena.setFont(new Font("Baskerville", Font.PLAIN, 15));
+		lblContrasena.setBounds(43, 89, 103, 16);
+		pnlDatos.add(lblContrasena);
 		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(33, 119, 130, 26);
-		pnlDatos.add(passwordField);
+		tfContrasena = new JPasswordField();
+		tfContrasena.setBounds(33, 119, 130, 26);
+		pnlDatos.add(tfContrasena);
 		
-		JButton btnNewButton = new JButton("Iniciar sesión");
-		btnNewButton.setBounds(33, 157, 117, 29);
-		pnlDatos.add(btnNewButton);
+		JButton btnIniciarSes = new JButton("Iniciar sesión");
+		btnIniciarSes.setBounds(33, 157, 117, 29);
+		pnlDatos.add(btnIniciarSes);
 		
 		
 		/**
