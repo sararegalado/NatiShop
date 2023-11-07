@@ -46,14 +46,14 @@ public class VentanaPrincipal extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
         
-        JPanel panel = new JPanel();
-        panel.setBounds(72, 97, 900, 43);
-        contentPane.add(panel);
-        panel.setLayout(null);
+        JPanel pnlMenuBar = new JPanel();
+        pnlMenuBar.setBounds(72, 97, 900, 43);
+        contentPane.add(pnlMenuBar);
+        pnlMenuBar.setLayout(null);
         
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBounds(0, 0, 901, 44);
-        panel.add(menuBar);
+        pnlMenuBar.add(menuBar);
         menuBar.setFont(new Font("Baskerville", Font.PLAIN, 14));
         
         JMenu menuHombre = new JMenu("Hombre");
@@ -115,17 +115,17 @@ public class VentanaPrincipal extends JFrame {
         menuItemCalzN.setFont(new Font("Baskerville", Font.PLAIN, 14));
         menuNinos.add(menuItemCalzN);
         
-        JLabel lblNewLabel = new JLabel("NatiShop");
-        lblNewLabel.setBounds(72, 24, 258, 72);
-        contentPane.add(lblNewLabel);
-        lblNewLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
-        lblNewLabel.setFont(new Font("Baskerville", Font.PLAIN, 40));
+        JLabel lblLogo = new JLabel("NatiShop");
+        lblLogo.setBounds(72, 24, 258, 72);
+        contentPane.add(lblLogo);
+        lblLogo.setVerticalAlignment(SwingConstants.BOTTOM);
+        lblLogo.setHorizontalAlignment(SwingConstants.LEFT);
+        lblLogo.setFont(new Font("Baskerville", Font.PLAIN, 40));
         
-        JPanel panel_1 = new JPanel();
-        panel_1.setBounds(82, 159, 423, 240);
-        contentPane.add(panel_1);
-        panel_1.setLayout(null);
+        JPanel pnlArticulos = new JPanel();
+        pnlArticulos.setBounds(82, 159, 423, 240);
+        contentPane.add(pnlArticulos);
+        pnlArticulos.setLayout(null);
         
         JLabel lblUsuario = new JLabel("");
         lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/ventanas/fotoUsuario.png")));
