@@ -1,0 +1,15 @@
+JANIRE:
+- Metodos cargar y guardar csv en la clase tienda
+- Conectar las ventanas
+
+ZALOA:
+- Ventana administrador:
+	- Menu: USUARIOS REGISTRADOS
+	- JTable
+	- A la izquierda mostrar compras
+	
+
+
+
+SARA:
+- Meter productos en la pagina principal
