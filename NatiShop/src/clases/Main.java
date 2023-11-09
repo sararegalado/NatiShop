@@ -1,5 +1,7 @@
 package clases;
 
-public class Main {	
+import ventanas.VentanaAdmin;
 
+public class Main {	
+	
 }
