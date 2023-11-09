@@ -23,20 +23,15 @@ import java.awt.Canvas;
 
 public class VentanaPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
-	static InicioSesion ventanaInicio;
+	static VentanaInicioSesion ventanaInicio;
 	static VentanaRegistro reg;
+	
+	private JFrame vActual;
 	
 	private JPanel contentPane;
 	
-	
-	public static void main(String[] args) {
-		
-		VentanaPrincipal vent = new VentanaPrincipal();
-		vent.setVisible(true);
-		
-		
-	}
 	public VentanaPrincipal() {
+		vActual = this;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1042, 693);
@@ -132,23 +127,13 @@ public class VentanaPrincipal extends JFrame {
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
         lblUsuario.setBounds(984, 6, 52, 52);
         contentPane.add(lblUsuario);
+        
         lblUsuario.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		InicioSesion ventUsuario = new InicioSesion();
-        		ventUsuario.setVisible(true);
-        		JButton btnAccederRegistro = new JButton("¿No tienes cuenta? Haz click aqui para registrarte");
-        		btnAccederRegistro.setBounds(202, 355, 334, 43);
-        		btnAccederRegistro.addActionListener(new ActionListener() {
-        			
-        			@Override
-        			public void actionPerformed(ActionEvent e) {
-        			reg = new VentanaRegistro(ventUsuario);
-        			reg.setVisible(true);
-        				
-        			}
-        		});
-        		ventUsuario.getContentPane().add(btnAccederRegistro);
+        		new VentanaInicioSesion(vActual);
+				vActual.setVisible(false);
+
         		
         	}
         });

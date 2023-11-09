@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 import java.awt.event.ActionListener;
 
-public class InicioSesion extends JFrame {
+public class VentanaInicioSesion extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -34,9 +34,12 @@ public class InicioSesion extends JFrame {
 	
 	private String nombreUsuario;
 	
+	private JFrame vActual,vAnterior;
 	
 	
-	public InicioSesion() {
+	public VentanaInicioSesion(JFrame va) {
+		vActual = this;
+		vAnterior = va;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 778, 455);
@@ -88,6 +91,22 @@ public class InicioSesion extends JFrame {
 		btnIniciarSes.setBounds(33, 157, 117, 29);
 		pnlDatos.add(btnIniciarSes);
 		
+		JButton btnAccederRegistro = new JButton("¿No tienes cuenta? Haz click aqui para registrarte");
+		
+		btnAccederRegistro.setBounds(202, 355, 334, 43);
+		contentPane.add(btnAccederRegistro);
+		
+		btnAccederRegistro.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new VentanaRegistro(vActual);
+				vActual.setVisible(false);
+				
+			}
+		});
+
+		
 		
 		/**
 		 * Dependiendo si del dominio del correo del usuario se abrira una ventana o otra
@@ -101,7 +120,7 @@ public class InicioSesion extends JFrame {
 //			new VentanaPrincipal();
 //		}
 		
-		
+		setVisible(true);
 	}
 	
 }
