@@ -89,6 +89,7 @@ public class InicioSesion extends JFrame {
 		pnlDatos.add(btnIniciarSes);
 		
 		
+		
 		/**
 		 * Dependiendo si del dominio del correo del usuario se abrira una ventana o otra
 		 * si el dominio del correo del usuario que inicia sesion es @Natyshop será un trabajador el que abrá iniciado sesion 
