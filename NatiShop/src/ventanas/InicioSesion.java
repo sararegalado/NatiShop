@@ -8,8 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
-import java.awt.GraphicsEnvironment;
-
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import java.awt.Window.Type;
@@ -25,11 +23,9 @@ import javax.swing.JPasswordField;
 import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
-
 import java.awt.event.ActionListener;
 
-public class VentanaInicioSesion extends JFrame {
+public class InicioSesion extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -38,12 +34,9 @@ public class VentanaInicioSesion extends JFrame {
 	
 	private String nombreUsuario;
 	
-	private JFrame vActual,vAnterior;
 	
 	
-	public VentanaInicioSesion(JFrame va) {
-		vActual = this;
-		vAnterior = va;
+	public InicioSesion() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 778, 455);
@@ -95,22 +88,6 @@ public class VentanaInicioSesion extends JFrame {
 		btnIniciarSes.setBounds(33, 157, 117, 29);
 		pnlDatos.add(btnIniciarSes);
 		
-		JButton btnAccederRegistro = new JButton("¿No tienes cuenta? Haz click aqui para registrarte");
-		
-		btnAccederRegistro.setBounds(202, 355, 334, 43);
-		contentPane.add(btnAccederRegistro);
-		
-		
-		btnAccederRegistro.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new VentanaRegistro(vActual);
-				vActual.setVisible(false);
-				
-			}
-		});
-
 		
 		
 		/**
@@ -125,9 +102,7 @@ public class VentanaInicioSesion extends JFrame {
 //			new VentanaPrincipal();
 //		}
 		
-		setLocationRelativeTo(null);
-		setVisible(true);
-
+		
 	}
 	
 }

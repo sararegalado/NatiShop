@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import java.awt.Color;
@@ -166,6 +168,7 @@ public class VentanaRegistro extends JFrame {
 			}
 		});
 		
+		setLocationRelativeTo(null);
 		setVisible(true);
 
 	}
