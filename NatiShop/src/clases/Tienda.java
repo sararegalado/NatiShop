@@ -63,6 +63,12 @@ public class Tienda {
 	 * Método que carga todoslos usuarios del fichero en la lista Usuarios
 	 */
 	
+	/**
+	 * Método que carga el fichero usuarios en una lista de usuarios
+	 * 
+	 * @param nomfich Fichero que tiene todos los usuarios registrados 
+	 */
+	
 
 	public static void cargarUsuarios(String nomfich) {
 
