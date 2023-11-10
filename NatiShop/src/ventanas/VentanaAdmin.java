@@ -1,6 +1,6 @@
 package ventanas;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
@@ -12,6 +12,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JSplitPane;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
@@ -21,14 +25,36 @@ import java.awt.Font;
 import javax.swing.JMenuItem;
 import javax.swing.SwingConstants;
 
+
 public class VentanaAdmin extends JFrame{
 	
-	private JPanel contentPane;
-	
-	public static void main(String[] args) {
-		VentanaAdmin ventana= new VentanaAdmin();
-		ventana.setVisible(true);
+	public class MainApp {
+	    public static void main(String[] args) {
+	        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+	            public void run() {
+	                VentanaAdmin ventanaAdmin = new VentanaAdmin();
+	                ventanaAdmin.setVisible(true);
+	            }
+	        });
+	    }
 	}
+
+	
+	
+	
+	private JPanel contentPane; 
+	private JMenuBar menuBar;
+	private JMenuItem menuItemUsuarios;
+	
+	
+	
+	private JTable tablaUsuarios ;
+	private ModeloTablaUsuarios modeloUsuarios;
+	private JScrollPane sTablaUsuarios;
+	
+
+
+	
 	public VentanaAdmin() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -44,12 +70,54 @@ public class VentanaAdmin extends JFrame{
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
+
+		JPanel panel_Centro = new JPanel();
+		panel_Centro.setBounds(270, 11, 645, 562);
+		contentPane.add(panel_Centro);
+		
 		JMenuBar menuBar= new JMenuBar();
-		menuBar.setBounds(10,11,250,562);
+		menuBar.setBounds(0,0,250,562);
 		panel.add(menuBar);
 		menuBar.setFont(new Font("Baskerville", Font.PLAIN, 14));
+		menuBar.setLayout(new GridLayout(5,1));
+		
+		JMenuItem menuItemUsuarios = new JMenuItem("USUARIOS");
+		menuItemUsuarios.setBackground(new Color(240, 240, 240));
+		menuItemUsuarios.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 15));
+		menuItemUsuarios.setBounds(-51, 62, 20, 562);
+		menuBar.add(menuItemUsuarios);
+		
+		menuItemUsuarios.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				tablaUsuarios = new JTable(modeloUsuarios);
+				panel_Centro.add(tablaUsuarios);
+				
+				
+				
+				
+			}
+			
+		});
 		
 		
+		JMenuItem MenuItemArticulos = new JMenuItem("ARTICULOS");
+		menuBar.add(MenuItemArticulos);
+		
+		
+		
+		
+		 setVisible(true);
+		
+		}
+	
+	public static void main(String[] args) {
+		VentanaAdmin ventanaAdmin = new VentanaAdmin();
 		
 	}
-}
+	
+	
+	
+	}
+
