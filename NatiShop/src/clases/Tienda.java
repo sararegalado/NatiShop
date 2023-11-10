@@ -84,12 +84,49 @@ public class Tienda {
 				String correo= partes[3];
 				String con= partes[4];
 				Usuario u= new Usuario(dni, nom, fNac, con, correo);
-				usuarios.add(u);
+				if(buscarUsuario(dni) == null) {
+					usuarios.add(u);
+				}
+				
 			}
 			sc.close();
 		} catch (FileNotFoundException e) {
 			
+		}	
+	}
+	
+
+	public static void guardarClientesEnFichero(String nomfich) {
+		try {
+			PrintWriter pw = new PrintWriter(nomfich);
+			for(Usuario c : usuarios) {
+				pw.println(c.getDni()+";"+c.getNombre()+";"+c.getfNacStr()+";"+c.getContrasenia());
+			}
+			pw.flush();
+			pw.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
-		
+	}
+	
+	
+	
+	public static Usuario buscarUsuario(String dni) {
+		boolean enc = false;
+		int pos = 0;
+		Usuario c = null;
+		while(!enc && pos<usuarios.size()) {
+			c = usuarios.get(pos);
+			if(c.getDni().equals(dni)) {
+				enc = true;
+			}else {
+				pos++;
+			}
+		}
+		if(enc) {
+			return c;
+		}else{
+			return null;
+		}
 	}
 }

@@ -17,26 +17,23 @@ import javax.swing.JMenuItem;
 import java.awt.Color;
 import java.awt.List;
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 import java.awt.Canvas;
 
 public class VentanaPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
-	static InicioSesion ventanaInicio;
+	static VentanaInicioSesion ventanaInicio;
 	static VentanaRegistro reg;
+	
+	private JFrame vActual;
 	
 	private JPanel contentPane;
 	
-	
-	public static void main(String[] args) {
-		
-		VentanaPrincipal vent = new VentanaPrincipal();
-		vent.setVisible(true);
-		
-		
-	}
 	public VentanaPrincipal() {
+		vActual = this;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1042, 693);
@@ -128,27 +125,24 @@ public class VentanaPrincipal extends JFrame {
         pnlArticulos.setLayout(null);
         
         JLabel lblUsuario = new JLabel("");
-        lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/ventanas/fotoUsuario.png")));
+        lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/fotoUsuario.png")));
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
         lblUsuario.setBounds(984, 6, 52, 52);
+        
+        int anchoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
+        int altoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
+        setSize(anchoP, altoP);
+        setExtendedState(MAXIMIZED_BOTH);
+        setResizable(false);
+        
         contentPane.add(lblUsuario);
+        
         lblUsuario.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		InicioSesion ventUsuario = new InicioSesion();
-        		ventUsuario.setVisible(true);
-        		JButton btnAccederRegistro = new JButton("¿No tienes cuenta? Haz click aqui para registrarte");
-        		btnAccederRegistro.setBounds(202, 355, 334, 43);
-        		btnAccederRegistro.addActionListener(new ActionListener() {
-        			
-        			@Override
-        			public void actionPerformed(ActionEvent e) {
-        			reg = new VentanaRegistro(ventUsuario);
-        			reg.setVisible(true);
-        				
-        			}
-        		});
-        		ventUsuario.getContentPane().add(btnAccederRegistro);
+        		new VentanaInicioSesion(vActual);
+				vActual.setVisible(false);
+
         		
         	}
         });

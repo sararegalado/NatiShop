@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import java.awt.Color;
@@ -40,10 +42,12 @@ public class VentanaRegistro extends JFrame {
 	private JPasswordField tfContrasena1;
 	private JPasswordField tfContrasena2;
 	
-	
+	private JFrame vActual,vAnterior;
 
 	
-	public VentanaRegistro(JFrame ventOrigen) {
+	public VentanaRegistro(JFrame va) {
+		vActual = this;
+		vAnterior = va;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 778, 455);
@@ -124,27 +128,49 @@ public class VentanaRegistro extends JFrame {
 		pnlDatos.add(tfContrasena2);
 		
 		
-		JButton btnregistro = new JButton("Registrar cuenta");
-		btnregistro.setBounds(97, 356, 251, 24);
-		pnlRegistro.add(btnregistro);
-		btnregistro.addActionListener(new ActionListener() {
+		JButton btnRegistro = new JButton("Registrar cuenta");
+		btnRegistro.setBounds(97, 356, 251, 24);
+		pnlRegistro.add(btnRegistro);
+		btnRegistro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 			}
 		});
 		
-		
-		
-		this.addWindowListener( new WindowAdapter() {
+		btnRegistro.addActionListener(new ActionListener() {
+			
 			@Override
-			public void windowOpened(WindowEvent e) {
-				ventOrigen.setVisible( false );
-			}
-			@Override
-			public void windowClosed(WindowEvent e) {
-				ventOrigen.setVisible( true );
+			public void actionPerformed(ActionEvent e) {
+				String dni = tfDNI.getText();
+				String nom = tfNombre.getText();
+				String fNac = tfFechaNac.getText();
+				String correo = tfEmail.getText();
+				String con1 = tfContrasena1.getText();
+				
+				if (tfContrasena1.getText().equals(tfContrasena2.getText())) {
+					Usuario u = new Usuario(dni, nom, fNac, correo, con1);
+					
+					
+				}else {
+					JOptionPane.showMessageDialog(null, "Los valores de la contraseña deben coincidir","ERROR",JOptionPane.ERROR_MESSAGE);
+					tfContrasena1.setText("");
+					tfContrasena2.setText("");
+				};
+				
+//				if(Tienda.buscarCliente(dni)!=null) {
+//					JOptionPane.showMessageDialog(null, "Ya existe un cliente con ese dni","ERROR",JOptionPane.ERROR_MESSAGE);
+//				}else {
+//					Tienda.aniadirCliente(c);
+//					JOptionPane.showMessageDialog(null, "Cliente registrado con éxito","REGISTRADO",JOptionPane.INFORMATION_MESSAGE);
+//				}
+//			});
+				
 			}
 		});
+		
+		setLocationRelativeTo(null);
+		setVisible(true);
+
 	}
 	
 	
