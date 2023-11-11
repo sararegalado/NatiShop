@@ -8,6 +8,8 @@ public class Tienda {
 	private static Set<Articulo> articulos = new TreeSet<>();
 	private static List<Usuario> usuarios = new ArrayList<>();
 	private static HashMap<Usuario, ArrayList<Articulo>> compras = new HashMap<>();
+	
+	//private static final String nomfichUsuarios = "Usuarios.csv";
 
 	//Getters y setters
 	public static HashMap<Usuario, ArrayList<Articulo>> getCompras() {
@@ -23,7 +25,7 @@ public class Tienda {
 		articulos.add(a);
 	}
 	
-	public static void aniadirClientes(Usuario u) {
+	public static void aniadirUsuario(Usuario u) {
 		usuarios.add(u);
 	}
 	
@@ -40,40 +42,16 @@ public class Tienda {
 		}
 		compras.get(u).add(a);
 	}
-	
-	/**
-	 * Método que  guarad toddos los usuarios del conjunto usuarios en un fichero
-	 * @param nomfich
-	 */
-	public static void guardarUsuarios(String nomfich) {
-		try {
-			PrintWriter pw= new PrintWriter(nomfich);
-			for (Usuario u: usuarios) {
-				pw.println(u.getDni()+";"+u.getNombre()+";"+u.getfNacStr()+";"+u.getCorreo()+";"+u.getContrasenia());
-			}
-			pw.flush();
-			pw.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
-	/*
-	 * Método que carga todoslos usuarios del fichero en la lista Usuarios
-	 */
-	
+
 	/**
 	 * Método que carga el fichero usuarios en una lista de usuarios
 	 * 
 	 * @param nomfich Fichero que tiene todos los usuarios registrados 
 	 */
-	
-
-	public static void cargarUsuarios(String nomfich) {
+	public static void cargarUsuarios(String nomfichUsuarios) {
 
 		try {
-			Scanner sc= new Scanner(new FileReader(nomfich));
+			Scanner sc= new Scanner(new FileReader(nomfichUsuarios));
 			String linea;
 			while(sc.hasNext()) {
 				linea= sc.nextLine();
@@ -83,7 +61,7 @@ public class Tienda {
 				String fNac= partes[2];
 				String correo= partes[3];
 				String con= partes[4];
-				Usuario u= new Usuario(dni, nom, fNac, con, correo);
+				Usuario u= new Usuario(dni, nom, fNac, correo, con);
 				if(buscarUsuario(dni) == null) {
 					usuarios.add(u);
 				}
@@ -95,12 +73,16 @@ public class Tienda {
 		}	
 	}
 	
-
-	public static void guardarClientesEnFichero(String nomfich) {
+	/**
+	 * Método que guarda la lista de usuarios en un fichero
+	 * 
+	 * @param nomfich Fichero en el que vamos a guardar nuestra lista de usuarios
+	 */
+	public static void guardarUsuarios(String nomfichUsuarios) {
 		try {
-			PrintWriter pw = new PrintWriter(nomfich);
-			for(Usuario c : usuarios) {
-				pw.println(c.getDni()+";"+c.getNombre()+";"+c.getfNacStr()+";"+c.getContrasenia());
+			PrintWriter pw = new PrintWriter(nomfichUsuarios);
+			for(Usuario u : usuarios) {
+				pw.println(u.getDni()+";"+u.getNombre()+";"+u.getfNacStr()+";"+u.getCorreo()+";"+u.getContrasenia());
 			}
 			pw.flush();
 			pw.close();
@@ -109,7 +91,11 @@ public class Tienda {
 		}
 	}
 	
-	
+	/**
+	 * Metodo que busca a un usuario por su dni
+	 * @param dni DNI del usuari que queremos buscar
+	 * @return
+	 */
 	
 	public static Usuario buscarUsuario(String dni) {
 		boolean enc = false;
@@ -129,4 +115,6 @@ public class Tienda {
 			return null;
 		}
 	}
+	
+	
 }

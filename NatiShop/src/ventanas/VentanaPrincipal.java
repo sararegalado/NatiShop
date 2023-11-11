@@ -28,12 +28,13 @@ public class VentanaPrincipal extends JFrame {
 	static VentanaInicioSesion ventanaInicio;
 	static VentanaRegistro reg;
 	
-	private JFrame vActual;
+	private JFrame vActual, vAnterior;
 	
 	private JPanel contentPane;
 	
-	public VentanaPrincipal() {
+	public VentanaPrincipal(JFrame va) {
 		vActual = this;
+		vAnterior = va;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1042, 693);
 		contentPane = new JPanel();
@@ -48,7 +49,7 @@ public class VentanaPrincipal extends JFrame {
         pnlMenuBar.setLayout(null);
         
         JMenuBar menuBar = new JMenuBar();
-        menuBar.setBounds(0, 0, 1300, 44);
+        menuBar.setBounds(0, 0, 1138, 44);
         pnlMenuBar.add(menuBar);
         menuBar.setFont(new Font("Baskerville", Font.PLAIN, 14));
         
@@ -119,14 +120,14 @@ public class VentanaPrincipal extends JFrame {
         lblLogo.setFont(new Font("Baskerville", Font.PLAIN, 40));
         
         JPanel pnlArticulos = new JPanel();
-        pnlArticulos.setBounds(82, 159, 423, 240);
+        pnlArticulos.setBounds(72, 159, 1137, 481);
         contentPane.add(pnlArticulos);
         pnlArticulos.setLayout(null);
         
         JLabel lblUsuario = new JLabel("");
-        lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/fotoUsuario.png")));
+        lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/usuario.png")));
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-        lblUsuario.setBounds(1369, 6, 52, 52);
+        lblUsuario.setBounds(1157, 22, 52, 52);
         
         int anchoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
         int altoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
@@ -139,7 +140,7 @@ public class VentanaPrincipal extends JFrame {
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		new VentanaInicioSesion(vActual);
-				vActual.setVisible(false);
+				//vActual.setVisible(false);
 
         		
         	}
@@ -147,6 +148,6 @@ public class VentanaPrincipal extends JFrame {
         
         
         
-        
+       setVisible(true);
 	}
 }
