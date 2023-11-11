@@ -38,6 +38,7 @@ public class VentanaRegistro extends JFrame {
 	private JTextField tfNombre;
 	private JTextField tfDNI;
 	private JTextField tfEmail;
+
 	private JTextField tfFechaNac;
 	private JPasswordField tfContrasena1;
 	private JPasswordField tfContrasena2;

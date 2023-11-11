@@ -108,6 +108,7 @@ public class Usuario implements Comparable<Usuario> {
 		
 	return this.dni.compareTo(o.dni);
 	}
+
 	
 	
 	
