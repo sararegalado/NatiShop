@@ -6,14 +6,17 @@ public class Jersey extends Articulo {
 		super();
 	}
 
-	public Jersey(String id, int unidades, double precio, Talla talla) {
-		super(id, unidades, precio, talla);
+	public Jersey(String id, String nombre, int unidades, double precio, Talla talla, String foto) {
+		super(id, nombre, unidades, precio, talla, foto);
 	}
 
 	@Override
 	public String toString() {
-		return "Jersey [id=" + id + ", unidades=" + unidades + ", precio=" + precio + ", talla=" + talla + "]";
+		return "Jersey [id=" + id + ", nombre=" + nombre + ", unidades=" + unidades + ", precio=" + precio + ", talla="
+				+ talla + ", foto=" + foto + "]";
 	}
+
+	
 	
 	
 	

@@ -6,13 +6,14 @@ public class Pantalon extends Articulo {
 		super();
 	}
 
-	public Pantalon(String id, int unidades, double precio, Talla talla) {
-		super(id, unidades, precio, talla);
+	public Pantalon(String id, String nombre, int unidades, double precio, Talla talla, String foto) {
+		super(id, nombre, unidades, precio, talla, foto);
 	}
 
 	@Override
 	public String toString() {
-		return "Pantalon [id=" + id + ", unidades=" + unidades + ", precio=" + precio + ", talla=" + talla + "]";
+		return "Pantalon [id=" + id + ", nombre=" + nombre + ", unidades=" + unidades + ", precio=" + precio
+				+ ", talla=" + talla + ", foto=" + foto + "]";
 	}
 
 	
