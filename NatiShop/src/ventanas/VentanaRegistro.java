@@ -18,8 +18,11 @@ import javax.swing.border.BevelBorder;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
@@ -30,7 +33,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
+
+import clases.Tienda;
 import clases.Usuario;
+import java.awt.SystemColor;
 public class VentanaRegistro extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -42,6 +48,8 @@ public class VentanaRegistro extends JFrame {
 	private JTextField tfFechaNac;
 	private JPasswordField tfContrasena1;
 	private JPasswordField tfContrasena2;
+	
+	private static final String nomfichUsuarios = "Usuarios.csv";
 	
 	private JFrame vActual,vAnterior;
 
@@ -61,10 +69,10 @@ public class VentanaRegistro extends JFrame {
 
 		
 		JPanel pnlRegistro = new JPanel();
-		pnlRegistro.setBackground(new Color(254, 255, 255));
+		pnlRegistro.setBackground(SystemColor.control);
 		pnlRegistro.setForeground(new Color(254, 255, 255));
 		pnlRegistro.setLayout(null);
-		pnlRegistro.setBounds(145, 16, 434, 405);
+		pnlRegistro.setBounds(153, 11, 409, 405);
 		contentPane.add(pnlRegistro);
 		
 		JLabel lblCrearCuenta = new JLabel("CREAR CUENTA");
@@ -132,11 +140,15 @@ public class VentanaRegistro extends JFrame {
 		JButton btnRegistro = new JButton("Registrar cuenta");
 		btnRegistro.setBounds(97, 356, 251, 24);
 		pnlRegistro.add(btnRegistro);
-		btnRegistro.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
+		
+		JLabel lblAtras = new JLabel("");
+		lblAtras.setIcon(new ImageIcon(VentanaInicioSesion.class.getResource("/imagenes/atras.png")));
+		lblAtras.setBounds(97, 11, 46, 50);
+		contentPane.add(lblAtras);
+		
+		
+		//Cargamos los usuarios desde la clase tienda
+		//Tienda.cargarUsuarios(nomfichUsuarios);
 		
 		btnRegistro.addActionListener(new ActionListener() {
 			
@@ -147,10 +159,19 @@ public class VentanaRegistro extends JFrame {
 				String fNac = tfFechaNac.getText();
 				String correo = tfEmail.getText();
 				String con1 = tfContrasena1.getText();
+				String con2 = tfContrasena2.getText();
 				
-				if (tfContrasena1.getText().equals(tfContrasena2.getText())) {
-					Usuario u = new Usuario(dni, nom, fNac, correo, con1);
-					
+				Usuario u = new Usuario(dni, nom, fNac, correo, con1);
+				if (con1.equals(con2)) {
+					if(Tienda.buscarUsuario(dni)!=null) {
+						JOptionPane.showMessageDialog(null, "Ya existe un cliente con ese dni","ERROR",JOptionPane.ERROR_MESSAGE);
+					}else {
+						Tienda.aniadirUsuario(u);
+						Tienda.guardarUsuarios(nomfichUsuarios);
+						JOptionPane.showMessageDialog(null, "Cliente registrado con éxito","REGISTRADO",JOptionPane.INFORMATION_MESSAGE);
+						new VentanaInicioSesion(vActual);
+						vActual.setVisible(false);	
+					}
 					
 				}else {
 					JOptionPane.showMessageDialog(null, "Los valores de la contraseña deben coincidir","ERROR",JOptionPane.ERROR_MESSAGE);
@@ -158,16 +179,20 @@ public class VentanaRegistro extends JFrame {
 					tfContrasena2.setText("");
 				};
 				
-//				if(Tienda.buscarCliente(dni)!=null) {
-//					JOptionPane.showMessageDialog(null, "Ya existe un cliente con ese dni","ERROR",JOptionPane.ERROR_MESSAGE);
-//				}else {
-//					Tienda.aniadirCliente(c);
-//					JOptionPane.showMessageDialog(null, "Cliente registrado con éxito","REGISTRADO",JOptionPane.INFORMATION_MESSAGE);
-//				}
-//			});
-				
 			}
 		});
+		
+		lblAtras.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		new VentanaInicioSesion(vActual);
+				vActual.setVisible(false);
+
+        		
+        	}
+        });
+		
+
 		
 		setLocationRelativeTo(null);
 		setVisible(true);

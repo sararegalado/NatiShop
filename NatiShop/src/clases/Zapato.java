@@ -6,13 +6,14 @@ public class Zapato extends Articulo {
 		super();
 	}
 
-	public Zapato(String id, int unidades, double precio, Talla talla) {
-		super(id, unidades, precio, talla);
+	public Zapato(String id, String nombre, int unidades, double precio, Talla talla, String foto) {
+		super(id,nombre, unidades, precio, talla, foto);
 	}
 
 	@Override
 	public String toString() {
-		return "Zapato [id=" + id + ", unidades=" + unidades + ", precio=" + precio + ", talla=" + talla + "]";
+		return "Zapato [id=" + id + ", nombre=" + nombre + ", unidades=" + unidades + ", precio=" + precio + ", talla="
+				+ talla + ", foto=" + foto + "]";
 	}
 	
 
