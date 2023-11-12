@@ -138,7 +138,7 @@ public class VentanaDatosCliente extends JFrame{
 			textField_3.setText(usuario.getContrasenia());
 			textField_4.setText(usuario.getCorreo());
 		} else {
-			JOptionPane.showMessageDialog(null, "El usuario no ha introducido nigun dato");               
+			JOptionPane.showMessageDialog(null, "El usuario no ha introducido ningun dato");               
 		}
 	};
 	

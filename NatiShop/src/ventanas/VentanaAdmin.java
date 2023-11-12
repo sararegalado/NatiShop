@@ -9,6 +9,10 @@ import javax.swing.JToolBar;
 import javax.swing.JTextArea;
 import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
+
+import clases.Tienda;
+import clases.Usuario;
+
 import javax.swing.JSplitPane;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -16,6 +20,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
@@ -28,21 +34,12 @@ import javax.swing.SwingConstants;
 
 public class VentanaAdmin extends JFrame{
 	
-	public class MainApp {
-	    public static void main(String[] args) {
-	        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-	            public void run() {
-	                VentanaAdmin ventanaAdmin = new VentanaAdmin();
-	                ventanaAdmin.setVisible(true);
-	            }
-	        });
-	    }
-	}
+	
 
 	
 	
 	
-	private JPanel contentPane; 
+	private JPanel contentPane,panel,panel_Centro;
 	private JMenuBar menuBar;
 	private JMenuItem menuItemUsuarios;
 	
@@ -56,9 +53,11 @@ public class VentanaAdmin extends JFrame{
 
 	
 	public VentanaAdmin() {
+		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(300, 200, 1121, 621);
+		setVisible(true);
 		
 		contentPane= new JPanel();
 		contentPane.setBorder(new EmptyBorder(5,5,5,5));
@@ -91,15 +90,11 @@ public class VentanaAdmin extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				tablaUsuarios = new JTable(modeloUsuarios);
-				panel_Centro.add(tablaUsuarios);
-				
-				
-				
-				
+				cargarUsuariosenTabla();
 			}
 			
-		});
+		});;
+		
 		
 		
 		JMenuItem MenuItemArticulos = new JMenuItem("ARTICULOS");
@@ -107,16 +102,31 @@ public class VentanaAdmin extends JFrame{
 		
 		
 		
-		
-		 setVisible(true);
+		 
 		
 		}
+	
 	
 	public static void main(String[] args) {
 		VentanaAdmin ventanaAdmin = new VentanaAdmin();
 		
 	}
 	
+	
+	public void cargarUsuariosenTabla() {
+		
+		tablaUsuarios= new JTable(modeloUsuarios);
+		
+		while(modeloUsuarios.getRowCount()>0) {
+			modeloUsuarios.removeRow(0);
+		}
+		List<Usuario> lista= Tienda.getUsuarios();
+		for(Usuario  u: lista) {
+			Object [] fila= {u.getDni(),u.getNombre(),u.getCorreo(),u.getfNacStr()};
+			modeloUsuarios.addRow(fila);
+		}
+		
+	}
 	
 	
 	}

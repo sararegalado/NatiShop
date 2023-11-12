@@ -32,11 +32,13 @@ public class InicioSesion extends JFrame {
 	private JTextField tfNombre;
 	private JPasswordField tfContrasena;
 	
-	private String nombreUsuario;
+	private String nom;
+	private JFrame vActual,vAnterior;
 	
 	
 	
 	public InicioSesion() {
+		vActual= this;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 778, 455);

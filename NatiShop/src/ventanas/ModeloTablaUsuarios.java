@@ -16,6 +16,7 @@ public class ModeloTablaUsuarios extends DefaultTableModel {
 	
 	public ModeloTablaUsuarios(List<Usuario> usuarios){
 		this.usuarios= usuarios;
+		
 	}
 	
 	@Override

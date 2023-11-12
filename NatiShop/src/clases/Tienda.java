@@ -20,6 +20,16 @@ public class Tienda {
 		return articulos;
 	}
 	
+	
+	
+	public static List<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public static void setUsuarios(List<Usuario> usuarios) {
+		Tienda.usuarios = usuarios;
+	}
+
 	//Métodos
 	public static void aniadirArticulos(Articulo a) {
 		articulos.add(a);
