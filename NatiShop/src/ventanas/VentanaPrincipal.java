@@ -1,15 +1,23 @@
 package ventanas;
 
 import java.awt.event.ActionEvent;
+
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+
+import clases.Articulo;
+import clases.Tienda;
+
 import javax.swing.JMenuBar;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -18,9 +26,12 @@ import java.awt.Color;
 import java.awt.List;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
+import java.awt.GridLayout;
 
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
+
+import java.awt.BorderLayout;
 import java.awt.Canvas;
 
 public class VentanaPrincipal extends JFrame {
@@ -31,6 +42,8 @@ public class VentanaPrincipal extends JFrame {
 	private JFrame vActual, vAnterior;
 	
 	private JPanel contentPane;
+	
+	private static int COLUMNAS = 4;
 	
 	public VentanaPrincipal(JFrame va) {
 		vActual = this;
@@ -49,12 +62,12 @@ public class VentanaPrincipal extends JFrame {
         pnlMenuBar.setLayout(null);
         
         JMenuBar menuBar = new JMenuBar();
-        menuBar.setBounds(0, 0, 1138, 44);
+        menuBar.setBounds(0, 0, 1300, 44);
         pnlMenuBar.add(menuBar);
         menuBar.setFont(new Font("Baskerville", Font.PLAIN, 14));
         
         JMenu menuHombre = new JMenu("Hombre");
-        menuHombre.setFont(new Font("Baskerville", Font.PLAIN, 14));
+        menuHombre.setFont(new Font("Baskerville", Font.PLAIN, 17));
         menuBar.add(menuHombre);
         
         JMenuItem menuItemCamiH = new JMenuItem("Camisetas");
@@ -73,7 +86,7 @@ public class VentanaPrincipal extends JFrame {
         menuItemCalzH.setFont(new Font("Baskerville", Font.PLAIN, 14));
         menuHombre.add(menuItemCalzH);
         JMenu menuMujer = new JMenu("Mujer");
-        menuMujer.setFont(new Font("Baskerville", Font.PLAIN, 14));
+        menuMujer.setFont(new Font("Baskerville", Font.PLAIN, 17));
         menuBar.add(menuMujer);
         
         JMenuItem menuItemCamiM = new JMenuItem("Camisetas");
@@ -93,7 +106,7 @@ public class VentanaPrincipal extends JFrame {
         menuItemCalzM.setFont(new Font("Baskerville", Font.PLAIN, 14));
         
         JMenu menuNinos = new JMenu("Niños");
-        menuNinos.setFont(new Font("Baskerville", Font.PLAIN, 14));
+        menuNinos.setFont(new Font("Baskerville", Font.PLAIN, 17));
         menuBar.add(menuNinos);
         
         JMenuItem menuItemCamiN = new JMenuItem("Camisetas");
@@ -117,17 +130,17 @@ public class VentanaPrincipal extends JFrame {
         contentPane.add(lblLogo);
         lblLogo.setVerticalAlignment(SwingConstants.BOTTOM);
         lblLogo.setHorizontalAlignment(SwingConstants.LEFT);
-        lblLogo.setFont(new Font("Baskerville", Font.PLAIN, 40));
+        lblLogo.setFont(new Font("Baskerville", Font.PLAIN, 45));
         
         JPanel pnlArticulos = new JPanel();
-        pnlArticulos.setBounds(72, 159, 1137, 481);
+        pnlArticulos.setBounds(72, 159, 1300, 576);
         contentPane.add(pnlArticulos);
         pnlArticulos.setLayout(null);
         
         JLabel lblUsuario = new JLabel("");
         lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/usuario.png")));
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-        lblUsuario.setBounds(1157, 22, 52, 52);
+        lblUsuario.setBounds(1370, 6, 52, 52);
         
         int anchoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
         int altoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
@@ -147,9 +160,62 @@ public class VentanaPrincipal extends JFrame {
         });
         
         
+        menuItemCamiH.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		limpiarPanel(pnlArticulos);
+        		setArticulos(Tienda.getArticulos(),pnlArticulos);
+        		
+        		
+        		
+        		
+        	}
+        	
+        });
+        
+        
         
         
         
        setVisible(true);
 	}
+	
+	public void limpiarPanel(JPanel panel) {
+	    panel.removeAll();
+	    panel.revalidate();
+	    panel.repaint();
+	}
+	
+	public void setArticulos(Set<Articulo> art, JPanel panel) {
+		panel.setLayout(new GridLayout(10, COLUMNAS));
+		for (Articulo a: art) {
+			JPanel pnlArticulo = crearPanelArticulo(a);
+			panel.add(pnlArticulo);
+			System.out.println("Añadido");
+		}
+	}
+	
+	public JPanel crearPanelArticulo(Articulo articulo) {
+		JPanel panelArticulo = new JPanel();
+		panelArticulo.setLayout(new BorderLayout());
+		
+		String rutaImagen = articulo.getFoto();
+		ImageIcon foto = new ImageIcon(rutaImagen);
+		
+		JLabel etiqueta = new JLabel(foto);
+		
+		JLabel titulo = new JLabel(articulo.getNombre());
+		
+		panelArticulo.add(etiqueta,BorderLayout.CENTER);
+		panelArticulo.add(titulo, BorderLayout.SOUTH);
+		
+		return panelArticulo;
+		
+		
+		
+		
+	}
+	
+	
 }
