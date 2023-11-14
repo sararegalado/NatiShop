@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
@@ -44,7 +45,8 @@ public class VentanaPrincipal extends JFrame {
 	private JPanel contentPane;
 	
 	private static int COLUMNAS = 4;
-	
+	private JTextField tfBuscador;
+
 	public VentanaPrincipal(JFrame va) {
 		vActual = this;
 		vAnterior = va;
@@ -62,7 +64,7 @@ public class VentanaPrincipal extends JFrame {
         pnlMenuBar.setLayout(null);
         
         JMenuBar menuBar = new JMenuBar();
-        menuBar.setBounds(0, 0, 1300, 44);
+        menuBar.setBounds(0, 0, 1153, 44);
         pnlMenuBar.add(menuBar);
         menuBar.setFont(new Font("Baskerville", Font.PLAIN, 14));
         
@@ -133,14 +135,14 @@ public class VentanaPrincipal extends JFrame {
         lblLogo.setFont(new Font("Baskerville", Font.PLAIN, 45));
         
         JPanel pnlArticulos = new JPanel();
-        pnlArticulos.setBounds(72, 159, 1300, 576);
+        pnlArticulos.setBounds(72, 159, 1153, 576);
         contentPane.add(pnlArticulos);
         pnlArticulos.setLayout(null);
         
         JLabel lblUsuario = new JLabel("");
         lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/usuario.png")));
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-        lblUsuario.setBounds(1370, 6, 52, 52);
+        lblUsuario.setBounds(1173, 34, 52, 52);
         
         int anchoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
         int altoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
@@ -148,6 +150,14 @@ public class VentanaPrincipal extends JFrame {
         setExtendedState(MAXIMIZED_BOTH);
         
         contentPane.add(lblUsuario);
+        
+        tfBuscador = new JTextField();
+        tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+        tfBuscador.setBounds(845, 48, 220, 26);
+        contentPane.add(tfBuscador);
+        tfBuscador.setColumns(10);
+        
+        
         
         lblUsuario.addMouseListener(new MouseAdapter() {
         	@Override
@@ -160,14 +170,14 @@ public class VentanaPrincipal extends JFrame {
         });
         
         
+        
+        
         menuItemCamiH.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
         		System.out.println("pulsado");
         		limpiarPanel(pnlArticulos);
         		setArticulos(Tienda.getArticulos(),pnlArticulos);
-        		
-        		
         		
         		
         	}
@@ -216,6 +226,4 @@ public class VentanaPrincipal extends JFrame {
 		
 		
 	}
-	
-	
 }
