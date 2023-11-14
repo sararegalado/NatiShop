@@ -1,6 +1,5 @@
-11111,Camiseta rayas,4,19.78,HOMBRE,S,imagenes/camiseta1H,CAMISETA
-11112,Camiseta rayas,10,25.99,HOMBRE,M,imagenes/camiseta2H,CAMISETA
-11113,Camiseta texto,20,22.99,HOMBRE,L,imagenes/camiseta3H,CAMISETA
-11114,Camiseta punto,15,28.99,HOMBRE,XS,imagenes/camiseta4H,CAMISETA
-11115,Camiseta estampado,10,32.7,HOMBRE,L,imagenes/camiseta5H,CAMISETA
-11116,Camiseta rayas,18,21.8,HOMBRE,S,imagenes/camiseta6H,CAMISETA
+11111;Camiseta rayas;4;19.78;HOMBRE;S;/imagenes/camiseta1H.png;CAMISETA
+11112;Camiseta rayas;10;25.99;HOMBRE;M;/imagenes/camiseta2H.png;CAMISETA
+11113;Camiseta texto;20;22.99;HOMBRE;L;/imagenes/camiseta3H.png;CAMISETA
+11114;Camiseta punto;15;28.99;HOMBRE;XS;/imagenes/camiseta4H.png;CAMISETA
+11115;Camiseta estampado;10;32.7;HOMBRE;L;/imagenes/camiseta5H.png;CAMISETA

@@ -326,7 +326,7 @@ public class VentanaPrincipal extends JFrame {
 		panelArticulo.setLayout(new BorderLayout());
 		
 		String rutaImagen = articulo.getFoto();
-		JLabelGrafico foto = new JLabelGrafico (rutaImagen,200,200);
+		JLabelGrafico foto = new JLabelGrafico (rutaImagen,220,220);
 		System.out.println("Grafico creado");
 		
 //		ImageIcon foto = new ImageIcon(rutaImagen);
@@ -341,7 +341,7 @@ public class VentanaPrincipal extends JFrame {
 		panelArticulo.add(titulo, BorderLayout.SOUTH);
 		panelArticulo.setBorder(new LineBorder(Color.BLACK));
 		
-		panelArticulo.setBackground(Color.WHITE);
+//		panelArticulo.setBackground(Color.WHITE);
 		
 		return panelArticulo;
 		

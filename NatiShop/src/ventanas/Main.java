@@ -11,7 +11,9 @@ public class Main {
 //		}
 //		Tienda.guardarArticulos("articulos.csv");
 		Tienda.cargarArticulos("articulos.csv");
-//		System.out.println(Tienda.getCamisetas());
+//		Tienda.cargarUsuarios("Usuarios.csv");
+//		System.out.println(Tienda.getUsuarios());
+		System.out.println(Tienda.getCamisetas());
 //		
 		VentanaPrincipal vent = new VentanaPrincipal(null);
 			
