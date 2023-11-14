@@ -7,7 +7,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,7 +21,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import clases.Articulo;
+import clases.Camiseta;
+import clases.Genero;
+import clases.Jersey;
+import clases.Pantalon;
 import clases.Tienda;
+import clases.Zapato;
 
 import javax.swing.JMenuBar;
 import javax.swing.JLabel;
@@ -178,7 +185,7 @@ public class VentanaPrincipal extends JFrame {
         });
         
         
-        
+        //LISTENERS DE LOS ITEMS DE HOMBRE
         
         menuItemCamiH.addActionListener(new ActionListener() {
             @Override
@@ -186,13 +193,73 @@ public class VentanaPrincipal extends JFrame {
         		System.out.println("pulsado");
         		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
-
-        		setArticulos(Tienda.getArticulos(),pnlArticulos);
         		
-        		
+        		Set<Camiseta> camiH = new TreeSet<>();
+        		for (Camiseta c: Tienda.getCamisetas()) {
+        			if (c.getGenero()== Genero.HOMBRE) {
+        				camiH.add(c);
+        			}
+        		}
+        		setCamisetas(camiH,pnlArticulos);
         	}
-        	
         });
+        
+        
+        menuItemJersH.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Jersey> jersH = new TreeSet<>();
+        		for (Jersey j: Tienda.getJerseys()) {
+        			if (j.getGenero()== Genero.HOMBRE) {
+        				jersH.add(j);
+        			}
+        		}
+        		setJerseys(jersH,pnlArticulos);
+        	}
+        });
+        
+        menuItemPantH.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Pantalon> pantH = new TreeSet<>();
+        		Set<Pantalon>listaPantalones = Tienda.getPantalones();
+        		for (Pantalon p: listaPantalones) {
+        			if (p.getGenero()== Genero.HOMBRE) {
+        				pantH.add(p);
+        			}
+        		}
+        		setPantalones(pantH,pnlArticulos);
+        	}
+        });
+        
+        menuItemCalzH.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Zapato> calzH = new TreeSet<>();
+        		for (Zapato z: Tienda.getZapatos()) {
+        			if (z.getGenero()== Genero.HOMBRE) {
+        				calzH.add(z);
+        			}
+        		}
+        		setZapatos(calzH,pnlArticulos);
+        	}
+        });
+        
+        
+        
+        
         
         
         
@@ -209,16 +276,49 @@ public class VentanaPrincipal extends JFrame {
 	    panel.repaint();
 	}
 	
-	public void setArticulos(Set<Articulo> art, JPanel panel) {
+	public void setCamisetas(Set<Camiseta> art, JPanel panel) {
 		this.pnlArticulos = panel;
 //		panel.setLayout(new GridLayout(0, COLUMNAS));
-		for (Articulo a: art) {
+		for (Camiseta a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
 			panel.add(pnlArticulo);
 //			System.out.println("Añadido");
-		}
-		
+		}	
 	}
+	
+	public void setJerseys(Set<Jersey> art, JPanel panel) {
+		this.pnlArticulos = panel;
+//		panel.setLayout(new GridLayout(0, COLUMNAS));
+		for (Jersey a: art) {
+			JPanel pnlArticulo = crearPanelArticulo(a);
+			panel.add(pnlArticulo);
+//			System.out.println("Añadido");
+		}	
+	}
+	
+	
+	public void setPantalones(Set<Pantalon> art, JPanel panel) {
+		this.pnlArticulos = panel;
+//		panel.setLayout(new GridLayout(0, COLUMNAS));
+		for (Pantalon a: art) {
+			JPanel pnlArticulo = crearPanelArticulo(a);
+			panel.add(pnlArticulo);
+//			System.out.println("Añadido");
+		}	
+	}
+	
+	public void setZapatos(Set<Zapato> art, JPanel panel) {
+		this.pnlArticulos = panel;
+//		panel.setLayout(new GridLayout(0, COLUMNAS));
+		for (Zapato a: art) {
+			JPanel pnlArticulo = crearPanelArticulo(a);
+			panel.add(pnlArticulo);
+//			System.out.println("Añadido");
+		}	
+	}
+	
+	
+	
 	
 	public JPanel crearPanelArticulo(Articulo articulo) {
 		JPanel panelArticulo = new JPanel();

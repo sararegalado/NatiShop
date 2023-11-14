@@ -6,6 +6,13 @@ import java.util.*;
 public class Tienda {
 	//Declaraciones
 	private static Set<Articulo> articulos = new TreeSet<>();
+	private static Set<Camiseta> camisetas = new TreeSet<>();
+	private static Set<Jersey> jerseys = new TreeSet<>();
+	private static Set<Pantalon> pantalones = new TreeSet<>();
+	private static Set<Zapato> zapatos = new TreeSet<>();
+
+
+
 	private static List<Usuario> usuarios = new ArrayList<>();
 	private static HashMap<Usuario, ArrayList<Articulo>> compras = new HashMap<>();
 	
@@ -18,6 +25,46 @@ public class Tienda {
 	
 	public static Set<Articulo> getArticulos() {
 		return articulos;
+	}
+	
+	
+	/**
+	 * Método que guarda todas las camisetas de articulos en un HashSet
+	 */
+	public static Set<Camiseta> getCamisetas(){
+		for (Articulo a: getArticulos()) {
+			if(a instanceof Camiseta) {
+				camisetas.add((Camiseta) a);
+			}
+		}
+		return camisetas;
+	}
+	
+	public static Set<Jersey> getJerseys(){
+		for (Articulo a: getArticulos()) {
+			if(a instanceof Jersey) {
+				jerseys.add((Jersey) a);
+			}
+		}
+		return jerseys;
+	}
+	
+	public static Set<Pantalon> getPantalones(){
+		for (Articulo a: getArticulos()) {
+			if(a instanceof Pantalon) {
+				pantalones.add((Pantalon) a);
+			}
+		}
+		return pantalones;
+	}
+	
+	public static Set<Zapato> getZapatos(){
+		for (Articulo a: getArticulos()) {
+			if(a instanceof Zapato) {
+				zapatos.add((Zapato) a);
+			}
+		}
+		return zapatos;
 	}
 	
 	
@@ -38,6 +85,7 @@ public class Tienda {
 	public static void aniadirUsuario(Usuario u) {
 		usuarios.add(u);
 	}
+	
 	
 
 	/**
@@ -125,6 +173,8 @@ public class Tienda {
 			return null;
 		}
 	}
+	
+	
 	
 	
 }
