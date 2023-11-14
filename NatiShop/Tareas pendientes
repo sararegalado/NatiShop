@@ -8,6 +8,21 @@ ZALOA:
 	- JTable
 	- A la izquierda mostrar compras
 	
+	/**
+		 * Dependiendo si del dominio del correo del usuario se abrira una ventana u otra
+		 * si el dominio del correo del usuario que inicia sesion es @Natyshop será un trabajador el que abrá iniciado sesion 
+		 * y por lo tanto la ventana que se ejecutara no será la principal sino la Ventana Admin conn otras funciones distintas
+		 */
+//		nombreUsuario= textNom.getText();
+//		if(nombreUsuario.indexOf("Natyshop")!= -1) {
+//			new VentanaAdmin();
+//		}else {
+//			new VentanaPrincipal();
+//		}
+		
+		
+	}
+	
 NATALIA
 - Ventana DatosCliente
 	- cargar los datos de la ventan principal
