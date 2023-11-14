@@ -25,10 +25,11 @@ public class Main {
 		Tienda.aniadirArticulos(a4);
 
 		}
-		Usuario newUser = new Usuario("145","Sara","12-10-2034","sara@gmail.com","hbhsa");
-		Tienda.getUsuarios().add(newUser);
+//		Usuario newUser = new Usuario("145","Sara","12-10-2034","sara@gmail.com","hbhsa");
+//		Tienda.getUsuarios().add(newUser);
+		Tienda.cargarUsuarios("usuarios.csv");
 		System.out.println(Tienda.getUsuarios());
-		Tienda.guardarUsuarios("/ficheros/users.csv");
+//		Tienda.guardarUsuarios("usuarios.csv");
 //		VentanaPrincipal vent = new VentanaPrincipal(null);
 		//vent.setVisible(true);
 //		System.out.println(Tienda.getCamisetas());
