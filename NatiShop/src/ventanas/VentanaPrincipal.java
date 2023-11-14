@@ -12,9 +12,14 @@ import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+<<<<<<< HEAD
 import javax.swing.JTextField;
+=======
+import javax.swing.JScrollPane;
+>>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import clases.Articulo;
 import clases.Tienda;
@@ -24,6 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.List;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -41,6 +47,8 @@ public class VentanaPrincipal extends JFrame {
 	static VentanaRegistro reg;
 	
 	private JFrame vActual, vAnterior;
+	
+	private JPanel pnlArticulos;
 	
 	private JPanel contentPane;
 	
@@ -134,10 +142,19 @@ public class VentanaPrincipal extends JFrame {
         lblLogo.setHorizontalAlignment(SwingConstants.LEFT);
         lblLogo.setFont(new Font("Baskerville", Font.PLAIN, 45));
         
+<<<<<<< HEAD
         JPanel pnlArticulos = new JPanel();
         pnlArticulos.setBounds(72, 159, 1153, 576);
         contentPane.add(pnlArticulos);
         pnlArticulos.setLayout(null);
+=======
+        pnlArticulos = new JPanel();
+        pnlArticulos.setBounds(72, 159, 1300, 576);
+        JScrollPane spArticulos = new JScrollPane(pnlArticulos);
+        pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+        spArticulos.setBounds(72,159,1300,576);
+        contentPane.add(spArticulos);
+>>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
         
         JLabel lblUsuario = new JLabel("");
         lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/usuario.png")));
@@ -176,7 +193,9 @@ public class VentanaPrincipal extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
         		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
+
         		setArticulos(Tienda.getArticulos(),pnlArticulos);
         		
         		
@@ -191,6 +210,8 @@ public class VentanaPrincipal extends JFrame {
        setVisible(true);
 	}
 	
+	
+	
 	public void limpiarPanel(JPanel panel) {
 	    panel.removeAll();
 	    panel.revalidate();
@@ -198,27 +219,38 @@ public class VentanaPrincipal extends JFrame {
 	}
 	
 	public void setArticulos(Set<Articulo> art, JPanel panel) {
-		panel.setLayout(new GridLayout(10, COLUMNAS));
+		this.pnlArticulos = panel;
+//		panel.setLayout(new GridLayout(0, COLUMNAS));
 		for (Articulo a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
 			panel.add(pnlArticulo);
-			System.out.println("Añadido");
+//			System.out.println("Añadido");
 		}
+		
 	}
 	
 	public JPanel crearPanelArticulo(Articulo articulo) {
 		JPanel panelArticulo = new JPanel();
+		panelArticulo.setPreferredSize(new Dimension(200,200));
 		panelArticulo.setLayout(new BorderLayout());
 		
 		String rutaImagen = articulo.getFoto();
-		ImageIcon foto = new ImageIcon(rutaImagen);
+		JLabelGrafico foto = new JLabelGrafico (rutaImagen,200,200);
+		System.out.println("Grafico creado");
 		
-		JLabel etiqueta = new JLabel(foto);
+//		ImageIcon foto = new ImageIcon(rutaImagen);
+		
+//		JLabel etiqueta = new JLabel(foto);
 		
 		JLabel titulo = new JLabel(articulo.getNombre());
+		titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
 		
-		panelArticulo.add(etiqueta,BorderLayout.CENTER);
+		panelArticulo.add(foto,BorderLayout.CENTER);
 		panelArticulo.add(titulo, BorderLayout.SOUTH);
+		panelArticulo.setBorder(new LineBorder(Color.BLACK));
+		
+		panelArticulo.setBackground(Color.WHITE);
 		
 		return panelArticulo;
 		
