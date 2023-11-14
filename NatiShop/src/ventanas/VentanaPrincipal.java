@@ -12,11 +12,8 @@ import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-<<<<<<< HEAD
-import javax.swing.JTextField;
-=======
 import javax.swing.JScrollPane;
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -142,19 +139,13 @@ public class VentanaPrincipal extends JFrame {
         lblLogo.setHorizontalAlignment(SwingConstants.LEFT);
         lblLogo.setFont(new Font("Baskerville", Font.PLAIN, 45));
         
-<<<<<<< HEAD
-        JPanel pnlArticulos = new JPanel();
-        pnlArticulos.setBounds(72, 159, 1153, 576);
-        contentPane.add(pnlArticulos);
-        pnlArticulos.setLayout(null);
-=======
+
         pnlArticulos = new JPanel();
         pnlArticulos.setBounds(72, 159, 1300, 576);
         JScrollPane spArticulos = new JScrollPane(pnlArticulos);
         pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
         spArticulos.setBounds(72,159,1300,576);
         contentPane.add(spArticulos);
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
         
         JLabel lblUsuario = new JLabel("");
         lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/usuario.png")));
