@@ -1,5 +1,7 @@
 package ventanas;
 
+import javax.swing.JFrame;
+
 import clases.Articulo;
 import clases.Genero;
 import clases.Talla;
@@ -16,6 +18,7 @@ public class Main {
 		VentanaPrincipal vent = new VentanaPrincipal(null);
 		//vent.setVisible(true);
 		
+
 			
 	}
 
