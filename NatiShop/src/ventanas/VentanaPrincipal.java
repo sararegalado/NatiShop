@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -144,7 +145,7 @@ public class VentanaPrincipal extends JFrame {
         pnlArticulos.setBounds(72, 159, 1300, 576);
         JScrollPane spArticulos = new JScrollPane(pnlArticulos);
         pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
-        spArticulos.setBounds(72,159,1300,576);
+        spArticulos.setBounds(72,159,1153,576);
         contentPane.add(spArticulos);
         
         JLabel lblUsuario = new JLabel("");
