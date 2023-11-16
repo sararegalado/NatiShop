@@ -323,7 +323,7 @@ public class VentanaPrincipal extends JFrame {
 	
 	public JPanel crearPanelArticulo(Articulo articulo) {
 		JPanel panelArticulo = new JPanel();
-		panelArticulo.setPreferredSize(new Dimension(200,200));
+		panelArticulo.setPreferredSize(new Dimension(200,240));
 		panelArticulo.setLayout(new BorderLayout());
 		
 		String rutaImagen = articulo.getFoto();
@@ -342,7 +342,7 @@ public class VentanaPrincipal extends JFrame {
 		panelArticulo.add(titulo, BorderLayout.SOUTH);
 		panelArticulo.setBorder(new LineBorder(Color.BLACK));
 		
-//		panelArticulo.setBackground(Color.WHITE);
+		panelArticulo.setBackground(Color.WHITE);
 		
 		return panelArticulo;
 		
