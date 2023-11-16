@@ -1,5 +1,10 @@
 package ventanas;
 
+import javax.swing.JFrame;
+
+import clases.Articulo;
+import clases.Genero;
+import clases.Talla;
 import clases.Tienda;
 
 public class Main {
@@ -16,6 +21,9 @@ public class Main {
 		System.out.println(Tienda.getCamisetas());
 //		
 		VentanaPrincipal vent = new VentanaPrincipal(null);
+		//vent.setVisible(true);
+		
+
 			
 	}
 
