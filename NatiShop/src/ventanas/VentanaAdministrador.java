@@ -17,11 +17,12 @@ import java.util.List;
 
 
 public class VentanaAdministrador extends JFrame{
-	private JPanel pnlOesteMenu,pnlCentro;
+	private JPanel pnlOesteMenu,pnlCentro,pnlOesteArriba;
 	private JMenuBar menuBarAdmin;
 	private JMenu menuUsuarios,MenuArticulos, MenuEstadisticas;
 	private JMenuItem mItemArticulos,mItemStock;
 	private JLabel lblfoto;
+	private Button btnDesplegar;
 	
 	private JTable tablaUsuarios;
 	private ModeloTablaUsuarios mUsuarios;
@@ -37,6 +38,7 @@ public class VentanaAdministrador extends JFrame{
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(20, 10, 1121, 621);
 		getContentPane().setLayout(new BorderLayout());
+	
 		
 		JPanel pnlOesteMenu= new JPanel();
 		pnlOesteMenu.setLayout(new GridLayout(2,1));
@@ -44,16 +46,36 @@ public class VentanaAdministrador extends JFrame{
 		getContentPane().add(pnlOesteMenu, BorderLayout.WEST);
 		pnlOesteMenu.setBackground(Color.WHITE);
 		
+		JPanel pnlOesteArriba= new JPanel();
+		pnlOesteArriba.setLayout(new FlowLayout(FlowLayout.LEFT));
+		pnlOesteArriba.setBackground(Color.WHITE);
+		this.add(pnlOesteArriba, BorderLayout.NORTH);
+		
+		
+		JButton btnDesplegar = new JButton();
+		btnDesplegar.setBackground(Color.WHITE);
+		btnDesplegar.setPreferredSize(new Dimension(27,27));
+		pnlOesteArriba.add(btnDesplegar);
+		
+		btnDesplegar.setIcon(new ImageIcon(VentanaAdministrador.class.getResource("/imagenes/btnDesplegar.png")));
+		btnDesplegar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pnlOesteMenu.setVisible(!pnlOesteMenu.isVisible());
+			}
+		});
+		
+		
 		
 
 
 		
 		JLabel lblFoto= new JLabel("");
-		pnlOesteMenu.add(lblFoto);
+		pnlOesteMenu.add(lblFoto, BorderLayout.CENTER);
 		lblFoto.setIcon(new ImageIcon(VentanaAdministrador.class.getResource("/imagenes/Admin.png")));
 		lblFoto.setHorizontalAlignment(JLabel.CENTER);
         lblFoto.setVerticalAlignment(JLabel.CENTER);
-		
 		
 		
 		JPanel pnlCentro = new JPanel();
@@ -72,37 +94,11 @@ public class VentanaAdministrador extends JFrame{
 		JMenu menuUsuarios = new JMenu("USUARIOS");
 		menuUsuarios.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 15));
 		menuBarAdmin.add(menuUsuarios);
-		
-		menuUsuarios.addMouseListener(new MouseListener() {
+		menuUsuarios.addActionListener(new ActionListener() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				cargarTablaUsuarios();
-				
-				
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				
-				
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
 				
 			}
 			
