@@ -259,6 +259,150 @@ public class VentanaPrincipal extends JFrame {
         });
         
         
+        //LISTENERS DE LOS ITEMS DE MUJER
+        
+        menuItemCamiM.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Camiseta> camiM = new TreeSet<>();
+        		for (Camiseta c: Tienda.getCamisetas()) {
+        			if (c.getGenero()== Genero.MUJER) {
+        				camiM.add(c);
+        			}
+        		}
+        		setCamisetas(camiM,pnlArticulos);
+        	}
+        });
+        
+        menuItemJersM.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Jersey> jersM = new TreeSet<>();
+        		for (Jersey j: Tienda.getJerseys()) {
+        			if (j.getGenero()== Genero.MUJER) {
+        				jersM.add(j);
+        			}
+        		}
+        		setJerseys(jersM,pnlArticulos);
+        	}
+        });
+        
+        menuItemPantM.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Pantalon> pantM = new TreeSet<>();
+        		Set<Pantalon>listaPantalones = Tienda.getPantalones();
+        		for (Pantalon p: listaPantalones) {
+        			if (p.getGenero()== Genero.MUJER) {
+        				pantM.add(p);
+        			}
+        		}
+        		setPantalones(pantM,pnlArticulos);
+        	}
+        });
+        
+        menuItemCalzM.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Zapato> calzM = new TreeSet<>();
+        		for (Zapato z: Tienda.getZapatos()) {
+        			if (z.getGenero()== Genero.MUJER) {
+        				calzM.add(z);
+        			}
+        		}
+        		setZapatos(calzM,pnlArticulos);
+        	}
+        });
+        
+        
+        //LISTENERS DE LOS ITEMS DE NIÑOS
+        
+        menuItemCamiN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Camiseta> camiN = new TreeSet<>();
+        		for (Camiseta c: Tienda.getCamisetas()) {
+        			if (c.getGenero()== Genero.NINOS) {
+        				camiN.add(c);
+        			}
+        		}
+        		setCamisetas(camiN,pnlArticulos);
+        	}
+        });
+        
+        menuItemJersN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Jersey> jersN = new TreeSet<>();
+        		for (Jersey j: Tienda.getJerseys()) {
+        			if (j.getGenero()== Genero.NINOS) {
+        				jersN.add(j);
+        			}
+        		}
+        		setJerseys(jersN,pnlArticulos);
+        	}
+        });
+        
+        menuItemPantN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Pantalon> pantN = new TreeSet<>();
+        		Set<Pantalon>listaPantalones = Tienda.getPantalones();
+        		for (Pantalon p: listaPantalones) {
+        			if (p.getGenero()== Genero.NINOS) {
+        				pantN.add(p);
+        			}
+        		}
+        		setPantalones(pantN,pnlArticulos);
+        	}
+        });
+        
+        menuItemCalzN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Zapato> calzN = new TreeSet<>();
+        		for (Zapato z: Tienda.getZapatos()) {
+        			if (z.getGenero()== Genero.NINOS) {
+        				calzN.add(z);
+        			}
+        		}
+        		setZapatos(calzN,pnlArticulos);
+        	}
+        });
+        
+        
         
         
         
@@ -336,6 +480,8 @@ public class VentanaPrincipal extends JFrame {
 		
 		JLabel titulo = new JLabel(articulo.getNombre());
 		titulo.setHorizontalAlignment(SwingConstants.CENTER);
+        titulo.setFont(new Font("Baskerville", Font.PLAIN, 17));
+
 
 		
 		panelArticulo.add(foto,BorderLayout.CENTER);
