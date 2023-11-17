@@ -9,8 +9,9 @@ import javax.swing.table.*;
 import clases.Usuario;
 
 public class ModeloTablaUsuarios extends DefaultTableModel {
+	private List<Usuario>usuarios;
 	
-	private static List<Usuario> usuarios = new ArrayList<>();
+	
 	
 	private final List<String> titulos= Arrays.asList("DNI","NOMBRE","FECHA DE NACIMIENTO","CORREO");
 	
