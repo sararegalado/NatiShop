@@ -149,10 +149,10 @@ public class VentanaPrincipal extends JFrame {
         
 
         pnlArticulos = new JPanel();
-        pnlArticulos.setBounds(72, 159, 1300, 400);
+        pnlArticulos.setBounds(72, 159, 1300, 490);
         JScrollPane spArticulos = new JScrollPane(pnlArticulos);
         pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
-        spArticulos.setBounds(72,159,1153,400);
+        spArticulos.setBounds(72,159,1153,490);
         contentPane.add(spArticulos);
         
         JLabel lblUsuario = new JLabel("");
