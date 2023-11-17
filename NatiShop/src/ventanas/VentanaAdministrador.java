@@ -131,6 +131,10 @@ public class VentanaAdministrador extends JFrame{
 		MenuEstadisticas.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 15));
 		menuBarAdmin.add(MenuEstadisticas);
 		
+		JMenuItem mItemGraficos = new JMenuItem("Graficos");
+		mItemGraficos.setFont(new Font("Calibri", Font.BOLD, 15));
+		MenuEstadisticas.add(mItemGraficos);
+		
 		mUsuarios = new ModeloTablaUsuarios(new ArrayList<>());
 		tablaUsuarios = new JTable(mUsuarios);
 		sTablaUsuarios = new JScrollPane(tablaUsuarios);
