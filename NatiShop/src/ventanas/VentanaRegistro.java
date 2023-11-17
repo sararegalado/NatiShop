@@ -147,6 +147,8 @@ public class VentanaRegistro extends JFrame {
 		contentPane.add(lblAtras);
 		
 		
+		
+		
 		//Cargamos los usuarios desde la clase tienda
 		//Tienda.cargarUsuarios(nomfichUsuarios);
 		
@@ -182,6 +184,8 @@ public class VentanaRegistro extends JFrame {
 			}
 		});
 		
+		
+		
 		lblAtras.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -192,7 +196,7 @@ public class VentanaRegistro extends JFrame {
         	}
         });
 		
-
+		
 		
 		setLocationRelativeTo(null);
 		setVisible(true);

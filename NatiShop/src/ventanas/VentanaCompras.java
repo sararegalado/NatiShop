@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -13,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -23,7 +25,6 @@ import clases.Usuario;
 public class VentanaCompras extends JFrame{
 	private JPanel pCentro,pSur;
 	private JButton btnVolver;
-	//private JFrame vActual,vAnterior;
 	private DefaultTableModel modeloTablaCompras; //Guardar las compras en una tabla 
 	private JTable tablaCompras; 
 	private JScrollPane scrollTablaCompras;
@@ -34,8 +35,6 @@ public class VentanaCompras extends JFrame{
 		super();
 		
 		filaRaton = -1;
-		//vActual = this;
-		//vAnterior = va;
 		setBounds(300, 200, 600, 400);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		
@@ -43,9 +42,6 @@ public class VentanaCompras extends JFrame{
 		pSur = new JPanel();
 		getContentPane().add(pCentro, BorderLayout.CENTER);
 		getContentPane().add(pSur, BorderLayout.SOUTH);
-	
-		btnVolver = new JButton("VOLVER");
-		pSur.add(btnVolver);
 		
 		String [] titulos = {"ARTICULO", "ID","PRECIO", "CANTIDAD"};
 		modeloTablaCompras = new DefaultTableModel();
@@ -111,10 +107,23 @@ public class VentanaCompras extends JFrame{
 				
 			}
 		});
+		JButton btnCerrar = new JButton("Cerrar");
+	    	btnCerrar.addActionListener(e -> cerrarVentana());
+	    	pSur.add(btnCerrar, BorderLayout.SOUTH);
+
+	        add(pSur);
+
+		}
 		
 		
 		setVisible(true);
 	}
+
+	private void cerrarVentana() {
+	    VentanaTienda.setVisible(true);
+	    dispose();
+	}
+	
 
 	
 	private void cargarTabla() {
@@ -125,4 +134,17 @@ public class VentanaCompras extends JFrame{
 			}
 		}
 	}
+	
+	public static void main(String[] args) {
+        // For testing purposes
+        SwingUtilities.invokeLater(() -> {
+        	JFrame mainFrame = new JFrame();
+            mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            mainFrame.setSize(800, 600);
+            mainFrame.setVisible(true);
+
+            // Open the shopping cart window
+            new VentanaCompras(mainFrame);
+        });
+    }
 }

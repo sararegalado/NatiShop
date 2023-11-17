@@ -5,29 +5,24 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-
-import clases.Usuario;
 
 public class VentanaDatosCliente extends JFrame{
+	private static final long serialVersionUID = 1L;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
 	private JTextField textField_5;
-	private static Usuario usuario;
-	
-	private VentanaDatosCliente(Usuario usuario2) {
+
+	private VentanaDatosCliente(JFrame va) {
 		super();
-		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(300, 200, 600, 400);
@@ -36,9 +31,7 @@ public class VentanaDatosCliente extends JFrame{
 		getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(new GridLayout(16, 2, 0, 0));
 		
-		
-		VentanaRegistro ventanaRegistro = null;
-		JLabel lblNewLabel = new JLabel("NOMBRE: " + usuario.getNombre());	//NOMBRE no es editable se carga por defecto
+		JLabel lblNewLabel = new JLabel("NOMBRE: " + ventanaRegistro.tfNombre.getText());	//NOMBRE no es editable se carga por defecto
 		panel.add(lblNewLabel);
 		
 		/*textField = new JTextField(usuario.getNombre());
@@ -92,8 +85,7 @@ public class VentanaDatosCliente extends JFrame{
 		
 		JButton btnGuardar = new JButton("Guardar");
 		panel_1.add(btnGuardar);
-	
-			
+		
 		//BOTONES
 		btnEliminarCuenta.addActionListener(new ActionListener() {
         	@Override
@@ -105,7 +97,7 @@ public class VentanaDatosCliente extends JFrame{
 				}
         	}
         });
-		
+				
 		btnCerrarSesion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -116,7 +108,7 @@ public class VentanaDatosCliente extends JFrame{
             }
         });
 		
-		
+
 		btnGuardar.addActionListener(new ActionListener() {
 
 			@Override
@@ -124,55 +116,12 @@ public class VentanaDatosCliente extends JFrame{
 				 guardarDatos();
 			}
 		});
-		 
-	        
-		
-		cargarDatosUsuario(usuario);
-		
-		setVisible(true);
+
+
 	}
 
-	private void cargarDatosUsuario(Usuario usuario2) {
-		if (usuario != null) {
-			//lblNewLabel.setText(usuario.getNombre());
-			textField_3.setText(usuario.getContrasenia());
-			textField_4.setText(usuario.getCorreo());
-		} else {
-			JOptionPane.showMessageDialog(null, "El usuario no ha introducido nigun dato");               
-		}
-	};
-	
-	private void guardarDatos() {
-        //usuario.setContrasenia(textField_3.getText());
-        //usuario.setCorreo(textField_4.getText());
-        String direccion = textField_1.getText();
-        String telefono = textField_2.getText();
-        String contrasenia = textField_3.getText();
-        String email = textField_4.getText();
-        String wallet = textField_5.getText();               
-        System.out.println("Datos guardados: " + direccion + telefono + contrasenia + email + wallet);
-        //System.out.println("Datos guardados: " + usuario.getContrasenia() + usuario.getCorreo());
-    };			
-
-	
-	public static void main1(String[] args) {
-		 Usuario usuario = new Usuario();
-	        SwingUtilities.invokeLater(new Runnable() {
-	            public void run() {
-	                new VentanaDatosCliente(usuario);
-	            }
-	        });
-	    }
-	
-	public static void main(String[] args) {
-		VentanaDatosCliente VentanaDatosCliente = new VentanaDatosCliente(usuario);
+	protected void guardarDatos() {
+		// TODO Auto-generated method stub
 		
-	}
+	}	
 }
-
-
-
-
-
-
-

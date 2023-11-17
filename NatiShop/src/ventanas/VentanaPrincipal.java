@@ -28,13 +28,13 @@ public class VentanaPrincipal extends JFrame {
 	static VentanaInicioSesion ventanaInicio;
 	static VentanaRegistro reg;
 	
-	private JFrame vActual, vAnterior;
-	
 	private JPanel contentPane;
+	private JFrame vAcutaul, vAnterior;
 	
-	public VentanaPrincipal(JFrame va) {
-		vActual = this;
+	public VentanaPrincipal(JFrame ventanaPrincipal) {
+		vAcutaul = this;
 		vAnterior = va;
+		setTitle("Carrito de Compras");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1042, 693);
 		contentPane = new JPanel();
@@ -42,6 +42,12 @@ public class VentanaPrincipal extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		//NATALIA
+        JButton btnPerfil = new JButton("Perfil");
+        btnPerfil.setFont(new Font("Baskerville", Font.PLAIN, 14));
+        btnPerfil.setBounds(150, 24, 120, 30);
+        contentPane.add(btnPerfil);       
         
         JPanel pnlMenuBar = new JPanel();
         pnlMenuBar.setBounds(72, 97, 1300, 43);
@@ -136,6 +142,7 @@ public class VentanaPrincipal extends JFrame {
         
         contentPane.add(lblUsuario);
         
+        
         lblUsuario.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -146,8 +153,9 @@ public class VentanaPrincipal extends JFrame {
         	}
         });
         
-        
-        
+       
+     
        setVisible(true);
 	}
+	
 }
