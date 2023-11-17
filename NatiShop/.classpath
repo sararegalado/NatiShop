@@ -6,5 +6,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/VLCJ/vlcj-4.7.1/vlcj-4.7.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
