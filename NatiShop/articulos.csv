@@ -1,5 +1,25 @@
-11111;Camiseta rayas;4;19.78;HOMBRE;S;/imagenes/camiseta1H.png;CAMISETA
-11112;Camiseta rayas;10;25.99;HOMBRE;M;/imagenes/camiseta2H.png;CAMISETA
-11113;Camiseta texto;20;22.99;HOMBRE;L;/imagenes/camiseta3H.png;CAMISETA
-11114;Camiseta punto;15;28.99;HOMBRE;XS;/imagenes/camiseta4H.png;CAMISETA
-11115;Camiseta estampado;10;32.7;HOMBRE;L;/imagenes/camiseta5H.png;CAMISETA
+11111;Camiseta rayas;4;19.78;HOMBRE;S;/imagenes/camisetasHombre/camiseta1H.png;CAMISETA
+11112;Camiseta rayas;10;25.99;HOMBRE;M;/imagenes/camisetasHombre/camiseta2H.png;CAMISETA
+11113;Camiseta texto;20;22.99;HOMBRE;L;/imagenes/camisetasHombre/camiseta3H.png;CAMISETA
+11114;Camiseta punto;15;28.99;HOMBRE;XS;/imagenes/camisetasHombre/camiseta4H.png;CAMISETA
+11115;Camiseta estampado;10;32.7;HOMBRE;L;/imagenes/camisetasHombre/camiseta5H.png;CAMISETA
+11116;Camiseta rayas manga larga;10;21.99;HOMBRE;S;/imagenes/camisetasHombre/camiseta6H.png;CAMISETA
+11117;Camiseta tirantes;10;10.99;HOMBRE;M;/imagenes/camisetasHombre/camiseta7H.png;CAMISETA
+11118;Camiseta gr‡fica;5;24.99;HOMBRE;S;/imagenes/camisetasHombre/camiseta8H.png;CAMISETA
+11119;Camiseta manga larga;8;19.99;HOMBRE;M;/imagenes/camisetasHombre/camiseta9H.png;CAMISETA
+11110;Camiseta basica;10;10.00;HOMBRE;M;/imagenes/camisetasHombre/camiseta10H.png;CAMISETA
+11121;Camiseta rayas;10;15.00;HOMBRE;M;/imagenes/camisetasHombre/camiseta11H.png;CAMISETA
+11122;Camiseta basica gris;15;8.99;HOMBRE;S;/imagenes/camisetasHombre/camiseta12H.png;CAMISETA
+11123;Camiseta dibujo;10;15.99;HOMBRE;M;/imagenes/camisetasHombre/camiseta13H.png;CAMISETA
+11124;Camiseta logo;10;12.99;HOMBRE;M;/imagenes/camisetasHombre/camiseta14H.png;CAMISETA
+11125;Camiseta basica;10;9.99;HOMBRE;M;/imagenes/camisetasHombre/camiseta15H.png;CAMISETA
+11126;Camiseta doble;10;12.99;HOMBRE;M;/imagenes/camisetasHombre/camiseta16H.png;CAMISETA
+11127;Camiseta bordado;10;12.99;HOMBRE;M;/imagenes/camisetasHombre/camiseta17H.png;CAMISETA
+11128;Camiseta rayas;10;12.99;HOMBRE;M;/imagenes/camisetasHombre/camiseta18H.png;CAMISETA
+11129;Camiseta texto;10;12.99;HOMBRE;M;/imagenes/camisetasHombre/camiseta19H.png;CAMISETA
+11120;Camiseta grafica;10;15.00;HOMBRE;M;/imagenes/camisetasHombre/camiseta20H.png;CAMISETA
+11131;Camiseta rayas;10;12.99;HOMBRE;M;/imagenes/camisetasHombre/camiseta21H.png;CAMISETA
+11132;Camiseta lisa;10;12.99;HOMBRE;M;/imagenes/camisetasHombre/camiseta22H.png;CAMISETA
+11133;Camiseta rayas;10;12.99;HOMBRE;M;/imagenes/camisetasHombre/camiseta23H.png;CAMISETA
+11134;Camiseta dibujo;10;12.99;HOMBRE;M;/imagenes/camisetasHombre/camiseta24H.png;CAMISETA
+11135;Camiseta dibujo;10;12.99;HOMBRE;M;/imagenes/camisetasHombre/camiseta24H.png;JERSEY

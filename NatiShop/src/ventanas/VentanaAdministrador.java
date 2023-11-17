@@ -36,24 +36,28 @@ public class VentanaAdministrador extends JFrame{
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(20, 10, 1121, 621);
-		setLayout(new BorderLayout());
-		
-		
-		
-		
+		getContentPane().setLayout(new BorderLayout());
 		
 		JPanel pnlOesteMenu= new JPanel();
-		this.add(pnlOesteMenu, BorderLayout.WEST);
 		pnlOesteMenu.setLayout(new GridLayout(2,1));
-		pnlOesteMenu.setSize(80,90);
+		pnlOesteMenu.setPreferredSize(new Dimension(225,500));
+		getContentPane().add(pnlOesteMenu, BorderLayout.WEST);
+		pnlOesteMenu.setBackground(Color.WHITE);
 		
+		
+
+
 		
 		JLabel lblFoto= new JLabel("");
 		pnlOesteMenu.add(lblFoto);
 		lblFoto.setIcon(new ImageIcon(VentanaAdministrador.class.getResource("/imagenes/Admin.png")));
+		lblFoto.setHorizontalAlignment(JLabel.CENTER);
+        lblFoto.setVerticalAlignment(JLabel.CENTER);
+		
+		
 		
 		JPanel pnlCentro = new JPanel();
-		this.add(pnlCentro, BorderLayout.CENTER);
+		getContentPane().add(pnlCentro, BorderLayout.CENTER);
 		pnlCentro.setLayout(new GridLayout(1,1));
 		
 		tablaUsuarios = new JTable(new ModeloTablaUsuarios(null));
@@ -114,6 +118,7 @@ public class VentanaAdministrador extends JFrame{
 		mItemArticulos.setFont(new Font("Calibri", Font.BOLD, 15));
 		MenuArticulos.add(mItemArticulos);
 		
+		
 		JMenuItem mItemStock = new JMenuItem("GESTION DE STOCK");
 		mItemStock.setFont(new Font("Calibri", Font.BOLD, 15));
 		MenuArticulos.add(mItemStock);
@@ -148,7 +153,6 @@ public class VentanaAdministrador extends JFrame{
 	
 	
 	/*ERRORES
-	 * TAMAÑO DEL PANEL DEL MENU  
 	 * ACTIONLISTENER DEL MENU ITEM
 	 * CARGAR LA TABLA 
 	 * SCROLL DE LA TABLA
