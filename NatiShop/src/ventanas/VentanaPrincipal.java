@@ -27,6 +27,7 @@ import clases.Genero;
 import clases.Jersey;
 import clases.Pantalon;
 import clases.Tienda;
+import clases.Usuario;
 import clases.Zapato;
 
 import javax.swing.JMenuBar;
@@ -59,6 +60,7 @@ public class VentanaPrincipal extends JFrame {
 	
 	private static int COLUMNAS = 4;
 	private JTextField tfBuscador;
+    private static JLabel lblNomU;
 
 	public VentanaPrincipal(JFrame va) {
 		vActual = this;
@@ -158,7 +160,7 @@ public class VentanaPrincipal extends JFrame {
         JLabel lblUsuario = new JLabel("");
         lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/usuario.png")));
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-        lblUsuario.setBounds(1173, 34, 52, 52);
+        lblUsuario.setBounds(1152, 11, 52, 52);
         
         int anchoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
         int altoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
@@ -173,13 +175,28 @@ public class VentanaPrincipal extends JFrame {
         contentPane.add(tfBuscador);
         tfBuscador.setColumns(10);
         
+        lblNomU = new JLabel("Iniciar Sesión");
+        lblNomU.setHorizontalAlignment(SwingConstants.CENTER);
+        lblNomU.setVerticalAlignment(SwingConstants.TOP);
+        lblNomU.setBounds(1138, 67, 87, 19);
+        contentPane.add(lblNomU);
+        
         
         
         lblUsuario.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		new VentanaInicioSesion(vActual);
-				//vActual.setVisible(false);
+        		if (! existeUsuario()) { //si no existe usuario
+        			new VentanaInicioSesion(vActual);
+        		}
+//        		else {
+//        			for (Usuario u : Tienda.getUsuarios()) { //los nombres son unicos, no hay 2 personas con el mismo nombre
+//        				if(u.getNombre() == lblNomU.getText()) {
+//        					JFrame n = new JFrame();
+//        				}
+//        			}
+//        		}
+        		
 
         		
         	}
@@ -413,6 +430,18 @@ public class VentanaPrincipal extends JFrame {
        setVisible(true);
 	}
 	
+	public static void asignarNombreUsuario(Usuario u) {
+		lblNomU.setText(u.getNombre());
+	};
+	
+	
+	public boolean existeUsuario() {
+		boolean existe = false;
+		if (lblNomU.getText() != "Iniciar Sesión") {
+			existe = true;	
+		}
+		return existe;
+	}
 	
 	
 	public void limpiarPanel(JPanel panel) {
@@ -491,9 +520,7 @@ public class VentanaPrincipal extends JFrame {
 		panelArticulo.setBackground(Color.WHITE);
 		
 		return panelArticulo;
-		
-		
-		
+	
 		
 	}
 }

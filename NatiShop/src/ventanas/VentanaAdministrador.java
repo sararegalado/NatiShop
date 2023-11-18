@@ -8,24 +8,28 @@ import java.awt.event.MouseListener;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import clases.Tienda;
 import clases.Usuario;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 
 public class VentanaAdministrador extends JFrame{
-	private JPanel pnlOesteMenu,pnlCentro;
+	private JPanel pnlOesteMenu,pnlCentro,pnlOesteArriba;
 	private JMenuBar menuBarAdmin;
 	private JMenu menuUsuarios,MenuArticulos, MenuEstadisticas;
-	private JMenuItem mItemArticulos,mItemStock;
+	private JMenuItem mItemRegistros,mItemArticulos,mItemStock,mItemGraficos;
 	private JLabel lblfoto;
+	private Button btnDesplegar;
 	
 	private JTable tablaUsuarios;
 	private ModeloTablaUsuarios mUsuarios;
-	private ScrollPane sTablaUsuarios;
+	private JScrollPane sTablaUsuarios;
 	
 	
 	
@@ -37,6 +41,7 @@ public class VentanaAdministrador extends JFrame{
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(20, 10, 1121, 621);
 		getContentPane().setLayout(new BorderLayout());
+	
 		
 		JPanel pnlOesteMenu= new JPanel();
 		pnlOesteMenu.setLayout(new GridLayout(2,1));
@@ -44,16 +49,36 @@ public class VentanaAdministrador extends JFrame{
 		getContentPane().add(pnlOesteMenu, BorderLayout.WEST);
 		pnlOesteMenu.setBackground(Color.WHITE);
 		
+		JPanel pnlOesteArriba= new JPanel();
+		pnlOesteArriba.setLayout(new FlowLayout(FlowLayout.LEFT));
+		pnlOesteArriba.setBackground(Color.WHITE);
+		this.add(pnlOesteArriba, BorderLayout.NORTH);
+		
+		
+		JButton btnDesplegar = new JButton();
+		btnDesplegar.setBackground(Color.WHITE);
+		btnDesplegar.setPreferredSize(new Dimension(27,27));
+		pnlOesteArriba.add(btnDesplegar);
+		
+		btnDesplegar.setIcon(new ImageIcon(VentanaAdministrador.class.getResource("/imagenes/btnDesplegar.png")));
+		btnDesplegar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pnlOesteMenu.setVisible(!pnlOesteMenu.isVisible());
+			}
+		});
+		
+		
 		
 
 
 		
 		JLabel lblFoto= new JLabel("");
-		pnlOesteMenu.add(lblFoto);
+		pnlOesteMenu.add(lblFoto, BorderLayout.CENTER);
 		lblFoto.setIcon(new ImageIcon(VentanaAdministrador.class.getResource("/imagenes/Admin.png")));
 		lblFoto.setHorizontalAlignment(JLabel.CENTER);
         lblFoto.setVerticalAlignment(JLabel.CENTER);
-		
 		
 		
 		JPanel pnlCentro = new JPanel();
@@ -73,46 +98,24 @@ public class VentanaAdministrador extends JFrame{
 		menuUsuarios.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 15));
 		menuBarAdmin.add(menuUsuarios);
 		
-		menuUsuarios.addMouseListener(new MouseListener() {
+		JMenuItem mItemRegistros = new JMenuItem("USUARIOS REGISTRADOS");
+		mItemRegistros.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 15));
+		menuUsuarios.add(mItemRegistros);
+		mItemRegistros.addActionListener(new ActionListener() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				cargarTablaUsuarios();
-				
-				
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				
-				
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
+				System.out.println("PULSANDO");
 				
 			}
 			
 		});
 		
-	
-		
 		JMenu MenuArticulos = new JMenu("ARTICULOS");
 		MenuArticulos.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 15));
 		menuBarAdmin.add(MenuArticulos);
+		
 		
 		JMenuItem mItemArticulos = new JMenuItem("ARTICULOS DISPONIBLES");
 		mItemArticulos.setFont(new Font("Calibri", Font.BOLD, 15));
@@ -128,11 +131,15 @@ public class VentanaAdministrador extends JFrame{
 		MenuEstadisticas.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 15));
 		menuBarAdmin.add(MenuEstadisticas);
 		
-		tablaUsuarios= new JTable(mUsuarios);
+		JMenuItem mItemGraficos = new JMenuItem("Graficos");
+		mItemGraficos.setFont(new Font("Calibri", Font.BOLD, 15));
+		MenuEstadisticas.add(mItemGraficos);
+		
+		mUsuarios = new ModeloTablaUsuarios(new ArrayList<>());
+		tablaUsuarios = new JTable(mUsuarios);
+		sTablaUsuarios = new JScrollPane(tablaUsuarios);
 		pnlCentro.add(tablaUsuarios);
-		
-		//sTablaUsuarios = new ScrollPane(tablaUsuarios);
-		
+
 		
 		
 		
@@ -143,21 +150,22 @@ public class VentanaAdministrador extends JFrame{
 	}
 	
 	public void cargarTablaUsuarios() {
-		List<Usuario>lista= Tienda.getUsuarios();
-		
-		
-		mUsuarios = new ModeloTablaUsuarios(lista);
-		tablaUsuarios.setModel(mUsuarios);
-
+		List<Usuario>lista = Tienda.getUsuarios();
+		for(Usuario u: lista) {
+			Object [] fila = {u.getDni(), u.getNombre(), u.getCorreo(), u.getfNacStr()};
+			mUsuarios.addRow(fila);
+		}
 	}
 	
 	
 	/*ERRORES
-	 * ACTIONLISTENER DEL MENU ITEM
+	 
 	 * CARGAR LA TABLA 
 	 * SCROLL DE LA TABLA
-	 * REDUCIR EL LISTENER DEL MENU ITEM DE USUARIOS
-	 * */
+	
+	 * 
+	 * 
+	  */
 	
 
 	

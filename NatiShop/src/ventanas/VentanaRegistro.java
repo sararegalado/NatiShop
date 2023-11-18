@@ -164,7 +164,13 @@ public class VentanaRegistro extends JFrame {
 				Usuario u = new Usuario(dni, nom, fNac, correo, con1);
 				if (con1.equals(con2)) {
 					if(Tienda.buscarUsuario(dni)!=null) {
-						JOptionPane.showMessageDialog(null, "Ya existe un cliente con ese dni","ERROR",JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Ya existe un cliente con este dni","ERROR",JOptionPane.ERROR_MESSAGE);
+						tfDNI.setText("");
+						tfNombre.setText("");
+						tfFechaNac.setText("");
+						tfEmail.setText("");
+						tfContrasena1.setText("");
+						tfContrasena2.setText("");
 					}else {
 						Tienda.aniadirUsuario(u);
 						Tienda.guardarUsuarios(nomfichUsuarios);
