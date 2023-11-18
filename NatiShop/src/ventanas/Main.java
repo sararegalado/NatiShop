@@ -20,11 +20,10 @@ public class Main {
 //		System.out.println(Tienda.getUsuarios());
 		System.out.println(Tienda.getCamisetas());
 //		
+
 		VentanaPrincipal vent = new VentanaPrincipal(null);
 		//vent.setVisible(true);
 		
-
-			
 	}
 
 	

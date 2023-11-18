@@ -51,9 +51,10 @@ public class VentanaInicioSesion extends JFrame {
 	
 	private JFrame vActual,vAnterior;
 	
-	//Para guardar el usuario que Inicia Sesion y asignarel un carrito vacio que se ira llenando
+	//Para guardar el usuario que Inicia Sesion y asignar el un carrito vacio que se ira llenando
 	private static Usuario usuario;
 	private static List<Articulo> carrito;
+	
 	
 	public VentanaInicioSesion(JFrame va) {
 		vActual = this;
@@ -114,7 +115,7 @@ public class VentanaInicioSesion extends JFrame {
 		contentPane.add(btnAccederRegistro);
 		
 		//Cargamos los usuarios desde la clase tienda
-		//Tienda.cargarUsuarios(nomfichUsuarios);
+		Tienda.cargarUsuarios(nomfichUsuarios);
 		
 		btnAccederRegistro.addActionListener(new ActionListener() {
 			
@@ -146,23 +147,24 @@ public class VentanaInicioSesion extends JFrame {
 			Usuario u = Tienda.buscarUsuario(dni);
 			if(u == null) {
 				JOptionPane.showMessageDialog(null, "Para poder iniciar sesión tienes que estar registrado","ERROR",JOptionPane.ERROR_MESSAGE);
+				tfNombre.setText("");
+				tfContrasena.setText("");
 			}else {
 				if(u.getContrasenia().equals(con)) {
 					JOptionPane.showMessageDialog(null, "Bienvenido!","SESIÓN INICIADA",JOptionPane.INFORMATION_MESSAGE);
 					usuario = u; //Guardamos la información del cliente que ha iniciado sesión
-					carrito = new ArrayList<>(); //Inicializamos su carrito a una lista vacía 
-					new VentanaPrincipal(vActual);
-					tfNombre.setText("");
-					tfContrasena.setText("");
+					carrito = new ArrayList<>(); //Inicializamos su carrito a una lista vacía
+					VentanaPrincipal.asignarNombreUsuario(u);
 					vActual.setVisible(false);
 
 				}else {
 					JOptionPane.showMessageDialog(null, "Contraseña incorrecta","ERROR",JOptionPane.WARNING_MESSAGE);
+					tfContrasena.setText("");
 				}
 			}
 		});
 		
-		
+		//setAlwaysOnTop(rootPaneCheckingEnabled);
 		setLocationRelativeTo(null);
 		setVisible(true);
 
