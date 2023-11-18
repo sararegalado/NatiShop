@@ -286,9 +286,9 @@ public class VentanaPrincipal extends JFrame {
        setVisible(true);
 	}
 	
-	public static void asignarNombreUsuario(Usuario u) {
-		lblNomU.setText(u.getNombre());
-	};
+//	public static void asignarNombreUsuario(Usuario u) {
+//		lblNomU.setText(u.getNombre());
+//	};
 	
 	
 	public boolean existeUsuario() {

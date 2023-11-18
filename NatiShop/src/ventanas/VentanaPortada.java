@@ -82,6 +82,7 @@ public class VentanaPortada extends JFrame {
         getContentPane().add(panelNorte);
 
         JLabel lbLogo = new JLabel("");
+        lbLogo.setForeground(new Color(0, 0, 0));
         lbLogo.setAutoscrolls(true);
         lbLogo.setBounds(28, 57, 105, 92);
         lbLogo.setSize(100,100);
@@ -193,4 +194,3 @@ public class VentanaPortada extends JFrame {
         miVentana.lanza(videoPath);
     }
 }
-
