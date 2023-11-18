@@ -41,13 +41,13 @@ public class VentanaRegistro extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField tfNombre;
-	private JTextField tfDNI;
-	private JTextField tfEmail;
+	private static JTextField tfNombre;
+	private static JTextField tfDNI;
+	private static JTextField tfEmail;
 
 	private JTextField tfFechaNac;
-	private JPasswordField tfContrasena1;
-	private JPasswordField tfContrasena2;
+	private static JPasswordField tfContrasena1;
+	private static JPasswordField tfContrasena2;
 	
 	private static final String nomfichUsuarios = "Usuarios.csv";
 	
@@ -164,6 +164,9 @@ public class VentanaRegistro extends JFrame {
 				String con2 = tfContrasena2.getText();
 				
 				Usuario u = new Usuario(dni, nom, fNac, correo, con1);
+				//yo
+				new VentanaDatosCliente(vActual, nom, con1, correo, con2, con2, con2);
+
 				if (con1.equals(con2)) {
 					if(Tienda.buscarUsuario(dni)!=null) {
 						JOptionPane.showMessageDialog(null, "Ya existe un cliente con ese dni","ERROR",JOptionPane.ERROR_MESSAGE);
@@ -183,6 +186,8 @@ public class VentanaRegistro extends JFrame {
 				
 			}
 		});
+		
+		
 		
 		
 		

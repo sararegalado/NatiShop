@@ -6,13 +6,13 @@ public class Camiseta extends Articulo {
 		super();
 	}
 
-	public Camiseta(String id,String nombre, int unidades, double precio, Talla talla, String foto) {
-		super(id, nombre, unidades, precio, talla, foto);
+	public Camiseta(String id,String nombre, int unidades, double precio,Genero genero, Talla talla, String foto, Categoria categoria) {
+		super(id, nombre, unidades, precio, genero, talla, foto, categoria);
 	}
 
 	@Override
 	public String toString() {
 		return "Camiseta [id=" + id + ", nombre=" + nombre + ", unidades=" + unidades + ", precio=" + precio
-				+ ", talla=" + talla + ", foto=" + foto + "]";
+				+ ", genero=" + genero + ", talla=" + talla + ", foto=" + foto + ", categoria=" + categoria + "]";
 	}
 }
