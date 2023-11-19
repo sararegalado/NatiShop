@@ -31,10 +31,6 @@ public class VentanaAdministrador extends JFrame{
 	private ModeloTablaUsuarios mUsuarios;
 	private JScrollPane sTablaUsuarios;
 	
-	
-	
-	
-	
 	public VentanaAdministrador() {
 		
 		setResizable(false);

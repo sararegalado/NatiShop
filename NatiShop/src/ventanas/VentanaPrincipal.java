@@ -34,6 +34,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.List;
@@ -51,27 +53,31 @@ public class VentanaPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
 	static VentanaInicioSesion ventanaInicio;
 	static VentanaRegistro reg;
-	
+
 	private JFrame vActual, vAnterior;
 	
 	private JPanel pnlArticulos;
 	
 	private JPanel contentPane;
-	
-	private static int COLUMNAS = 4;
 	private JTextField tfBuscador;
+	
+	private boolean usuarioHaIniciadoSesion = false;
+	
+	
     private static JLabel lblNomU;
+
 
 	public VentanaPrincipal(JFrame va) {
 		vActual = this;
 		vAnterior = va;
+		setTitle("Carrito de Compras");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1042, 693);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(null);     
         
         JPanel pnlMenuBar = new JPanel();
         pnlMenuBar.setBounds(72, 97, 1300, 43);
@@ -174,6 +180,18 @@ public class VentanaPrincipal extends JFrame {
         tfBuscador.setBounds(845, 48, 220, 26);
         contentPane.add(tfBuscador);
         tfBuscador.setColumns(10);
+
+      /*  lblUsuario.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (usuarioHaIniciadoSesion) {
+                	new VentanaDatosCliente(vActual);
+                } else {
+                    new VentanaInicioSesion(vActual);
+                    // vActual.setVisible(false);
+                }
+            }
+        });*/
         
         lblNomU = new JLabel("Iniciar Sesión");
         lblNomU.setHorizontalAlignment(SwingConstants.CENTER);
@@ -184,11 +202,24 @@ public class VentanaPrincipal extends JFrame {
         
         
         lblUsuario.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		if (! existeUsuario()) { //si no existe usuario
-        			new VentanaInicioSesion(vActual);
-        		}
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (! existeUsuario()) {
+                	new VentanaInicioSesion(vActual);
+                } else {
+                   // new VentanaDatosCliente(vActual);
+                    // vActual.setVisible(false);
+                }
+            }
+        
+        });
+     
+
+//        	@Override
+//        	public void mouseClicked(MouseEvent e) {
+//        		if (! existeUsuario()) { //si no existe usuario
+//        			new VentanaInicioSesion(vActual);
+//        		}
 //        		else {
 //        			for (Usuario u : Tienda.getUsuarios()) { //los nombres son unicos, no hay 2 personas con el mismo nombre
 //        				if(u.getNombre() == lblNomU.getText()) {
@@ -196,13 +227,9 @@ public class VentanaPrincipal extends JFrame {
 //        				}
 //        			}
 //        		}
-        		
-
-        		
-        	}
-        });
+        		 
         
-        
+     
         //LISTENERS DE LOS ITEMS DE HOMBRE
         
         menuItemCamiH.addActionListener(new ActionListener() {
@@ -276,6 +303,7 @@ public class VentanaPrincipal extends JFrame {
         });
         
         
+<<<<<<< HEAD
         //LISTENERS DE LOS ITEMS DE MUJER
         
         menuItemCamiM.addActionListener(new ActionListener() {
@@ -427,9 +455,22 @@ public class VentanaPrincipal extends JFrame {
         
         
         
+=======
+>>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
        setVisible(true);
 	}
 	
+
+//	public static void asignarNombreUsuario(Usuario u) {
+//		lblNomU.setText(u.getNombre());
+//	};
+
+
+	/*public boolean usuarioHaIniciadoSesion() {
+	    return usuarioHaIniciadoSesion;
+	}*/
+
+
 	public static void asignarNombreUsuario(Usuario u) {
 		lblNomU.setText(u.getNombre());
 	};
@@ -520,7 +561,25 @@ public class VentanaPrincipal extends JFrame {
 		panelArticulo.setBackground(Color.WHITE);
 		
 		return panelArticulo;
-	
-		
+
+		/* if (UsuarioHaIniciadoSesion()) {
+  	  lblUsuario.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		new VentanaInicioSesion(vActual);
+				//vActual.setVisible(false);
+        		
+        	}
+       });       
+  } else {
+  	lblUsuario.addMouseListener(new MouseAdapter() {
+      	@Override
+      	public void mouseClicked(MouseEvent e) {
+      		JOptionPane.showMessageDialog(vActual, "Por favor, inicia sesión antes de acceder.");
+      	}
+  	});
+  }*/
+  
+  
 	}
 }
