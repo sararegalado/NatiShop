@@ -112,16 +112,18 @@ public class Tienda {
 			Scanner sc= new Scanner(new FileReader(nomfichUsuarios));
 			String linea;
 			while(sc.hasNext()) {
-				linea= sc.nextLine();
-				String [] partes= linea.split(";");
-				String dni= partes[0];
-				String nom= partes[1];
-				String fNac= partes[2];
-				String correo= partes[3];
-				String con= partes[4];
-				Usuario u= new Usuario(dni, nom, fNac, correo, con);
-				if(buscarUsuario(dni) == null) {
-					usuarios.add(u);
+				linea = sc.nextLine();
+				String [] partes = linea.split(";");
+				if(partes.length > 0) {
+					String dni = partes[0];
+					String nom = partes[1];
+					String fNac = partes[2];
+					String correo = partes[3];
+					String con = partes[4];
+					Usuario u = new Usuario(dni, nom, fNac, correo, con);
+					if(buscarUsuario(dni) == null) {
+						usuarios.add(u);
+					}
 				}
 				
 			}

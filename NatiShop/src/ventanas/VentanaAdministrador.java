@@ -77,12 +77,10 @@ public class VentanaAdministrador extends JFrame{
         lblFoto.setVerticalAlignment(JLabel.CENTER);
 		
 		
-		JPanel pnlCentro = new JPanel();
+		pnlCentro = new JPanel();
 		getContentPane().add(pnlCentro, BorderLayout.CENTER);
 		pnlCentro.setLayout(new GridLayout(1,1));
 		
-		tablaUsuarios = new JTable(new ModeloTablaUsuarios(null));
-		pnlCentro.add(tablaUsuarios);
 		
 		JMenuBar menuBarAdmin= new JMenuBar();
 		pnlOesteMenu.add(menuBarAdmin);
@@ -134,8 +132,8 @@ public class VentanaAdministrador extends JFrame{
 		mUsuarios = new ModeloTablaUsuarios(new ArrayList<>());
 		tablaUsuarios = new JTable(mUsuarios);
 		sTablaUsuarios = new JScrollPane(tablaUsuarios);
-		pnlCentro.add(tablaUsuarios);
-
+		pnlCentro.add(sTablaUsuarios);
+		pnlCentro.setVisible(false);
 		
 		
 		
@@ -146,11 +144,10 @@ public class VentanaAdministrador extends JFrame{
 	}
 	
 	public void cargarTablaUsuarios() {
+		Tienda.cargarUsuarios("Usuarios.csv");
 		List<Usuario>lista = Tienda.getUsuarios();
-		for(Usuario u: lista) {
-			Object [] fila = {u.getDni(), u.getNombre(), u.getCorreo(), u.getfNacStr()};
-			mUsuarios.addRow(fila);
-		}
+		tablaUsuarios.setModel(new ModeloTablaUsuarios(lista));
+		pnlCentro.setVisible(true);
 	}
 	
 	
