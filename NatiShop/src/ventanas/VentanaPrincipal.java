@@ -60,16 +60,13 @@ public class VentanaPrincipal extends JFrame {
 	
 	private JPanel contentPane;
 	private JTextField tfBuscador;
-<<<<<<< HEAD
 	
-	private boolean usuarioHaIniciadoSesion = false;
+	//private boolean usuarioHaIniciadoSesion = false;
 	
-	
-=======
     private static JLabel lblNomU;
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
 
 	public VentanaPrincipal(JFrame va) {
+		System.out.println("HOLA :-)");
 		vActual = this;
 		vAnterior = va;
 		setTitle("Carrito de Compras");
@@ -183,19 +180,7 @@ public class VentanaPrincipal extends JFrame {
         contentPane.add(tfBuscador);
         tfBuscador.setColumns(10);
         
-<<<<<<< HEAD
-      /*  lblUsuario.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (usuarioHaIniciadoSesion) {
-                	new VentanaDatosCliente(vActual);
-                } else {
-                    new VentanaInicioSesion(vActual);
-                    // vActual.setVisible(false);
-                }
-            }
-        });*/
-=======
+
         lblNomU = new JLabel("Iniciar Sesión");
         lblNomU.setHorizontalAlignment(SwingConstants.CENTER);
         lblNomU.setVerticalAlignment(SwingConstants.TOP);
@@ -203,21 +188,23 @@ public class VentanaPrincipal extends JFrame {
         contentPane.add(lblNomU);
         
         
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
         
         lblUsuario.addMouseListener(new MouseAdapter() {
-<<<<<<< HEAD
             @Override
-            public void mouseClicked(MouseEvent e) {
-                if (! existeUsuario()) {
-                	new VentanaInicioSesion(vActual);
-                } else {
-                    new VentanaDatosCliente(vActual);
-                    // vActual.setVisible(false);
-                }
+            public void mouseClicked(MouseEvent e) {  
+                new VentanaInicioSesion(vActual);
+                System.out.println("LALALA");
+                //VentanaInicioSesion ventanaInicioSesion = new VentanaInicioSesion(vActual);
+                //ventanaInicioSesion.setVisible(true);
+                   // vActual.setVisible(false);
             }
-=======
-        	@Override
+        });
+         
+        
+        
+        
+
+        	/*@Override
         	public void mouseClicked(MouseEvent e) {
         		if (! existeUsuario()) { //si no existe usuario
         			new VentanaInicioSesion(vActual);
@@ -230,13 +217,12 @@ public class VentanaPrincipal extends JFrame {
 //        			}
 //        		}
         		
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
 
 			private boolean existeUsuario() {
 				// TODO Auto-generated method stub
 				return false;
 			}
-        });
+        });*/
         
         
       
@@ -318,27 +304,23 @@ public class VentanaPrincipal extends JFrame {
        setVisible(true);
 	}
 	
-<<<<<<< HEAD
 	/*public boolean usuarioHaIniciadoSesion() {
 	    return usuarioHaIniciadoSesion;
 	}*/
 
-=======
 	public static void asignarNombreUsuario(Usuario u) {
 		lblNomU.setText(u.getNombre());
 	};
 	
 	
-	public boolean existeUsuario() {
+	/*public boolean existeUsuario() {
 		boolean existe = false;
 		if (lblNomU.getText() != "Iniciar Sesión") {
 			existe = true;	
 		}
 		return existe;
-	}
+	}*/
 	
-	
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
 	public void limpiarPanel(JPanel panel) {
 	    panel.removeAll();
 	    panel.revalidate();
@@ -413,7 +395,7 @@ public class VentanaPrincipal extends JFrame {
 		panelArticulo.setBackground(Color.WHITE);
 		
 		return panelArticulo;
-<<<<<<< HEAD
+
 		
 		/* if (UsuarioHaIniciadoSesion()) {
   	  lblUsuario.addMouseListener(new MouseAdapter() {
@@ -434,9 +416,5 @@ public class VentanaPrincipal extends JFrame {
   }*/
   
   
-=======
-	
-		
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
 	}
 }

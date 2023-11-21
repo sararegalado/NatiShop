@@ -15,13 +15,13 @@ public class Main {
 //			Tienda.aniadirArticulos(c);
 //		}
 //		Tienda.guardarArticulos("articulos.csv");
-		Tienda.cargarArticulos("articulos.csv");
+//		Tienda.cargarArticulos("articulos.csv");
 //		Tienda.cargarUsuarios("Usuarios.csv");
 //		System.out.println(Tienda.getUsuarios());
-		System.out.println(Tienda.getCamisetas());
-//		
+		//System.out.println(Tienda.getCamisetas());
+		System.out.println("HOLA");
 
-		VentanaPrincipal vent = new VentanaPrincipal(null);
+//		VentanaPrincipal vent = new VentanaPrincipal(null);
 		//vent.setVisible(true);
 		
 	}

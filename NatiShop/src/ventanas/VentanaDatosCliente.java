@@ -28,7 +28,7 @@ public class VentanaDatosCliente extends JFrame{
 	private Usuario usuario;
 	private JFrame vActual,vAnterior;
 
-	public VentanaDatosCliente(JFrame va, String nombre, String direccion, String telefono, String contrasenia, String email, String wallet) {
+	public VentanaDatosCliente(JFrame va, String direccion, String telefono, String contrasenia, String email, String wallet) {
 		super();
 		vActual = this;
 		vAnterior = va;
@@ -122,7 +122,7 @@ public class VentanaDatosCliente extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 // lógica para cerrar la sesión
                 JOptionPane.showMessageDialog(null, "Sesión cerrada");
-                VentanaDatosCliente ventanaDatosCliente = new VentanaDatosCliente(va);
+                VentanaDatosCliente ventanaDatosCliente = new VentanaDatosCliente(va, wallet, wallet, wallet, wallet, wallet, wallet);
 				ventanaDatosCliente.dispose(); 
             }
         });
@@ -181,7 +181,7 @@ public class VentanaDatosCliente extends JFrame{
             JFrame frame = new JFrame("Main Frame");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            VentanaDatosCliente ventanaDatosCliente = new VentanaDatosCliente(frame, "nombre", "direccion", "telefono", "contrasenia", "email", "wallet");
+            VentanaDatosCliente ventanaDatosCliente = new VentanaDatosCliente(frame);
 
             frame.setVisible(true);
         });

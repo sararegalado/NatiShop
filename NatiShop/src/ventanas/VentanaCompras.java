@@ -12,6 +12,7 @@ import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import clases.Articulo;
@@ -79,6 +80,15 @@ public class VentanaCompras extends JFrame{
 			}
 		}
 	}
+	
+	public static void main(String[] args) {
+		/*JFrame ventanaTienda = new VentanaTienda();
+        VentanaCompras ventanaCompras = new VentanaCompras(ventanaTienda);*/
+        SwingUtilities.invokeLater(() -> {
+            JFrame ventanaTienda = new VentanaTienda();
+            new VentanaCompras(ventanaTienda);
+        });
+	};
 	
 	
 
