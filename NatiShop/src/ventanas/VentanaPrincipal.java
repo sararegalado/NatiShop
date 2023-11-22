@@ -60,14 +60,12 @@ public class VentanaPrincipal extends JFrame {
 	
 	private JPanel contentPane;
 	private JTextField tfBuscador;
-<<<<<<< HEAD
 	
 	private boolean usuarioHaIniciadoSesion = false;
 	
 	
-=======
     private static JLabel lblNomU;
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
+
 
 	public VentanaPrincipal(JFrame va) {
 		vActual = this;
@@ -182,8 +180,7 @@ public class VentanaPrincipal extends JFrame {
         tfBuscador.setBounds(845, 48, 220, 26);
         contentPane.add(tfBuscador);
         tfBuscador.setColumns(10);
-        
-<<<<<<< HEAD
+
       /*  lblUsuario.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -195,7 +192,7 @@ public class VentanaPrincipal extends JFrame {
                 }
             }
         });*/
-=======
+        
         lblNomU = new JLabel("Iniciar Sesión");
         lblNomU.setHorizontalAlignment(SwingConstants.CENTER);
         lblNomU.setVerticalAlignment(SwingConstants.TOP);
@@ -203,25 +200,26 @@ public class VentanaPrincipal extends JFrame {
         contentPane.add(lblNomU);
         
         
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
         
         lblUsuario.addMouseListener(new MouseAdapter() {
-<<<<<<< HEAD
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (! existeUsuario()) {
                 	new VentanaInicioSesion(vActual);
                 } else {
-                    new VentanaDatosCliente(vActual);
+                   // new VentanaDatosCliente(vActual);
                     // vActual.setVisible(false);
                 }
             }
-=======
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		if (! existeUsuario()) { //si no existe usuario
-        			new VentanaInicioSesion(vActual);
-        		}
+        
+        });
+     
+
+//        	@Override
+//        	public void mouseClicked(MouseEvent e) {
+//        		if (! existeUsuario()) { //si no existe usuario
+//        			new VentanaInicioSesion(vActual);
+//        		}
 //        		else {
 //        			for (Usuario u : Tienda.getUsuarios()) { //los nombres son unicos, no hay 2 personas con el mismo nombre
 //        				if(u.getNombre() == lblNomU.getText()) {
@@ -229,17 +227,7 @@ public class VentanaPrincipal extends JFrame {
 //        				}
 //        			}
 //        		}
-        		
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
-
-			private boolean existeUsuario() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-        });
-        
-        
-      
+        		 
         
      
         //LISTENERS DE LOS ITEMS DE HOMBRE
@@ -315,15 +303,174 @@ public class VentanaPrincipal extends JFrame {
         });
         
         
+<<<<<<< HEAD
+        //LISTENERS DE LOS ITEMS DE MUJER
+        
+        menuItemCamiM.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Camiseta> camiM = new TreeSet<>();
+        		for (Camiseta c: Tienda.getCamisetas()) {
+        			if (c.getGenero()== Genero.MUJER) {
+        				camiM.add(c);
+        			}
+        		}
+        		setCamisetas(camiM,pnlArticulos);
+        	}
+        });
+        
+        menuItemJersM.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Jersey> jersM = new TreeSet<>();
+        		for (Jersey j: Tienda.getJerseys()) {
+        			if (j.getGenero()== Genero.MUJER) {
+        				jersM.add(j);
+        			}
+        		}
+        		setJerseys(jersM,pnlArticulos);
+        	}
+        });
+        
+        menuItemPantM.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Pantalon> pantM = new TreeSet<>();
+        		Set<Pantalon>listaPantalones = Tienda.getPantalones();
+        		for (Pantalon p: listaPantalones) {
+        			if (p.getGenero()== Genero.MUJER) {
+        				pantM.add(p);
+        			}
+        		}
+        		setPantalones(pantM,pnlArticulos);
+        	}
+        });
+        
+        menuItemCalzM.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Zapato> calzM = new TreeSet<>();
+        		for (Zapato z: Tienda.getZapatos()) {
+        			if (z.getGenero()== Genero.MUJER) {
+        				calzM.add(z);
+        			}
+        		}
+        		setZapatos(calzM,pnlArticulos);
+        	}
+        });
+        
+        
+        //LISTENERS DE LOS ITEMS DE NIÑOS
+        
+        menuItemCamiN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Camiseta> camiN = new TreeSet<>();
+        		for (Camiseta c: Tienda.getCamisetas()) {
+        			if (c.getGenero()== Genero.NINOS) {
+        				camiN.add(c);
+        			}
+        		}
+        		setCamisetas(camiN,pnlArticulos);
+        	}
+        });
+        
+        menuItemJersN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Jersey> jersN = new TreeSet<>();
+        		for (Jersey j: Tienda.getJerseys()) {
+        			if (j.getGenero()== Genero.NINOS) {
+        				jersN.add(j);
+        			}
+        		}
+        		setJerseys(jersN,pnlArticulos);
+        	}
+        });
+        
+        menuItemPantN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Pantalon> pantN = new TreeSet<>();
+        		Set<Pantalon>listaPantalones = Tienda.getPantalones();
+        		for (Pantalon p: listaPantalones) {
+        			if (p.getGenero()== Genero.NINOS) {
+        				pantN.add(p);
+        			}
+        		}
+        		setPantalones(pantN,pnlArticulos);
+        	}
+        });
+        
+        menuItemCalzN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        		System.out.println("pulsado");
+        		System.out.println("Grid puesto");
+        		limpiarPanel(pnlArticulos);
+        		
+        		Set<Zapato> calzN = new TreeSet<>();
+        		for (Zapato z: Tienda.getZapatos()) {
+        			if (z.getGenero()== Genero.NINOS) {
+        				calzN.add(z);
+        			}
+        		}
+        		setZapatos(calzN,pnlArticulos);
+        	}
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
+=======
+>>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
        setVisible(true);
 	}
 	
-<<<<<<< HEAD
+
+//	public static void asignarNombreUsuario(Usuario u) {
+//		lblNomU.setText(u.getNombre());
+//	};
+
+
 	/*public boolean usuarioHaIniciadoSesion() {
 	    return usuarioHaIniciadoSesion;
 	}*/
 
-=======
+
 	public static void asignarNombreUsuario(Usuario u) {
 		lblNomU.setText(u.getNombre());
 	};
@@ -338,7 +485,6 @@ public class VentanaPrincipal extends JFrame {
 	}
 	
 	
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
 	public void limpiarPanel(JPanel panel) {
 	    panel.removeAll();
 	    panel.revalidate();
@@ -404,6 +550,8 @@ public class VentanaPrincipal extends JFrame {
 		
 		JLabel titulo = new JLabel(articulo.getNombre());
 		titulo.setHorizontalAlignment(SwingConstants.CENTER);
+        titulo.setFont(new Font("Baskerville", Font.PLAIN, 17));
+
 
 		
 		panelArticulo.add(foto,BorderLayout.CENTER);
@@ -413,8 +561,7 @@ public class VentanaPrincipal extends JFrame {
 		panelArticulo.setBackground(Color.WHITE);
 		
 		return panelArticulo;
-<<<<<<< HEAD
-		
+
 		/* if (UsuarioHaIniciadoSesion()) {
   	  lblUsuario.addMouseListener(new MouseAdapter() {
         	@Override
@@ -434,9 +581,5 @@ public class VentanaPrincipal extends JFrame {
   }*/
   
   
-=======
-	
-		
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
 	}
 }
