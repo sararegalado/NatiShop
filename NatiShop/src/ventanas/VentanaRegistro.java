@@ -165,7 +165,7 @@ public class VentanaRegistro extends JFrame {
 				
 				Usuario u = new Usuario(dni, nom, fNac, correo, con1);
 				//yo
-				new VentanaDatosCliente(vActual, nom, con1, correo, con2, con2, con2);
+				//new VentanaDatosCliente(vActual, nom, con1, correo, con2, con2, con2);
 
 				if (con1.equals(con2)) {
 					if(Tienda.buscarUsuario(dni)!=null) {
