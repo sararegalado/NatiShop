@@ -153,8 +153,7 @@ public class VentanaAdministrador extends JFrame{
 	
 	/*ERRORES
 	 
-	 * CARGAR LA TABLA 
-	 * SCROLL DE LA TABLA
+	 
 	
 	 * 
 	 * 

@@ -303,6 +303,8 @@ public class VentanaPrincipal extends JFrame {
         });
         
         
+
+
         //LISTENERS DE LOS ITEMS DE MUJER
         
         menuItemCamiM.addActionListener(new ActionListener() {
@@ -452,7 +454,7 @@ public class VentanaPrincipal extends JFrame {
         
         
         
-      
+
        setVisible(true);
 	}
 	
