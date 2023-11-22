@@ -303,7 +303,7 @@ public class VentanaPrincipal extends JFrame {
         });
         
         
-<<<<<<< HEAD
+
         //LISTENERS DE LOS ITEMS DE MUJER
         
         menuItemCamiM.addActionListener(new ActionListener() {
@@ -455,8 +455,7 @@ public class VentanaPrincipal extends JFrame {
         
         
         
-=======
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
+
        setVisible(true);
 	}
 	
