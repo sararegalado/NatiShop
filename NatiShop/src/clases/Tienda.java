@@ -10,12 +10,13 @@ public class Tienda {
 	private static Set<Jersey> jerseys = new TreeSet<>();
 	private static Set<Pantalon> pantalones = new TreeSet<>();
 	private static Set<Zapato> zapatos = new TreeSet<>();
+	
 
 
 
 	private static List<Usuario> usuarios = new ArrayList<>();
 	private static HashMap<Usuario, ArrayList<Articulo>> compras = new HashMap<>();
-	
+	private static HashMap<Date, HashMap<Usuario, ArrayList<Articulo>>> comprasPorUsuario = new HashMap<>();
 	//private static final String nomfichUsuarios = "Usuarios.csv";
 
 	//Getters y setters
