@@ -55,8 +55,10 @@ public class VentanaAdministrador extends JFrame{
 		btnDesplegar.setBackground(Color.WHITE);
 		btnDesplegar.setPreferredSize(new Dimension(27,27));
 		pnlOesteArriba.add(btnDesplegar);
-		
 		btnDesplegar.setIcon(new ImageIcon(VentanaAdministrador.class.getResource("/imagenes/btnDesplegar.png")));
+		/**
+		 * Boton que hace el panel menu visible o no 
+		 */
 		btnDesplegar.addActionListener(new ActionListener() {
 
 			@Override
@@ -96,6 +98,10 @@ public class VentanaAdministrador extends JFrame{
 		mItemRegistros.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 15));
 		menuUsuarios.add(mItemRegistros);
 		mItemRegistros.addActionListener(new ActionListener() {
+			/**
+			 * 
+			 * La tabla se carga y visualiza con todos los usuarios registrados en la tienda al pulsar el menutem Registros
+			 */
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -142,7 +148,9 @@ public class VentanaAdministrador extends JFrame{
 	public static void main(String[] args) {
 		VentanaAdministrador ventanaAdministrador= new VentanaAdministrador();
 	}
-	
+	/**
+	 * Método para cargar los usuarios registrador a la tabla
+	 */
 	public void cargarTablaUsuarios() {
 		Tienda.cargarUsuarios("Usuarios.csv");
 		List<Usuario>lista = Tienda.getUsuarios();

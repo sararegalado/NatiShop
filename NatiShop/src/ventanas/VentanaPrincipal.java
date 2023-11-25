@@ -573,7 +573,7 @@ public class VentanaPrincipal extends JFrame {
   	lblUsuario.addMouseListener(new MouseAdapter() {
       	@Override
       	public void mouseClicked(MouseEvent e) {
-      		JOptionPane.showMessageDialog(vActual, "Por favor, inicia sesión antes de acceder.");
+      		JOptionPane.showMessageDialog(vActual, "Por favor, inicie sesión antes de acceder.");
       	}
   	});
   }*/
