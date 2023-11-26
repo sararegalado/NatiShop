@@ -3,6 +3,7 @@ package ventanas;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -77,7 +78,8 @@ public class VentanaAdministrador extends JFrame{
 		lblFoto.setIcon(new ImageIcon(VentanaAdministrador.class.getResource("/imagenes/Admin.png")));
 		lblFoto.setHorizontalAlignment(JLabel.CENTER);
         lblFoto.setVerticalAlignment(JLabel.CENTER);
-		
+        
+        
 		
 		pnlCentro = new JPanel();
 		getContentPane().add(pnlCentro, BorderLayout.CENTER);
@@ -159,7 +161,10 @@ public class VentanaAdministrador extends JFrame{
 	}
 	
 	
-	/*ERRORES
+	/*ERRORES/TAREAS
+	 * Mapa: estructura
+	 * Inicio de sesion admins
+	 * Ventana edit admins
 	 
 	 
 	
