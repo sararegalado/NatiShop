@@ -1,185 +1,194 @@
 package ventanas;
 
-import java.awt.Dimension;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.Component;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
+import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.GraphicsEnvironment;
-
-import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
-import java.awt.Color;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Date;
-import java.awt.event.ActionEvent;
-import java.awt.GridLayout;
+import java.util.regex.Pattern;
 
+import javax.swing.*;
+
+import com.toedter.calendar.JCalendar;
+
+import clases.Provincia;
 import clases.Tienda;
 import clases.Usuario;
-import java.awt.SystemColor;
-public class VentanaRegistro extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JTextField tfNombre;
-	private JTextField tfDNI;
-	private JTextField tfEmail;
-
-	private JTextField tfFechaNac;
-	private JPasswordField tfContrasena1;
-	private JPasswordField tfContrasena2;
+public class VentanaRegistro extends JFrame{
 	
-	private static final String nomfichUsuarios = "Usuarios.csv";
+	private JLabel lblTitulo, lblNombre, lblDNI, lblEmail, lblFecha, lblTlf, lblProvincia, lblCon1, lblCon2, lblAtras;
+	private JTextField tfNombre, tfDNI, tfEmail, tfTlf;
+	private JComboBox<Provincia> cbProv;
+	private JCalendar jcFecha;
+	private JPanel pnlDatos, pnlDcha, pnlIzq, pnlFecha, pnlCombo, pnlBoton;
+	private JPasswordField tfCon1, tfCon2;
+	
+	private JButton btnRegistro;
 	
 	private JFrame vActual,vAnterior;
-
 	
-	public VentanaRegistro(JFrame va) {
+	public VentanaRegistro(JFrame va){
 		vActual = this;
 		vAnterior = va;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 778, 455);
-		contentPane = new JPanel();
-		contentPane.setForeground(new Color(254, 255, 255));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-
 		
-		JPanel pnlRegistro = new JPanel();
-		pnlRegistro.setBackground(SystemColor.control);
-		pnlRegistro.setForeground(new Color(254, 255, 255));
-		pnlRegistro.setLayout(null);
-		pnlRegistro.setBounds(153, 11, 409, 405);
-		contentPane.add(pnlRegistro);
+		pnlDatos = new JPanel(new GridLayout(1, 2));
+		getContentPane().add(pnlDatos, BorderLayout.CENTER);
 		
-		JLabel lblCrearCuenta = new JLabel("CREAR CUENTA");
-		lblCrearCuenta.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCrearCuenta.setFont(new Font("Baskerville", Font.PLAIN, 20));
-		lblCrearCuenta.setBounds(111, 16, 226, 23);
-		pnlRegistro.add(lblCrearCuenta);
 		
-		JPanel pnlDatos = new JPanel();
-		pnlDatos.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 0, 0), null, null, null));
-		pnlDatos.setBounds(93, 44, 255, 300);
-		pnlRegistro.add(pnlDatos);
-		pnlDatos.setLayout(new GridLayout(12, 1, 0, 0));
+		lblTitulo = new JLabel("DATOS PERSONALES");
+		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitulo.setFont(new Font("Baskerville", Font.PLAIN, 20));
+		JPanel pnlDividir = new JPanel(new GridLayout(1, 3));
 		
-		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNombre.setFont(new Font("Baskerville", Font.PLAIN, 15));
-		pnlDatos.add(lblNombre);
+		lblAtras = new JLabel("");
+		lblAtras.setIcon(new ImageIcon(VentanaInicioSesion.class.getResource("/imagenes/volver.png")));
+		
+		pnlDividir.add(lblAtras);
+		pnlDividir.add(lblTitulo);
+		pnlDividir.add(new JLabel());
+		
+		
+		getContentPane().add (pnlDividir, BorderLayout.NORTH);
+		getContentPane().add(new JPanel(), BorderLayout.WEST);
+		getContentPane().add(new JPanel(), BorderLayout.SOUTH);
+		getContentPane().add(new JPanel(), BorderLayout.EAST);
+		
+		pnlIzq = new JPanel(new GridLayout(12, 1));
+		
+		lblNombre = new JLabel("Nombre de usuaro");
+		lblDNI = new JLabel("DNI");
+		lblEmail = new JLabel("Email");
+		lblTlf = new JLabel ("Telefono");
+		lblCon1 = new JLabel("Contraseña");
+		lblCon2 = new JLabel("Confirmar la contraseña");
 		
 		tfNombre = new JTextField();
-		pnlDatos.add(tfNombre);
-		
-		JLabel lblDni = new JLabel("DNI");
-		lblDni.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDni.setFont(new Font("Baskerville", Font.PLAIN, 15));
-		pnlDatos.add(lblDni);
-		
 		tfDNI = new JTextField();
-		tfDNI.setColumns(10);
-		pnlDatos.add(tfDNI);
-		
-		JLabel lblEmail = new JLabel("Email");
-		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEmail.setFont(new Font("Baskerville", Font.PLAIN, 15));
-		pnlDatos.add(lblEmail);
-		
 		tfEmail = new JTextField();
-		pnlDatos.add(tfEmail);
+		tfTlf = new JTextField();
+		tfCon1 = new JPasswordField();
+		tfCon2 = new JPasswordField();
 		
-		JLabel lblFechaNac = new JLabel("Fecha de nacimiento (DD-MM-AA");
-		lblFechaNac.setFont(new Font("Baskerville", Font.PLAIN, 15));
-		lblFechaNac.setHorizontalAlignment(SwingConstants.CENTER);
-		pnlDatos.add(lblFechaNac);
+		pnlIzq.add(lblNombre);
+		pnlIzq.add(tfNombre);
+		pnlIzq.add(lblDNI);
+		pnlIzq.add(tfDNI);
+		pnlIzq.add(lblEmail);
+		pnlIzq.add(tfEmail);
+		pnlIzq.add(lblTlf);
+		pnlIzq.add(tfTlf);
+		pnlIzq.add(lblCon1);
+		pnlIzq.add(tfCon1);
+		pnlIzq.add(lblCon2);
+		pnlIzq.add(tfCon2);
 		
-		tfFechaNac = new JTextField();
-		pnlDatos.add(tfFechaNac);
+		pnlDatos.add(pnlIzq);
 		
-		JLabel lblContrasena1 = new JLabel("Crea una nueva contraseña");
-		lblContrasena1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblContrasena1.setFont(new Font("Baskerville", Font.PLAIN, 15));
-		pnlDatos.add(lblContrasena1);
+		pnlDcha = new JPanel(new GridLayout(3, 1));
+		pnlFecha = new JPanel (new BorderLayout());
+		pnlCombo = new JPanel();
 		
-		tfContrasena1 = new JPasswordField();
-		pnlDatos.add(tfContrasena1);
-		
-		JLabel lblContrasena2 = new JLabel("Confirma tu contraseña");
-		lblContrasena2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblContrasena2.setFont(new Font("Baskerville", Font.PLAIN, 15));
-		pnlDatos.add(lblContrasena2);
-		
-		tfContrasena2 = new JPasswordField();
-		pnlDatos.add(tfContrasena2);
-		
-		
-		JButton btnRegistro = new JButton("Registrar cuenta");
-		btnRegistro.setBounds(97, 356, 251, 24);
-		pnlRegistro.add(btnRegistro);
-		
-		JLabel lblAtras = new JLabel("");
-		lblAtras.setIcon(new ImageIcon(VentanaInicioSesion.class.getResource("/imagenes/atras.png")));
-		lblAtras.setBounds(97, 11, 46, 50);
-		contentPane.add(lblAtras);
+		lblFecha = new JLabel("Selecciona tu fecha de nacimiento");
+		jcFecha = new JCalendar(new Date());
+		pnlFecha.add(lblFecha, BorderLayout.NORTH);
+		pnlFecha.add(jcFecha, BorderLayout.CENTER);
+		pnlDcha.add(pnlFecha);
 		
 		
-		//Cargamos los usuarios desde la clase tienda
-		//Tienda.cargarUsuarios(nomfichUsuarios);
+		lblProvincia = new JLabel("Elige tu provincia");
+		cbProv = new JComboBox<>(Provincia.values());
+		pnlCombo.add(lblProvincia);
+		pnlCombo.add(cbProv);
+		pnlDcha.add(pnlCombo);
 		
-		btnRegistro.addActionListener(new ActionListener() {
+		pnlBoton = new JPanel(new BorderLayout());
+		JPanel pnlCentrar = new JPanel(new GridLayout(1,3));
+		btnRegistro = new JButton("REGISTRAR");
+		pnlCentrar.add(new JPanel());
+		pnlCentrar.add(btnRegistro);
+		pnlCentrar.add(new JPanel());
+		pnlBoton.add(pnlCentrar, BorderLayout.NORTH);
+		
+		pnlDcha.add(pnlBoton);
+	
+		pnlDatos.add(pnlDcha);
+		
+//		Tienda t = VentanaPrincipal.getTienda();
+		
+		Tienda.cargarUsuarios(Tienda.getNomfichusuarios());
+		
+		btnRegistro.addActionListener(e -> {
+			String dni = tfDNI.getText();
+			String nom = tfNombre.getText();
+			Date fNac = jcFecha.getDate();
+			String email = tfEmail.getText();
+			String tlf = tfTlf.getText();
+			Provincia prov = (Provincia) cbProv.getSelectedItem();
+			String con1 = tfCon1.getText();
+			String con2 = tfCon2.getText();
 			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String dni = tfDNI.getText();
-				String nom = tfNombre.getText();
-				String fNac = tfFechaNac.getText();
-				String correo = tfEmail.getText();
-				String con1 = tfContrasena1.getText();
-				String con2 = tfContrasena2.getText();
-				
-				Usuario u = new Usuario(dni, nom, fNac, correo, con1);
-				if (con1.equals(con2)) {
-					if(Tienda.buscarUsuario(dni)!=null) {
-						JOptionPane.showMessageDialog(null, "Ya existe un cliente con ese dni","ERROR",JOptionPane.ERROR_MESSAGE);
+			if(!dni.equals("") && !nom.equals("") && !con1.equals("") && !con2.equals("") && fNac!=null) {
+				if(con1.equals(con2)) {
+					if(Tienda.buscarUsuario(dni) == null) { 
+						if(comprobarNombre()) {
+							if(comprobarDni()) {
+								if(letraDNICorrecta()) {
+									if(comprobarEmail()) {
+										if(comprobarTlf()) {
+											Usuario u = new Usuario (dni, nom, fNac , email, tlf, prov, con1);
+											Tienda.aniadirUsuario(u);
+											Tienda.guardarUsuarios(Tienda.getNomfichusuarios());
+											JOptionPane.showMessageDialog(null, "Registro realizado con éxito");
+											new VentanaInicioSesion(vActual);
+											vActual.setVisible(false);
+										}else {
+											JOptionPane.showMessageDialog(null, "El telefono introducido no es correcto, deve tener al menos 9 numeros");
+										}
+						
+									}else {
+										JOptionPane.showMessageDialog(null, "El email introducido no es correcto");
+									}
+								}else {
+									JOptionPane.showMessageDialog(null, "La letra del dni no es correcta");
+								}
+								
+							}else {
+								JOptionPane.showMessageDialog(null, "El dni no es correcto");
+							}
+							
+						}else {
+							JOptionPane.showMessageDialog(null, "El nombre tiene que empezar por una letra mayúscula");
+						}
+							
+								
+						
 					}else {
-						Tienda.aniadirUsuario(u);
-						Tienda.guardarUsuarios(nomfichUsuarios);
-						JOptionPane.showMessageDialog(null, "Cliente registrado con éxito","REGISTRADO",JOptionPane.INFORMATION_MESSAGE);
-						new VentanaInicioSesion(vActual);
-						vActual.setVisible(false);	
+						JOptionPane.showMessageDialog(null, "Ya existe un cliente con este dni","ERROR",JOptionPane.ERROR_MESSAGE);
+						tfDNI.setText("");
+						tfNombre.setText("");
+						jcFecha.setDate(null);
+						tfEmail.setText("");
+						tfTlf.setText("");
+						tfCon1.setText("");
+						tfCon2.setText("");
 					}
 					
 				}else {
 					JOptionPane.showMessageDialog(null, "Los valores de la contraseña deben coincidir","ERROR",JOptionPane.ERROR_MESSAGE);
-					tfContrasena1.setText("");
-					tfContrasena2.setText("");
-				};
-				
+					tfCon1.setText("");
+					tfCon2.setText("");
+				}
+			}else {
+				JOptionPane.showMessageDialog(null, "Tienes que rellenar todos los campos");
 			}
+			
+			Usuario u = new Usuario (dni, nom, fNac, email, tlf, prov, con1);
+			
 		});
 		
 		lblAtras.addMouseListener(new MouseAdapter() {
@@ -192,13 +201,67 @@ public class VentanaRegistro extends JFrame {
         	}
         });
 		
-
+		
 		
 		setLocationRelativeTo(null);
 		setVisible(true);
-
+		
 	}
 	
+	/**
+	 * Metodo que comprueba si la letra del DNI introducido en correcta
+	 * @return Devuelve un bolean indicando si es correcta o no
+	 */
 	
+	private boolean letraDNICorrecta() {
+		String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+		//      012345678
+		//dni = 12345678Z
+		String dni = tfDNI.getText();
+		char letra = dni.charAt(8);
+		long digitos = Long.parseLong(dni.substring(0, 8)); //Devuelve el String de 0 a 7
+		int resto = (int) (digitos % 23);
+		char letraCorrecta = letras.charAt(resto);
+		return letra==letraCorrecta;
+		
+	}
 	
+	/**
+	 * Metodo que coprueba si el DNI introducido es correcto
+	 * @return Devuelve un bolean indicando si es correcto o no
+	 */
+	private boolean comprobarDni() {
+		String patron = "[0-9]{8}[A-Z]";
+		return Pattern.matches(patron, tfDNI.getText());
+	}
+	
+	/**
+	 * Metodo que comprueba si el nombre indicado sigue el patron indicado
+	 * @return Devuelve un bolean indicando si sigue el patron o no
+	 */
+	private boolean comprobarNombre() {
+		String patron = "[A-Z][A-Za-z]{0,}";
+		return Pattern.matches(patron, tfNombre.getText());
+	}
+	
+	/**
+	 * Metodo que comprueba si el email introducido es correcto
+	 * @return Devuelve un bolean indicando si es correcto o no
+	 */
+	private boolean comprobarEmail() {
+		String patron = "[a-zA-Z0-9]{1,}@[a-zA-Z]{1,}.[a-z]{1,}";
+		return Pattern.matches(patron, tfEmail.getText());
+		
+	}
+	
+	/**
+	 * Metodo que comprueba si el numero de telefono introducido es correcto
+	 * @return Devuelve un bolean indicando si es correcto o no
+	 */
+	private boolean comprobarTlf() {
+		String patron = "[0-9]{9,}";
+		return  Pattern.matches(patron, tfTlf.getText());
+		
+	}
+
 }
