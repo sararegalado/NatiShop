@@ -18,7 +18,7 @@ public class Administrador extends Usuario {
 	}
 	
 	public Administrador(String dni, String nombre, Date fNac, String correo, String contrasenia, String apellido, Date FInicEmpresa,Jornada jornadaLaboral,Puesto puesto ) {
-		super(dni, nombre, fNac, correo, contrasenia);
+		super();
 		this.apellido= apellido;
 		this.FInicEmpresa= FInicEmpresa;
 		this.jornadaLaboral= jornadaLaboral;
@@ -40,7 +40,7 @@ public class Administrador extends Usuario {
 	 */
 
 	public Administrador(String dni, String nombre, String fNac, String correo, String contrasenia, String apellido, String FInicEmpresa,Jornada jornadaLaboral,Puesto puesto) {
-		super(dni, nombre, fNac, correo, contrasenia);
+		super();
 		this.apellido= apellido;
 		try {
 			this.FInicEmpresa= sdf.parse(FInicEmpresa);

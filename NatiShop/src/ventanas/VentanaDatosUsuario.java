@@ -8,18 +8,18 @@ import clases.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.Color;
 
-public class VentanaDatosUsuario2 extends JFrame{
-	private JPanel pnlDatos, pnlIzq, pnlDcha, pnlCentrarB1, pnlCentrarB2, pnlCentrarB3, pnlModifE, pnlModifT, pnlModifC ;
+public class VentanaDatosUsuario extends JFrame{
+	private static JPanel pnlDatos ;
+	private JPanel pnlIzq;
+	private JPanel pnlDcha;
+	private JPanel pnlCentrarB1;
+	private JPanel pnlCentrarB2;
+	private JPanel pnlCentrarB3;
 	private JLabel lblTitulo, lblNombre, lblAtras, lblEmail, lblTlf, lblCon;
-	private JButton btnCorreo, btnTfn, btnContrasenia;
+	private static JButton btnCorreo, btnTfn, btnContrasenia;
 	private static JButton btnModificar;
 	private JLabel lblCerrar, lblElim;
 	private JTextField tfEmail;
@@ -30,7 +30,7 @@ public class VentanaDatosUsuario2 extends JFrame{
 	private static JPasswordField jpActual, jpNueva;
 	
 	
-	public VentanaDatosUsuario2(JFrame va, Usuario u) {
+	public VentanaDatosUsuario(JFrame va, Usuario u) {
 		vActual = this;
 		vAnterior = va;
 		setResizable(false);
@@ -104,12 +104,7 @@ public class VentanaDatosUsuario2 extends JFrame{
 		
 		pnlDatos.add(pnlIzq);
 		
-		
 		pnlDcha = new JPanel(new BorderLayout());
-//		pnlModifE = new JPanel(new GridLayout(2,1));
-//		pnlModifT = new JPanel();
-//		pnlModifC = new JPanel();
-		
 		
 		btnCorreo.addActionListener(e -> {
 			intModif = 1;
@@ -140,22 +135,28 @@ public class VentanaDatosUsuario2 extends JFrame{
 		
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JOptionPane.showMessageDialog(null, "Sesión cerrada");
-				VentanaPrincipal.setUsuarioHaIniciadoSesion(false);
-				VentanaPrincipal.eliminarNombreUsuario();
-				vActual.setVisible(false);
+				int confirmacion = JOptionPane.showConfirmDialog(null, "Estas seguro de que quieres cerrar tu sesión", "Confirmacion", JOptionPane.YES_NO_OPTION);
+				if (confirmacion == JOptionPane.YES_OPTION) {
+					VentanaPrincipal.setUsuarioHaIniciadoSesion(false);
+					VentanaPrincipal.eliminarNombreUsuario();
+					vActual.setVisible(false);
+				}
+				
 			}
 		});
 		
 		lblElim.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Usuario u = VentanaInicioSesion.getUsuario();
-				Tienda.getUsuarios().remove(u);
-				Tienda.guardarUsuarios(Tienda.getNomfichusuarios());
-				VentanaPrincipal.setUsuarioHaIniciadoSesion(false);
-				VentanaPrincipal.eliminarNombreUsuario();
-				vActual.setVisible(false);	
+				int confirmacion = JOptionPane.showConfirmDialog(null, "Estas seguro de que quieres elimiar tu cuenta", "Confirmacion", JOptionPane.YES_NO_OPTION);
+				if (confirmacion == JOptionPane.YES_OPTION) {
+					Usuario u = VentanaInicioSesion.getUsuario();
+					Tienda.getUsuarios().remove(u);
+					Tienda.guardarUsuarios(Tienda.getNomfichusuarios());
+					VentanaPrincipal.setUsuarioHaIniciadoSesion(false);
+					VentanaPrincipal.eliminarNombreUsuario();
+					vActual.setVisible(false);
+				}
 			}
 		});
 		
@@ -195,43 +196,48 @@ public class VentanaDatosUsuario2 extends JFrame{
         }
         
         btnModificar = new JButton("MODIFICAR");
-		btnModificar.addActionListener(e ->{
-			if(intModif == 1) {
-				System.out.println("Modificar email");
-				if (u.getCorreo().equals(tfActual.getText())) {
-					u.setCorreo(tfNuevo.getText());
-					tfActual.setText("");
-					tfNuevo.setText("");
-					JOptionPane.showMessageDialog(null, "Datos modificados correctamente");
-				}else {
-					JOptionPane.showMessageDialog(null, "El email actual introducido no es correcto");
-				}
-				
-				
-			}else if (intModif == 2) {
-				System.out.println("Modificar tlf");
-				if (u.getTlf().equals(tfActual.getText())) {
-					u.setTlf(tfNuevo.getText());
-					tfActual.setText("");
-					tfNuevo.setText("");
-					JOptionPane.showMessageDialog(null, "Datos modificados correctamente");
-				}else {
-					JOptionPane.showMessageDialog(null, "El telefono actual introducido no es correcto");
-				}
-			}else if (intModif == 3) {
-				System.out.println("Modificar contraseña");
-				if (u.getContrasenia().equals(jpActual.getText())) {
-					u.setTlf(jpNueva.getText());
-					jpActual.setText("");
-					jpNueva.setText("");
-					JOptionPane.showMessageDialog(null, "Datos modificados correctamente");
-				}else {
-					JOptionPane.showMessageDialog(null, "La contraseña actual introducida no es correcta");
-				}
-			}
-			Tienda.guardarUsuarios(Tienda.getNomfichusuarios());
-			
-		});
+        btnModificar.addActionListener(e -> {
+            switch (intModif) {
+                case 1:
+                    if (u.getCorreo().equals(tfActual.getText())) {
+                        u.setCorreo(tfNuevo.getText());
+                        btnCorreo.setText(tfNuevo.getText());
+                        tfActual.setText("");
+                        tfNuevo.setText("");
+                        JOptionPane.showMessageDialog(null, "Datos modificados correctamente");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El email actual introducido no es correcto");
+                    }
+                    break;
+
+                case 2:
+                    if (u.getTlf().equals(tfActual.getText())) {
+                        u.setTlf(tfNuevo.getText());
+                        btnTfn.setText(tfNuevo.getText());
+                        tfActual.setText("");
+                        tfNuevo.setText("");
+                        JOptionPane.showMessageDialog(null, "Datos modificados correctamente");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El telefono actual introducido no es correcto");
+                    }
+                    break;
+
+                case 3:
+                    if (u.getContrasenia().equals(jpActual.getText())) {
+                        u.setContrasenia(jpNueva.getText());
+                        btnContrasenia.setText("*".repeat(jpNueva.getText().length()));
+                        jpActual.setText("");
+                        jpNueva.setText("");
+                        JOptionPane.showMessageDialog(null, "Datos modificados correctamente");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "La contraseña actual introducida no es correcta");
+                    }
+                    break;
+            }
+
+            Tienda.guardarUsuarios(Tienda.getNomfichusuarios());
+        });
+
 		
         JPanel pnlBoton = new JPanel(new BorderLayout());
         pnlBoton.add(btnModificar, BorderLayout.SOUTH);

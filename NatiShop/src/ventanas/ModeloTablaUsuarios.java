@@ -13,7 +13,7 @@ public class ModeloTablaUsuarios extends DefaultTableModel {
 	
 	
 	
-	private final List<String> titulos= Arrays.asList("DNI","NOMBRE","FECHA DE NACIMIENTO","CORREO");
+	private final List<String> titulos= Arrays.asList("DNI","NOMBRE","FECHA DE NACIMIENTO","CORREO", "PROVINCIA", "TELEFONO");
 	
 	public ModeloTablaUsuarios(List<Usuario> usuarios){
 		this.usuarios= usuarios;
@@ -50,6 +50,8 @@ public class ModeloTablaUsuarios extends DefaultTableModel {
 			case 1: return u.getNombre(); 
 			case 2: return u.getfNacStr();
 			case 3: return u.getCorreo();
+			case 4: return u.getProvinciaStr();
+			case 5: return u.getTlf();
 			default: return null;
 		}
 	}
