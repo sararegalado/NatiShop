@@ -165,11 +165,8 @@ public class VentanaAdministrador extends JFrame{
 	 * Mapa: estructura
 	 * Inicio de sesion admins
 	 * Ventana edit admins
-	 
-	 
-	
-	 * 
-	 * 
+	 * Admins: implemeta al heredar de Usuario ya el compare to?
+	 * Contraseña de los admin ya creados
 	  */
 	
 

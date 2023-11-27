@@ -1,0 +1,16 @@
+Nombre;Apellido;DNI,Correo;Fecha Nacimiento;Fecha Inicio Empresa;Jornada;Puesto ;
+Juan;Perez;12345678Z;juan.perez@natyshop.es;15/05/1985;01/02/2015;Jornada_Completa;Gerente;
+Ana;Gomez;87654321X;ana.gomez@natyshop.es;20/09/1990;10/07/2018;Medio_Jornada;Almacen;
+Pedro;Lopez;56789012B;pedro.lopez@natyshop.es;03/12/1982,05/03/2014;Jornada_Completa;Supervisor;
+María;Fuentes;34567890V;maria.fuentes@natyshop.es;18/07/1988;12/11/2016;Temporal;Cajero;
+Carlos;Martin;90123456A;carlos.martin@natyshop.es;05/02/1995;08/09/2019;Jornada_Completa;Almacen;
+Laura;Sanchez;78901234X;laura.sanchez@natyshop.es;14/11/1987;03/04/2013;Rebajas;Cajero;
+David;Rodriguez;23456789D;david.rodriguez@natyshop.es;30/06/1983;20/01/2017;Jornada_Completa;Cajero;
+Elena;Navarro;01234567L;elena.navarro@natyshop.es;09/04/1992,15/08/2020;Media_Jornada;Cajero;
+Francisco;Fernandez;89012345E;francisco.fernandez@natyshop.es;25/08/1980;02/06/2012;Media_Jornada;Almacen
+Sara;Regalado;90123456A;sara.regalado@natyshop.es;12/03/1998;25/10/2021;Jornada_Completa;Supervisor;
+Natalia;Gonzalez;78095678Y;natalia.gonzalez@natyshop.es;12/03/1998;25/10/2021;Jornada_Completa;Supervisor;
+Janire;Diaz de Espada;65984390N;janire.diazdeespada@natyshop.es;12/03/1998;25/10/2021;Jornada_Completa;Supervisor;
+Zaloa;Fernandez;98056789S;zaloa.fernandez@natyshop.es;12/03/1998;25/10/2021;Jornada_Completa;Supervisor;
+Anne;Beascoechea;45678901G;anne.beascoechea@natyshop.es;12/03/1998;25/10/2021;Jornada_Completa;Supervisor;
+

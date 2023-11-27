@@ -5,13 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Usuario implements Comparable<Usuario> {
-	private String dni;
-	private String nombre;
-	private Date fNac;
-	private String contrasenia;
-	private String correo;
+	protected String dni;
+	protected String nombre;
+	protected Date fNac;
+	protected String contrasenia;
+	protected String correo;
 	
-	private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	protected SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	
 	
 	public Usuario() {
