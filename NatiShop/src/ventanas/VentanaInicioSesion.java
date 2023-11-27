@@ -56,6 +56,35 @@ public class VentanaInicioSesion extends JFrame {
 	private static List<Articulo> carrito;
 	
 	
+	
+	public static Usuario getUsuario() {
+		return usuario;
+	}
+
+
+
+
+	public static void setUsuario(Usuario usuario) {
+		VentanaInicioSesion.usuario = usuario;
+	}
+
+
+
+
+	public static List<Articulo> getCarrito() {
+		return carrito;
+	}
+
+
+
+
+	public static void setCarrito(List<Articulo> carrito) {
+		VentanaInicioSesion.carrito = carrito;
+	}
+
+
+
+
 	public VentanaInicioSesion(JFrame va) {
 		vActual = this;
 		vAnterior = va;
@@ -75,7 +104,7 @@ public class VentanaInicioSesion extends JFrame {
 		
 		JLabel lblTitulo = new JLabel("ACCEDE A TU CUENTA");
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitulo.setBounds(17, 6, 226, 23);
+		lblTitulo.setBounds(20, 11, 226, 23);
 		lblTitulo.setFont(new Font("Baskerville", Font.PLAIN, 20));
 		pnlInicioSesion.add(lblTitulo);
 		
@@ -85,11 +114,11 @@ public class VentanaInicioSesion extends JFrame {
 		pnlInicioSesion.add(pnlDatos);
 		pnlDatos.setLayout(null);
 		
-		JLabel lblEmail = new JLabel("Email");
-		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEmail.setFont(new Font("Baskerville", Font.PLAIN, 15));
-		lblEmail.setBounds(55, 24, 61, 16);
-		pnlDatos.add(lblEmail);
+		JLabel lblNombre = new JLabel("Nombre de usuario");
+		lblNombre.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNombre.setFont(new Font("Baskerville", Font.PLAIN, 15));
+		lblNombre.setBounds(22, 24, 141, 16);
+		pnlDatos.add(lblNombre);
 		
 		tfNombre = new JTextField();
 		tfNombre.setBounds(22, 51, 141, 26);
@@ -106,7 +135,7 @@ public class VentanaInicioSesion extends JFrame {
 		
 		JLabel lblContrasena = new JLabel("Contraseña");
 		lblContrasena.setFont(new Font("Dialog", Font.PLAIN, 15));
-		lblContrasena.setBounds(54, 88, 79, 26);
+		lblContrasena.setBounds(50, 88, 79, 26);
 		pnlDatos.add(lblContrasena);
 		
 		JButton btnAccederRegistro = new JButton("¿No tienes cuenta? Haz click aqui para registrarte");
@@ -142,28 +171,22 @@ public class VentanaInicioSesion extends JFrame {
 //		}
 		
 		btnIniciarSes.addActionListener((e)->{
-			String dni = tfNombre.getText();
+			String nom = tfNombre.getText();
 			String con = tfContrasena.getText();
-			Usuario u = Tienda.buscarUsuario(dni);
-			if(u == null) {
+			if (Tienda.buscarUsuarioPorNomCon(nom, con) != null) {
+				Usuario u = Tienda.buscarUsuarioPorNomCon(nom, con);
+				JOptionPane.showMessageDialog(null, "Bienvenido!","SESIÓN INICIADA",JOptionPane.INFORMATION_MESSAGE);
+				usuario = u; //Guardamos la información del cliente que ha iniciado sesión
+				carrito = new ArrayList<>(); //Inicializamos su carrito a una lista vacía
+				VentanaPrincipal.setUsuarioHaIniciadoSesion(true);
+				VentanaPrincipal.asignarNombreUsuario(u);
+				vActual.setVisible(false);
+			}else {
 				JOptionPane.showMessageDialog(null, "Para poder iniciar sesión tienes que estar registrado","ERROR",JOptionPane.ERROR_MESSAGE);
 				tfNombre.setText("");
 				tfContrasena.setText("");
-			}else {
-				if(u.getContrasenia().equals(con)) {
-					JOptionPane.showMessageDialog(null, "Bienvenido!","SESIÓN INICIADA",JOptionPane.INFORMATION_MESSAGE);
-					usuario = u; //Guardamos la información del cliente que ha iniciado sesión
-					carrito = new ArrayList<>(); //Inicializamos su carrito a una lista vacía
-//					VentanaPrincipal.asignarNombreUsuario(u);
-					new VentanaPrincipal(vActual);
-					vActual.setVisible(false);
-					
-
-				}else {
-					JOptionPane.showMessageDialog(null, "Contraseña incorrecta","ERROR",JOptionPane.WARNING_MESSAGE);
-					tfContrasena.setText("");
-				}
 			}
+			
 		});
 		
 		//setAlwaysOnTop(rootPaneCheckingEnabled);

@@ -61,11 +61,38 @@ public class VentanaPrincipal extends JFrame {
 	private JPanel contentPane;
 	private JTextField tfBuscador;
 	
-	private boolean usuarioHaIniciadoSesion = false;
+	private static Tienda tienda = new Tienda();
 	
+	public static Tienda getTienda() {
+		return tienda;
+	}
 	
-    private static JLabel lblNomU;
+	public static void setTienda(Tienda t) {
+		tienda = t;
+	}
 
+	private static boolean usuarioHaIniciadoSesion = false;
+	
+	
+    public static boolean isUsuarioHaIniciadoSesion() {
+		return usuarioHaIniciadoSesion;
+	}
+
+
+	public static void setUsuarioHaIniciadoSesion(boolean uHaIniciadoSesion) {
+		usuarioHaIniciadoSesion = uHaIniciadoSesion;
+	}
+
+
+	private static JLabel lblNomU;
+	
+	public static JLabel getLblNomU() {
+		return lblNomU;
+	}
+
+	public static void setLblNomU(JLabel lblNomU) {
+		VentanaPrincipal.lblNomU = lblNomU;
+	}
 
 	public VentanaPrincipal(JFrame va) {
 		vActual = this;
@@ -181,54 +208,24 @@ public class VentanaPrincipal extends JFrame {
         contentPane.add(tfBuscador);
         tfBuscador.setColumns(10);
 
-      /*  lblUsuario.addMouseListener(new MouseAdapter() {
+      lblUsuario.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (usuarioHaIniciadoSesion) {
-                	new VentanaDatosCliente(vActual);
+                	Usuario u = VentanaInicioSesion.getUsuario();
+                	new VentanaDatosUsuario2(vActual, u);
                 } else {
                     new VentanaInicioSesion(vActual);
-                    // vActual.setVisible(false);
                 }
             }
-        });*/
+        });
         
         lblNomU = new JLabel("Iniciar Sesión");
         lblNomU.setHorizontalAlignment(SwingConstants.CENTER);
         lblNomU.setVerticalAlignment(SwingConstants.TOP);
         lblNomU.setBounds(1138, 67, 87, 19);
         contentPane.add(lblNomU);
-        
-        
-        
-        lblUsuario.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (! existeUsuario()) {
-                	new VentanaInicioSesion(vActual);
-                } else {
-                   // new VentanaDatosCliente(vActual);
-                    // vActual.setVisible(false);
-                }
-            }
-        
-        });
-     
 
-//        	@Override
-//        	public void mouseClicked(MouseEvent e) {
-//        		if (! existeUsuario()) { //si no existe usuario
-//        			new VentanaInicioSesion(vActual);
-//        		}
-//        		else {
-//        			for (Usuario u : Tienda.getUsuarios()) { //los nombres son unicos, no hay 2 personas con el mismo nombre
-//        				if(u.getNombre() == lblNomU.getText()) {
-//        					JFrame n = new JFrame();
-//        				}
-//        			}
-//        		}
-        		 
-        
      
         //LISTENERS DE LOS ITEMS DE HOMBRE
         
@@ -459,20 +456,18 @@ public class VentanaPrincipal extends JFrame {
 	}
 	
 
-//	public static void asignarNombreUsuario(Usuario u) {
-//		lblNomU.setText(u.getNombre());
-//	};
-
-
-	/*public boolean usuarioHaIniciadoSesion() {
+	public boolean usuarioHaIniciadoSesion() {
 	    return usuarioHaIniciadoSesion;
-	}*/
+	}
 
 
 	public static void asignarNombreUsuario(Usuario u) {
 		lblNomU.setText(u.getNombre());
 	};
 	
+	public static void eliminarNombreUsuario() {
+		lblNomU.setText("Iniciar sesión");
+	};
 	
 	public boolean existeUsuario() {
 		boolean existe = false;

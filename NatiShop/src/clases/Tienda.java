@@ -12,14 +12,16 @@ public class Tienda {
 	private static Set<Zapato> zapatos = new TreeSet<>();
 	
 
-
-
 	private static List<Usuario> usuarios = new ArrayList<>();
 	private static HashMap<Usuario, ArrayList<Articulo>> compras = new HashMap<>();
 	private static HashMap<Date, HashMap<Usuario, ArrayList<Articulo>>> comprasPorUsuario = new HashMap<>();
-	//private static final String nomfichUsuarios = "Usuarios.csv";
+	
+	private static final String nomfichUsuarios = "Usuarios.csv";
 
-	//Getters y setters
+	public static String getNomfichusuarios() {
+		return nomfichUsuarios;
+	}
+
 	public static HashMap<Usuario, ArrayList<Articulo>> getCompras() {
 		return compras;
 	}
@@ -120,8 +122,10 @@ public class Tienda {
 					String nom = partes[1];
 					String fNac = partes[2];
 					String correo = partes[3];
-					String con = partes[4];
-					Usuario u = new Usuario(dni, nom, fNac, correo, con);
+					String tfn = partes [4];
+					String p = partes[5];
+					String con = partes[6];
+					Usuario u = new Usuario(dni, nom, fNac, correo, tfn, p, con);
 					if(buscarUsuario(dni) == null) {
 						usuarios.add(u);
 					}
@@ -143,7 +147,7 @@ public class Tienda {
 		try {
 			PrintWriter pw = new PrintWriter(nomfichUsuarios);
 			for(Usuario u : usuarios) {
-				pw.println(u.getDni()+";"+u.getNombre()+";"+u.getfNacStr()+";"+u.getCorreo()+";"+u.getContrasenia());
+				pw.println(u.getDni()+";"+u.getNombre()+";"+u.getfNacStr()+";"+u.getCorreo()+";"+u.getTlf()+";"+u.getProvinciaStr()+";"+u.getContrasenia());
 			}
 			pw.flush();
 			pw.close();
@@ -173,6 +177,25 @@ public class Tienda {
 		if(enc) {
 			return c;
 		}else{
+			return null;
+		}
+	}
+	
+	public static Usuario buscarUsuarioPorNomCon(String nombre, String con) {
+		boolean enc = false;
+		int pos = 0;
+		Usuario u = null;
+		while(!enc && pos<usuarios.size()) {
+			u = usuarios.get(pos);
+			if (u.getNombre().equals(nombre) && u.getContrasenia().equals(con)) {
+				enc = true;
+			}else {
+				pos++;
+			}	
+		}
+		if(enc) {
+			return u;
+		}else {
 			return null;
 		}
 	}
