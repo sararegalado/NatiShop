@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Usuario implements Comparable<Usuario> {
+<<<<<<< HEAD
 	private String dni;
 	private String nombre;
 	private Date fNac;
@@ -13,8 +14,15 @@ public class Usuario implements Comparable<Usuario> {
 	private Provincia provincia;
 	private String contrasenia;
 	private String correo;
+=======
+	protected String dni;
+	protected String nombre;
+	protected Date fNac;
+	protected String contrasenia;
+	protected String correo;
+>>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
 	
-	private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	protected SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	
 	
 	public Usuario() {
