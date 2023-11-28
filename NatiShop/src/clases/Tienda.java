@@ -31,6 +31,10 @@ public class Tienda {
 	}
 	
 	
+	
+	
+	
+
 	/**
 	 * Método que guarda todas las camisetas de articulos en un HashSet
 	 */
@@ -225,10 +229,10 @@ public class Tienda {
 				if (Categoria.valueOf(categoria) == Categoria.CAMISETA) {
 					Camiseta c = new Camiseta(id, nom, Integer.parseInt(unidades), Double.parseDouble(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto,Categoria.valueOf(categoria));
 					aniadirArticulos(c);
+					
 				}
 				else if (Categoria.valueOf(categoria) == Categoria.JERSEY) {
 					Jersey j = new Jersey(id, nom, Integer.parseInt(unidades), Double.parseDouble(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
-					aniadirArticulos(j);
 				} 
 				else if (Categoria.valueOf(categoria) == Categoria.PANTALON) {
 					Pantalon p = new Pantalon(id, nom, Integer.parseInt(unidades), Double.parseDouble(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
@@ -237,9 +241,11 @@ public class Tienda {
 				else {
 					Zapato z = new Zapato(id, nom, Integer.parseInt(unidades), Double.parseDouble(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
 					aniadirArticulos(z);
+					} 
+
 				}
 				
-			}
+			
 			sc.close();
 		} catch (FileNotFoundException e) {
 			
@@ -266,6 +272,14 @@ public class Tienda {
 	}
 	
 	
-	
+	public static TreeSet<Talla> tallasPorArticulo(Articulo a) {
+		TreeSet<Talla> tallasPorArticulo = new TreeSet<>();
+		for (Articulo art : getArticulos()) {
+			if(art.getFoto()==a.getFoto()) {
+				tallasPorArticulo.add(art.getTalla());
+			}
+		}
+		return tallasPorArticulo;
+	}
 	
 }

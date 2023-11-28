@@ -58,7 +58,9 @@ public class VentanaPrincipal extends JFrame {
 	
 	private JPanel pnlArticulos;
 	
+	
 	private JPanel contentPane;
+	
 	private JTextField tfBuscador;
 	
 	private static Tienda tienda = new Tienda();
@@ -70,6 +72,8 @@ public class VentanaPrincipal extends JFrame {
 	public static void setTienda(Tienda t) {
 		tienda = t;
 	}
+	
+
 
 	private static boolean usuarioHaIniciadoSesion = false;
 	
@@ -236,9 +240,10 @@ public class VentanaPrincipal extends JFrame {
         		limpiarPanel(pnlArticulos);
         		
         		Set<Camiseta> camiH = new TreeSet<>();
+        		ArrayList<String> fCH = new ArrayList<>();
         		for (Camiseta c: Tienda.getCamisetas()) {
-        			if (c.getGenero()== Genero.HOMBRE) {
-        				camiH.add(c);
+        			if (c.getGenero()== Genero.HOMBRE ) {
+        				camiH.add(c);	
         			}
         		}
         		setCamisetas(camiH,pnlArticulos);
@@ -489,6 +494,9 @@ public class VentanaPrincipal extends JFrame {
 		for (Camiseta a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
 			panel.add(pnlArticulo);
+			
+			
+			
 //			System.out.println("Añadido");
 		}	
 	}
@@ -551,6 +559,17 @@ public class VentanaPrincipal extends JFrame {
 		panelArticulo.setBorder(new LineBorder(Color.BLACK));
 		
 		panelArticulo.setBackground(Color.WHITE);
+		
+		panelArticulo.addMouseListener(new MouseAdapter() {
+			
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				VentanaProducto v = new VentanaProducto(articulo);
+				v.setVisible(true);
+				
+			}
+		});
 		
 		return panelArticulo;
 
