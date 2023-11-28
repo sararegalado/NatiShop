@@ -1,6 +1,7 @@
 package clases;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Tienda {
@@ -14,7 +15,9 @@ public class Tienda {
 
 	private static List<Usuario> usuarios = new ArrayList<>();
 	private static HashMap<Usuario, ArrayList<Articulo>> compras = new HashMap<>();
-	private static HashMap<Date, HashMap<Usuario, ArrayList<Articulo>>> comprasPorUsuario = new HashMap<>();
+	private static HashMap<String, HashMap<String, ArrayList<Articulo>>> comprasPorUsuario = new HashMap<>();
+	private static HashMap<String, Administrador>Administradores = new HashMap<>();
+	//mapa admin (clave: correo, valor admin)
 	
 	private static final String nomfichUsuarios = "Usuarios.csv";
 
@@ -91,17 +94,41 @@ public class Tienda {
 	
 	
 
+	public static HashMap<String, HashMap<String, ArrayList<Articulo>>> getComprasPorUsuario() {
+		return comprasPorUsuario;
+	}
+
 	/**
 	 * Método que añade un nuevo articulo comprado a la lista de articulos del cliente 
 	 * @param u Usuario que realiza las compras en NatyShop
 	 * @param a Articulo comprado por el usuario que va a ser añadido a la lista de articulos 
 	 */
-	
+	//METODO QUE HAY QUE AÑADIR AL ACTION LISTENER DEL BOTON COMPRAR
 	public static void aniadirCompraUsuario(Usuario u, Articulo a) {
 		if(! compras.containsKey(u)) {
 			compras.put(u, new ArrayList<>());
 		}
 		compras.get(u).add(a);
+		
+		if(!comprasPorUsuario.containsKey(u)) {
+			comprasPorUsuario.put(u.getDni(), new HashMap<>());
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Date fActual = new Date();
+		String fechaCompra = sdf.format(fActual);
+		if(!comprasPorUsuario.get(u.getDni()).containsKey(fechaCompra)) {
+			comprasPorUsuario.get(u.getDni()).put(fechaCompra, new ArrayList<>());
+		}
+		comprasPorUsuario.get(u.getDni()).get(fechaCompra).add(a);
+		
+	}
+	/**
+	 * Metodo qye cargar el fichero de Admins en un mapa de Administradore
+	 * @param nomfichAdmins
+	 */
+	
+	public static void cargarAdministradores(String nomfichAdmins) {
+		
 	}
 
 	/**
@@ -128,6 +155,7 @@ public class Tienda {
 					Usuario u = new Usuario(dni, nom, fNac, correo, tfn, p, con);
 					if(buscarUsuario(dni) == null) {
 						usuarios.add(u);
+						comprasPorUsuario.putIfAbsent(u.getDni(), new HashMap<>());
 					}
 				}
 				

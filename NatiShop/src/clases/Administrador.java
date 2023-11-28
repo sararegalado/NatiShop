@@ -16,9 +16,8 @@ public class Administrador extends Usuario {
 		super();
 		
 	}
-	
-	public Administrador(String dni, String nombre, Date fNac, String correo, String contrasenia, String apellido, Date FInicEmpresa,Jornada jornadaLaboral,Puesto puesto ) {
-		super();
+	public Administrador(String dni, String nombre, Date fNac, String correo, Provincia provincia, String tfno, String contrasenia, String apellido, Date FInicEmpresa,Jornada jornadaLaboral,Puesto puesto ) {
+		super(dni, nombre, fNac, correo, tfno, provincia, contrasenia);
 		this.apellido= apellido;
 		this.FInicEmpresa= FInicEmpresa;
 		this.jornadaLaboral= jornadaLaboral;
@@ -39,8 +38,8 @@ public class Administrador extends Usuario {
 	 * @param puesto: enum
 	 */
 
-	public Administrador(String dni, String nombre, String fNac, String correo, String contrasenia, String apellido, String FInicEmpresa,Jornada jornadaLaboral,Puesto puesto) {
-		super();
+	public Administrador(String dni, String nombre, String fNac, String correo, String provincia, String tfno,String contrasenia, String apellido, String FInicEmpresa,Jornada jornadaLaboral,Puesto puesto) {
+		super(dni, nombre, fNac, correo, tfno, provincia, contrasenia);
 		this.apellido= apellido;
 		try {
 			this.FInicEmpresa= sdf.parse(FInicEmpresa);
