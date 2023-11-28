@@ -1,5 +1,8 @@
 package clases;
 
+import java.util.Collections;
+import java.util.TreeSet;
+
 
 public class Articulo implements Comparable<Articulo>{
 	protected String id;
@@ -86,5 +89,7 @@ public class Articulo implements Comparable<Articulo>{
 		
 		return this.id.compareTo(o.id);
 	}
-
+	
+	
+	
 }
