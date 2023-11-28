@@ -236,12 +236,10 @@ public class VentanaPrincipal extends JFrame {
         		limpiarPanel(pnlArticulos);
         		
         		Set<Camiseta> camiH = new TreeSet<>();
+        		ArrayList<String> fCH = new ArrayList<>();
         		for (Camiseta c: Tienda.getCamisetas()) {
-        			if (c.getGenero()== Genero.HOMBRE) {
-//        				for (Camiseta cam : camiH) {
-//        					if(cam.getFoto())
-//        				}
-        				camiH.add(c);
+        			if (c.getGenero()== Genero.HOMBRE ) {
+        				camiH.add(c);	
         			}
         		}
         		setCamisetas(camiH,pnlArticulos);

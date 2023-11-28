@@ -237,9 +237,11 @@ public class Tienda {
 				else {
 					Zapato z = new Zapato(id, nom, Integer.parseInt(unidades), Double.parseDouble(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
 					aniadirArticulos(z);
+					} 
+
 				}
 				
-			}
+			
 			sc.close();
 		} catch (FileNotFoundException e) {
 			
