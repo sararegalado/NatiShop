@@ -324,14 +324,6 @@ public class Tienda {
 	}
 	
 	
-	public static TreeSet<Talla> tallasPorArticulo(Articulo a) {
-		TreeSet<Talla> tallasPorArticulo = new TreeSet<>();
-		for (Articulo art : getArticulos()) {
-			if(art.getFoto()==a.getFoto()) {
-				tallasPorArticulo.add(art.getTalla());
-			}
-		}
-		return tallasPorArticulo;
-	}
+	
 	
 }
