@@ -132,6 +132,30 @@ public class Tienda {
 	 */
 	
 	public static void cargarAdministradores(String nomfichAdmins) {
+		Scanner sc;
+		try {
+			sc = new Scanner(new FileReader(nomfichAdmins));
+			String linea;
+			while(sc.hasNext()){
+				linea= sc.nextLine();
+				String[] partes = linea.split(";");
+				if(partes.length > 0) {
+					String nom = partes[0];
+					String apellido= partes[1];
+					String dni= partes[2];
+					String  correo = partes[3];
+					String FNac = partes[4];
+					String Finicio = partes[5];
+					
+				}
+				}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+			
+		
 		
 	}
 

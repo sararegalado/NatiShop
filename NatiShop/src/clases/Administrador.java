@@ -16,6 +16,7 @@ public class Administrador extends Usuario {
 		super();
 		
 	}
+	
 	public Administrador(String dni, String nombre, Date fNac, String correo, Provincia provincia, String tfno, String contrasenia, String apellido, Date FInicEmpresa,Jornada jornadaLaboral,Puesto puesto ) {
 		super(dni, nombre, fNac, correo, tfno, provincia, contrasenia);
 		this.apellido= apellido;
