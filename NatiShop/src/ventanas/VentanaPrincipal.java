@@ -238,6 +238,9 @@ public class VentanaPrincipal extends JFrame {
         		Set<Camiseta> camiH = new TreeSet<>();
         		for (Camiseta c: Tienda.getCamisetas()) {
         			if (c.getGenero()== Genero.HOMBRE) {
+//        				for (Camiseta cam : camiH) {
+//        					if(cam.getFoto())
+//        				}
         				camiH.add(c);
         			}
         		}
@@ -489,6 +492,7 @@ public class VentanaPrincipal extends JFrame {
 		for (Camiseta a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
 			panel.add(pnlArticulo);
+			
 //			System.out.println("Añadido");
 		}	
 	}
@@ -551,6 +555,17 @@ public class VentanaPrincipal extends JFrame {
 		panelArticulo.setBorder(new LineBorder(Color.BLACK));
 		
 		panelArticulo.setBackground(Color.WHITE);
+		
+		panelArticulo.addMouseListener(new MouseAdapter() {
+			
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				VentanaProducto v = new VentanaProducto(articulo);
+				v.setVisible(true);
+				
+			}
+		});
 		
 		return panelArticulo;
 
