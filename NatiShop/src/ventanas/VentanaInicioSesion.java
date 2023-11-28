@@ -164,7 +164,7 @@ public class VentanaInicioSesion extends JFrame {
 		 * y por lo tanto la ventana que se ejecutara no será la principal sino la Ventana Admin conn otras funciones distintas
 		 */
 //		nombreUsuario= textNom.getText();
-//		if(nombreUsuario.indexOf("Natyshop")!= -1) {
+//		if(Tienda.getmapaAdmin().containkey(nom) {
 //			new VentanaAdmin();
 //		}else {
 //			new VentanaPrincipal();

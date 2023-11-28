@@ -14,6 +14,7 @@ import javax.swing.event.ChangeListener;
 
 import com.toedter.calendar.JCalendar;
 
+import clases.Articulo;
 import clases.Tienda;
 import clases.Usuario;
 
@@ -168,7 +169,47 @@ public class VentanaAdministrador extends JFrame{
 		//pnlCentro.add(sTablaUsuarios);
 		pnlCentro.setVisible(false);
 		
-		
+		tablaUsuarios.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Point p = e.getPoint();
+				int fila = tablaUsuarios.rowAtPoint(p);
+				String dni = tablaUsuarios.getModel().getValueAt(fila, 0).toString();
+				String texto = "";
+				for(String fecha: Tienda.getComprasPorUsuario().get(dni).keySet()) {
+					texto = "FECHA: "+fecha + "\n";
+					for(Articulo a: Tienda.getComprasPorUsuario().get(dni).get(fecha)) {
+						texto = texto + a + "\n";
+					}
+				}
+				JOptionPane.showMessageDialog(null, texto);
+			}
+		});
 		
 		setVisible(true);		
 	}
@@ -194,7 +235,6 @@ public class VentanaAdministrador extends JFrame{
 	
 	
 	/*ERRORES/TAREAS
-	 * Mapa: estructura
 	 * Inicio de sesion admins
 	 * Ventana edit admins
 	 * Admins: implemeta al heredar de Usuario ya el compare to?

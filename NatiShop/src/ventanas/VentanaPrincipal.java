@@ -560,16 +560,8 @@ public class VentanaPrincipal extends JFrame {
 		
 		panelArticulo.setBackground(Color.WHITE);
 		
-		panelArticulo.addMouseListener(new MouseAdapter() {
-			
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				VentanaProducto v = new VentanaProducto(articulo);
-				v.setVisible(true);
-				
-			}
-		});
+		
+		
 		
 		return panelArticulo;
 
