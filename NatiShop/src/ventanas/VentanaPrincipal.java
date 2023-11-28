@@ -58,7 +58,9 @@ public class VentanaPrincipal extends JFrame {
 	
 	private JPanel pnlArticulos;
 	
+	
 	private JPanel contentPane;
+	
 	private JTextField tfBuscador;
 	
 	private static Tienda tienda = new Tienda();
@@ -70,6 +72,8 @@ public class VentanaPrincipal extends JFrame {
 	public static void setTienda(Tienda t) {
 		tienda = t;
 	}
+	
+
 
 	private static boolean usuarioHaIniciadoSesion = false;
 	
@@ -490,6 +494,8 @@ public class VentanaPrincipal extends JFrame {
 		for (Camiseta a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
 			panel.add(pnlArticulo);
+			
+			
 			
 //			System.out.println("Añadido");
 		}	

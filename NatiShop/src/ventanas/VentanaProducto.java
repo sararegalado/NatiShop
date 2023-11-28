@@ -86,7 +86,6 @@ public class VentanaProducto extends JFrame {
         lblTallas.setFont(new Font("Baskerville", Font.PLAIN, 20));
         JComboBox<Talla> cbTallas = new JComboBox<Talla>();
         TreeSet<Talla> tallasTree = Tienda.tallasPorArticulo(art);
-        
         for (Talla t : tallasTree) {
         	cbTallas.addItem(t);
         	
