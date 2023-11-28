@@ -6,15 +6,15 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Usuario implements Comparable<Usuario> {
-	private String dni;
-	private String nombre;
-	private Date fNac;
-	private String tlf;
-	private Provincia provincia;
-	private String contrasenia;
-	private String correo;
+	protected String dni;
+	protected String nombre;
+	protected Date fNac;
+	protected String tlf;
+	protected Provincia provincia;
+	protected String contrasenia;
+	protected String correo;
 	
-	private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	protected SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	
 	
 	public Usuario() {

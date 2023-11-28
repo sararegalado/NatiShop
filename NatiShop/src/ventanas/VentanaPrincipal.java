@@ -97,7 +97,6 @@ public class VentanaPrincipal extends JFrame {
 	public VentanaPrincipal(JFrame va) {
 		vActual = this;
 		vAnterior = va;
-		setTitle("Carrito de Compras");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1042, 693);
 		contentPane = new JPanel();
@@ -175,13 +174,13 @@ public class VentanaPrincipal extends JFrame {
         menuItemCalzN.setFont(new Font("Baskerville", Font.PLAIN, 14));
         menuNinos.add(menuItemCalzN);
         
-        JLabel lblLogo = new JLabel("NatiShop");
-        lblLogo.setBounds(72, 24, 258, 72);
+        JLabel lblLogo = new JLabel("");
+        lblLogo.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/nombreTienda.png")));
+        lblLogo.setBounds(62, 11, 303, 80);
         contentPane.add(lblLogo);
         lblLogo.setVerticalAlignment(SwingConstants.BOTTOM);
         lblLogo.setHorizontalAlignment(SwingConstants.LEFT);
         lblLogo.setFont(new Font("Baskerville", Font.PLAIN, 45));
-        
 
         pnlArticulos = new JPanel();
         pnlArticulos.setBounds(72, 159, 1300, 490);
@@ -213,7 +212,7 @@ public class VentanaPrincipal extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 if (usuarioHaIniciadoSesion) {
                 	Usuario u = VentanaInicioSesion.getUsuario();
-                	new VentanaDatosUsuario2(vActual, u);
+                	new VentanaDatosUsuario(vActual, u);
                 } else {
                     new VentanaInicioSesion(vActual);
                 }

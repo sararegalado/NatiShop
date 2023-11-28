@@ -3,6 +3,7 @@ package ventanas;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -11,10 +12,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.toedter.calendar.JCalendar;
+
 import clases.Tienda;
 import clases.Usuario;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -22,10 +26,10 @@ import java.util.List;
 public class VentanaAdministrador extends JFrame{
 	private JPanel pnlOesteMenu,pnlCentro,pnlOesteArriba;
 	private JMenuBar menuBarAdmin;
-	private JMenu menuUsuarios,MenuArticulos, MenuEstadisticas;
-	private JMenuItem mItemRegistros,mItemArticulos,mItemStock,mItemGraficos;
-	private JLabel lblfoto;
-	private Button btnDesplegar;
+	private JMenu menuUsuarios,menuArticulos, menuEstadisticas, menuCompras;
+	private JMenuItem mItemRegistros,mItemArticulos,mItemStock,mItemCompras,mItemGraficos;
+	private JLabel lblFoto;
+	private JButton btnDesplegar;
 	
 	private JTable tablaUsuarios;
 	private ModeloTablaUsuarios mUsuarios;
@@ -39,19 +43,19 @@ public class VentanaAdministrador extends JFrame{
 		getContentPane().setLayout(new BorderLayout());
 	
 		
-		JPanel pnlOesteMenu= new JPanel();
+		pnlOesteMenu= new JPanel();
 		pnlOesteMenu.setLayout(new GridLayout(2,1));
 		pnlOesteMenu.setPreferredSize(new Dimension(225,500));
 		getContentPane().add(pnlOesteMenu, BorderLayout.WEST);
 		pnlOesteMenu.setBackground(Color.WHITE);
 		
-		JPanel pnlOesteArriba= new JPanel();
+		pnlOesteArriba= new JPanel();
 		pnlOesteArriba.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnlOesteArriba.setBackground(Color.WHITE);
 		this.add(pnlOesteArriba, BorderLayout.NORTH);
 		
 		
-		JButton btnDesplegar = new JButton();
+		btnDesplegar = new JButton();
 		btnDesplegar.setBackground(Color.WHITE);
 		btnDesplegar.setPreferredSize(new Dimension(27,27));
 		pnlOesteArriba.add(btnDesplegar);
@@ -68,33 +72,30 @@ public class VentanaAdministrador extends JFrame{
 		});
 		
 		
-		
-
-
-		
-		JLabel lblFoto= new JLabel("");
+		lblFoto= new JLabel("");
 		pnlOesteMenu.add(lblFoto, BorderLayout.CENTER);
 		lblFoto.setIcon(new ImageIcon(VentanaAdministrador.class.getResource("/imagenes/Admin.png")));
 		lblFoto.setHorizontalAlignment(JLabel.CENTER);
         lblFoto.setVerticalAlignment(JLabel.CENTER);
-		
+        
+        
 		
 		pnlCentro = new JPanel();
 		getContentPane().add(pnlCentro, BorderLayout.CENTER);
 		pnlCentro.setLayout(new GridLayout(1,1));
 		
 		
-		JMenuBar menuBarAdmin= new JMenuBar();
+		menuBarAdmin= new JMenuBar();
 		pnlOesteMenu.add(menuBarAdmin);
 		menuBarAdmin.setFont(new Font("Baskerville", Font.PLAIN, 14));
 		menuBarAdmin.setLayout(new GridLayout(5,1));
 		
 		
-		JMenu menuUsuarios = new JMenu("USUARIOS");
+		menuUsuarios = new JMenu("USUARIOS");
 		menuUsuarios.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 15));
 		menuBarAdmin.add(menuUsuarios);
 		
-		JMenuItem mItemRegistros = new JMenuItem("USUARIOS REGISTRADOS");
+		mItemRegistros = new JMenuItem("USUARIOS REGISTRADOS");
 		mItemRegistros.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 15));
 		menuUsuarios.add(mItemRegistros);
 		mItemRegistros.addActionListener(new ActionListener() {
@@ -105,6 +106,9 @@ public class VentanaAdministrador extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				pnlCentro.removeAll();
+				pnlCentro.revalidate();
+				pnlCentro.repaint();
 				cargarTablaUsuarios();
 				System.out.println("PULSANDO");
 				
@@ -112,33 +116,56 @@ public class VentanaAdministrador extends JFrame{
 			
 		});
 		
-		JMenu MenuArticulos = new JMenu("ARTICULOS");
-		MenuArticulos.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 15));
-		menuBarAdmin.add(MenuArticulos);
+		menuArticulos = new JMenu("ARTICULOS");
+		menuArticulos.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 15));
+		menuBarAdmin.add(menuArticulos);
 		
 		
-		JMenuItem mItemArticulos = new JMenuItem("ARTICULOS DISPONIBLES");
+		mItemArticulos = new JMenuItem("ARTICULOS DISPONIBLES");
 		mItemArticulos.setFont(new Font("Calibri", Font.BOLD, 15));
-		MenuArticulos.add(mItemArticulos);
+		menuArticulos.add(mItemArticulos);
 		
 		
-		JMenuItem mItemStock = new JMenuItem("GESTION DE STOCK");
+		mItemStock = new JMenuItem("GESTION DE STOCK");
 		mItemStock.setFont(new Font("Calibri", Font.BOLD, 15));
-		MenuArticulos.add(mItemStock);
+		menuArticulos.add(mItemStock);
+		
+		//Janire
+		menuCompras = new JMenu("COMPRAS");
+		menuUsuarios.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 15));
+		menuBarAdmin.add(menuCompras);
+		
+		mItemCompras = new JMenuItem("VER COMPRAS");
+		mItemCompras.setFont(new Font("Calibri", Font.BOLD, 15));
+		menuCompras.add(mItemCompras);
 		
 		
-		JMenu MenuEstadisticas = new JMenu("ESTADISTICAS");
-		MenuEstadisticas.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 15));
-		menuBarAdmin.add(MenuEstadisticas);
+		mItemCompras.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pnlCentro.removeAll();
+				pnlCentro.revalidate();
+				pnlCentro.repaint();
+				cargarCompras();
+				
+			}
+		});
 		
-		JMenuItem mItemGraficos = new JMenuItem("Graficos");
+		
+		
+		menuEstadisticas = new JMenu("ESTADISTICAS");
+		menuEstadisticas.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 15));
+		menuBarAdmin.add(menuEstadisticas);
+		
+		mItemGraficos = new JMenuItem("Graficos");
 		mItemGraficos.setFont(new Font("Calibri", Font.BOLD, 15));
-		MenuEstadisticas.add(mItemGraficos);
+		menuEstadisticas.add(mItemGraficos);
 		
 		mUsuarios = new ModeloTablaUsuarios(new ArrayList<>());
 		tablaUsuarios = new JTable(mUsuarios);
 		sTablaUsuarios = new JScrollPane(tablaUsuarios);
-		pnlCentro.add(sTablaUsuarios);
+		//pnlCentro.add(sTablaUsuarios);
 		pnlCentro.setVisible(false);
 		
 		
@@ -155,16 +182,23 @@ public class VentanaAdministrador extends JFrame{
 		Tienda.cargarUsuarios("Usuarios.csv");
 		List<Usuario>lista = Tienda.getUsuarios();
 		tablaUsuarios.setModel(new ModeloTablaUsuarios(lista));
+		pnlCentro.add(sTablaUsuarios);
+		pnlCentro.setVisible(true);
+	}
+	
+	public void cargarCompras() {
+		JCalendar jcCompras = new JCalendar(new Date());
+		pnlCentro.add(jcCompras);
 		pnlCentro.setVisible(true);
 	}
 	
 	
-	/*ERRORES
-	 
-	 
-	
-	 * 
-	 * 
+	/*ERRORES/TAREAS
+	 * Mapa: estructura
+	 * Inicio de sesion admins
+	 * Ventana edit admins
+	 * Admins: implemeta al heredar de Usuario ya el compare to?
+	 * Contraseña de los admin ya creados
 	  */
 	
 

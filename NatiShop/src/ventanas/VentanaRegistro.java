@@ -60,7 +60,7 @@ public class VentanaRegistro extends JFrame{
 		
 		pnlIzq = new JPanel(new GridLayout(12, 1));
 		
-		lblNombre = new JLabel("Nombre de usuaro");
+		lblNombre = new JLabel("Nombre de usuario");
 		lblDNI = new JLabel("DNI");
 		lblEmail = new JLabel("Email");
 		lblTlf = new JLabel ("Telefono");
@@ -117,8 +117,6 @@ public class VentanaRegistro extends JFrame{
 		pnlDcha.add(pnlBoton);
 	
 		pnlDatos.add(pnlDcha);
-		
-//		Tienda t = VentanaPrincipal.getTienda();
 		
 		Tienda.cargarUsuarios(Tienda.getNomfichusuarios());
 		
