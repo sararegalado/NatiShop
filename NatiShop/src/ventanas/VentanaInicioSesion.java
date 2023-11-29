@@ -187,6 +187,7 @@ public class VentanaInicioSesion extends JFrame {
 				tfContrasena.setText("");
 			}
 			
+			
 		});
 		
 		//setAlwaysOnTop(rootPaneCheckingEnabled);
