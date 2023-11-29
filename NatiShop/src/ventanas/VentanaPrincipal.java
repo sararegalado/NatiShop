@@ -191,18 +191,9 @@ public class VentanaPrincipal extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				limpiarPanel(pnlArticulos);
 				pnlArticulos.setLayout(null);
-		        JLabelGrafico fotoPortada = new JLabelGrafico("/imagenes/portada2.png",1300,490);
+		        JLabelGrafico fotoPortada = new JLabelGrafico("/imagenes/portada.png",1300,490);
 		        fotoPortada.setLocation(0, 0);
-		        pnlArticulos.add(fotoPortada);
-		        System.out.println(pnlArticulos.getWidth());
-		        
-		        
-		        JLabel labelPortada = new JLabel("VER NUEVA TEMPORADA");
-		        labelPortada.setForeground(Color.WHITE);  // Establece el color del texto
-
-		        labelPortada.setBounds(137, 145, 181, 90);
-		        pnlArticulos.add(labelPortada);
-				
+		        pnlArticulos.add(fotoPortada);	
 			}
 		});
 
@@ -234,16 +225,9 @@ public class VentanaPrincipal extends JFrame {
         
         //PORTADA DE LA TIENDA
         pnlArticulos.setLayout(null);
-        JLabelGrafico fotoPortada = new JLabelGrafico("/imagenes/portada2.png",pnlArticulos.getWidth(),pnlArticulos.getHeight());
+        JLabelGrafico fotoPortada = new JLabelGrafico("/imagenes/portada.png",pnlArticulos.getWidth(),pnlArticulos.getHeight());
         fotoPortada.setLocation(0, 0);
         pnlArticulos.add(fotoPortada);
-        
-        
-        JLabel labelPortada = new JLabel("VER NUEVA TEMPORADA");
-        labelPortada.setForeground(Color.WHITE);  // Establece el color del texto
-
-        labelPortada.setBounds(137, 145, 181, 90);
-        pnlArticulos.add(labelPortada);
         
         
         
@@ -272,8 +256,6 @@ public class VentanaPrincipal extends JFrame {
         menuItemCamiH.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		System.out.println("pulsado");
-        		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -292,8 +274,6 @@ public class VentanaPrincipal extends JFrame {
         menuItemJersH.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		System.out.println("pulsado");
-        		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -310,8 +290,6 @@ public class VentanaPrincipal extends JFrame {
         menuItemPantH.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		System.out.println("pulsado");
-        		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -329,8 +307,6 @@ public class VentanaPrincipal extends JFrame {
         menuItemCalzH.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		System.out.println("pulsado");
-        		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -352,8 +328,6 @@ public class VentanaPrincipal extends JFrame {
         menuItemCamiM.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		System.out.println("pulsado");
-        		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -370,8 +344,6 @@ public class VentanaPrincipal extends JFrame {
         menuItemJersM.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		System.out.println("pulsado");
-        		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -382,15 +354,12 @@ public class VentanaPrincipal extends JFrame {
         			}
         		}
         		setJerseys(jersM,pnlArticulos);
-        		System.out.println(jersM);
         	}
         });
         
         menuItemPantM.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		System.out.println("pulsado");
-        		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -408,8 +377,6 @@ public class VentanaPrincipal extends JFrame {
         menuItemCalzM.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		System.out.println("pulsado");
-        		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -429,8 +396,6 @@ public class VentanaPrincipal extends JFrame {
         menuItemCamiN.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		System.out.println("pulsado");
-        		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -447,8 +412,6 @@ public class VentanaPrincipal extends JFrame {
         menuItemJersN.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		System.out.println("pulsado");
-        		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -465,8 +428,6 @@ public class VentanaPrincipal extends JFrame {
         menuItemPantN.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		System.out.println("pulsado");
-        		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -484,8 +445,6 @@ public class VentanaPrincipal extends JFrame {
         menuItemCalzN.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		System.out.println("pulsado");
-        		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -542,45 +501,34 @@ public class VentanaPrincipal extends JFrame {
 	
 	public void setCamisetas(Set<Camiseta> art, JPanel panel) {
 		this.pnlArticulos = panel;
-//		panel.setLayout(new GridLayout(0, COLUMNAS));
 		for (Camiseta a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
 			panel.add(pnlArticulo);
-			
-			
-			
-//			System.out.println("Añadido");
 		}	
 	}
 	
 	public void setJerseys(Set<Jersey> art, JPanel panel) {
 		this.pnlArticulos = panel;
-//		panel.setLayout(new GridLayout(0, COLUMNAS));
 		for (Jersey a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
 			panel.add(pnlArticulo);
-//			System.out.println("Añadido");
 		}	
 	}
 	
 	
 	public void setPantalones(Set<Pantalon> art, JPanel panel) {
 		this.pnlArticulos = panel;
-//		panel.setLayout(new GridLayout(0, COLUMNAS));
 		for (Pantalon a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
 			panel.add(pnlArticulo);
-//			System.out.println("Añadido");
 		}	
 	}
 	
 	public void setZapatos(Set<Zapato> art, JPanel panel) {
 		this.pnlArticulos = panel;
-//		panel.setLayout(new GridLayout(0, COLUMNAS));
 		for (Zapato a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
 			panel.add(pnlArticulo);
-//			System.out.println("Añadido");
 		}	
 	}
 	
@@ -594,18 +542,11 @@ public class VentanaPrincipal extends JFrame {
 		
 		String rutaImagen = articulo.getFoto();
 		JLabelGrafico foto = new JLabelGrafico (rutaImagen,195,200);
-		System.out.println("Grafico creado");
-		
-//		ImageIcon foto = new ImageIcon(rutaImagen);
-		
-//		JLabel etiqueta = new JLabel(foto);
-		
+				
 		JLabel titulo = new JLabel("     "+articulo.getNombre());
-//		titulo.setHorizontalAlignment(SwingConstants.WEST);
         titulo.setFont(new Font("Baskerville", Font.PLAIN, 17));
         
         JLabel precio = new JLabel(articulo.getPrecio()+" EUR     ");
-//		precio.setHorizontalAlignment(SwingConstants.EAST);
 
 
 
