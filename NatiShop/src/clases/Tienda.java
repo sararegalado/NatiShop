@@ -285,6 +285,8 @@ public class Tienda {
 				}
 				else if (Categoria.valueOf(categoria) == Categoria.JERSEY) {
 					Jersey j = new Jersey(id, nom, Integer.parseInt(unidades), Double.parseDouble(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
+					aniadirArticulos(j);
+
 				} 
 				else if (Categoria.valueOf(categoria) == Categoria.PANTALON) {
 					Pantalon p = new Pantalon(id, nom, Integer.parseInt(unidades), Double.parseDouble(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
