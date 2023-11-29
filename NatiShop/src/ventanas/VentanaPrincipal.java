@@ -185,11 +185,30 @@ public class VentanaPrincipal extends JFrame {
         lblLogo.setVerticalAlignment(SwingConstants.BOTTOM);
         lblLogo.setHorizontalAlignment(SwingConstants.LEFT);
         lblLogo.setFont(new Font("Baskerville", Font.PLAIN, 45));
+        lblLogo.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				limpiarPanel(pnlArticulos);
+				pnlArticulos.setLayout(null);
+		        JLabelGrafico fotoPortada = new JLabelGrafico("/imagenes/portada2.png",1300,490);
+		        fotoPortada.setLocation(0, 0);
+		        pnlArticulos.add(fotoPortada);
+		        System.out.println(pnlArticulos.getWidth());
+		        
+		        
+		        JLabel labelPortada = new JLabel("VER NUEVA TEMPORADA");
+		        labelPortada.setForeground(Color.WHITE);  // Establece el color del texto
+
+		        labelPortada.setBounds(137, 145, 181, 90);
+		        pnlArticulos.add(labelPortada);
+				
+			}
+		});
 
         pnlArticulos = new JPanel();
         pnlArticulos.setBounds(72, 159, 1300, 490);
         JScrollPane spArticulos = new JScrollPane(pnlArticulos);
-        pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
         spArticulos.setBounds(72,159,1153,490);
         contentPane.add(spArticulos);
         
@@ -210,6 +229,24 @@ public class VentanaPrincipal extends JFrame {
         tfBuscador.setBounds(845, 48, 220, 26);
         contentPane.add(tfBuscador);
         tfBuscador.setColumns(10);
+        
+        
+        
+        //PORTADA DE LA TIENDA
+        pnlArticulos.setLayout(null);
+        JLabelGrafico fotoPortada = new JLabelGrafico("/imagenes/portada2.png",pnlArticulos.getWidth(),pnlArticulos.getHeight());
+        fotoPortada.setLocation(0, 0);
+        pnlArticulos.add(fotoPortada);
+        
+        
+        JLabel labelPortada = new JLabel("VER NUEVA TEMPORADA");
+        labelPortada.setForeground(Color.WHITE);  // Establece el color del texto
+
+        labelPortada.setBounds(137, 145, 181, 90);
+        pnlArticulos.add(labelPortada);
+        
+        
+        
 
       lblUsuario.addMouseListener(new MouseAdapter() {
             @Override
@@ -238,7 +275,8 @@ public class VentanaPrincipal extends JFrame {
         		System.out.println("pulsado");
         		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
-        		
+                pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+
         		Set<Camiseta> camiH = new TreeSet<>();
         		ArrayList<String> fCH = new ArrayList<>();
         		for (Camiseta c: Tienda.getCamisetas()) {
@@ -257,7 +295,8 @@ public class VentanaPrincipal extends JFrame {
         		System.out.println("pulsado");
         		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
-        		
+                pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+
         		Set<Jersey> jersH = new TreeSet<>();
         		for (Jersey j: Tienda.getJerseys()) {
         			if (j.getGenero()== Genero.HOMBRE) {
@@ -274,7 +313,8 @@ public class VentanaPrincipal extends JFrame {
         		System.out.println("pulsado");
         		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
-        		
+                pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+
         		Set<Pantalon> pantH = new TreeSet<>();
         		Set<Pantalon>listaPantalones = Tienda.getPantalones();
         		for (Pantalon p: listaPantalones) {
@@ -292,7 +332,8 @@ public class VentanaPrincipal extends JFrame {
         		System.out.println("pulsado");
         		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
-        		
+                pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+
         		Set<Zapato> calzH = new TreeSet<>();
         		for (Zapato z: Tienda.getZapatos()) {
         			if (z.getGenero()== Genero.HOMBRE) {
@@ -314,7 +355,8 @@ public class VentanaPrincipal extends JFrame {
         		System.out.println("pulsado");
         		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
-        		
+                pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+
         		Set<Camiseta> camiM = new TreeSet<>();
         		for (Camiseta c: Tienda.getCamisetas()) {
         			if (c.getGenero()== Genero.MUJER) {
@@ -331,7 +373,8 @@ public class VentanaPrincipal extends JFrame {
         		System.out.println("pulsado");
         		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
-        		
+                pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+
         		Set<Jersey> jersM = new TreeSet<>();
         		for (Jersey j: Tienda.getJerseys()) {
         			if (j.getGenero()== Genero.MUJER) {
@@ -339,6 +382,7 @@ public class VentanaPrincipal extends JFrame {
         			}
         		}
         		setJerseys(jersM,pnlArticulos);
+        		System.out.println(jersM);
         	}
         });
         
@@ -348,7 +392,8 @@ public class VentanaPrincipal extends JFrame {
         		System.out.println("pulsado");
         		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
-        		
+                pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+
         		Set<Pantalon> pantM = new TreeSet<>();
         		Set<Pantalon>listaPantalones = Tienda.getPantalones();
         		for (Pantalon p: listaPantalones) {
@@ -366,7 +411,8 @@ public class VentanaPrincipal extends JFrame {
         		System.out.println("pulsado");
         		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
-        		
+                pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+
         		Set<Zapato> calzM = new TreeSet<>();
         		for (Zapato z: Tienda.getZapatos()) {
         			if (z.getGenero()== Genero.MUJER) {
@@ -386,7 +432,8 @@ public class VentanaPrincipal extends JFrame {
         		System.out.println("pulsado");
         		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
-        		
+                pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+
         		Set<Camiseta> camiN = new TreeSet<>();
         		for (Camiseta c: Tienda.getCamisetas()) {
         			if (c.getGenero()== Genero.NINOS) {
@@ -403,7 +450,8 @@ public class VentanaPrincipal extends JFrame {
         		System.out.println("pulsado");
         		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
-        		
+                pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+
         		Set<Jersey> jersN = new TreeSet<>();
         		for (Jersey j: Tienda.getJerseys()) {
         			if (j.getGenero()== Genero.NINOS) {
@@ -420,7 +468,8 @@ public class VentanaPrincipal extends JFrame {
         		System.out.println("pulsado");
         		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
-        		
+                pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+
         		Set<Pantalon> pantN = new TreeSet<>();
         		Set<Pantalon>listaPantalones = Tienda.getPantalones();
         		for (Pantalon p: listaPantalones) {
@@ -438,6 +487,8 @@ public class VentanaPrincipal extends JFrame {
         		System.out.println("pulsado");
         		System.out.println("Grid puesto");
         		limpiarPanel(pnlArticulos);
+                pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+
         		
         		Set<Zapato> calzN = new TreeSet<>();
         		for (Zapato z: Tienda.getZapatos()) {
@@ -486,6 +537,7 @@ public class VentanaPrincipal extends JFrame {
 	    panel.removeAll();
 	    panel.revalidate();
 	    panel.repaint();
+
 	}
 	
 	public void setCamisetas(Set<Camiseta> art, JPanel panel) {
@@ -541,21 +593,26 @@ public class VentanaPrincipal extends JFrame {
 		panelArticulo.setLayout(new BorderLayout());
 		
 		String rutaImagen = articulo.getFoto();
-		JLabelGrafico foto = new JLabelGrafico (rutaImagen,220,220);
+		JLabelGrafico foto = new JLabelGrafico (rutaImagen,195,200);
 		System.out.println("Grafico creado");
 		
 //		ImageIcon foto = new ImageIcon(rutaImagen);
 		
 //		JLabel etiqueta = new JLabel(foto);
 		
-		JLabel titulo = new JLabel(articulo.getNombre());
-		titulo.setHorizontalAlignment(SwingConstants.CENTER);
+		JLabel titulo = new JLabel("     "+articulo.getNombre());
+//		titulo.setHorizontalAlignment(SwingConstants.WEST);
         titulo.setFont(new Font("Baskerville", Font.PLAIN, 17));
+        
+        JLabel precio = new JLabel(articulo.getPrecio()+" EUR     ");
+//		precio.setHorizontalAlignment(SwingConstants.EAST);
+
 
 
 		
-		panelArticulo.add(foto,BorderLayout.CENTER);
-		panelArticulo.add(titulo, BorderLayout.SOUTH);
+		panelArticulo.add(foto,BorderLayout.NORTH);
+		panelArticulo.add(titulo, BorderLayout.WEST);
+		panelArticulo.add(precio,BorderLayout.EAST);
 		panelArticulo.setBorder(new LineBorder(Color.BLACK));
 		
 		panelArticulo.setBackground(Color.WHITE);
