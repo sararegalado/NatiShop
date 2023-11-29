@@ -37,23 +37,27 @@ public class Administrador extends Usuario {
 	 * @param FInicEmpresa: De date a String
 	 * @param jornadaLaboral: enum
 	 * @param puesto: enum
+		this.apellido = apellido;
+		//this.FInicEmpresa =sdf.parse(fInicEmpresa);
+		setFInicEmpresarstr(fInicEmpresa);
+		this.jornadaLaboral = Jornada.valueOf(jornadaLaboral);
+		this.puesto = Puesto.valueOf(puesto);
 	 */
-
-	public Administrador(String dni, String nombre, String fNac, String correo, String provincia, String tfno,String contrasenia, String apellido, String FInicEmpresa,Jornada jornadaLaboral,Puesto puesto) {
-		super(dni, nombre, fNac, correo, tfno, provincia, contrasenia);
-		this.apellido= apellido;
-		try {
-			this.FInicEmpresa= sdf.parse(FInicEmpresa);
-		} catch (ParseException e) {
-			this.FInicEmpresa= new Date(0);
-		}
-		this.jornadaLaboral= jornadaLaboral;
-		this.puesto= puesto;
+	public Administrador(String dni, String nombre, String fNac, String correo, String tlf, String provincia,
+			String contrasenia, String apellido, String fInicEmpresa, String jornadaLaboral, String puesto) {
+		super(dni, nombre, fNac, correo, tlf, provincia, contrasenia);
+		this.apellido = apellido;
+		setFInicEmpresarstr(fInicEmpresa);
+		this.jornadaLaboral = Jornada.valueOf(jornadaLaboral);
+		this.puesto = Puesto.valueOf(puesto);
 	}
+	
 
+	
 	public String getApellido() {
 		return apellido;
 	}
+
 
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
@@ -86,6 +90,7 @@ public class Administrador extends Usuario {
 	public void setJornadaLaboral(Jornada jornadaLaboral) {
 		this.jornadaLaboral = jornadaLaboral;
 	}
+	
 
 	public Puesto getPuesto() {
 		return puesto;

@@ -20,10 +20,17 @@ public class Tienda {
 	//mapa admin (clave: correo, valor admin)
 	
 	private static final String nomfichUsuarios = "Usuarios.csv";
+	private  static final String nomfichAdmins= "Administradores.csv";
 
 	public static String getNomfichusuarios() {
 		return nomfichUsuarios;
 	}
+	
+
+	public static String getNomfichadmins() {
+		return nomfichAdmins;
+	}
+
 
 	public static HashMap<Usuario, ArrayList<Articulo>> getCompras() {
 		return compras;
@@ -127,7 +134,7 @@ public class Tienda {
 		
 	}
 	/**
-	 * Metodo qye cargar el fichero de Admins en un mapa de Administradore
+	 * Metodo que cargar el fichero de Admins en un mapa de Administradore
 	 * @param nomfichAdmins
 	 */
 	
@@ -140,17 +147,27 @@ public class Tienda {
 				linea= sc.nextLine();
 				String[] partes = linea.split(";");
 				if(partes.length > 0) {
-					String nom = partes[0];
-					String apellido= partes[1];
-					String dni= partes[2];
-					String  correo = partes[3];
-					String FNac = partes[4];
-					String Finicio = partes[5];
-					
+					String dni = partes[0];
+					String nom= partes[1];
+					String apellido= partes[2];
+					String correo = partes[3];
+					String tlf = partes[4];
+					String provincia = (partes[5]);
+					String Fnac = partes[7];
+					String Finic = partes[8];
+					String jornada=partes[9];
+					String puesto = partes[10];
+					String con= partes[11];
+					Administrador a = new Administrador(dni,nom,apellido,correo,tlf,provincia,Fnac,Finic,jornada,puesto,con);
+					if(!Administradores.containsKey(a.getCorreo())) {
+						Administradores.put(a.getCorreo(), a);
+					}else {
+						Administradores.get(a);
+					}
 				}
 				}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		
