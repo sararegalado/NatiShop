@@ -40,10 +40,10 @@ public class Tienda {
 		return articulos;
 	}
 	
-	
-	
-	
-	
+	public static HashMap<String, Administrador> getAdministradores() {
+		return Administradores;
+	}
+
 
 	/**
 	 * Método que guarda todas las camisetas de articulos en un HashSet
@@ -143,6 +143,7 @@ public class Tienda {
 		try {
 			sc = new Scanner(new FileReader(nomfichAdmins));
 			String linea;
+			sc.nextLine();
 			while(sc.hasNext()){
 				linea= sc.nextLine();
 				String[] partes = linea.split(";");
@@ -153,19 +154,19 @@ public class Tienda {
 					String correo = partes[3];
 					String tlf = partes[4];
 					String provincia = (partes[5]);
-					String Fnac = partes[7];
-					String Finic = partes[8];
-					String jornada=partes[9];
-					String puesto = partes[10];
-					String con= partes[11];
+					String Fnac = partes[6];
+					String Finic = partes[7];
+					String jornada=partes[8];
+					String puesto = partes[9];
+					String con= partes[10];
 					Administrador a = new Administrador(dni,nom,apellido,correo,tlf,provincia,Fnac,Finic,jornada,puesto,con);
 					if(!Administradores.containsKey(a.getCorreo())) {
 						Administradores.put(a.getCorreo(), a);
-					}else {
-						Administradores.get(a);
 					}
+					
 				}
-				}
+			}
+			sc.close();
 		} catch (FileNotFoundException e) {
 			
 			e.printStackTrace();
@@ -175,6 +176,7 @@ public class Tienda {
 		
 		
 	}
+
 
 	/**
 	 * Método que carga el fichero usuarios en una lista de usuarios

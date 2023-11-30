@@ -1,6 +1,6 @@
 package clases;
 
 public enum Jornada {
-	JORNADA_COMPLETA, MEDIA_JORNADA, TEMPORAL, REBAJAS,
+	Jornada_Completa, Media_Jornada, Temporal, Rebajas,
 
 }

@@ -43,8 +43,8 @@ public class Administrador extends Usuario {
 		this.jornadaLaboral = Jornada.valueOf(jornadaLaboral);
 		this.puesto = Puesto.valueOf(puesto);
 	 */
-	public Administrador(String dni, String nombre, String fNac, String correo, String tlf, String provincia,
-			String contrasenia, String apellido, String fInicEmpresa, String jornadaLaboral, String puesto) {
+	public Administrador(String dni, String nombre, String apellido, String correo, String tlf, String provincia, String fNac,
+			String fInicEmpresa, String jornadaLaboral, String puesto, String contrasenia) {
 		super(dni, nombre, fNac, correo, tlf, provincia, contrasenia);
 		this.apellido = apellido;
 		setFInicEmpresarstr(fInicEmpresa);

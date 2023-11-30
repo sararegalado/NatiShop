@@ -12,7 +12,8 @@ public class Main {
 		Tienda.cargarArticulos("articulos.csv");		
 		
 		VentanaPrincipal vent = new VentanaPrincipal(null);
-		
+		Tienda.cargarAdministradores("Administradores.csv");
+		System.out.println(Tienda.getAdministradores());
 		
 //		NO LO BORREIS ES PARA LA PORTADA DEL PRINCIPIO
 //        boolean found = (new NativeDiscovery()).discover();
@@ -39,6 +40,7 @@ public class Main {
 //
 //        VentanaPortada miVentana = new VentanaPortada(null);
 //        miVentana.lanza(videoPath);
+		
     }
 	
 }

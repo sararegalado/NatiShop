@@ -173,19 +173,31 @@ public class VentanaInicioSesion extends JFrame {
 		btnIniciarSes.addActionListener((e)->{
 			String nom = tfNombre.getText();
 			String con = tfContrasena.getText();
-			if (Tienda.buscarUsuarioPorNomCon(nom, con) != null) {
-				Usuario u = Tienda.buscarUsuarioPorNomCon(nom, con);
-				JOptionPane.showMessageDialog(null, "Bienvenido!","SESIÓN INICIADA",JOptionPane.INFORMATION_MESSAGE);
-				usuario = u; //Guardamos la información del cliente que ha iniciado sesión
-				carrito = new ArrayList<>(); //Inicializamos su carrito a una lista vacía
-				VentanaPrincipal.setUsuarioHaIniciadoSesion(true);
-				VentanaPrincipal.asignarNombreUsuario(u);
+			
+			
+			if(Tienda.getAdministradores().containsKey(nom)) {
+				new VentanaAdministrador(vActual);
 				vActual.setVisible(false);
+				
+				
+				
 			}else {
-				JOptionPane.showMessageDialog(null, "Para poder iniciar sesión tienes que estar registrado","ERROR",JOptionPane.ERROR_MESSAGE);
-				tfNombre.setText("");
-				tfContrasena.setText("");
+				if (Tienda.buscarUsuarioPorNomCon(nom, con) != null) {
+					Usuario u = Tienda.buscarUsuarioPorNomCon(nom, con);
+					JOptionPane.showMessageDialog(null, "Bienvenido!","SESIÓN INICIADA",JOptionPane.INFORMATION_MESSAGE);
+					usuario = u; //Guardamos la información del cliente que ha iniciado sesión
+					carrito = new ArrayList<>(); //Inicializamos su carrito a una lista vacía
+					VentanaPrincipal.setUsuarioHaIniciadoSesion(true);
+					VentanaPrincipal.asignarNombreUsuario(u);
+					vActual.setVisible(false);
+				}else {
+					JOptionPane.showMessageDialog(null, "Para poder iniciar sesión tienes que estar registrado","ERROR",JOptionPane.ERROR_MESSAGE);
+					tfNombre.setText("");
+					tfContrasena.setText("");
+				}
+				
 			}
+			
 			
 			
 		});

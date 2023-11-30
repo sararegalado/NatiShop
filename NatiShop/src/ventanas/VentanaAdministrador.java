@@ -36,11 +36,15 @@ public class VentanaAdministrador extends JFrame{
 	private ModeloTablaUsuarios mUsuarios;
 	private JScrollPane sTablaUsuarios;
 	
-	public VentanaAdministrador() {
+	public VentanaAdministrador(JFrame va) {
 		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(20, 10, 1121, 621);
+		setBounds(20, 10, 1300, 900);
+		int anchoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
+	    int altoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
+	    setSize(anchoP, altoP);
+	    setExtendedState(MAXIMIZED_BOTH);
 		getContentPane().setLayout(new BorderLayout());
 	
 		
@@ -213,9 +217,7 @@ public class VentanaAdministrador extends JFrame{
 		
 		setVisible(true);		
 	}
-	public static void main(String[] args) {
-		VentanaAdministrador ventanaAdministrador= new VentanaAdministrador();
-	}
+	
 	/**
 	 * Método para cargar los usuarios registrador a la tabla
 	 */
@@ -238,7 +240,7 @@ public class VentanaAdministrador extends JFrame{
 	 * Inicio de sesion admins
 	 * Ventana edit admins
 	 * Admins: implemeta al heredar de Usuario ya el compare to?
-	 * Contraseña de los admin ya creados
+	 *
 	  */
 	
 
