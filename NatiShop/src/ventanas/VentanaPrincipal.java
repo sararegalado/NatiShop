@@ -3,6 +3,9 @@ package ventanas;
 import java.awt.event.ActionEvent;
 
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -12,6 +15,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -178,6 +182,37 @@ public class VentanaPrincipal extends JFrame {
         menuItemCalzN.setFont(new Font("Baskerville", Font.PLAIN, 14));
         menuNinos.add(menuItemCalzN);
         
+        tfBuscador = new JTextField();
+        tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+        tfBuscador.setBounds(845, 32, 220, 26);
+        contentPane.add(tfBuscador);
+        tfBuscador.setColumns(10);
+        
+        String[] categorias = {"Todos los géneros","Hombre","Mujer","Niños"};
+		JComboBox<String> filtrado = new JComboBox<>(categorias);
+        filtrado.setBounds(845, 63, 220, 27);
+        contentPane.add(filtrado);
+        filtrado.setVisible(false);
+        
+        
+        //LISTENERS DEL BUSCADOR
+        tfBuscador.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String textoBusqueda = tfBuscador.getText();
+				buscarArticulos(textoBusqueda, pnlArticulos,filtrado);
+			}
+		});
+        tfBuscador.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                tfBuscador.setText(""); // Borrar el texto por defecto al obtener el foco
+            }
+            
+            
+        });
+        
         JLabel lblLogo = new JLabel("");
         lblLogo.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/nombreTienda.png")));
         lblLogo.setBounds(62, 11, 303, 80);
@@ -193,7 +228,9 @@ public class VentanaPrincipal extends JFrame {
 				pnlArticulos.setLayout(null);
 		        JLabelGrafico fotoPortada = new JLabelGrafico("/imagenes/portada.png",1300,490);
 		        fotoPortada.setLocation(0, 0);
-		        pnlArticulos.add(fotoPortada);	
+		        pnlArticulos.add(fotoPortada);
+		        tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+		        filtrado.setVisible(false);
 			}
 		});
 
@@ -215,12 +252,6 @@ public class VentanaPrincipal extends JFrame {
         
         contentPane.add(lblUsuario);
         
-        tfBuscador = new JTextField();
-        tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
-        tfBuscador.setBounds(845, 48, 220, 26);
-        contentPane.add(tfBuscador);
-        tfBuscador.setColumns(10);
-        
         
         
         //PORTADA DE LA TIENDA
@@ -235,6 +266,8 @@ public class VentanaPrincipal extends JFrame {
       lblUsuario.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+ 		        filtrado.setVisible(false);
                 if (usuarioHaIniciadoSesion) {
                 	Usuario u = VentanaInicioSesion.getUsuario();
                 	new VentanaDatosUsuario(vActual, u);
@@ -249,6 +282,8 @@ public class VentanaPrincipal extends JFrame {
         lblNomU.setVerticalAlignment(SwingConstants.TOP);
         lblNomU.setBounds(1138, 67, 87, 19);
         contentPane.add(lblNomU);
+        
+       
 
      
         //LISTENERS DE LOS ITEMS DE HOMBRE
@@ -256,6 +291,8 @@ public class VentanaPrincipal extends JFrame {
         menuItemCamiH.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+ 		        filtrado.setVisible(false);
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -274,7 +311,9 @@ public class VentanaPrincipal extends JFrame {
         menuItemJersH.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		limpiarPanel(pnlArticulos);
+            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+ 		        filtrado.setVisible(false);
+            	limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
         		Set<Jersey> jersH = new TreeSet<>();
@@ -290,7 +329,9 @@ public class VentanaPrincipal extends JFrame {
         menuItemPantH.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		limpiarPanel(pnlArticulos);
+            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+ 		        filtrado.setVisible(false);
+            	limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
         		Set<Pantalon> pantH = new TreeSet<>();
@@ -307,7 +348,9 @@ public class VentanaPrincipal extends JFrame {
         menuItemCalzH.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		limpiarPanel(pnlArticulos);
+            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+ 		        filtrado.setVisible(false);
+            	limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
         		Set<Zapato> calzH = new TreeSet<>();
@@ -328,7 +371,9 @@ public class VentanaPrincipal extends JFrame {
         menuItemCamiM.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		limpiarPanel(pnlArticulos);
+            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+ 		        filtrado.setVisible(false);
+            	limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
         		Set<Camiseta> camiM = new TreeSet<>();
@@ -344,7 +389,9 @@ public class VentanaPrincipal extends JFrame {
         menuItemJersM.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		limpiarPanel(pnlArticulos);
+            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+ 		        filtrado.setVisible(false);
+            	limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
         		Set<Jersey> jersM = new TreeSet<>();
@@ -360,7 +407,9 @@ public class VentanaPrincipal extends JFrame {
         menuItemPantM.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        		limpiarPanel(pnlArticulos);
+            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+ 		        filtrado.setVisible(false);
+            	limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
         		Set<Pantalon> pantM = new TreeSet<>();
@@ -377,6 +426,8 @@ public class VentanaPrincipal extends JFrame {
         menuItemCalzM.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+ 		        filtrado.setVisible(false);
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -396,6 +447,8 @@ public class VentanaPrincipal extends JFrame {
         menuItemCamiN.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+ 		        filtrado.setVisible(false);
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -412,6 +465,8 @@ public class VentanaPrincipal extends JFrame {
         menuItemJersN.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+ 		        filtrado.setVisible(false);
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -428,6 +483,8 @@ public class VentanaPrincipal extends JFrame {
         menuItemPantN.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+ 		        filtrado.setVisible(false);
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -445,6 +502,8 @@ public class VentanaPrincipal extends JFrame {
         menuItemCalzN.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+ 		        filtrado.setVisible(false);
         		limpiarPanel(pnlArticulos);
                 pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
 
@@ -462,10 +521,6 @@ public class VentanaPrincipal extends JFrame {
         
         
         
-        
-        
-        
-
        setVisible(true);
 	}
 	
@@ -583,4 +638,90 @@ public class VentanaPrincipal extends JFrame {
   
   
 	}
+	
+	public void buscarArticulos(String textoBusqueda, JPanel pnlArticulos,JComboBox filtrado) {
+		limpiarPanel(pnlArticulos);
+        pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+        ArrayList<Articulo> aAnyadidos = new ArrayList<>();
+		for(Articulo a : Tienda.getArticulos()) {
+			if (a.getNombre().toLowerCase().contains(textoBusqueda.toLowerCase())) {
+				JPanel nuevo = crearPanelArticulo(a);
+				pnlArticulos.add(nuevo);
+				aAnyadidos.add(a);
+			}	
+		}
+		filtrado.setVisible(true);
+//		String seleccion = (String) filtrado.getSelectedItem();
+//		System.out.println(seleccion);
+//		if (seleccion == "Mujer") {
+//			System.out.println("Mujeres");
+//		}
+		filtrado.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    String seleccion = (String) filtrado.getSelectedItem();
+                    if (seleccion == "Mujer") {
+                    	limpiarPanel(pnlArticulos);
+                        pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+                        for (Articulo a: aAnyadidos) {
+                        	if (a.getGenero()== Genero.MUJER) {
+                        		JPanel nuevo = crearPanelArticulo(a);
+                				pnlArticulos.add(nuevo);
+                        	}
+                        }
+                    }
+                    
+                    if (seleccion == "Hombre") {
+                    	limpiarPanel(pnlArticulos);
+                        pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+                        for (Articulo a: aAnyadidos) {
+                        	if (a.getGenero()== Genero.HOMBRE) {
+                        		JPanel nuevo = crearPanelArticulo(a);
+                				pnlArticulos.add(nuevo);
+                        	}
+                        }
+                    }
+                    
+                    if (seleccion == "Niños") {
+                    	limpiarPanel(pnlArticulos);
+                        pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+                        for (Articulo a: aAnyadidos) {
+                        	if (a.getGenero()== Genero.NINOS) {
+                        		JPanel nuevo = crearPanelArticulo(a);
+                				pnlArticulos.add(nuevo);
+                        	}
+                        }
+                    }
+                    
+                    if (seleccion == "Todos los géneros") {
+                    	limpiarPanel(pnlArticulos);
+                        pnlArticulos.setLayout(new GridLayout(0, 4, 10, 10));
+                        for(Articulo a : Tienda.getArticulos()) {
+                			if (a.getNombre().toLowerCase().contains(textoBusqueda.toLowerCase())) {
+                				JPanel nuevo = crearPanelArticulo(a);
+                				pnlArticulos.add(nuevo);
+                			}
+                        }
+                        
+                    }
+                }
+                
+            }
+                
+                
+                
+                
+            
+        });
+		
+		
+		}
+                
+		
+            
+            
+		
+		        
+	
 }
