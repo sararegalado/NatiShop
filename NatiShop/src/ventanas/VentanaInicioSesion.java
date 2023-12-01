@@ -154,8 +154,10 @@ public class VentanaInicioSesion extends JFrame {
 					JOptionPane.showMessageDialog(null, "Bienvenido!","SESIÓN INICIADA",JOptionPane.INFORMATION_MESSAGE);
 					usuario = u; //Guardamos la información del cliente que ha iniciado sesión
 					carrito = new ArrayList<>(); //Inicializamos su carrito a una lista vacía
-					VentanaPrincipal.asignarNombreUsuario(u);
+//					VentanaPrincipal.asignarNombreUsuario(u);
+					new VentanaPrincipal(vActual);
 					vActual.setVisible(false);
+					
 
 				}else {
 					JOptionPane.showMessageDialog(null, "Contraseña incorrecta","ERROR",JOptionPane.WARNING_MESSAGE);

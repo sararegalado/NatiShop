@@ -193,6 +193,7 @@ public class Tienda {
 				String unidades= partes[2];
 				String precio= partes[3];
 				String genero = partes[4];
+				System.out.println(genero);
 				String talla = partes[5];
 				String foto = partes[6];
 				String categoria = partes[7];
