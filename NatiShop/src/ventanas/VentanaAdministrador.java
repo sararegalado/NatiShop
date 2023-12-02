@@ -26,6 +26,7 @@ import java.util.List;
 
 
 public class VentanaAdministrador extends JFrame{
+	
 	private JPanel pnlOesteMenu,pnlCentro,pnlOesteArriba,pnlDatos,pnlDatosArriba,pnlDatosModificar;
 	private JMenuBar menuBarAdmin;
 	private JMenu menuUsuarios,menuArticulos, menuEstadisticas, menuCompras;
@@ -296,6 +297,7 @@ public class VentanaAdministrador extends JFrame{
 	}
 	
 	public void cargarDatosAdmin() {
+		
 		
 	}
 	
