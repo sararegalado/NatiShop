@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -243,14 +244,54 @@ public class VentanaPrincipal extends JFrame {
         JLabel lblUsuario = new JLabel("");
         lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/usuario.png")));
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-        lblUsuario.setBounds(1152, 11, 52, 52);
+        lblUsuario.setBounds(1155, 11, 52, 52);
+        
+        
+        JPopupMenu menuCliente = new JPopupMenu();
+        JMenuItem perfil = new JMenuItem("Ver perfil");
+        JMenuItem compras = new JMenuItem("Ver mis compras");
+
+        perfil.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	Cliente c = VentanaInicioSesion.getCliente();
+            	new VentanaDatosUsuario(vActual, c);
+                
+            }
+        });
+
+//        compras.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                
+//            }
+//        });
+
+        menuCliente.add(perfil);
+        menuCliente.add(compras);
+
+        lblUsuario.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+ 		        filtrado.setVisible(false);
+                if (clienteHaIniciadoSesion) {
+                	menuCliente.show(lblUsuario, 0, lblUsuario.getHeight());
+                } else {
+                    new VentanaInicioSesion(vActual);
+                }
+            }
+        });
+        
+        contentPane.add(lblUsuario);
+        
         
         int anchoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
         int altoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
         setSize(anchoP, altoP);
         setExtendedState(MAXIMIZED_BOTH);
         
-        contentPane.add(lblUsuario);
+
         
         
         
@@ -259,24 +300,8 @@ public class VentanaPrincipal extends JFrame {
         JLabelGrafico fotoPortada = new JLabelGrafico("/imagenes/portada.png",pnlArticulos.getWidth(),pnlArticulos.getHeight());
         fotoPortada.setLocation(0, 0);
         pnlArticulos.add(fotoPortada);
-        
-        
-        
-
-      lblUsuario.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
- 		        filtrado.setVisible(false);
-                if (clienteHaIniciadoSesion) {
-                	Cliente c = VentanaInicioSesion.getCliente();
-                	new VentanaDatosUsuario(vActual, c);
-                } else {
-                    new VentanaInicioSesion(vActual);
-                }
-            }
-        });
-        
+         
+      
         lblNomU = new JLabel("Iniciar Sesión");
         lblNomU.setHorizontalAlignment(SwingConstants.CENTER);
         lblNomU.setVerticalAlignment(SwingConstants.TOP);
