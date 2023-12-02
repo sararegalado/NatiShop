@@ -27,11 +27,11 @@ import javax.swing.border.LineBorder;
 
 import clases.Articulo;
 import clases.Camiseta;
+import clases.Cliente;
 import clases.Genero;
 import clases.Jersey;
 import clases.Pantalon;
 import clases.Tienda;
-import clases.Usuario;
 import clases.Zapato;
 
 import javax.swing.JMenuBar;
@@ -79,16 +79,16 @@ public class VentanaPrincipal extends JFrame {
 	
 
 
-	private static boolean usuarioHaIniciadoSesion = false;
+	private static boolean clienteHaIniciadoSesion = false;
 	
 	
-    public static boolean isUsuarioHaIniciadoSesion() {
-		return usuarioHaIniciadoSesion;
+    public static boolean isClienteHaIniciadoSesion() {
+		return clienteHaIniciadoSesion;
 	}
 
 
-	public static void setUsuarioHaIniciadoSesion(boolean uHaIniciadoSesion) {
-		usuarioHaIniciadoSesion = uHaIniciadoSesion;
+	public static void setClienteHaIniciadoSesion(boolean cHaIniciadoSesion) {
+		clienteHaIniciadoSesion = cHaIniciadoSesion;
 	}
 
 
@@ -268,9 +268,9 @@ public class VentanaPrincipal extends JFrame {
             public void mouseClicked(MouseEvent e) {
             	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
  		        filtrado.setVisible(false);
-                if (usuarioHaIniciadoSesion) {
-                	Usuario u = VentanaInicioSesion.getUsuario();
-                	new VentanaDatosUsuario(vActual, u);
+                if (clienteHaIniciadoSesion) {
+                	Cliente c = VentanaInicioSesion.getCliente();
+                	new VentanaDatosUsuario(vActual, c);
                 } else {
                     new VentanaInicioSesion(vActual);
                 }
@@ -525,27 +525,18 @@ public class VentanaPrincipal extends JFrame {
 	}
 	
 
-	public boolean usuarioHaIniciadoSesion() {
-	    return usuarioHaIniciadoSesion;
+	public boolean clienteHaIniciadoSesion() {
+	    return clienteHaIniciadoSesion;
 	}
 
 
-	public static void asignarNombreUsuario(Usuario u) {
-		lblNomU.setText(u.getNombre());
+	public static void asignarNombreCliente(Cliente c) {
+		lblNomU.setText(c.getNombre());
 	};
 	
-	public static void eliminarNombreUsuario() {
+	public static void eliminarNombreCliente() {
 		lblNomU.setText("Iniciar sesión");
 	};
-	
-	public boolean existeUsuario() {
-		boolean existe = false;
-		if (lblNomU.getText() != "Iniciar Sesión") {
-			existe = true;	
-		}
-		return existe;
-	}
-	
 	
 	public void limpiarPanel(JPanel panel) {
 	    panel.removeAll();
@@ -586,8 +577,6 @@ public class VentanaPrincipal extends JFrame {
 			panel.add(pnlArticulo);
 		}	
 	}
-	
-	
 	
 	
 	public JPanel crearPanelArticulo(Articulo articulo) {
@@ -716,12 +705,6 @@ public class VentanaPrincipal extends JFrame {
         });
 		
 		
-		}
-                
-		
-            
-            
-		
-		        
+		}		        
 	
 }

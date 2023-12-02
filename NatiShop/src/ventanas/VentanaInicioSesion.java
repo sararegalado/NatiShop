@@ -21,10 +21,9 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.border.LineBorder;
 
-import clases.Administrador;
 import clases.Articulo;
+import clases.Cliente;
 import clases.Tienda;
-import clases.Usuario;
 
 import java.awt.Color;
 import javax.swing.JButton;
@@ -43,33 +42,27 @@ import javax.swing.JSpinner;
 
 public class VentanaInicioSesion extends JFrame {
 
-	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField tfNombre;
 	private JPasswordField tfContrasena;
 	
-	private static final String nomfichUsuarios = "Usuarios.csv";
 	
 	private JFrame vActual,vAnterior;
 	
-	
 	//Para guardar el usuario que Inicia Sesion y asignar el un carrito vacio que se ira llenando
-	private static Usuario usuario;
+	private static Cliente cliente;
 	private static List<Articulo> carrito;
-
 	
 	
 	
-	public static Usuario getUsuario() {
-		return usuario;
-	}
-	
-
-	public static void setUsuario(Usuario usuario) {
-		VentanaInicioSesion.usuario = usuario;
+	public static Cliente getCliente() {
+		return cliente;
 	}
 
 
+	public static void setCliente(Cliente cliente) {
+		VentanaInicioSesion.cliente = cliente;
+	}
 
 
 	public static List<Articulo> getCarrito() {
@@ -77,13 +70,10 @@ public class VentanaInicioSesion extends JFrame {
 	}
 
 
-
-
 	public static void setCarrito(List<Articulo> carrito) {
 		VentanaInicioSesion.carrito = carrito;
 	}
-	
-	
+
 
 	public VentanaInicioSesion(JFrame va) {
 		vActual = this;
@@ -144,7 +134,7 @@ public class VentanaInicioSesion extends JFrame {
 		contentPane.add(btnAccederRegistro);
 		
 		//Cargamos los usuarios desde la clase tienda
-		Tienda.cargarUsuarios(nomfichUsuarios);
+		Tienda.cargarClientes(Tienda.getNomfichclientes());
 		
 		btnAccederRegistro.addActionListener(new ActionListener() {
 			
@@ -179,14 +169,16 @@ public class VentanaInicioSesion extends JFrame {
 				new VentanaAdministrador(vActual);
 				vActual.setVisible(false);
 				
+				
+				
 			}else {
-				if (Tienda.buscarUsuarioPorNomCon(nom, con) != null) {
-					Usuario u = Tienda.buscarUsuarioPorNomCon(nom, con);
+				if (Tienda.buscarClientePorNomCon(nom, con) != null) {
+					Cliente c = Tienda.buscarClientePorNomCon(nom, con);
 					JOptionPane.showMessageDialog(null, "Bienvenido!","SESIÓN INICIADA",JOptionPane.INFORMATION_MESSAGE);
-					usuario = u; //Guardamos la información del cliente que ha iniciado sesión
+					cliente = c; //Guardamos la información del cliente que ha iniciado sesión
 					carrito = new ArrayList<>(); //Inicializamos su carrito a una lista vacía
-					VentanaPrincipal.setUsuarioHaIniciadoSesion(true);
-					VentanaPrincipal.asignarNombreUsuario(u);
+					VentanaPrincipal.setClienteHaIniciadoSesion(true);
+					VentanaPrincipal.asignarNombreCliente(c);
 					vActual.setVisible(false);
 				}else {
 					JOptionPane.showMessageDialog(null, "Para poder iniciar sesión tienes que estar registrado","ERROR",JOptionPane.ERROR_MESSAGE);
@@ -206,3 +198,4 @@ public class VentanaInicioSesion extends JFrame {
 
 	}
 }
+
