@@ -1,13 +1,17 @@
 package ventanas;
 
 import java.awt.event.ActionEvent;
+import clases.Articulo;
 
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -32,6 +36,7 @@ import clases.Zapato;
 
 import javax.swing.JMenuBar;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -39,9 +44,11 @@ import javax.swing.JOptionPane;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.List;
+import java.awt.Point;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
+import java.awt.Image;
 
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
@@ -73,6 +80,20 @@ public class VentanaPrincipal extends JFrame {
 		tienda = t;
 	}
 	
+	//
+	
+	private VentanaTienda ventanaTienda;
+	
+	public void abrirVentanaTienda(Articulo articulo) {
+		ventanaTienda = new VentanaTienda(this, articulo);
+		ventanaTienda.setVisible(true);
+		this.setVisible(false);
+	}
+	
+	//
+	
+	
+	
 
 
 	private static boolean usuarioHaIniciadoSesion = false;
@@ -89,6 +110,7 @@ public class VentanaPrincipal extends JFrame {
 
 
 	private static JLabel lblNomU;
+	private static Object titulos;
 	
 	public static JLabel getLblNomU() {
 		return lblNomU;
@@ -193,6 +215,8 @@ public class VentanaPrincipal extends JFrame {
         spArticulos.setBounds(72,159,1153,490);
         contentPane.add(spArticulos);
         
+
+        
         JLabel lblUsuario = new JLabel("");
         lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/usuario.png")));
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
@@ -229,6 +253,8 @@ public class VentanaPrincipal extends JFrame {
         lblNomU.setBounds(1138, 67, 87, 19);
         contentPane.add(lblNomU);
 
+ 
+     
      
         //LISTENERS DE LOS ITEMS DE HOMBRE
         
@@ -449,10 +475,10 @@ public class VentanaPrincipal extends JFrame {
         	}
         });
         
+ 
+
         
-        
-        
-        
+
         
         
 
@@ -493,6 +519,14 @@ public class VentanaPrincipal extends JFrame {
 //		panel.setLayout(new GridLayout(0, COLUMNAS));
 		for (Camiseta a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
+			//
+			pnlArticulo.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					abrirVentanaTienda(a);
+				}
+			});
+			//
 			panel.add(pnlArticulo);
 			
 			
@@ -506,6 +540,14 @@ public class VentanaPrincipal extends JFrame {
 //		panel.setLayout(new GridLayout(0, COLUMNAS));
 		for (Jersey a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
+			//
+			pnlArticulo.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					abrirVentanaTienda(a);
+				}
+			});
+			//
 			panel.add(pnlArticulo);
 //			System.out.println("Añadido");
 		}	
@@ -517,6 +559,14 @@ public class VentanaPrincipal extends JFrame {
 //		panel.setLayout(new GridLayout(0, COLUMNAS));
 		for (Pantalon a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
+			//
+			pnlArticulo.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					abrirVentanaTienda(a);
+				}
+			});
+			//
 			panel.add(pnlArticulo);
 //			System.out.println("Añadido");
 		}	
@@ -527,11 +577,21 @@ public class VentanaPrincipal extends JFrame {
 //		panel.setLayout(new GridLayout(0, COLUMNAS));
 		for (Zapato a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
+			//
+			pnlArticulo.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					abrirVentanaTienda(a);
+				}
+			});
+			//
 			panel.add(pnlArticulo);
 //			System.out.println("Añadido");
 		}	
 	}
 	
+	
+		
 	
 	
 	
@@ -564,6 +624,9 @@ public class VentanaPrincipal extends JFrame {
 		
 		
 		return panelArticulo;
+		
+		
+	
 
 		/* if (UsuarioHaIniciadoSesion()) {
   	  lblUsuario.addMouseListener(new MouseAdapter() {
@@ -582,6 +645,10 @@ public class VentanaPrincipal extends JFrame {
       	}
   	});
   }*/
+		
+			
+		
+		
   
   
 	}

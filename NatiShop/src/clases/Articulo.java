@@ -13,6 +13,7 @@ public class Articulo implements Comparable<Articulo>{
 	protected Talla talla;
 	protected String foto;
 	protected Categoria categoria;
+	private String titulos;
 	
 	public Articulo() {
 		super();
@@ -89,6 +90,8 @@ public class Articulo implements Comparable<Articulo>{
 		
 		return this.id.compareTo(o.id);
 	}
+
+
 	
 	
 	
