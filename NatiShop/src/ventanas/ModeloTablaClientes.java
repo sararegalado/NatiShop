@@ -6,17 +6,17 @@ import java.util.List;
 
 import javax.swing.table.*;
 
-import clases.Usuario;
+import clases.Cliente;
 
-public class ModeloTablaUsuarios extends DefaultTableModel {
-	private List<Usuario>usuarios;
+public class ModeloTablaClientes extends DefaultTableModel {
+	private List<Cliente>clientes;
 	
 	
 	
 	private final List<String> titulos= Arrays.asList("DNI","NOMBRE","FECHA DE NACIMIENTO","CORREO", "PROVINCIA", "TELEFONO");
 	
-	public ModeloTablaUsuarios(List<Usuario> usuarios){
-		this.usuarios= usuarios;
+	public ModeloTablaClientes(List<Cliente> usuarios){
+		this.clientes= usuarios;
 		
 	}
 	
@@ -27,8 +27,8 @@ public class ModeloTablaUsuarios extends DefaultTableModel {
 	
 	@Override
 	public int getRowCount() {
-		if(usuarios !=null)
-			return usuarios.size();
+		if(clientes !=null)
+			return clientes.size();
 		return 0;
 	}
 	
@@ -44,14 +44,14 @@ public class ModeloTablaUsuarios extends DefaultTableModel {
 	
 	@Override
 	public Object getValueAt(int row,int column) {
-		Usuario u = usuarios.get(row);
+		Cliente c = clientes.get(row);
 		switch(column) {
-			case 0: return u.getDni(); 
-			case 1: return u.getNombre(); 
-			case 2: return u.getfNacStr();
-			case 3: return u.getCorreo();
-			case 4: return u.getProvinciaStr();
-			case 5: return u.getTlf();
+			case 0: return c.getDni(); 
+			case 1: return c.getNombre(); 
+			case 2: return c.getfNacStr();
+			case 3: return c.getCorreo();
+			case 4: return c.getProvinciaStr();
+			case 5: return c.getTlf();
 			default: return null;
 		}
 	}

@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-public class Usuario implements Comparable<Usuario> {
+public abstract class Usuario implements Comparable<Usuario> {
 	protected String dni;
 	protected String nombre;
 	protected Date fNac;
