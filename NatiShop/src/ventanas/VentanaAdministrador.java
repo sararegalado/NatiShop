@@ -14,6 +14,7 @@ import javax.swing.event.ChangeListener;
 
 import com.toedter.calendar.JCalendar;
 
+import clases.Administrador;
 import clases.Articulo;
 import clases.Tienda;
 import clases.Usuario;
@@ -25,16 +26,19 @@ import java.util.List;
 
 
 public class VentanaAdministrador extends JFrame{
-	private JPanel pnlOesteMenu,pnlCentro,pnlOesteArriba;
+	private JPanel pnlOesteMenu,pnlCentro,pnlOesteArriba,pnlDatos,pnlDatosArriba,pnlDatosModificar;
 	private JMenuBar menuBarAdmin;
 	private JMenu menuUsuarios,menuArticulos, menuEstadisticas, menuCompras;
 	private JMenuItem mItemRegistros,mItemArticulos,mItemStock,mItemCompras,mItemGraficos;
-	private JLabel lblFoto;
+	private JLabel lblFoto,lblDNI,lblnom,lblApellido,lblCorreo,lbltfn,lblProvincia,lblFnac,lblFinic,lblJornada,lblPuesto,lblModifJornada;
+	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfnFnac, tfnInic, tfJornada, tfPuesto;
 	private JButton btnDesplegar;
 	
 	private JTable tablaUsuarios;
 	private ModeloTablaUsuarios mUsuarios;
 	private JScrollPane sTablaUsuarios;
+	private JFrame vActual,vAnterior;
+	
 	
 	public VentanaAdministrador(JFrame va) {
 		
@@ -75,14 +79,93 @@ public class VentanaAdministrador extends JFrame{
 				pnlOesteMenu.setVisible(!pnlOesteMenu.isVisible());
 			}
 		});
+		JPanel pnlDatos= new JPanel();
+		pnlDatos.setLayout(new GridLayout(2,1));
+		pnlDatos.setVisible(false);
+		 
+        JPanel pnlDatosArriba = new JPanel();
+        pnlDatosArriba.setLayout(new GridLayout(10,2));
+        pnlDatos.add(pnlDatosArriba);
+        
+		 
+        JLabel lblDNI = new JLabel("DNI:");
+        JTextField tfDNI= new JTextField();
+        JLabel lblnom = new JLabel("Nombre:");
+        JTextField tfnom= new JTextField();
+        JLabel lblApellido = new JLabel("Apellido: ");
+        JTextField tfApellido = new JTextField();
+        JLabel lblCorreo = new JLabel("Correo: ");
+        JTextField tfCorreo= new JTextField();
+        JLabel lbltfn = new JLabel("Telefono: ");
+        JTextField tfTfn = new JTextField();
+        JLabel lblProvincia = new JLabel("Provincia: ");
+        JTextField tfProvincia= new JTextField();
+        JLabel lblFnac = new JLabel("Fecha de Nacimiento: ");
+        JTextField tfFnac = new JTextField();
+        JLabel lblFinic = new JLabel("Fecha de inicio de en la empresa: ");
+        JTextField tfnInic = new JTextField();
+        
+        JLabel lblJornada= new JLabel("Jornada: ");
+        JTextField tfJornada= new JTextField(); 
+        
+        JLabel lblPuesto = new JLabel("Puesto: ");
+        JTextField tfPuesto = new JTextField();
+        
+        pnlDatosArriba.add(lblDNI);
+        pnlDatosArriba.add(tfDNI);
+        pnlDatosArriba.add(lblnom);
+        pnlDatosArriba.add(tfnom);
+        pnlDatosArriba.add(lblApellido);
+        pnlDatosArriba.add(tfApellido);
+        pnlDatosArriba.add(lblCorreo);
+        pnlDatosArriba.add(tfCorreo);
+        pnlDatosArriba.add(lbltfn);
+        pnlDatosArriba.add(tfTfn);
+        pnlDatosArriba.add(lblProvincia);
+        pnlDatosArriba.add(tfProvincia);
+        pnlDatosArriba.add(lblFnac);
+        pnlDatosArriba.add(tfFnac);
+        pnlDatosArriba.add(lblFinic);
+        pnlDatosArriba.add(tfnInic);
+        pnlDatosArriba.add(lblJornada);
+        pnlDatosArriba.add(tfJornada);
+        pnlDatosArriba.add(lblPuesto);
+        pnlDatosArriba.add(tfPuesto);
+        
+        JPanel pnlDatosModificar = new JPanel();
+        pnlDatos.add(pnlDatosModificar);
+        
+        JLabel lblModifJornada = new JLabel("<html><u>" + "MODIFICAR JORNADA" + "</u></html>");
+        lblModifJornada.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
+        pnlDatosModificar.add(lblModifJornada);
+        
+      
 		
 		
 		lblFoto= new JLabel("");
 		pnlOesteMenu.add(lblFoto, BorderLayout.CENTER);
 		lblFoto.setIcon(new ImageIcon(VentanaAdministrador.class.getResource("/imagenes/Admin.png")));
 		lblFoto.setHorizontalAlignment(JLabel.CENTER);
-        lblFoto.setVerticalAlignment(JLabel.CENTER);
-        
+        lblFoto.setVerticalAlignment(JLabel.CENTER); 
+        lblFoto.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("PULSANDO");
+				pnlCentro.removeAll();
+				pnlCentro.revalidate();
+				pnlCentro.repaint();
+				pnlCentro.add(pnlDatos);
+				
+				
+				pnlDatos.setVisible(true);
+				
+				
+				
+				
+			}
+        });
+       
         
 		
 		pnlCentro = new JPanel();
@@ -172,33 +255,7 @@ public class VentanaAdministrador extends JFrame{
 		sTablaUsuarios = new JScrollPane(tablaUsuarios);
 		//pnlCentro.add(sTablaUsuarios);
 		pnlCentro.setVisible(false);
-		
-		tablaUsuarios.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
+		tablaUsuarios.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Point p = e.getPoint();
@@ -213,7 +270,10 @@ public class VentanaAdministrador extends JFrame{
 				}
 				JOptionPane.showMessageDialog(null, texto);
 			}
+			
 		});
+		
+		
 		
 		setVisible(true);		
 	}
@@ -233,6 +293,10 @@ public class VentanaAdministrador extends JFrame{
 		JCalendar jcCompras = new JCalendar(new Date());
 		pnlCentro.add(jcCompras);
 		pnlCentro.setVisible(true);
+	}
+	
+	public void cargarDatosAdmin() {
+		
 	}
 	
 	

@@ -21,6 +21,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.border.LineBorder;
 
+import clases.Administrador;
 import clases.Articulo;
 import clases.Tienda;
 import clases.Usuario;
@@ -51,18 +52,18 @@ public class VentanaInicioSesion extends JFrame {
 	
 	private JFrame vActual,vAnterior;
 	
+	
 	//Para guardar el usuario que Inicia Sesion y asignar el un carrito vacio que se ira llenando
 	private static Usuario usuario;
 	private static List<Articulo> carrito;
+
 	
 	
 	
 	public static Usuario getUsuario() {
 		return usuario;
 	}
-
-
-
+	
 
 	public static void setUsuario(Usuario usuario) {
 		VentanaInicioSesion.usuario = usuario;
@@ -81,9 +82,8 @@ public class VentanaInicioSesion extends JFrame {
 	public static void setCarrito(List<Articulo> carrito) {
 		VentanaInicioSesion.carrito = carrito;
 	}
-
-
-
+	
+	
 
 	public VentanaInicioSesion(JFrame va) {
 		vActual = this;
@@ -178,8 +178,6 @@ public class VentanaInicioSesion extends JFrame {
 			if(Tienda.getAdministradores().containsKey(nom)) {
 				new VentanaAdministrador(vActual);
 				vActual.setVisible(false);
-				
-				
 				
 			}else {
 				if (Tienda.buscarUsuarioPorNomCon(nom, con) != null) {
