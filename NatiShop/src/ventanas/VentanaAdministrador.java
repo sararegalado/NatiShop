@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Connection;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -317,9 +318,10 @@ public class VentanaAdministrador extends JFrame{
 	 * Método para cargar los usuarios registrador a la tabla
 	 */
 	public void cargarTablaUsuarios() {
-		Tienda.cargarClientes(Tienda.getNomfichclientes());
-		List<Cliente>lista = Tienda.getClientes();
-		tablaClientes.setModel(new ModeloTablaClientes(lista));
+		Connection con = BD.initBD("NatiShop.db");
+		List<Cliente> c = BD.obtenerListaClientes(con);
+		BD.closeBD(con);
+		tablaClientes.setModel(new ModeloTablaClientes(c));
 		pnlCentro.add(sTablaUsuarios);
 		pnlCentro.setVisible(true);
 	}

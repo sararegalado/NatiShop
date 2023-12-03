@@ -36,6 +36,7 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -147,7 +148,7 @@ public class VentanaInicioSesion extends JFrame {
 		contentPane.add(btnAccederRegistro);
 		
 		//Cargamos los usuarios desde la clase tienda
-		Tienda.cargarClientes(Tienda.getNomfichclientes());
+		//Tienda.cargarClientes(Tienda.getNomfichclientes());
 		
 		btnAccederRegistro.addActionListener(new ActionListener() {
 			
@@ -175,21 +176,25 @@ public class VentanaInicioSesion extends JFrame {
 		
 		btnIniciarSes.addActionListener((e)->{
 			String nom = tfNombre.getText();
-			String con = tfContrasena.getText();
+			String contra = tfContrasena.getText();
 			
 			
 			if(Tienda.getAdministradores().containsKey(nom)) {
-				Administrador admin  = Tienda.getAdministradores().get(nom);
-				System.out.println(admin);
-				administrador=  admin;
-				new VentanaAdministrador(vActual,admin);
-				vActual.setVisible(false);
-				
-				
+				if(Tienda.getAdministradores().get(nom).getContrasenia().equals(contra)) {
+					Administrador admin  = Tienda.getAdministradores().get(nom);
+					System.out.println(admin);
+					administrador=  admin;
+					new VentanaAdministrador(vActual,admin);
+					vActual.setVisible(false);	
+				}else {
+					JOptionPane.showMessageDialog(null, "Contraseña incorrecta","ERROR",JOptionPane.ERROR_MESSAGE);
+				}
 				
 			}else {
-				if (Tienda.buscarClientePorNomCon(nom, con) != null) {
-					Cliente c = Tienda.buscarClientePorNomCon(nom, con);
+				Connection con = BD.initBD("NatiShop.db");
+				Cliente c = BD.buscarClientePorNomCon(con, nom, contra);
+				BD.closeBD(con);
+				if ( c != null) {;
 					JOptionPane.showMessageDialog(null, "Bienvenido!","SESIÓN INICIADA",JOptionPane.INFORMATION_MESSAGE);
 					cliente = c; //Guardamos la información del cliente que ha iniciado sesión
 					carrito = new ArrayList<>(); //Inicializamos su carrito a una lista vacía
