@@ -54,8 +54,6 @@ public class VentanaInicioSesion extends JFrame {
 	private static Cliente cliente;
 	private static List<Articulo> carrito;
 	
-	
-	
 	public static Cliente getCliente() {
 		return cliente;
 	}
@@ -74,6 +72,20 @@ public class VentanaInicioSesion extends JFrame {
 	public static void setCarrito(List<Articulo> carrito) {
 		VentanaInicioSesion.carrito = carrito;
 	}
+	
+	private static Administrador administrador;
+	
+	public static Administrador getAdministrador() {
+		return administrador;
+	}
+
+
+	public static void setAdministrador(Administrador administrador) {
+		VentanaInicioSesion.administrador = administrador;
+	}
+
+
+	
 
 
 	public VentanaInicioSesion(JFrame va) {
@@ -169,6 +181,7 @@ public class VentanaInicioSesion extends JFrame {
 			if(Tienda.getAdministradores().containsKey(nom)) {
 				Administrador admin  = Tienda.getAdministradores().get(nom);
 				System.out.println(admin);
+				administrador=  admin;
 				new VentanaAdministrador(vActual,admin);
 				vActual.setVisible(false);
 				

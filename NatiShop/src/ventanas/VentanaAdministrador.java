@@ -28,13 +28,13 @@ import java.util.List;
 
 public class VentanaAdministrador extends JFrame{
 
-	private JPanel pnlOesteMenu,pnlCentro,pnlOesteArriba,pnlDatos,pnlDatosArriba,pnlDatosModificar;
+	private JPanel pnlOesteMenu,pnlCentro,pnlOesteArriba,pnlDatos,pnlDatosTitulo,pnlDatosArriba,pnlDatosBotones;
 
 	private JMenuBar menuBarAdmin;
 	private JMenu menuClientes,menuArticulos, menuEstadisticas, menuCompras;
 	private JMenuItem mItemRegistros,mItemArticulos,mItemStock,mItemCompras,mItemGraficos;
-	private JLabel lblFoto,lblDNI,lblnom,lblApellido,lblCorreo,lbltfn,lblProvincia,lblFnac,lblFinic,lblJornada,lblPuesto,lblModifJornada;
-	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfnFnac, tfnInic, tfJornada, tfPuesto;
+	private JLabel lblFoto,lblTitulo,lblDNI,lblnom,lblApellido,lblCorreo,lbltfn,lblProvincia,lblFnac,lblFinic,lblJornada,lblPuesto,lblModifJornada;
+	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfJornada, tfPuesto;
 	private JButton btnDesplegar;
 	
 	private JTable tablaClientes;
@@ -83,37 +83,57 @@ public class VentanaAdministrador extends JFrame{
 			}
 		});
 		
-		JPanel pnlDatos= new JPanel();
-		pnlDatos.setLayout(new GridLayout(2,1));
+		pnlDatos= new JPanel();
+		pnlDatos.setLayout(new GridLayout(3,1));
 		pnlDatos.setVisible(false);
+		
+		pnlDatosTitulo = new JPanel();
+		pnlDatosTitulo.setLayout(new GridLayout(1,1));
+		pnlDatos.add(pnlDatosTitulo);
+		
+		lblTitulo = new JLabel("<html><u>" + "DATOS PERSONALES" + "</u></html>");
+		lblTitulo.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 20));
+		lblTitulo.setHorizontalAlignment(JLabel.CENTER);
+		pnlDatosTitulo.add(lblTitulo);
 
         pnlDatosArriba = new JPanel();
         pnlDatosArriba.setLayout(new GridLayout(10,2));
         pnlDatos.add(pnlDatosArriba);
+        
+        
 
+        lblDNI = new JLabel("DNI:");
+        tfDNI= new JTextField();
+        tfDNI.setEditable(false);
+        lblnom = new JLabel("Nombre:");
+        tfnom= new JTextField();
+        tfnom.setEditable(false);
+        lblApellido = new JLabel("Apellido: ");
+        tfApellido = new JTextField();
+        tfApellido.setEditable(false);
+        lblCorreo = new JLabel("Correo: ");
+        tfCorreo= new JTextField();
+        tfCorreo.setEditable(false);
+        lbltfn = new JLabel("Telefono: ");
+        tfTfn = new JTextField();
+        tfTfn.setEditable(false);
+        lblProvincia = new JLabel("Provincia: ");
+        tfProvincia= new JTextField();
+        tfProvincia.setEditable(false);
+        lblFnac = new JLabel("Fecha de Nacimiento: ");
+        tfFnac = new JTextField();
+        tfFnac.setEditable(false);
+        lblFinic = new JLabel("Fecha de inicio de en la empresa: ");
+        tfnInic = new JTextField();
+        tfnInic.setEditable(false);
 
-        JLabel lblDNI = new JLabel("DNI:");
-        JTextField tfDNI= new JTextField();
-        JLabel lblnom = new JLabel("Nombre:");
-        JTextField tfnom= new JTextField();
-        JLabel lblApellido = new JLabel("Apellido: ");
-        JTextField tfApellido = new JTextField();
-        JLabel lblCorreo = new JLabel("Correo: ");
-        JTextField tfCorreo= new JTextField();
-        JLabel lbltfn = new JLabel("Telefono: ");
-        JTextField tfTfn = new JTextField();
-        JLabel lblProvincia = new JLabel("Provincia: ");
-        JTextField tfProvincia= new JTextField();
-        JLabel lblFnac = new JLabel("Fecha de Nacimiento: ");
-        JTextField tfFnac = new JTextField();
-        JLabel lblFinic = new JLabel("Fecha de inicio de en la empresa: ");
-        JTextField tfnInic = new JTextField();
+        lblJornada= new JLabel("Jornada: ");
+        tfJornada= new JTextField(); 
+        tfJornada.setEditable(false);
 
-        JLabel lblJornada= new JLabel("Jornada: ");
-        JTextField tfJornada= new JTextField(); 
-
-        JLabel lblPuesto = new JLabel("Puesto: ");
-        JTextField tfPuesto = new JTextField();
+        lblPuesto = new JLabel("Puesto: ");
+        tfPuesto = new JTextField();
+        tfPuesto.setEditable(false);
 
         pnlDatosArriba.add(lblDNI);
         pnlDatosArriba.add(tfDNI);
@@ -135,9 +155,6 @@ public class VentanaAdministrador extends JFrame{
         pnlDatosArriba.add(tfJornada);
         pnlDatosArriba.add(lblPuesto);
         pnlDatosArriba.add(tfPuesto);
-
-        pnlDatosModificar = new JPanel();
-        pnlDatos.add(pnlDatosModificar);
         
         lblFoto= new JLabel("");
 		pnlOesteMenu.add(lblFoto, BorderLayout.CENTER);
@@ -163,15 +180,25 @@ public class VentanaAdministrador extends JFrame{
 			}
         });
 
+        pnlDatosBotones = new JPanel();
+        pnlDatosBotones.setLayout(new GridLayout(1,1));
+        pnlDatos.add(pnlDatosBotones);
+    
 
         lblModifJornada = new JLabel("<html><u>" + "MODIFICAR JORNADA" + "</u></html>");
         lblModifJornada.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
-        pnlDatosModificar.add(lblModifJornada);
+        pnlDatosBotones.add(lblModifJornada);
+        lblModifJornada.setHorizontalAlignment(lblModifJornada.CENTER);
         lblModifJornada.addMouseListener(new MouseAdapter() {
         	@Override
 			public void mouseClicked(MouseEvent e) {
-				
-				
+        		int respuesta = JOptionPane.showConfirmDialog(null, "A continuación, podrás solicitar un cambio de jornada laboral, ¿Quieres continuar?", "SOLICITUD DE CAMBIO DE JORNADA", JOptionPane.YES_NO_OPTION);
+        		if(respuesta == JOptionPane.YES_OPTION) {
+        			new VentanaSolicitudJornada(vActual);
+        			
+        			
+        		};
+        		
 			}
 
         	
@@ -313,8 +340,10 @@ public class VentanaAdministrador extends JFrame{
 			tfCorreo.setText(admin.getCorreo());
 			tfTfn.setText(admin.getTlf());
 			tfProvincia.setText(admin.getProvinciaStr());
-			tfnFnac.setText(admin.getfNacStr());
-			
+			tfFnac.setText(admin.getfNacStr());
+			tfnInic.setText(admin.getFInicEmpresaStr());
+			tfJornada.setText(admin.getJornadaLaboralStr());
+			tfPuesto.setText(admin.getPuestoStr());
 			
 		}
 		

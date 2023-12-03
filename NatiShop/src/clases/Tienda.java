@@ -39,7 +39,24 @@ public class Tienda {
 	public static Set<Articulo> getArticulos() {
 		return articulos;
 	}
+
 	
+	//
+	public static TreeSet<Talla> tallasPorArticulo(Articulo articulo) {
+	    TreeSet<Talla> tallas = new TreeSet<>();
+	    
+	    Talla tallasArticulo = articulo.getTalla();
+	    
+	    if (tallasArticulo != null) {
+	        tallas.add(tallasArticulo);
+	    }
+	    
+	    return tallas;
+	}
+
+	//
+	
+
 	public static HashMap<String, Administrador> getAdministradores() {
 		return Administradores;
 	}
