@@ -1,4 +1,4 @@
-package ventanas;
+ package ventanas;
 
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
@@ -103,6 +102,7 @@ public class VentanaPortada extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				new VentanaPrincipal(vActual);
+				vActual.setVisible(false);
 				
 			}
 		});
@@ -125,8 +125,6 @@ public class VentanaPortada extends JFrame {
 //				
 //			}
 //		});
-        
-        
         
 
         addWindowListener(new WindowAdapter() {
@@ -162,7 +160,7 @@ public class VentanaPortada extends JFrame {
         setExtendedState(MAXIMIZED_BOTH);
     }
 
-    private void lanza(String mrl) {
+    public void lanza(String mrl) {
         mediaPlayerComponent.mediaPlayer().audio().setVolume(100);
         mediaPlayerComponent.mediaPlayer().media().play(mrl);
     }

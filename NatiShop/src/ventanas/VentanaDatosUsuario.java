@@ -1,178 +1,254 @@
 package ventanas;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
 
-import javax.swing.AbstractButton;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-
+import clases.Tienda;
 import clases.Usuario;
 
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 public class VentanaDatosUsuario extends JFrame{
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private static Usuario usuario;
+	private static JPanel pnlDatos ;
+	private JPanel pnlIzq;
+	private JPanel pnlDcha;
+	private JPanel pnlCentrarB1;
+	private JPanel pnlCentrarB2;
+	private JPanel pnlCentrarB3;
+	private JLabel lblTitulo, lblNombre, lblAtras, lblEmail, lblTlf, lblCon;
+	private static JButton btnCorreo, btnTfn, btnContrasenia;
+	private static JButton btnModificar;
+	private JLabel lblCerrar, lblElim;
+	private JTextField tfEmail;
+	private static int intModif = 0;
+	private JFrame vActual, vAnterior;
 	
-	public VentanaDatosUsuario(Usuario usuario2) {
-		super();
-		
+	private static JTextField tfActual, tfNuevo;
+	private static JPasswordField jpActual, jpNueva;
+	
+	
+	public VentanaDatosUsuario(JFrame va, Usuario u) {
+		vActual = this;
+		vAnterior = va;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(300, 200, 600, 400);
+		setBounds(100, 100,  778, 455);
 		
-		JPanel panel = new JPanel();
-		getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new GridLayout(16, 2, 0, 0));
+		pnlDatos = new JPanel(new GridLayout(1, 2));
+		getContentPane().add(pnlDatos, BorderLayout.CENTER);
 		
 		
-		VentanaRegistro ventanaRegistro = null;
-		JLabel lblNewLabel = new JLabel("NOMBRE: " + usuario.getNombre());	//NOMBRE no es editable se carga por defecto
-		panel.add(lblNewLabel);
+		lblTitulo = new JLabel("TU CUENTA");
+		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitulo.setFont(new Font("Baskerville", Font.PLAIN, 20));
+		JPanel pnlDividir = new JPanel(new GridLayout(1, 3));
 		
-		/*textField = new JTextField(usuario.getNombre());
-		panel.add(textField);
-		textField.setColumns(10);*/
+		lblAtras = new JLabel("");
+		lblAtras.setIcon(new ImageIcon(VentanaInicioSesion.class.getResource("/imagenes/volver.png")));
+		pnlDividir.add(lblAtras);
+		pnlDividir.add(lblTitulo);
+		pnlDividir.add(new JLabel());
 		
-		JLabel lblNewLabel_1 = new JLabel("DIRECCIÓN");
-		panel.add(lblNewLabel_1);
+		getContentPane().add (pnlDividir, BorderLayout.NORTH);
+		getContentPane().add(new JPanel(), BorderLayout.WEST);
+		getContentPane().add(new JPanel(), BorderLayout.SOUTH);
+		getContentPane().add(new JPanel(), BorderLayout.EAST);
 		
-		textField_1 = new JTextField();
-		panel.add(textField_1);
-		textField_1.setColumns(10);
 		
-		JLabel lblNewLabel_2 = new JLabel("TELEFONO");
-		panel.add(lblNewLabel_2);
+		pnlIzq = new JPanel(new GridLayout(12, 1));
 		
-		textField_2 = new JTextField();
-		panel.add(textField_2);
-		textField_2.setColumns(10);
+		lblNombre = new JLabel (u.getNombre());
+		lblEmail = new JLabel("EMAIL");
+		pnlCentrarB1 = new JPanel (new GridLayout(1,2));
+		btnCorreo = new JButton(u.getCorreo());
+		btnCorreo.setHorizontalAlignment(SwingConstants.LEFT);
+		pnlCentrarB1.add(btnCorreo);
+		pnlCentrarB1.add(new JPanel());
 		
-		JLabel lblNewLabel_3 = new JLabel("CONTRASEÑA");
-		panel.add(lblNewLabel_3);
 		
-		textField_3 = new JTextField(usuario.getContrasenia());
-		panel.add(textField_3);
-		textField_3.setColumns(10);
+		pnlCentrarB2 = new JPanel (new GridLayout(1,2));
+		lblTlf = new JLabel ("TELÉFONO");
+		btnTfn = new JButton(u.getTlf());
+		btnTfn.setHorizontalAlignment(SwingConstants.LEFT);
+		pnlCentrarB2.add(btnTfn);
+		pnlCentrarB2.add(new JPanel());
 		
-		JLabel lblNewLabel_4 = new JLabel("EMAIL");
-		panel.add(lblNewLabel_4);
+		pnlCentrarB3 = new JPanel (new GridLayout(1,2));
+		lblCon = new JLabel("CONTRASEÑA");
+		btnContrasenia = new JButton("*".repeat(u.getContrasenia().length()));
+		btnContrasenia.setHorizontalAlignment(SwingConstants.LEFT);
+		pnlCentrarB3.add(btnContrasenia);
+		pnlCentrarB3.add(new JPanel());
 		
-		textField_4 = new JTextField(usuario.getCorreo());
-		textField_4.setText("");
-		panel.add(textField_4);
-		textField_4.setColumns(10);
+		lblCerrar = new JLabel("<html><u>" + "Cerrar sesión" + "</u></html>");
+		lblCerrar.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
+		lblElim = new JLabel("<html><u>" + "Eliminar cuenta" + "</u></html>");
+		lblElim.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
 		
-		JLabel lblNewLabel_5 = new JLabel("WALLET");
-		panel.add(lblNewLabel_5);
+		pnlIzq.add(new JPanel());
+		pnlIzq.add(lblNombre);
+		pnlIzq.add(lblEmail);
+		pnlIzq.add(pnlCentrarB1);
+		pnlIzq.add(lblTlf);
+		pnlIzq.add(pnlCentrarB2);
+		pnlIzq.add(lblCon);
+		pnlIzq.add(pnlCentrarB3);
 		
-		textField_5 = new JTextField();
-		panel.add(textField_5);
-		textField_5.setColumns(10);
+		pnlIzq.add(new JPanel());
+		pnlIzq.add(lblCerrar);
+		pnlIzq.add(lblElim);
+		pnlIzq.add(new JPanel());
 		
-		JPanel panel_1 = new JPanel();
-		getContentPane().add(panel_1, BorderLayout.SOUTH);
+		pnlDatos.add(pnlIzq);
 		
-		JButton btnEliminarCuenta = new JButton("Eliminar cuenta");
-		panel_1.add(btnEliminarCuenta);
+		pnlDcha = new JPanel(new BorderLayout());
 		
-		JButton btnCerrarSesion = new JButton("Cerrar sesión");
-		panel_1.add(btnCerrarSesion);
+		btnCorreo.addActionListener(e -> {
+			intModif = 1;
+			pnlDcha.removeAll();
+			agregarCampos(pnlDcha, "EMAIL ", u);
+			pnlDcha.revalidate();
+			pnlDcha.repaint();
+		});
 		
-		JButton btnGuardar = new JButton("Guardar");
-		panel_1.add(btnGuardar);
-	
+		btnTfn.addActionListener(e -> {
+			intModif = 2;
+			pnlDcha.removeAll();
+			agregarCampos(pnlDcha, "TELEFONO ", u);
+			pnlDcha.revalidate();
+			pnlDcha.repaint();
+		});
+		
+		btnContrasenia.addActionListener(e -> {
+			intModif = 3;
+			pnlDcha.removeAll();
+			agregarCampos(pnlDcha, "CONTRASEÑA ", u);
+			pnlDcha.revalidate();
+			pnlDcha.repaint();
+		});
+		
+		lblCerrar.addMouseListener(new MouseAdapter() {
 			
-		//BOTONES
-		btnEliminarCuenta.addActionListener(new ActionListener() {
-        	@Override
-			public void actionPerformed(ActionEvent e) {
-				int confirmacion = JOptionPane.showConfirmDialog(btnEliminarCuenta, "Estas seguro de que quieres elimiar tu cuenta", "Confirmacio", JOptionPane.YES_NO_OPTION);
-				if (confirmacion == JOptionPane.YES_OPTION) {
-					VentanaDatosUsuario ventanaDatosCliente = new VentanaDatosUsuario(usuario2);
-					ventanaDatosCliente.dispose();
-				}
-        	}
-        });
 		
-		btnCerrarSesion.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // lógica para cerrar la sesión
-                JOptionPane.showMessageDialog(null, "Sesión cerrada");
-                VentanaDatosUsuario ventanaDatosCliente = new VentanaDatosUsuario(usuario2);
-				ventanaDatosCliente.dispose(); 
-            }
-        });
-		
-		
-		btnGuardar.addActionListener(new ActionListener() {
-
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				 guardarDatos();
+			public void mouseClicked(MouseEvent e) {
+				int confirmacion = JOptionPane.showConfirmDialog(null, "Estas seguro de que quieres cerrar tu sesión", "Confirmacion", JOptionPane.YES_NO_OPTION);
+				if (confirmacion == JOptionPane.YES_OPTION) {
+					VentanaPrincipal.setUsuarioHaIniciadoSesion(false);
+					VentanaPrincipal.eliminarNombreUsuario();
+					vActual.setVisible(false);
+				}
+				
 			}
 		});
-		 
-	        
 		
-		cargarDatosUsuario(usuario);
+		lblElim.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int confirmacion = JOptionPane.showConfirmDialog(null, "Estas seguro de que quieres elimiar tu cuenta", "Confirmacion", JOptionPane.YES_NO_OPTION);
+				if (confirmacion == JOptionPane.YES_OPTION) {
+					Usuario u = VentanaInicioSesion.getUsuario();
+					Tienda.getUsuarios().remove(u);
+					Tienda.guardarUsuarios(Tienda.getNomfichusuarios());
+					VentanaPrincipal.setUsuarioHaIniciadoSesion(false);
+					VentanaPrincipal.eliminarNombreUsuario();
+					vActual.setVisible(false);
+				}
+			}
+		});
 		
+		pnlDatos.add(pnlDcha);
+		
+		setLocationRelativeTo(null);
 		setVisible(true);
-	}
-
-	private void cargarDatosUsuario(Usuario usuario2) {
-		if (usuario != null) {
-			//lblNewLabel.setText(usuario.getNombre());
-			textField_3.setText(usuario.getContrasenia());
-			textField_4.setText(usuario.getCorreo());
-		} else {
-			JOptionPane.showMessageDialog(null, "El usuario no ha introducido ningun dato");               
-		}
-	};
-	
-	private void guardarDatos() {
-        //usuario.setContrasenia(textField_3.getText());
-        //usuario.setCorreo(textField_4.getText());
-        String direccion = textField_1.getText();
-        String telefono = textField_2.getText();
-        String contrasenia = textField_3.getText();
-        String email = textField_4.getText();
-        String wallet = textField_5.getText();               
-        System.out.println("Datos guardados: " + direccion + telefono + contrasenia + email + wallet);
-        //System.out.println("Datos guardados: " + usuario.getContrasenia() + usuario.getCorreo());
-    };			
-
-	
-	public static void main1(String[] args) {
-		 Usuario usuario = new Usuario();
-	        SwingUtilities.invokeLater(new Runnable() {
-	            public void run() {
-	                new VentanaDatosUsuario(usuario);
-	            }
-	        });
-	    }
-	
-	public static void main(String[] args) {
-		VentanaDatosUsuario VentanaDatosCliente = new VentanaDatosUsuario(usuario);
+		
 		
 	}
+	
+    private static void agregarCampos(JPanel pnlDcha, String label, Usuario u) {
+    	JPanel panelModif = new JPanel(new GridLayout(6,1));
+        JLabel etiqueta = new JLabel(label);
+        panelModif.add(etiqueta);
+        
+        if (intModif == 1 || intModif == 2) {
+        	JLabel actual = new JLabel("Introduce tu " + label.toLowerCase() + "actual");
+            tfActual = new JTextField(20);
+        	JLabel nuevo = new JLabel("Introduce tu " + label.toLowerCase() + "nuevo");
+            tfNuevo = new JTextField(20);
+            panelModif.add(actual);
+            panelModif.add(tfActual);
+            panelModif.add(nuevo);
+            panelModif.add(tfNuevo);
+        	
+        } else {
+        	JLabel actualC = new JLabel("Introduce tu " + label.toLowerCase() + "actual");
+            jpActual = new JPasswordField(20);
+        	JLabel nuevaC = new JLabel("Introduce tu " + label.toLowerCase() + "nueva");
+            jpNueva = new JPasswordField(20);
+            panelModif.add(actualC);
+            panelModif.add(jpActual);
+            panelModif.add(nuevaC);
+            panelModif.add(jpNueva);
+        	
+        }
+        
+        btnModificar = new JButton("MODIFICAR");
+        btnModificar.addActionListener(e -> {
+            switch (intModif) {
+                case 1:
+                    if (u.getCorreo().equals(tfActual.getText())) {
+                        u.setCorreo(tfNuevo.getText());
+                        btnCorreo.setText(tfNuevo.getText());
+                        tfActual.setText("");
+                        tfNuevo.setText("");
+                        JOptionPane.showMessageDialog(null, "Datos modificados correctamente");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El email actual introducido no es correcto");
+                    }
+                    break;
+
+                case 2:
+                    if (u.getTlf().equals(tfActual.getText())) {
+                        u.setTlf(tfNuevo.getText());
+                        btnTfn.setText(tfNuevo.getText());
+                        tfActual.setText("");
+                        tfNuevo.setText("");
+                        JOptionPane.showMessageDialog(null, "Datos modificados correctamente");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El telefono actual introducido no es correcto");
+                    }
+                    break;
+
+                case 3:
+                    if (u.getContrasenia().equals(jpActual.getText())) {
+                        u.setContrasenia(jpNueva.getText());
+                        btnContrasenia.setText("*".repeat(jpNueva.getText().length()));
+                        jpActual.setText("");
+                        jpNueva.setText("");
+                        JOptionPane.showMessageDialog(null, "Datos modificados correctamente");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "La contraseña actual introducida no es correcta");
+                    }
+                    break;
+            }
+
+            Tienda.guardarUsuarios(Tienda.getNomfichusuarios());
+        });
+
+		
+        JPanel pnlBoton = new JPanel(new BorderLayout());
+        pnlBoton.add(btnModificar, BorderLayout.SOUTH);
+        
+        
+        panelModif.add(pnlBoton);
+        
+
+        pnlDcha.add(panelModif, BorderLayout.CENTER);
+        
+       
+    }
+
 }
-
-
-
-
-
-
-

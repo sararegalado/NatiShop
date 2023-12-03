@@ -1,6 +1,7 @@
 package clases;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Tienda {
@@ -10,15 +11,27 @@ public class Tienda {
 	private static Set<Jersey> jerseys = new TreeSet<>();
 	private static Set<Pantalon> pantalones = new TreeSet<>();
 	private static Set<Zapato> zapatos = new TreeSet<>();
-
-
+	
 
 	private static List<Usuario> usuarios = new ArrayList<>();
 	private static HashMap<Usuario, ArrayList<Articulo>> compras = new HashMap<>();
+	private static HashMap<String, HashMap<String, ArrayList<Articulo>>> comprasPorUsuario = new HashMap<>();
+	private static HashMap<String, Administrador>Administradores = new HashMap<>();
+	//mapa admin (clave: correo, valor admin)
 	
-	//private static final String nomfichUsuarios = "Usuarios.csv";
+	private static final String nomfichUsuarios = "Usuarios.csv";
+	private  static final String nomfichAdmins= "Administradores.csv";
 
-	//Getters y setters
+	public static String getNomfichusuarios() {
+		return nomfichUsuarios;
+	}
+	
+
+	public static String getNomfichadmins() {
+		return nomfichAdmins;
+	}
+
+
 	public static HashMap<Usuario, ArrayList<Articulo>> getCompras() {
 		return compras;
 	}
@@ -27,7 +40,11 @@ public class Tienda {
 		return articulos;
 	}
 	
-	
+	public static HashMap<String, Administrador> getAdministradores() {
+		return Administradores;
+	}
+
+
 	/**
 	 * Método que guarda todas las camisetas de articulos en un HashSet
 	 */
@@ -88,18 +105,78 @@ public class Tienda {
 	
 	
 
+	public static HashMap<String, HashMap<String, ArrayList<Articulo>>> getComprasPorUsuario() {
+		return comprasPorUsuario;
+	}
+
 	/**
 	 * Método que añade un nuevo articulo comprado a la lista de articulos del cliente 
 	 * @param u Usuario que realiza las compras en NatyShop
 	 * @param a Articulo comprado por el usuario que va a ser añadido a la lista de articulos 
 	 */
-	
+	//METODO QUE HAY QUE AÑADIR AL ACTION LISTENER DEL BOTON COMPRAR
 	public static void aniadirCompraUsuario(Usuario u, Articulo a) {
 		if(! compras.containsKey(u)) {
 			compras.put(u, new ArrayList<>());
 		}
 		compras.get(u).add(a);
+		
+		if(!comprasPorUsuario.containsKey(u)) {
+			comprasPorUsuario.put(u.getDni(), new HashMap<>());
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Date fActual = new Date();
+		String fechaCompra = sdf.format(fActual);
+		if(!comprasPorUsuario.get(u.getDni()).containsKey(fechaCompra)) {
+			comprasPorUsuario.get(u.getDni()).put(fechaCompra, new ArrayList<>());
+		}
+		comprasPorUsuario.get(u.getDni()).get(fechaCompra).add(a);
+		
 	}
+	/**
+	 * Metodo que cargar el fichero de Admins en un mapa de Administradore
+	 * @param nomfichAdmins
+	 */
+	
+	public static void cargarAdministradores(String nomfichAdmins) {
+		Scanner sc;
+		try {
+			sc = new Scanner(new FileReader(nomfichAdmins));
+			String linea;
+			sc.nextLine();
+			while(sc.hasNext()){
+				linea= sc.nextLine();
+				String[] partes = linea.split(";");
+				if(partes.length > 0) {
+					String dni = partes[0];
+					String nom= partes[1];
+					String apellido= partes[2];
+					String correo = partes[3];
+					String tlf = partes[4];
+					String provincia = (partes[5]);
+					String Fnac = partes[6];
+					String Finic = partes[7];
+					String jornada=partes[8];
+					String puesto = partes[9];
+					String con= partes[10];
+					Administrador a = new Administrador(dni,nom,apellido,correo,tlf,provincia,Fnac,Finic,jornada,puesto,con);
+					if(!Administradores.containsKey(a.getCorreo())) {
+						Administradores.put(a.getCorreo(), a);
+					}
+					
+				}
+			}
+			sc.close();
+		} catch (FileNotFoundException e) {
+			
+			e.printStackTrace();
+		}
+		
+			
+		
+		
+	}
+
 
 	/**
 	 * Método que carga el fichero usuarios en una lista de usuarios
@@ -112,16 +189,21 @@ public class Tienda {
 			Scanner sc= new Scanner(new FileReader(nomfichUsuarios));
 			String linea;
 			while(sc.hasNext()) {
-				linea= sc.nextLine();
-				String [] partes= linea.split(";");
-				String dni= partes[0];
-				String nom= partes[1];
-				String fNac= partes[2];
-				String correo= partes[3];
-				String con= partes[4];
-				Usuario u= new Usuario(dni, nom, fNac, correo, con);
-				if(buscarUsuario(dni) == null) {
-					usuarios.add(u);
+				linea = sc.nextLine();
+				String [] partes = linea.split(";");
+				if(partes.length > 0) {
+					String dni = partes[0];
+					String nom = partes[1];
+					String fNac = partes[2];
+					String correo = partes[3];
+					String tfn = partes [4];
+					String p = partes[5];
+					String con = partes[6];
+					Usuario u = new Usuario(dni, nom, fNac, correo, tfn, p, con);
+					if(buscarUsuario(dni) == null) {
+						usuarios.add(u);
+						comprasPorUsuario.putIfAbsent(u.getDni(), new HashMap<>());
+					}
 				}
 				
 			}
@@ -140,7 +222,7 @@ public class Tienda {
 		try {
 			PrintWriter pw = new PrintWriter(nomfichUsuarios);
 			for(Usuario u : usuarios) {
-				pw.println(u.getDni()+";"+u.getNombre()+";"+u.getfNacStr()+";"+u.getCorreo()+";"+u.getContrasenia());
+				pw.println(u.getDni()+";"+u.getNombre()+";"+u.getfNacStr()+";"+u.getCorreo()+";"+u.getTlf()+";"+u.getProvinciaStr()+";"+u.getContrasenia());
 			}
 			pw.flush();
 			pw.close();
@@ -174,6 +256,25 @@ public class Tienda {
 		}
 	}
 	
+	public static Usuario buscarUsuarioPorNomCon(String nombre, String con) {
+		boolean enc = false;
+		int pos = 0;
+		Usuario u = null;
+		while(!enc && pos<usuarios.size()) {
+			u = usuarios.get(pos);
+			if (u.getNombre().equals(nombre) && u.getContrasenia().equals(con)) {
+				enc = true;
+			}else {
+				pos++;
+			}	
+		}
+		if(enc) {
+			return u;
+		}else {
+			return null;
+		}
+	}
+	
 	
 	/**
 	 * Método que carga el fichero articulos en una lista de articulos
@@ -200,10 +301,12 @@ public class Tienda {
 				if (Categoria.valueOf(categoria) == Categoria.CAMISETA) {
 					Camiseta c = new Camiseta(id, nom, Integer.parseInt(unidades), Double.parseDouble(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto,Categoria.valueOf(categoria));
 					aniadirArticulos(c);
+					
 				}
 				else if (Categoria.valueOf(categoria) == Categoria.JERSEY) {
 					Jersey j = new Jersey(id, nom, Integer.parseInt(unidades), Double.parseDouble(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
 					aniadirArticulos(j);
+
 				} 
 				else if (Categoria.valueOf(categoria) == Categoria.PANTALON) {
 					Pantalon p = new Pantalon(id, nom, Integer.parseInt(unidades), Double.parseDouble(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
@@ -212,9 +315,11 @@ public class Tienda {
 				else {
 					Zapato z = new Zapato(id, nom, Integer.parseInt(unidades), Double.parseDouble(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
 					aniadirArticulos(z);
+					} 
+
 				}
 				
-			}
+			
 			sc.close();
 		} catch (FileNotFoundException e) {
 			

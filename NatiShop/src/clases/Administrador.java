@@ -1,93 +1,115 @@
 package clases;
 
-import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class Administrador implements Comparable<Administrador>{
-	private String dni;
-	private String nombre;
-	private String correo;
-	private String contraseña;
-	private Date fcontrato;
+public class Administrador extends Usuario {
+	protected String apellido;
+	protected Date FInicEmpresa;
+	protected Jornada jornadaLaboral;
+	protected Puesto puesto;
 	
-	private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	protected SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	
-	
-	Administrador() {
+	public Administrador() {
 		super();
 		
 	}
-
-	public Administrador(String dni, String nombre, String correo, String contraseña, Date fcontrato) {
-		super();
-		this.dni = dni;
-		this.nombre = nombre;
-		this.correo = correo;
-		this.contraseña = contraseña;
-		this.fcontrato = fcontrato;
-	}
-
-	public String getDni() {
-		return dni;
-	}
-
-	public void setDni(String dni) {
-		this.dni = dni;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public String getCorreo() {
-		return correo;
-	}
-
-	public void setCorreo(String correo) {
-		this.correo = correo;
-	}
-
-	public String getContraseña() {
-		return contraseña;
-	}
-
-	public void setContraseña(String contraseña) {
-		this.contraseña = contraseña;
-	}
-
-	public Date getFcontrato() {
-		return fcontrato;
-	}
-
-	public void setFcontrato(Date fcontrato) {
-		this.fcontrato = fcontrato;
-	}
-
-	public SimpleDateFormat getSdf() {
-		return sdf;
-	}
-
-	public void setSdf(SimpleDateFormat sdf) {
-		this.sdf = sdf;
+	
+	public Administrador(String dni, String nombre, Date fNac, String correo, Provincia provincia, String tfno, String contrasenia, String apellido, Date FInicEmpresa,Jornada jornadaLaboral,Puesto puesto ) {
+		super(dni, nombre, fNac, correo, tfno, provincia, contrasenia);
+		this.apellido= apellido;
+		this.FInicEmpresa= FInicEmpresa;
+		this.jornadaLaboral= jornadaLaboral;
+		this.puesto= puesto;
+		
 	}
 	
+	/**
+	 * Constructor que cambia las fechas del format Date a Strings 
+	 * @param dni: String
+	 * @param nombre; String
+	 * @param fNac: Date a String 
+	 * @param correo: String
+	 * @param contrasenia: String
+	 * @param apellido: String
+	 * @param FInicEmpresa: De date a String
+	 * @param jornadaLaboral: enum
+	 * @param puesto: enum
+		this.apellido = apellido;
+		//this.FInicEmpresa =sdf.parse(fInicEmpresa);
+		setFInicEmpresarstr(fInicEmpresa);
+		this.jornadaLaboral = Jornada.valueOf(jornadaLaboral);
+		this.puesto = Puesto.valueOf(puesto);
+	 */
+	public Administrador(String dni, String nombre, String apellido, String correo, String tlf, String provincia, String fNac,
+			String fInicEmpresa, String jornadaLaboral, String puesto, String contrasenia) {
+		super(dni, nombre, fNac, correo, tlf, provincia, contrasenia);
+		this.apellido = apellido;
+		setFInicEmpresarstr(fInicEmpresa);
+		this.jornadaLaboral = Jornada.valueOf(jornadaLaboral);
+		this.puesto = Puesto.valueOf(puesto);
+	}
 	
+
 	
+	public String getApellido() {
+		return apellido;
+	}
+
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public Date getFInicEmpresa() {
+		return FInicEmpresa;
+	}
+
+	public void setFInicEmpresa(Date fInicEmpresa) {
+		FInicEmpresa = fInicEmpresa;
+	}
+	
+	public String getFInicEmpresaStr() {
+		return sdf.format(FInicEmpresa);
+	}
+	
+	public void setFInicEmpresarstr(String FInicEmpresa) {
+		try {
+			this.FInicEmpresa= sdf.parse(FInicEmpresa);
+		} catch (ParseException e) {
+			this.FInicEmpresa= new Date();
+		}
+	}
+
+	public Jornada getJornadaLaboral() {
+		return jornadaLaboral;
+	}
+
+	public void setJornadaLaboral(Jornada jornadaLaboral) {
+		this.jornadaLaboral = jornadaLaboral;
+	}
+	
+
+	public Puesto getPuesto() {
+		return puesto;
+	}
+
+	public void setPuesto(Puesto puesto) {
+		this.puesto = puesto;
+	}
 
 	@Override
 	public String toString() {
-		return "Administrador [dni=" + dni + ", nombre=" + nombre + ", correo=" + correo + ", contraseña=" + contraseña
-				+ ", fcontrato=" + fcontrato + ", sdf=" + sdf + "]";
+		return "Administrador [nombre" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", correo=" + correo +  ", fNac=" + getfNacStr() + ", FInicEmpresa=" + getFInicEmpresaStr() + ", jornadaLaboral="
+				+ jornadaLaboral + ", puesto=" + puesto + "]";
 	}
 
-	@Override
-	public int compareTo(Administrador o) {
-		
-		return this.dni.compareTo(o.dni);
-	}
+	
+	
+	
+
+	
 
 }
