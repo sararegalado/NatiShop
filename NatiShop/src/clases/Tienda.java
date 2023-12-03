@@ -4,6 +4,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+
 public class Tienda {
 	//Declaraciones
 	private static Set<Articulo> articulos = new TreeSet<>();
@@ -13,7 +14,7 @@ public class Tienda {
 	private static Set<Zapato> zapatos = new TreeSet<>();
 	
 	private static List<Cliente> clientes = new ArrayList<>();
-	private static HashMap<Usuario, ArrayList<Articulo>> compras = new HashMap<>();
+	private static HashMap<Cliente, ArrayList<Articulo>> compras = new HashMap<>();
 	private static HashMap<String, HashMap<String, ArrayList<Articulo>>> comprasPorCliente = new HashMap<>();
 	private static HashMap<String, Administrador>Administradores = new HashMap<>();
 	//mapa admin (clave: correo, valor admin)
@@ -31,7 +32,7 @@ public class Tienda {
 	}
 
 
-	public static HashMap<Usuario, ArrayList<Articulo>> getCompras() {
+	public static HashMap<Cliente, ArrayList<Articulo>> getCompras() {
 		return compras;
 	}
 	
@@ -114,7 +115,7 @@ public class Tienda {
 	 * @param a Articulo comprado por el usuario que va a ser añadido a la lista de articulos 
 	 */
 	//METODO QUE HAY QUE AÑADIR AL ACTION LISTENER DEL BOTON COMPRAR
-	public static void aniadirCompraUsuario(Cliente c, Articulo a) {
+	public static void aniadirCompraCliente(Cliente c, Articulo a) {
 		if(! compras.containsKey(c)) {
 			compras.put(c, new ArrayList<>());
 		}
