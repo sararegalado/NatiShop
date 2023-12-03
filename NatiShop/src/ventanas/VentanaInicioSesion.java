@@ -21,6 +21,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.border.LineBorder;
 
+import clases.Administrador;
 import clases.Articulo;
 import clases.Cliente;
 import clases.Tienda;
@@ -166,7 +167,9 @@ public class VentanaInicioSesion extends JFrame {
 			
 			
 			if(Tienda.getAdministradores().containsKey(nom)) {
-				new VentanaAdministrador(vActual);
+				Administrador admin  = Tienda.getAdministradores().get(nom);
+				System.out.println(admin);
+				new VentanaAdministrador(vActual,admin);
 				vActual.setVisible(false);
 				
 				
