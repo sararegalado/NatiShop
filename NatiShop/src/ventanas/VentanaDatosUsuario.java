@@ -2,6 +2,7 @@ package ventanas;
 
 import javax.swing.*;
 
+import clases.Cliente;
 import clases.Tienda;
 import clases.Usuario;
 
@@ -30,7 +31,7 @@ public class VentanaDatosUsuario extends JFrame{
 	private static JPasswordField jpActual, jpNueva;
 	
 	
-	public VentanaDatosUsuario(JFrame va, Usuario u) {
+	public VentanaDatosUsuario(JFrame va, Cliente c) {
 		vActual = this;
 		vAnterior = va;
 		setResizable(false);
@@ -60,10 +61,10 @@ public class VentanaDatosUsuario extends JFrame{
 		
 		pnlIzq = new JPanel(new GridLayout(12, 1));
 		
-		lblNombre = new JLabel (u.getNombre());
+		lblNombre = new JLabel (c.getNombre());
 		lblEmail = new JLabel("EMAIL");
 		pnlCentrarB1 = new JPanel (new GridLayout(1,2));
-		btnCorreo = new JButton(u.getCorreo());
+		btnCorreo = new JButton(c.getCorreo());
 		btnCorreo.setHorizontalAlignment(SwingConstants.LEFT);
 		pnlCentrarB1.add(btnCorreo);
 		pnlCentrarB1.add(new JPanel());
@@ -71,14 +72,14 @@ public class VentanaDatosUsuario extends JFrame{
 		
 		pnlCentrarB2 = new JPanel (new GridLayout(1,2));
 		lblTlf = new JLabel ("TELÉFONO");
-		btnTfn = new JButton(u.getTlf());
+		btnTfn = new JButton(c.getTlf());
 		btnTfn.setHorizontalAlignment(SwingConstants.LEFT);
 		pnlCentrarB2.add(btnTfn);
 		pnlCentrarB2.add(new JPanel());
 		
 		pnlCentrarB3 = new JPanel (new GridLayout(1,2));
 		lblCon = new JLabel("CONTRASEÑA");
-		btnContrasenia = new JButton("*".repeat(u.getContrasenia().length()));
+		btnContrasenia = new JButton("*".repeat(c.getContrasenia().length()));
 		btnContrasenia.setHorizontalAlignment(SwingConstants.LEFT);
 		pnlCentrarB3.add(btnContrasenia);
 		pnlCentrarB3.add(new JPanel());
@@ -109,7 +110,7 @@ public class VentanaDatosUsuario extends JFrame{
 		btnCorreo.addActionListener(e -> {
 			intModif = 1;
 			pnlDcha.removeAll();
-			agregarCampos(pnlDcha, "EMAIL ", u);
+			agregarCampos(pnlDcha, "EMAIL ", c);
 			pnlDcha.revalidate();
 			pnlDcha.repaint();
 		});
@@ -117,7 +118,7 @@ public class VentanaDatosUsuario extends JFrame{
 		btnTfn.addActionListener(e -> {
 			intModif = 2;
 			pnlDcha.removeAll();
-			agregarCampos(pnlDcha, "TELEFONO ", u);
+			agregarCampos(pnlDcha, "TELEFONO ", c);
 			pnlDcha.revalidate();
 			pnlDcha.repaint();
 		});
@@ -125,7 +126,7 @@ public class VentanaDatosUsuario extends JFrame{
 		btnContrasenia.addActionListener(e -> {
 			intModif = 3;
 			pnlDcha.removeAll();
-			agregarCampos(pnlDcha, "CONTRASEÑA ", u);
+			agregarCampos(pnlDcha, "CONTRASEÑA ", c);
 			pnlDcha.revalidate();
 			pnlDcha.repaint();
 		});
@@ -137,8 +138,8 @@ public class VentanaDatosUsuario extends JFrame{
 			public void mouseClicked(MouseEvent e) {
 				int confirmacion = JOptionPane.showConfirmDialog(null, "Estas seguro de que quieres cerrar tu sesión", "Confirmacion", JOptionPane.YES_NO_OPTION);
 				if (confirmacion == JOptionPane.YES_OPTION) {
-					VentanaPrincipal.setUsuarioHaIniciadoSesion(false);
-					VentanaPrincipal.eliminarNombreUsuario();
+					VentanaPrincipal.setClienteHaIniciadoSesion(false);
+					VentanaPrincipal.eliminarNombreCliente();
 					vActual.setVisible(false);
 				}
 				
@@ -150,11 +151,11 @@ public class VentanaDatosUsuario extends JFrame{
 			public void mouseClicked(MouseEvent e) {
 				int confirmacion = JOptionPane.showConfirmDialog(null, "Estas seguro de que quieres elimiar tu cuenta", "Confirmacion", JOptionPane.YES_NO_OPTION);
 				if (confirmacion == JOptionPane.YES_OPTION) {
-					Usuario u = VentanaInicioSesion.getUsuario();
-					Tienda.getUsuarios().remove(u);
-					Tienda.guardarUsuarios(Tienda.getNomfichusuarios());
-					VentanaPrincipal.setUsuarioHaIniciadoSesion(false);
-					VentanaPrincipal.eliminarNombreUsuario();
+					Usuario u = VentanaInicioSesion.getCliente();
+					Tienda.getClientes().remove(u);
+					Tienda.guardarClientes(Tienda.getNomfichclientes());
+					VentanaPrincipal.setClienteHaIniciadoSesion(false);
+					VentanaPrincipal.eliminarNombreCliente();
 					vActual.setVisible(false);
 				}
 			}
@@ -168,7 +169,7 @@ public class VentanaDatosUsuario extends JFrame{
 		
 	}
 	
-    private static void agregarCampos(JPanel pnlDcha, String label, Usuario u) {
+    private static void agregarCampos(JPanel pnlDcha, String label, Cliente c) {
     	JPanel panelModif = new JPanel(new GridLayout(6,1));
         JLabel etiqueta = new JLabel(label);
         panelModif.add(etiqueta);
@@ -199,8 +200,8 @@ public class VentanaDatosUsuario extends JFrame{
         btnModificar.addActionListener(e -> {
             switch (intModif) {
                 case 1:
-                    if (u.getCorreo().equals(tfActual.getText())) {
-                        u.setCorreo(tfNuevo.getText());
+                    if (c.getCorreo().equals(tfActual.getText())) {
+                        c.setCorreo(tfNuevo.getText());
                         btnCorreo.setText(tfNuevo.getText());
                         tfActual.setText("");
                         tfNuevo.setText("");
@@ -211,8 +212,8 @@ public class VentanaDatosUsuario extends JFrame{
                     break;
 
                 case 2:
-                    if (u.getTlf().equals(tfActual.getText())) {
-                        u.setTlf(tfNuevo.getText());
+                    if (c.getTlf().equals(tfActual.getText())) {
+                        c.setTlf(tfNuevo.getText());
                         btnTfn.setText(tfNuevo.getText());
                         tfActual.setText("");
                         tfNuevo.setText("");
@@ -223,8 +224,8 @@ public class VentanaDatosUsuario extends JFrame{
                     break;
 
                 case 3:
-                    if (u.getContrasenia().equals(jpActual.getText())) {
-                        u.setContrasenia(jpNueva.getText());
+                    if (c.getContrasenia().equals(jpActual.getText())) {
+                        c.setContrasenia(jpNueva.getText());
                         btnContrasenia.setText("*".repeat(jpNueva.getText().length()));
                         jpActual.setText("");
                         jpNueva.setText("");
@@ -235,7 +236,7 @@ public class VentanaDatosUsuario extends JFrame{
                     break;
             }
 
-            Tienda.guardarUsuarios(Tienda.getNomfichusuarios());
+            Tienda.guardarClientes(Tienda.getNomfichclientes());
         });
 
 		
