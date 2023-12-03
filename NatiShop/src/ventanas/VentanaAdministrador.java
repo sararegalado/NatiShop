@@ -27,7 +27,9 @@ import java.util.List;
 
 
 public class VentanaAdministrador extends JFrame{
+
 	private JPanel pnlOesteMenu,pnlCentro,pnlOesteArriba,pnlDatos,pnlDatosArriba,pnlDatosModificar;
+
 	private JMenuBar menuBarAdmin;
 	private JMenu menuClientes,menuArticulos, menuEstadisticas, menuCompras;
 	private JMenuItem mItemRegistros,mItemArticulos,mItemStock,mItemCompras,mItemGraficos;
@@ -39,8 +41,9 @@ public class VentanaAdministrador extends JFrame{
 	private ModeloTablaClientes mClientes;
 	private JScrollPane sTablaUsuarios;
 	private JFrame vActual,vAnterior;
+	private Administrador admin;
 	
-	public VentanaAdministrador(JFrame va) {
+	public VentanaAdministrador(JFrame va, Administrador admin) {
 		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -135,13 +138,8 @@ public class VentanaAdministrador extends JFrame{
 
         pnlDatosModificar = new JPanel();
         pnlDatos.add(pnlDatosModificar);
-
-        lblModifJornada = new JLabel("<html><u>" + "MODIFICAR JORNADA" + "</u></html>");
-        lblModifJornada.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
-        pnlDatosModificar.add(lblModifJornada);
-		
-		
-		lblFoto= new JLabel("");
+        
+        lblFoto= new JLabel("");
 		pnlOesteMenu.add(lblFoto, BorderLayout.CENTER);
 		lblFoto.setIcon(new ImageIcon(VentanaAdministrador.class.getResource("/imagenes/Admin.png")));
 		lblFoto.setHorizontalAlignment(JLabel.CENTER);
@@ -156,6 +154,8 @@ public class VentanaAdministrador extends JFrame{
 				pnlCentro.revalidate();
 				pnlCentro.repaint();
 				pnlCentro.add(pnlDatos);
+				cargarDatosAdmin(admin);
+				
 
 
 				pnlDatos.setVisible(true);
@@ -163,7 +163,20 @@ public class VentanaAdministrador extends JFrame{
 			}
         });
 
-		
+
+        lblModifJornada = new JLabel("<html><u>" + "MODIFICAR JORNADA" + "</u></html>");
+        lblModifJornada.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
+        pnlDatosModificar.add(lblModifJornada);
+        lblModifJornada.addMouseListener(new MouseAdapter() {
+        	@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				
+			}
+
+        	
+        });
+       
 		pnlCentro = new JPanel();
 		getContentPane().add(pnlCentro, BorderLayout.CENTER);
 		pnlCentro.setLayout(new GridLayout(1,1));
@@ -289,11 +302,29 @@ public class VentanaAdministrador extends JFrame{
 		pnlCentro.add(jcCompras);
 		pnlCentro.setVisible(true);
 	}
-	
-	public void cargarDatosAdmin() {
 
+
+	public void cargarDatosAdmin(Administrador admin) {
+		if(admin != null) {
+			System.out.println("NO ES NULO");
+			tfDNI.setText(admin.getDni());
+			tfnom.setText(admin.getNombre());
+			tfApellido.setText(admin.getApellido());
+			tfCorreo.setText(admin.getCorreo());
+			tfTfn.setText(admin.getTlf());
+			tfProvincia.setText(admin.getProvinciaStr());
+			tfnFnac.setText(admin.getfNacStr());
+			
+			
+		}
+		
+		
+		
+		
 	}
 	
+
+
 	
 	/*ERRORES/TAREAS
 	 * Inicio de sesion admins
