@@ -17,6 +17,7 @@ import com.toedter.calendar.JCalendar;
 
 import clases.Articulo;
 import clases.Cliente;
+import clases.Puesto;
 import clases.Tienda;
 import clases.Usuario;
 import clases.Administrador;
@@ -34,7 +35,7 @@ public class VentanaAdministrador extends JFrame{
 	private JMenuBar menuBarAdmin;
 	private JMenu menuClientes,menuArticulos, menuEstadisticas, menuCompras;
 	private JMenuItem mItemRegistros,mItemArticulos,mItemStock,mItemCompras,mItemGraficos;
-	private JLabel lblFoto,lblTitulo,lblDNI,lblnom,lblApellido,lblCorreo,lbltfn,lblProvincia,lblFnac,lblFinic,lblJornada,lblPuesto,lblModifJornada;
+	private JLabel lblFoto,lblTitulo,lblDNI,lblnom,lblApellido,lblCorreo,lbltfn,lblProvincia,lblFnac,lblFinic,lblJornada,lblPuesto,lblModifJornada,lblSolicitudes,lblAñadirAdmin;
 	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfJornada, tfPuesto;
 	private JButton btnDesplegar;
 	
@@ -182,9 +183,14 @@ public class VentanaAdministrador extends JFrame{
         });
 
         pnlDatosBotones = new JPanel();
-        pnlDatosBotones.setLayout(new GridLayout(1,1));
+        pnlDatosBotones.setLayout(new GridLayout(1,3));
         pnlDatos.add(pnlDatosBotones);
-    
+        
+        
+        lblSolicitudes= new JLabel("<html><u>" + "SOLICITUDES DE CAMBIO DE JORNADA" + "</u></html>");
+        lblSolicitudes.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
+        pnlDatosBotones.add(lblSolicitudes);
+        lblSolicitudes.setHorizontalAlignment(lblModifJornada.CENTER);
 
         lblModifJornada = new JLabel("<html><u>" + "MODIFICAR JORNADA" + "</u></html>");
         lblModifJornada.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
@@ -204,6 +210,21 @@ public class VentanaAdministrador extends JFrame{
 
         	
         });
+        
+        lblAñadirAdmin = new JLabel("<html><u>" + "AÑADIR NUEVO ADMINISTRADOR" + "</u></html>");
+        lblAñadirAdmin.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
+        pnlDatosBotones.add(lblAñadirAdmin);
+        
+        if(admin.getPuesto().equals(Puesto.Gerente)) {
+        	lblAñadirAdmin.setVisible(true);
+        	lblSolicitudes.setVisible(true);
+        }else {
+        	lblAñadirAdmin.setVisible(false);
+        	lblSolicitudes.setVisible(false);
+        }
+       
+        
+        
        
 		pnlCentro = new JPanel();
 		getContentPane().add(pnlCentro, BorderLayout.CENTER);
