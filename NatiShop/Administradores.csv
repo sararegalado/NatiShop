@@ -1,16 +1,15 @@
-DNI;Nombre;Apellido;Correo;Telefono;Provincia;Fecha Nacimiento;Fecha Inicio Empresa;Jornada;Puesto;contraseña;
-12345678Z;Juan;Perez;juan.perez@natyshop.es;654736543;Sevilla;15-05-1985;01-02-2022;Jornada_Completa;Gerente;juan;
-87654321X;Ana;Gomez;ana.gomez@natyshop.es;678923411;Navarra;20-09-1990;10-07-2021;Media_Jornada;Almacen;ana;
-56789012B;Pedro;Lopez;pedro.lopez@natyshop.es;654899900;Alicante;03-12-1982;19-08-2022;Jornada_Completa;Supervisor;pedro;
-34567890V;María;Fuentes;maria.fuentes@natyshop.es;621234567;Zaragoza;18-07-1988;12-11-2019;Jornada_Completa;Cajero;maria;
-90123456A;Carlos;Martin;carlos.martin@natyshop.es;678954321;Asturias;05-02-1995;08-09-2020;Jornada_Completa;Almacen;carlos;
-78901234X;Laura;Sanchez;laura.sanchez@natyshop.es;607954328;Madrid;14-11-1987;03-04-2023;Rebajas;Cajero;laura;
-23456789D;David;Rodriguez;david.rodriguez@natyshop.es;605322078;Barcelona;30-06-1983;20-01-2023;Jornada_Completa;Cajero;david;
-01234567L;Elena;Navarro;elena.navarro@natyshop.es;654398724;Madrid;09-04-1992;02-06-2022;Media_Jornada;Cajero;elena;
-89012345E;Francisco;Fernandez;francisco.fernandez@natyshop.es;685432125;Madrid;25-08-1980;02-06-2023;Media_Jornada;Almacen;francisco;
-90123456A;Sara;Regalado;sara.regalado@natyshop.es;665432098;Vizcaya;12-03-1998;25-10-2021;Jornada_Completa;Supervisor;sara;
-78095678Y;Natalia;Gonzalez;natalia.gonzalez@natyshop.es;611224455;Vizcaya;12-03-1998;25-10-2021;Jornada_Completa;Supervisor;natalia;
-65984390N;Janire;Diaz de Espada;janire.diazdeespada@natyshop.es;655998877;Álava;12-03-1998;25-10-2021;Jornada_Completa;Supervisor;janire;
-98056789S;Zaloa;Fernandez;zaloa.fernandez@natyshop.es;612309876;Álava;12-03-1998;25-10-2021;Jornada_Completa;Supervisor;zaloa;
-45678901G;Anne;Beascoechea;anne.beascoechea@natyshop.es;612345677;Vizcaya;12-03-1998;25-10-2021;Jornada_Completa;Supervisor;anne;
-
+DNI;Nombre;Apellido;Correo;Telefono;Provincia;Fecha Nacimiento;Fecha Inicio Empresa;Jornada;Puesto;contraseña
+12345678Z;Juan;Perez;juan.perez@natyshop.es;654736543;Sevilla;15/05/1985;01/02/2022;Jornada_Completa;Gerente;juan
+87654321X;Ana;Gomez;ana.gomez@natyshop.es;678923411;Navarra;20/09/1990;10/07/2021;Media_Jornada;Almacen;ana
+56789012B;Pedro;Lopez;pedro.lopez@natyshop.es;654899900;Alicante;03/12/1982;19/08/2022;Jornada_Completa;Supervisor;pedro
+34567890V;María;Fuentes;maria.fuentes@natyshop.es;621234567;Zaragoza;18/07/1988;12/11/2019;Jornada_Completa;Cajero;maria
+90123456A;Carlos;Martin;carlos.martin@natyshop.es;678954321;Asturias;05/02/1995;08/09/2020;Jornada_Completa;Almacen;carlos
+78901234X;Laura;Sanchez;laura.sanchez@natyshop.es;607954328;Madrid;14/11/1987;03/04/2023;Rebajas;Cajero;laura
+23456789D;David;Rodriguez;david.rodriguez@natyshop.es;605322078;Barcelona;30/06/1983;20/01/2023;Jornada_Completa;Cajero;david
+01234567L;Elena;Navarro;elena.navarro@natyshop.es;654398724;Madrid;09/04/1992;02/06/2022;Media_Jornada;Cajero;elena
+89012345E;Francisco;Fernandez;francisco.fernandez@natyshop.es;685432125;Madrid;25/08/1980;02/06/2023;Media_Jornada;Almacen;francisco
+90123456A;Sara;Regalado;sara.regalado@natyshop.es;665432098;Vizcaya;12/03/1998;25/10/2021;Jornada_Completa;Supervisor;sara
+78095678Y;Natalia;Gonzalez;natalia.gonzalez@natyshop.es;611224455;Vizcaya;12/03/1998;25/10/2021;Jornada_Completa;Supervisor;natalia
+65984390N;Janire;Diaz de Espada;janire.diazdeespada@natyshop.es;655998877;Álava;12/03/1998;25/10/2021;Jornada_Completa;Supervisor;janire
+98056789S;Zaloa;Fernandez;zaloa.fernandez@natyshop.es;612309876;Álava;12/03/1998;25/10/2021;Jornada_Completa;Supervisor;zaloa
+45678901G;Anne;Beascoechea;anne.beascoechea@natyshop.es;612345677;Vizcaya;12/03/1998;25/10/2021;Jornada_Completa;Supervisor;anne

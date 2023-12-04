@@ -27,11 +27,11 @@ import javax.swing.border.LineBorder;
 
 import clases.Articulo;
 import clases.Camiseta;
+import clases.Cliente;
 import clases.Genero;
 import clases.Jersey;
 import clases.Pantalon;
 import clases.Tienda;
-import clases.Usuario;
 import clases.Zapato;
 
 import javax.swing.JMenuBar;
@@ -517,18 +517,19 @@ public class VentanaPrincipal extends JFrame {
         
 	}
         
+   
 	public boolean clienteHaIniciadoSesion() {
 	    return clienteHaIniciadoSesion;
 	}
-	
-    public static void asignarNombrCliente(Cliente c) {
+
+
+	public static void asignarNombreCliente(Cliente c) {
 		lblNomU.setText(c.getNombre());
 	};
 	
 	public static void eliminarNombreCliente() {
 		lblNomU.setText("Iniciar sesión");
 	};
-	
 	
 	public void limpiarPanel(JPanel panel) {
 	    panel.removeAll();
@@ -569,8 +570,6 @@ public class VentanaPrincipal extends JFrame {
 			panel.add(pnlArticulo);
 		}	
 	}
-	
-	
 	
 	
 	public JPanel crearPanelArticulo(Articulo articulo) {
@@ -679,12 +678,6 @@ public class VentanaPrincipal extends JFrame {
         });
 		
 		
-		}
-                
-		
-            
-            
-		
-		        
+		}		        
 	
 }

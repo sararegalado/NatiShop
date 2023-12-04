@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.JButton;
@@ -17,12 +18,15 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
 
 import clases.Articulo;
+import clases.Cliente;
 import clases.Tienda;
 import clases.Usuario;
 
@@ -37,6 +41,9 @@ public class VentanaCompras extends JFrame{
 	private JScrollPane scrollTablaCompras;
 	private JSpinner sCantidad;
 	private JButton btnMas, btnMenos;
+	private JSpinner sPrecio;
+	
+	private static int fila;
 	
 	
 	public VentanaCompras(JFrame va) {
@@ -56,7 +63,7 @@ public class VentanaCompras extends JFrame{
 		scroll = new JScrollPane();
 		getContentPane().add(scroll, BorderLayout.CENTER);
 		
-		Object [] titulos = {"ARTICULOO","CANTIDAD","PRECIO ARTÍCULO"};
+		Object [] titulos = {"ARTICULO","CANTIDAD","PRECIO ARTÍCULO"};
 		modeloTablaCompras = new DefaultTableModel() {	
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -74,6 +81,9 @@ public class VentanaCompras extends JFrame{
 		pCentro.add(scrollTablaCompras);
 		//cargarTabla();
 		
+		//NUEVA TABLA PARA LOS FAVORITOS
+		
+		
 		btnVolver = new JButton("VOLVER");
 		pSur.add(btnVolver);
 		
@@ -86,7 +96,7 @@ public class VentanaCompras extends JFrame{
 		pSur.add(btnComprar);
 		
 		btnComprar.addActionListener((e)->{
-		    Usuario usuarioActual = obtenerUsuarioActual();
+		    Usuario usuarioActual = obtenerClienteActual();
 		    ArrayList<Articulo> articulosSeleccionados = obtenerArticulosSeleccionados();
 		    Tienda.getCompras().put(usuarioActual, articulosSeleccionados);
 		    modeloTablaCompras.setRowCount(0);	// hago que una vez realizada la compra se borre
@@ -95,10 +105,9 @@ public class VentanaCompras extends JFrame{
 		});
 		
 		
-		
-		TableColumnModel columnModel = tablaCompras.getColumnModel();
+		/*TableColumnModel columnModel = tablaCompras.getColumnModel();
         columnModel.getColumn(1).setCellRenderer(new SpinnerRenderer());
-        columnModel.getColumn(1).setCellEditor(new SpinnerEditor());   
+        columnModel.getColumn(1).setCellEditor(new SpinnerEditor());   */
         
 		setVisible(true);
 	
@@ -106,8 +115,8 @@ public class VentanaCompras extends JFrame{
 	
 	
 
-	private Usuario obtenerUsuarioActual() {
-    	 return new Usuario();
+	private Usuario obtenerClienteActual() {
+    	 return new Cliente();
     }
 	 
 	private ArrayList<Articulo> obtenerArticulosSeleccionados() {
@@ -118,6 +127,11 @@ public class VentanaCompras extends JFrame{
 	    }
 	    return comprasUsuario;
 	}
+	
+	
+
+	
+	
 	
 
     // Clase interna para personalizar el editor del JSpinner en la tabla
@@ -162,6 +176,7 @@ public class VentanaCompras extends JFrame{
 	}*/
 
 
+
 	public static void main(String[] args) {
 		/*JFrame ventanaTienda = new VentanaTienda();
         VentanaCompras ventanaCompras = new VentanaCompras(ventanaTienda);*/
@@ -170,6 +185,14 @@ public class VentanaCompras extends JFrame{
             new VentanaCompras(ventanaTienda);
         });
 	};
+	
+	/*public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new VentanaCesta();
+            }
+        });
+    }*/
 	
 	private void actualizarPrecioFila() {
 	    for (int fila = 0; fila < modeloTablaCompras.getRowCount(); fila++) {
@@ -187,37 +210,20 @@ public class VentanaCompras extends JFrame{
 };
 
 
-//EN LA CLASE TIENDA
-//private static Map<Usuario, List<Articulo>> compras = new HashMap<>();
-	
-/*HACER UN JSLIDER EN LA VENTANA TIENDA CON EL BUSCADOR
-		sUnidades = new JSlider(0, 200, 0);
-		sUnidades.setPaintLabels(true);
-		sUnidades.setPaintTicks(true);
-		sUnidades.setMinorTickSpacing(5);
-		sUnidades.setMajorTickSpacing(20);
-		pNorte.add(sUnidades);
-		logger.info("JSlider creado");
-		
+//VENTANA TIENDA
+/*JButton btnAddToFavorites = new JButton("Añadir a Favoritos");
 
-		
-//sUnidades es el campo que hemos elegido lara el JSLIDER
-sUnidades.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				int unidades = sUnidades.getValue();
-				//En la tabla se muestre aquellos productos que tengan al menos ese número de unidades
-				if(CadenaSupermercados.getMapa().containsKey(supermercado)) {		//clase CadenaSupermercados dnd e¡tenemos el mapa
-				//Mapa de clave nombre del supermercado y valor conjunto de productos que se venden en ese supermercado
-				//private static Map<String, Set<Producto>> mapa = new TreeMap<>();
-					List<Producto> l = CadenaSupermercados.obtenerListaProductos(supermercado);
-					List<Producto> lFiltro = new ArrayList<>();
-					for(Producto p: l) {
-						if(p.getUnidades() >= unidades) {
-							lFiltro.add(p);
-						}
-					}
-					tabla.setModel(new ModeloProductos(lFiltro));*/
+//Add action listener to the button to mark the item as a favorite
+btnAddToFavorites.addActionListener(e -> {
+   int selectedRow = tablaTienda.getSelectedRow();
+   Articulo selectedArticulo = /* Get the selected Articulo from the table ;
+   selectedArticulo.setEsFavorito(true);
+});*/
+
+
+
+
+
 
 
 

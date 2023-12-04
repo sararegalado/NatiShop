@@ -12,9 +12,9 @@ import javax.swing.*;
 
 import com.toedter.calendar.JCalendar;
 
+import clases.Cliente;
 import clases.Provincia;
 import clases.Tienda;
-import clases.Usuario;
 
 public class VentanaRegistro extends JFrame{
 	
@@ -118,7 +118,7 @@ public class VentanaRegistro extends JFrame{
 	
 		pnlDatos.add(pnlDcha);
 		
-		Tienda.cargarUsuarios(Tienda.getNomfichusuarios());
+		Tienda.cargarClientes(Tienda.getNomfichclientes());
 		
 		btnRegistro.addActionListener(e -> {
 			String dni = tfDNI.getText();
@@ -129,18 +129,19 @@ public class VentanaRegistro extends JFrame{
 			Provincia prov = (Provincia) cbProv.getSelectedItem();
 			String con1 = tfCon1.getText();
 			String con2 = tfCon2.getText();
+			String numT = "Tarjeta sin registrar";
 			
 			if(!dni.equals("") && !nom.equals("") && !con1.equals("") && !con2.equals("") && fNac!=null) {
 				if(con1.equals(con2)) {
-					if(Tienda.buscarUsuario(dni) == null) { 
+					if(Tienda.buscarCliente(dni) == null) { 
 						if(comprobarNombre()) {
 							if(comprobarDni()) {
 								if(letraDNICorrecta()) {
 									if(comprobarEmail()) {
 										if(comprobarTlf()) {
-											Usuario u = new Usuario (dni, nom, fNac , email, tlf, prov, con1);
-											Tienda.aniadirUsuario(u);
-											Tienda.guardarUsuarios(Tienda.getNomfichusuarios());
+											Cliente c = new Cliente (dni, nom, fNac , email, tlf, prov, con1, numT);
+											Tienda.aniadirCliente(c);
+											Tienda.guardarClientes(Tienda.getNomfichclientes());
 											JOptionPane.showMessageDialog(null, "Registro realizado con éxito");
 											new VentanaInicioSesion(vActual);
 											vActual.setVisible(false);

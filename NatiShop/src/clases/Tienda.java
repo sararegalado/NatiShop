@@ -12,18 +12,17 @@ public class Tienda {
 	private static Set<Pantalon> pantalones = new TreeSet<>();
 	private static Set<Zapato> zapatos = new TreeSet<>();
 	
-
-	private static List<Usuario> usuarios = new ArrayList<>();
+	private static List<Cliente> clientes = new ArrayList<>();
 	private static HashMap<Usuario, ArrayList<Articulo>> compras = new HashMap<>();
-	private static HashMap<String, HashMap<String, ArrayList<Articulo>>> comprasPorUsuario = new HashMap<>();
+	private static HashMap<String, HashMap<String, ArrayList<Articulo>>> comprasPorCliente = new HashMap<>();
 	private static HashMap<String, Administrador>Administradores = new HashMap<>();
 	//mapa admin (clave: correo, valor admin)
 	
-	private static final String nomfichUsuarios = "Usuarios.csv";
+	private static final String nomfichClientes = "Clientes.csv";
 	private  static final String nomfichAdmins= "Administradores.csv";
 
-	public static String getNomfichusuarios() {
-		return nomfichUsuarios;
+	public static String getNomfichclientes() {
+		return nomfichClientes;
 	}
 	
 
@@ -86,12 +85,12 @@ public class Tienda {
 	
 	
 	
-	public static List<Usuario> getUsuarios() {
-		return usuarios;
+	public static List<Cliente> getClientes() {
+		return clientes;
 	}
 
-	public static void setUsuarios(List<Usuario> usuarios) {
-		Tienda.usuarios = usuarios;
+	public static void setUsuarios(List<Cliente> clientes) {
+		Tienda.clientes = clientes;
 	}
 
 	//Métodos
@@ -99,14 +98,14 @@ public class Tienda {
 		articulos.add(a);
 	}
 	
-	public static void aniadirUsuario(Usuario u) {
-		usuarios.add(u);
+	public static void aniadirCliente(Cliente c) {
+		clientes.add(c);
 	}
 	
 	
 
-	public static HashMap<String, HashMap<String, ArrayList<Articulo>>> getComprasPorUsuario() {
-		return comprasPorUsuario;
+	public static HashMap<String, HashMap<String, ArrayList<Articulo>>> getComprasPorCliente() {
+		return comprasPorCliente;
 	}
 
 	/**
@@ -115,22 +114,22 @@ public class Tienda {
 	 * @param a Articulo comprado por el usuario que va a ser añadido a la lista de articulos 
 	 */
 	//METODO QUE HAY QUE AÑADIR AL ACTION LISTENER DEL BOTON COMPRAR
-	public static void aniadirCompraUsuario(Usuario u, Articulo a) {
-		if(! compras.containsKey(u)) {
-			compras.put(u, new ArrayList<>());
+	public static void aniadirCompraUsuario(Cliente c, Articulo a) {
+		if(! compras.containsKey(c)) {
+			compras.put(c, new ArrayList<>());
 		}
-		compras.get(u).add(a);
+		compras.get(c).add(a);
 		
-		if(!comprasPorUsuario.containsKey(u)) {
-			comprasPorUsuario.put(u.getDni(), new HashMap<>());
+		if(!comprasPorCliente.containsKey(c)) {
+			comprasPorCliente.put(c.getDni(), new HashMap<>());
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		Date fActual = new Date();
 		String fechaCompra = sdf.format(fActual);
-		if(!comprasPorUsuario.get(u.getDni()).containsKey(fechaCompra)) {
-			comprasPorUsuario.get(u.getDni()).put(fechaCompra, new ArrayList<>());
+		if(!comprasPorCliente.get(c.getDni()).containsKey(fechaCompra)) {
+			comprasPorCliente.get(c.getDni()).put(fechaCompra, new ArrayList<>());
 		}
-		comprasPorUsuario.get(u.getDni()).get(fechaCompra).add(a);
+		comprasPorCliente.get(c.getDni()).get(fechaCompra).add(a);
 		
 	}
 	/**
@@ -183,10 +182,10 @@ public class Tienda {
 	 * 
 	 * @param nomfich Fichero que tiene todos los usuarios registrados 
 	 */
-	public static void cargarUsuarios(String nomfichUsuarios) {
+	public static void cargarClientes(String nomfichClientes) {
 
 		try {
-			Scanner sc= new Scanner(new FileReader(nomfichUsuarios));
+			Scanner sc= new Scanner(new FileReader(nomfichClientes));
 			String linea;
 			while(sc.hasNext()) {
 				linea = sc.nextLine();
@@ -199,10 +198,11 @@ public class Tienda {
 					String tfn = partes [4];
 					String p = partes[5];
 					String con = partes[6];
-					Usuario u = new Usuario(dni, nom, fNac, correo, tfn, p, con);
-					if(buscarUsuario(dni) == null) {
-						usuarios.add(u);
-						comprasPorUsuario.putIfAbsent(u.getDni(), new HashMap<>());
+					String numT = partes[7];;
+					Cliente c = new Cliente(dni, nom, fNac, correo, tfn, p, con, numT);
+					if(buscarCliente(dni) == null) {
+						clientes.add(c);
+						comprasPorCliente.putIfAbsent(c.getDni(), new HashMap<>());
 					}
 				}
 				
@@ -218,11 +218,11 @@ public class Tienda {
 	 * 
 	 * @param nomfich Fichero en el que vamos a guardar nuestra lista de usuarios
 	 */
-	public static void guardarUsuarios(String nomfichUsuarios) {
+	public static void guardarClientes(String nomfichClientes) {
 		try {
-			PrintWriter pw = new PrintWriter(nomfichUsuarios);
-			for(Usuario u : usuarios) {
-				pw.println(u.getDni()+";"+u.getNombre()+";"+u.getfNacStr()+";"+u.getCorreo()+";"+u.getTlf()+";"+u.getProvinciaStr()+";"+u.getContrasenia());
+			PrintWriter pw = new PrintWriter(nomfichClientes);
+			for(Cliente c : clientes) {
+				pw.println(c.getDni()+";"+c.getNombre()+";"+c.getfNacStr()+";"+c.getCorreo()+";"+c.getTlf()+";"+c.getProvinciaStr()+";"+c.getContrasenia()+";"+c.getNumTarjeta());
 			}
 			pw.flush();
 			pw.close();
@@ -237,12 +237,12 @@ public class Tienda {
 	 * @return
 	 */
 	
-	public static Usuario buscarUsuario(String dni) {
+	public static Cliente buscarCliente(String dni) {
 		boolean enc = false;
 		int pos = 0;
-		Usuario c = null;
-		while(!enc && pos<usuarios.size()) {
-			c = usuarios.get(pos);
+		Cliente c = null;
+		while(!enc && pos<clientes.size()) {
+			c = clientes.get(pos);
 			if(c.getDni().equals(dni)) {
 				enc = true;
 			}else {
@@ -256,20 +256,20 @@ public class Tienda {
 		}
 	}
 	
-	public static Usuario buscarUsuarioPorNomCon(String nombre, String con) {
+	public static Cliente buscarClientePorNomCon(String nombre, String con) {
 		boolean enc = false;
 		int pos = 0;
-		Usuario u = null;
-		while(!enc && pos<usuarios.size()) {
-			u = usuarios.get(pos);
-			if (u.getNombre().equals(nombre) && u.getContrasenia().equals(con)) {
+		Cliente c = null;
+		while(!enc && pos<clientes.size()) {
+			c = clientes.get(pos);
+			if (c.getNombre().equals(nombre) && c.getContrasenia().equals(con)) {
 				enc = true;
 			}else {
 				pos++;
 			}	
 		}
 		if(enc) {
-			return u;
+			return c;
 		}else {
 			return null;
 		}
