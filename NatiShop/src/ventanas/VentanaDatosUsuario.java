@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
 
 public class VentanaDatosUsuario extends JFrame{
 	private static JPanel pnlDatos ;
@@ -151,9 +152,10 @@ public class VentanaDatosUsuario extends JFrame{
 			public void mouseClicked(MouseEvent e) {
 				int confirmacion = JOptionPane.showConfirmDialog(null, "Estas seguro de que quieres elimiar tu cuenta", "Confirmacion", JOptionPane.YES_NO_OPTION);
 				if (confirmacion == JOptionPane.YES_OPTION) {
-					Usuario u = VentanaInicioSesion.getCliente();
-					Tienda.getClientes().remove(u);
-					Tienda.guardarClientes(Tienda.getNomfichclientes());
+					Cliente c = VentanaInicioSesion.getCliente();
+					Connection con = BD.initBD("NatiShop.db");
+					BD.borrarCliente(con, c.getDni());
+					BD.closeBD(con);
 					VentanaPrincipal.setClienteHaIniciadoSesion(false);
 					VentanaPrincipal.eliminarNombreCliente();
 					vActual.setVisible(false);

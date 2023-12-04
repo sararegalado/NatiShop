@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -118,30 +119,36 @@ public class VentanaRegistro extends JFrame{
 	
 		pnlDatos.add(pnlDcha);
 		
-		Tienda.cargarClientes(Tienda.getNomfichclientes());
+		//Tienda.cargarClientes(Tienda.getNomfichclientes());
 		
 		btnRegistro.addActionListener(e -> {
+			Connection con = BD.initBD("NatiShop.db");
 			String dni = tfDNI.getText();
 			String nom = tfNombre.getText();
-			Date fNac = jcFecha.getDate();
+			String fNac = Utilidades.dateToString(jcFecha.getDate());
 			String email = tfEmail.getText();
 			String tlf = tfTlf.getText();
-			Provincia prov = (Provincia) cbProv.getSelectedItem();
+			String prov = cbProv.getSelectedItem().toString();
 			String con1 = tfCon1.getText();
 			String con2 = tfCon2.getText();
 			String numT = "Tarjeta sin registrar";
 			
 			if(!dni.equals("") && !nom.equals("") && !con1.equals("") && !con2.equals("") && fNac!=null) {
 				if(con1.equals(con2)) {
-					if(Tienda.buscarCliente(dni) == null) { 
+					Cliente cl = BD.buscarCliente(con, dni);
+					
+					
+					if(cl == null) { 
 						if(comprobarNombre()) {
 							if(comprobarDni()) {
 								if(letraDNICorrecta()) {
 									if(comprobarEmail()) {
 										if(comprobarTlf()) {
 											Cliente c = new Cliente (dni, nom, fNac , email, tlf, prov, con1, numT);
-											Tienda.aniadirCliente(c);
-											Tienda.guardarClientes(Tienda.getNomfichclientes());
+											
+											BD.insertarCliente(con, c);
+											//Tienda.aniadirCliente(c);
+											//Tienda.guardarClientes(Tienda.getNomfichclientes());
 											JOptionPane.showMessageDialog(null, "Registro realizado con éxito");
 											new VentanaInicioSesion(vActual);
 											vActual.setVisible(false);
@@ -167,7 +174,7 @@ public class VentanaRegistro extends JFrame{
 								
 						
 					}else {
-						JOptionPane.showMessageDialog(null, "Ya existe un cliente con este dni","ERROR",JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Ya existe este cliente","ERROR",JOptionPane.ERROR_MESSAGE);
 						tfDNI.setText("");
 						tfNombre.setText("");
 						jcFecha.setDate(null);
@@ -186,7 +193,7 @@ public class VentanaRegistro extends JFrame{
 				JOptionPane.showMessageDialog(null, "Tienes que rellenar todos los campos");
 			}
 			
-			Cliente c = new Cliente (dni, nom, fNac, email, tlf, prov, con1, "");
+			BD.closeBD(con);
 			
 		});
 		

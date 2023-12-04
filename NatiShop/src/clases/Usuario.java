@@ -14,7 +14,7 @@ public abstract class Usuario implements Comparable<Usuario> {
 	protected String contrasenia;
 	protected String correo;
 	
-	protected SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	protected SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	
 	public Usuario() {

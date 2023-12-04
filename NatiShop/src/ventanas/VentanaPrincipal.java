@@ -1,6 +1,7 @@
 package ventanas;
 
 import java.awt.event.ActionEvent;
+import clases.Articulo;
 
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
@@ -9,8 +10,11 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -18,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -36,6 +41,7 @@ import clases.Zapato;
 
 import javax.swing.JMenuBar;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -43,9 +49,11 @@ import javax.swing.JOptionPane;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.List;
+import java.awt.Point;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
+import java.awt.Image;
 
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
@@ -78,6 +86,21 @@ public class VentanaPrincipal extends JFrame {
 		tienda = t;
 	}
 	
+	//
+	
+	private VentanaTienda ventanaTienda;
+	
+	public void abrirVentanaTienda(Articulo articulo) {
+		ventanaTienda = new VentanaTienda(this, articulo);
+		ventanaTienda.mostrarFotoArticulo(articulo);
+		ventanaTienda.setVisible(true);
+		this.setVisible(false);
+	}
+	
+	//
+	
+	
+	
 
 	private static boolean clienteHaIniciadoSesion = false;
 	
@@ -93,6 +116,7 @@ public class VentanaPrincipal extends JFrame {
 
 
 	private static JLabel lblNomU;
+	private static Object titulos;
 	
 	public static JLabel getLblNomU() {
 		return lblNomU;
@@ -240,17 +264,59 @@ public class VentanaPrincipal extends JFrame {
         spArticulos.setBounds(72,159,1153,490);
         contentPane.add(spArticulos);
         
+
+        
         JLabel lblUsuario = new JLabel("");
         lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/usuario.png")));
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-        lblUsuario.setBounds(1152, 11, 52, 52);
+        lblUsuario.setBounds(1155, 11, 52, 52);
+        
+        
+        JPopupMenu menuCliente = new JPopupMenu();
+        JMenuItem perfil = new JMenuItem("Ver perfil");
+        JMenuItem compras = new JMenuItem("Ver mis compras");
+
+        perfil.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	Cliente c = VentanaInicioSesion.getCliente();
+            	new VentanaDatosUsuario(vActual, c);
+                
+            }
+        });
+
+//        compras.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                
+//            }
+//        });
+
+        menuCliente.add(perfil);
+        menuCliente.add(compras);
+
+        lblUsuario.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+ 		        filtrado.setVisible(false);
+                if (clienteHaIniciadoSesion) {
+                	menuCliente.show(lblUsuario, 0, lblUsuario.getHeight());
+                } else {
+                    new VentanaInicioSesion(vActual);
+                }
+            }
+        });
+        
+        contentPane.add(lblUsuario);
+        
         
         int anchoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
         int altoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
         setSize(anchoP, altoP);
         setExtendedState(MAXIMIZED_BOTH);
         
-        contentPane.add(lblUsuario);
+
         
         
         
@@ -282,7 +348,6 @@ public class VentanaPrincipal extends JFrame {
         lblNomU.setBounds(1138, 67, 87, 19);
         contentPane.add(lblNomU);
 
-   
         //LISTENERS DE LOS ITEMS DE HOMBRE
         
        
@@ -515,6 +580,7 @@ public class VentanaPrincipal extends JFrame {
         
         setVisible(true);
         
+
 	}
         
    
@@ -542,6 +608,14 @@ public class VentanaPrincipal extends JFrame {
 		this.pnlArticulos = panel;
 		for (Camiseta a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
+			//
+			pnlArticulo.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					abrirVentanaTienda(a);
+				}
+			});
+			//
 			panel.add(pnlArticulo);
 		}	
 	}
@@ -550,6 +624,14 @@ public class VentanaPrincipal extends JFrame {
 		this.pnlArticulos = panel;
 		for (Jersey a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
+			//
+			pnlArticulo.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					abrirVentanaTienda(a);
+				}
+			});
+			//
 			panel.add(pnlArticulo);
 		}	
 	}
@@ -559,6 +641,14 @@ public class VentanaPrincipal extends JFrame {
 		this.pnlArticulos = panel;
 		for (Pantalon a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
+			//
+			pnlArticulo.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					abrirVentanaTienda(a);
+				}
+			});
+			//
 			panel.add(pnlArticulo);
 		}	
 	}
@@ -567,11 +657,20 @@ public class VentanaPrincipal extends JFrame {
 		this.pnlArticulos = panel;
 		for (Zapato a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
+			//
+			pnlArticulo.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					abrirVentanaTienda(a);
+				}
+			});
+			//
 			panel.add(pnlArticulo);
 		}	
 	}
 	
 	
+
 	public JPanel crearPanelArticulo(Articulo articulo) {
 		JPanel panelArticulo = new JPanel();
 		panelArticulo.setPreferredSize(new Dimension(200,240));
@@ -599,6 +698,31 @@ public class VentanaPrincipal extends JFrame {
 		
 		
 		return panelArticulo;
+		
+	
+
+		/* if (UsuarioHaIniciadoSesion()) {
+  	  lblUsuario.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		new VentanaInicioSesion(vActual);
+				//vActual.setVisible(false);
+        		
+        	}
+       });       
+  } else {
+  	lblUsuario.addMouseListener(new MouseAdapter() {
+      	@Override
+      	public void mouseClicked(MouseEvent e) {
+      		JOptionPane.showMessageDialog(vActual, "Por favor, inicie sesión antes de acceder.");
+      	}
+  	});
+  }*/
+		
+			
+		
+		
+ 
 	}
 	
 	public void buscarArticulos(String textoBusqueda, JPanel pnlArticulos,JComboBox filtrado) {

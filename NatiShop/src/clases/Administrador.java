@@ -91,6 +91,14 @@ public class Administrador extends Usuario {
 		this.jornadaLaboral = jornadaLaboral;
 	}
 	
+	public String getJornadaLaboralStr() {
+		return jornadaLaboral.toString();
+	}
+	
+	public void setJornadaLaboralStr(String jornadaLaboral) {
+		this.jornadaLaboral = Jornada.valueOf(jornadaLaboral);
+	}
+	
 
 	public Puesto getPuesto() {
 		return puesto;
@@ -98,6 +106,13 @@ public class Administrador extends Usuario {
 
 	public void setPuesto(Puesto puesto) {
 		this.puesto = puesto;
+	}
+	public String getPuestoStr() {
+		return puesto.toString();
+	}
+	
+	public void setPuestoStr(String puesto) {
+		this.puesto = Puesto.valueOf(puesto);
 	}
 
 	@Override

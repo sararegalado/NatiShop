@@ -2,6 +2,7 @@ package ventanas;
 
 import java.net.URL;
 import java.nio.file.Paths;
+import java.sql.Connection;
 
 import clases.Tienda;
 import uk.co.caprica.vlcj.factory.discovery.NativeDiscovery;
@@ -9,12 +10,22 @@ import uk.co.caprica.vlcj.factory.discovery.NativeDiscovery;
 public class Main {
 
 	public static void main(String[] args) {
-
 		Tienda.cargarArticulos("articulos.csv");
-//		
+		
+		Connection con = BD.initBD("NatiShop.db");
+		BD.crearTablas(con);	
+		BD.closeBD(con);
+		
+		Tienda.cargarArticulos("articulos.csv");	
+		Tienda.cargarKeyMapaClientes();
+		System.out.println(Tienda.getComprasPorCliente());
+		
+
 		VentanaPrincipal vent = new VentanaPrincipal(null);
 		Tienda.cargarAdministradores("Administradores.csv");
 		System.out.println(Tienda.getAdministradores());
+
+		
 		
 //		NO LO BORREIS ES PARA LA PORTADA DEL PRINCIPIO
 //        boolean found = (new NativeDiscovery()).discover();
