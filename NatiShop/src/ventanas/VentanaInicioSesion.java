@@ -85,10 +85,6 @@ public class VentanaInicioSesion extends JFrame {
 		VentanaInicioSesion.administrador = administrador;
 	}
 
-
-	
-
-
 	public VentanaInicioSesion(JFrame va) {
 		vActual = this;
 		vAnterior = va;
@@ -177,7 +173,6 @@ public class VentanaInicioSesion extends JFrame {
 		btnIniciarSes.addActionListener((e)->{
 			String nom = tfNombre.getText();
 			String contra = tfContrasena.getText();
-			
 			
 			if(Tienda.getAdministradores().containsKey(nom)) {
 				if(Tienda.getAdministradores().get(nom).getContrasenia().equals(contra)) {
