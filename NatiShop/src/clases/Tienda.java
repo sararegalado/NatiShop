@@ -1,8 +1,11 @@
 package clases;
 
 import java.io.*;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import ventanas.BD;
 
 
 public class Tienda {
@@ -128,21 +131,23 @@ public class Tienda {
 
 	/**
 	 * Método que añade un nuevo articulo comprado a la lista de articulos del cliente 
-	 * @param u Usuario que realiza las compras en NatyShop
-	 * @param a Articulo comprado por el usuario que va a ser añadido a la lista de articulos 
+	 * @param c Cliente que realiza las compras en NatyShop
+	 * @param a Articulo comprado por el cliente que va a ser añadido a la lista de articulos 
 	 */
 	//METODO QUE HAY QUE AÑADIR AL ACTION LISTENER DEL BOTON COMPRAR
 	public static void aniadirCompraCliente(Cliente c, Articulo a) {
+		
+		
 		if(! compras.containsKey(c)) {
 			compras.put(c, new ArrayList<>());
 		}
 		compras.get(c).add(a);
 		
-		if(!comprasPorCliente.containsKey(c)) {
+		if(!comprasPorCliente.containsKey(c.getDni())) {
 			comprasPorCliente.put(c.getDni(), new HashMap<>());
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-		Date fActual = new Date();
+		Date fActual = new Date(0); //Cuanda  haya compras hay que cpger la fecha de la compra
 		String fechaCompra = sdf.format(fActual);
 		if(!comprasPorCliente.get(c.getDni()).containsKey(fechaCompra)) {
 			comprasPorCliente.get(c.getDni()).put(fechaCompra, new ArrayList<>());
@@ -193,6 +198,21 @@ public class Tienda {
 		
 		
 	}
+	/**
+	 * Método que carga el mapa Compras por cliente  desde la Base de datos, cuya clave es el dni del cliente y el valor es otro mapa
+	 * con clave la fecha de compra y valor la lista de compras hecha por el cliente
+	 */
+	
+	public static void cargarKeyMapaClientes() {
+		Connection con = BD.initBD("NatiShop.db");
+		List<Cliente> clientes = BD.obtenerListaClientes(con);
+		System.out.println(clientes);
+		BD.closeBD(null);
+		for (Cliente c : clientes) {
+			comprasPorCliente.putIfAbsent(c.getDni(), new HashMap<>());
+		}
+		
+	}
 
 
 	/**
@@ -200,7 +220,7 @@ public class Tienda {
 	 * 
 	 * @param nomfich Fichero que tiene todos los usuarios registrados 
 	 */
-	public static void cargarClientes(String nomfichClientes) {
+	/*public static void cargarClientes(String nomfichClientes) {
 
 		try {
 			Scanner sc= new Scanner(new FileReader(nomfichClientes));
