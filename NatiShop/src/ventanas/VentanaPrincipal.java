@@ -65,6 +65,7 @@ public class VentanaPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
 	static VentanaInicioSesion ventanaInicio;
 	static VentanaRegistro reg;
+	static VentanaCompras ventanaCompras;
 
 	private JFrame vActual, vAnterior;
 	
@@ -74,6 +75,7 @@ public class VentanaPrincipal extends JFrame {
 	private JPanel contentPane;
 	
 	private JTextField tfBuscador;
+	
 
 	
 	private static Tienda tienda = new Tienda();
@@ -271,6 +273,14 @@ public class VentanaPrincipal extends JFrame {
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
         lblUsuario.setBounds(1155, 11, 52, 52);
         
+       
+        
+        JLabel lblCarro = new JLabel("");
+        lblCarro.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/carro.png")));
+        lblCarro.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCarro.setBounds(1076, 21, 52, 52);
+        contentPane.add(lblCarro);
+        
         
         JPopupMenu menuCliente = new JPopupMenu();
         JMenuItem perfil = new JMenuItem("Ver perfil");
@@ -310,6 +320,15 @@ public class VentanaPrincipal extends JFrame {
         
         contentPane.add(lblUsuario);
         
+        lblCarro.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	new VentanaCompras(vActual);
+        
+            }
+        });
+        contentPane.add(lblCarro);
+        
         
         int anchoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
         int altoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
@@ -347,6 +366,11 @@ public class VentanaPrincipal extends JFrame {
         lblNomU.setVerticalAlignment(SwingConstants.TOP);
         lblNomU.setBounds(1138, 67, 87, 19);
         contentPane.add(lblNomU);
+        
+        
+        
+        
+     
 
         //LISTENERS DE LOS ITEMS DE HOMBRE
         
@@ -583,7 +607,6 @@ public class VentanaPrincipal extends JFrame {
 
 	}
         
-   
 	public boolean clienteHaIniciadoSesion() {
 	    return clienteHaIniciadoSesion;
 	}
@@ -791,7 +814,7 @@ public class VentanaPrincipal extends JFrame {
                         }
                         
                     }
-                }
+               }
                 
             }
                 
