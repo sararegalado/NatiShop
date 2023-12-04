@@ -15,11 +15,16 @@ public class Main {
 		BD.crearTablas(con);	
 		BD.closeBD(con);
 		
-		Tienda.cargarArticulos("articulos.csv");		
+		Tienda.cargarArticulos("articulos.csv");	
+		Tienda.cargarKeyMapaClientes();
+		System.out.println(Tienda.getComprasPorCliente());
 		
 		VentanaPrincipal vent = new VentanaPrincipal(null);
 		Tienda.cargarAdministradores("Administradores.csv");
 		System.out.println(Tienda.getAdministradores());
+		
+		
+		
 //		NO LO BORREIS ES PARA LA PORTADA DEL PRINCIPIO
 //        boolean found = (new NativeDiscovery()).discover();
 //        if (!found)
