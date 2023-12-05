@@ -89,17 +89,6 @@ public class VentanaCompras extends JFrame{
 		
 		
 		
-		class ImageRenderer extends DefaultTableCellRenderer {
-		    @Override
-		    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		        JLabel label = new JLabel();
-		        if (value instanceof ImageIcon) {
-		            label.setIcon((ImageIcon) value);
-		        }
-		        return label;
-		    }
-		}
-		
 		/*TableColumnModel columnModel = tablaCompras.getColumnModel();
 		columnModel.getColumn(0).setCellRenderer(new ImageRenderer());
         columnModel.getColumn(1).setCellRenderer(new SpinnerRenderer());
@@ -136,9 +125,6 @@ public class VentanaCompras extends JFrame{
 	}
 	
 	
-
-
-
 	private Usuario obtenerClienteActual() {
     	 return new Cliente();
     }
@@ -153,54 +139,6 @@ public class VentanaCompras extends JFrame{
 	}
 	
 	
-	class SpinnerRenderer extends DefaultTableCellRenderer {
-	    @Override
-	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-	        if (value instanceof JSpinner) {
-	            return (Component) value;
-	        }
-	        return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-	    }
-	}
-
-    // Clase interna para personalizar el editor del JSpinner en la tabla
-    class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
-        private final JPanel panel = new JPanel();
-        private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 0, 100, 1));
-        //private final JButton btnMas = new JButton("+");
-        //private final JButton btnMenos = new JButton("-");
-
-        public SpinnerEditor() {
-        	    
-            panel.setLayout(new BorderLayout());
-            panel.add(spinner, BorderLayout.CENTER);
-            spinner.addChangeListener(new ChangeListener() {
-                @Override
-                public void stateChanged(ChangeEvent e) {
-                    fireEditingStopped();
-                }
-            });
-           /* panel.add(btnMas, BorderLayout.EAST);
-            panel.add(btnMenos, BorderLayout.WEST);
-
-            btnMas.addActionListener(e -> spinner.setValue((double) spinner.getValue() + 1));
-            btnMenos.addActionListener(e -> spinner.setValue((double) spinner.getValue() - 1));*/
-        }
-
-        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-            spinner.setValue(value);
-            return panel;
-        }
- 
-
-        @Override
-        public Object getCellEditorValue() {
-            return spinner.getValue();
-        }
-    }
-	
-        private final JPanel panel = new JPanel();
-       
 
     
     
