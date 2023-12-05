@@ -324,7 +324,7 @@ public class VentanaPrincipal extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
             	new VentanaCompras(vActual);
-        
+            	//new VentanaC();
             }
         });
         contentPane.add(lblCarro);

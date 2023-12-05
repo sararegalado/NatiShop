@@ -3,7 +3,6 @@ package ventanas;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-<<<<<<< HEAD
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -12,11 +11,9 @@ import java.awt.event.ActionListener;
 import java.lang.System.Logger;
 import java.util.ArrayList;
 import java.util.Set;
-=======
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
 import java.util.TreeSet;
 
 import javax.swing.ImageIcon;
@@ -38,17 +35,13 @@ import clases.Tienda;
 
 
 public class VentanaTienda extends JFrame {
-<<<<<<< HEAD
 	private JPanel pSur,pEeste,pOeste,pNorte,pCenter, pFoto, pTallas;
 	private JButton btnVolver,btnAniadirArticuloAlCarrito, btnFinalizarCompra, btnVerCarrito;
 	private JFrame vActual,vAnterior;
 	private JLabel lblFotoArticulo, lblTallas;
-=======
-	private JPanel pEeste,pOeste,pNorte,pCenter,pTallas;
-	private JButton btnVolver,btnAniadirArticuloAlCarrito,btnVerCarrito, btnFinalizarCompra;
-	private JLabel lblTallas;
+	
+	
 	private JLabelGrafico foto;
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
 	private JComboBox<Talla> cbTallas;
 	
 	private VentanaCompras ventanaCompras;
@@ -58,26 +51,14 @@ public class VentanaTienda extends JFrame {
 	private JList<Articulo> listaArticulos; 
 	private JScrollPane scrollListaArticulos;*/
 	
-<<<<<<< HEAD
-	public VentanaTienda(VentanaPrincipal ventanaPrincipal, Articulo articulo) {
-		super();
-		vActual = this;
-		vAnterior = ventanaPrincipal;
+	
 
-		if(ventanaPrincipal != null) {
-			setSize(ventanaPrincipal.getWidth(), ventanaPrincipal.getHeight());
-		} else {
-			setSize(800, 600);
-		}
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-=======
 	public VentanaTienda(Articulo articulo) {
 		JFrame vActual = this;
 		this.setTitle("Producto");
 		int anchoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
         int altoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
         setSize(anchoP, altoP);
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
 		
 		pEeste = new JPanel();
 		pEeste.setBackground(Color.WHITE);
@@ -122,14 +103,6 @@ public class VentanaTienda extends JFrame {
 		});
 		
 		
-		
-		
-		
-	
-		
-		
-
-		
 	
         pTallas = new JPanel();
         pTallas.setBounds(35, 20, 438, 371);
@@ -141,21 +114,13 @@ public class VentanaTienda extends JFrame {
         pTallas.setLayout(null);
         
 
-<<<<<<< HEAD
 	        JLabel lblTallas = new JLabel("Tallas disponibles");
 	        lblTallas.setFont(new Font("Baskerville", Font.PLAIN, 20));
 	        
-	        cbTallas = new JComboBox<Talla>();
-	        TreeSet<Talla> tallasTree = Tienda.tallasPorArticulo(articulo);
-	        for (Talla t : tallasTree) {
-	        	cbTallas.addItem(t);
-	        	
-	        }
+	       
 	        
 	        pCenter.add(lblTallas);
-	        pCenter.add(cbTallas);
 		
-=======
         lblTallas = new JLabel("Tallas disponibles");
         lblTallas.setBounds(143, 57, 170, 43);
         pTallas.add(lblTallas);
@@ -164,7 +129,7 @@ public class VentanaTienda extends JFrame {
         lblTallas.setFont(new Font("Baskerville", Font.PLAIN, 20));
         
         cbTallas = new JComboBox<Talla>();
-        TreeSet<Talla> tallasTree = Tienda.tallasPorArticulo(articulo);
+       TreeSet<Talla> tallasTree = Tienda.tallasPorArticulo(articulo);
         for (Talla t : tallasTree) {
         	cbTallas.addItem(t);
         	
@@ -182,9 +147,6 @@ public class VentanaTienda extends JFrame {
 		scrollListaArticulos.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollListaArticulos.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		cargarArticulos();*/
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
-		
-	       
 		
 		//
 	       
@@ -233,9 +195,10 @@ public class VentanaTienda extends JFrame {
 	            Articulo articuloSeleccionado = obtenerArticuloSeleccionado(tallaSeleccionada);
 
 	            if (articuloSeleccionado != null) {
-	                //VentanaCompras.agregarArticuloAlCarrito(articuloSeleccionado, 1, articuloSeleccionado.getPrecio());
+	                //VentanaCompras.cargarTabla(articuloSeleccionado, 1, articuloSeleccionado.getPrecio());
 	                //Logger.getLogger(getClass().getName()).info("Artículo añadido al carrito: " + articuloSeleccionado.getNombre());
 	                //mostrarFotoArticulo(articuloSeleccionado);
+	            	 ventanaCompras.cargarTabla();
 	            }
 	        }
 
@@ -252,9 +215,9 @@ public class VentanaTienda extends JFrame {
 	    });
 
 	
-//	setVisible(true)
+		setVisible(true);
 //		
-//	}
+//	
 //
 //	public void mostrarFotoArticulo(Articulo articulo) {
 //		String rutaFoto = articulo.getFoto();

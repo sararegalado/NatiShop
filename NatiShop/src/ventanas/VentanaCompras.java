@@ -41,7 +41,6 @@ public class VentanaCompras extends JFrame{
 	private JPanel pCentro,pSur;
 	private JButton btnVolver, btnComprar, btnFinalizarCompra, btnAniadirArticuloAlCarrito;
 	private JFrame vActual,vAnterior;
-	private JScrollPane scroll;
 	
 	private DefaultTableModel modeloTablaCompras; 
 	private JTable tablaCompras; 
@@ -60,37 +59,33 @@ public class VentanaCompras extends JFrame{
 		vAnterior = va;	
 		setResizable(false);
 		setBounds(300, 200, 600, 400);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		//setIconImage(new ImageIcon("imagenes/logo.png").getImage());		
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);	
 		
 		
 		btnMas = new JButton("+");
         btnMenos = new JButton("-");
-        tablaCompras = new JTable();
-		
+        
 		pSur = new JPanel();
-		pCentro = new JPanel();
 		getContentPane().add(pSur, BorderLayout.SOUTH);
-		getContentPane().add(pCentro, BorderLayout.CENTER);
-		scroll = new JScrollPane();
-		getContentPane().add(scroll, BorderLayout.CENTER);
 		
 		Object [] titulos = {"ARTICULO","CANTIDAD","PRECIO ARTÍCULO"};
 		modeloTablaCompras = new DefaultTableModel();
 		modeloTablaCompras.setColumnIdentifiers(titulos);
+		tablaCompras = new JTable(modeloTablaCompras);
 		scrollTablaCompras = new JScrollPane(tablaCompras);
-		pCentro.add(scrollTablaCompras);
-		cargarTabla();
+		getContentPane().add(scrollTablaCompras, BorderLayout.CENTER);
+		
+		//cargarTabla();
 		
 		//NUEVA TABLA PARA LOS FAVORITOS
 		
-		/*btnVolver = new JButton("VOLVER");
+		btnVolver = new JButton("VOLVER");
 		pSur.add(btnVolver);
 		
 		btnVolver.addActionListener((e)->{
 			vAnterior.setVisible(true);
 			vActual.dispose();
-		});*/
+		});
 		
 		
 		
@@ -141,15 +136,6 @@ public class VentanaCompras extends JFrame{
 	}
 	
 	
-	private void agregarArticuloALaTabla(Articulo articuloSeleccionado) {
-	    ImageIcon icono = new ImageIcon(getClass().getResource(articuloSeleccionado.getFoto()));
-	    JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1)); 
-	    Object[] fila = {icono, 1, articuloSeleccionado.getPrecio()};
-	    //, spinner,  articuloSeleccionado.getFoto()
-	    modeloTablaCompras.addRow(fila);
-	}
-
-
 
 
 
@@ -247,7 +233,6 @@ public class VentanaCompras extends JFrame{
 	        }
 	    }
 	}
-	
 	
 
 	
