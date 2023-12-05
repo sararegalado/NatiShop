@@ -26,8 +26,9 @@ import clases.Tienda;
 
 
 public class VentanaTienda extends JFrame {
-	private JPanel pEeste,pOeste,pNorte,pCenter,pTallas;
-	private JButton btnVolver,btnAniadirArticuloAlCarrito,btnVerCarrito, btnFinalizarCompra;
+	private static final long serialVersionUID = 1L;
+	private JPanel pEeste,pOeste,pNorte,pTallas;
+	private JButton btnAniadirArticuloAlCarrito;
 	private JLabel lblTallas;
 	private JLabelGrafico foto;
 	private JComboBox<Talla> cbTallas;
@@ -133,18 +134,7 @@ public class VentanaTienda extends JFrame {
 		cargarArticulos();*/
 		
 	       
-		
-		//
-	       
-	    //ESTO LO TENGO QUE ARREGLAR
-//		btnVolver.addActionListener(new ActionListener() {
-//		    @Override
-//		    public void actionPerformed(ActionEvent e) {
-//		        ventanaPrincipal.setVisible(true);
-//		        VentanaTienda.this.dispose();
-//		    }
-//		});
-//
+
 
 		
 	/*	btnAniadirArticuloAlCarrito.addActionListener(new ActionListener() {
