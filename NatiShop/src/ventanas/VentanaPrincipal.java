@@ -599,14 +599,6 @@ public class VentanaPrincipal extends JFrame {
 		this.pnlArticulos = panel;
 		for (Camiseta a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
-			//
-//			pnlArticulo.addMouseListener(new MouseAdapter() {
-//				@Override
-//				public void mouseClicked(MouseEvent e) {
-//					abrirVentanaTienda(a);
-//				}
-//			});
-			//
 			panel.add(pnlArticulo);
 		}	
 	}
@@ -615,14 +607,6 @@ public class VentanaPrincipal extends JFrame {
 		this.pnlArticulos = panel;
 		for (Jersey a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
-			//
-//			pnlArticulo.addMouseListener(new MouseAdapter() {
-//				@Override
-//				public void mouseClicked(MouseEvent e) {
-//					abrirVentanaTienda(a);
-//				}
-//			});
-			//
 			panel.add(pnlArticulo);
 		}	
 	}
@@ -632,14 +616,6 @@ public class VentanaPrincipal extends JFrame {
 		this.pnlArticulos = panel;
 		for (Pantalon a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
-			//
-//			pnlArticulo.addMouseListener(new MouseAdapter() {
-//				@Override
-//				public void mouseClicked(MouseEvent e) {
-//					abrirVentanaTienda(a);
-//				}
-//			});
-			//
 			panel.add(pnlArticulo);
 		}	
 	}
@@ -648,14 +624,6 @@ public class VentanaPrincipal extends JFrame {
 		this.pnlArticulos = panel;
 		for (Zapato a: art) {
 			JPanel pnlArticulo = crearPanelArticulo(a);
-			//
-//			pnlArticulo.addMouseListener(new MouseAdapter() {
-//				@Override
-//				public void mouseClicked(MouseEvent e) {
-//					abrirVentanaTienda(a);
-//				}
-//			});
-			//
 			panel.add(pnlArticulo);
 		}	
 	}
@@ -740,11 +708,6 @@ public class VentanaPrincipal extends JFrame {
 			}	
 		}
 		filtrado.setVisible(true);
-//		String seleccion = (String) filtrado.getSelectedItem();
-//		System.out.println(seleccion);
-//		if (seleccion == "Mujer") {
-//			System.out.println("Mujeres");
-//		}
 		filtrado.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
