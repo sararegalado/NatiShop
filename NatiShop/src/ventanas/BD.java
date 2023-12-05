@@ -54,7 +54,7 @@ public class BD {
 	
 	public static void crearTablas(Connection con) {
 		String sql = "CREATE TABLE IF NOT EXISTS cliente (DNI String, NOMBRE String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, CONTRASEÑA String, NUMERO_DE_TARJETA String )";
-		String sql2 = "CREATE TABLE IF NOT EXISTS administrador (DNI String, NOMBRE String, APELLIDO String,  FECHA_DE_NACIMIENTO String, TELEFONO String, PROVINCIA Provincia, FECHA_INICIO_EMPRESA String, JORNADA Jornada, PUESTO Puesto)";
+		String sql2 = "CREATE TABLE IF NOT EXISTS administrador (DNI String, NOMBRE String, APELLIDO String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, FECHA_INICIO_EMPRESA String, JORNADA String, PUESTO String, CONTRASEÑA String)";
 		String sql3 = "CREATE TABLE IF NOT EXISTS articulo (ID String, NOMBRE Integer, UNIDADES Integer, PRECIO Double, GENERO Genero, TALLA Talla, FOTO String, CATEGORIA Categoria)";
 		try {
 			Statement st = con.createStatement();
@@ -262,9 +262,9 @@ public class BD {
 	}
 
 	
-	public static HashMap<String, Administrador> volcarTablaPersonasAMapa(Connection con){
+	public static HashMap<String, Administrador> volcarTablaAdminAMapa(Connection con){
 		HashMap<String, Administrador> m = new HashMap<>();
-		String sql = "SELECT * FROM Administrador";
+		String sql = "SELECT * FROM administrador";
 		
 		try {
 			Statement st = con.createStatement();
@@ -282,13 +282,14 @@ public class BD {
 				String puesto = rs.getString("PUESTO");
 				String contra = rs.getString("CONTRASEÑA");
 				Administrador a = new Administrador(d, nom, apell, fNac,email, tlf, p, fIniEmp, jornada, puesto, contra);
-				m.putIfAbsent(a.getDni(), a);
+				m.putIfAbsent(a.getCorreo(), a);
 			}
 			rs.close();
 			st.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+
 		}
 		return m;
 	}

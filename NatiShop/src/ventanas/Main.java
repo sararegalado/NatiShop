@@ -20,7 +20,7 @@ public class Main {
 		System.out.println(Tienda.getComprasPorCliente());
 		
 		VentanaPrincipal vent = new VentanaPrincipal(null);
-		Tienda.cargarAdministradores("Administradores.csv");
+//		Tienda.cargarAdministradores("Administradores.csv");
 		System.out.println(Tienda.getAdministradores());
 		
 		
