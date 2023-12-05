@@ -195,7 +195,6 @@ public class VentanaTienda extends JFrame {
 	            Articulo articuloSeleccionado = obtenerArticuloSeleccionado(tallaSeleccionada);
 
 	            if (articuloSeleccionado != null) {
-	                VentanaCompras.cargarTabla(articuloSeleccionado, 1, articuloSeleccionado.getPrecio());
 	                //Logger.getLogger(getClass().getName()).info("Artículo añadido al carrito: " + articuloSeleccionado.getNombre());
 	                //mostrarFotoArticulo(articuloSeleccionado);
 	            	 ventanaCompras.cargarTabla();
