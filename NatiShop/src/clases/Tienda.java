@@ -61,6 +61,9 @@ public class Tienda {
 	
 
 	public static HashMap<String, Administrador> getAdministradores() {
+		Connection con = BD.initBD("NatiShop.db");
+		BD.volcarTablaAdminAMapa(con);
+		BD.closeBD(con);
 		return Administradores;
 	}
 
@@ -160,44 +163,44 @@ public class Tienda {
 	 * @param nomfichAdmins
 	 */
 	
-	public static void cargarAdministradores(String nomfichAdmins) {
-		Scanner sc;
-		try {
-			sc = new Scanner(new FileReader(nomfichAdmins));
-			String linea;
-			sc.nextLine();
-			while(sc.hasNext()){
-				linea= sc.nextLine();
-				String[] partes = linea.split(";");
-				if(partes.length > 0) {
-					String dni = partes[0];
-					String nom= partes[1];
-					String apellido= partes[2];
-					String correo = partes[3];
-					String tlf = partes[4];
-					String provincia = (partes[5]);
-					String Fnac = partes[6];
-					String Finic = partes[7];
-					String jornada=partes[8];
-					String puesto = partes[9];
-					String con= partes[10];
-					Administrador a = new Administrador(dni,nom,apellido,correo,tlf,provincia,Fnac,Finic,jornada,puesto,con);
-					if(!Administradores.containsKey(a.getCorreo())) {
-						Administradores.put(a.getCorreo(), a);
-					}
-					
-				}
-			}
-			sc.close();
-		} catch (FileNotFoundException e) {
-			
-			e.printStackTrace();
-		}
-		
-			
-		
-		
-	}
+//	public static void cargarAdministradores(String nomfichAdmins) {
+//		Scanner sc;
+//		try {
+//			sc = new Scanner(new FileReader(nomfichAdmins));
+//			String linea;
+//			sc.nextLine();
+//			while(sc.hasNext()){
+//				linea= sc.nextLine();
+//				String[] partes = linea.split(";");
+//				if(partes.length > 0) {
+//					String dni = partes[0];
+//					String nom= partes[1];
+//					String apellido= partes[2];
+//					String correo = partes[3];
+//					String tlf = partes[4];
+//					String provincia = (partes[5]);
+//					String Fnac = partes[6];
+//					String Finic = partes[7];
+//					String jornada=partes[8];
+//					String puesto = partes[9];
+//					String con= partes[10];
+//					Administrador a = new Administrador(dni,nom,apellido,correo,tlf,provincia,Fnac,Finic,jornada,puesto,con);
+//					if(!Administradores.containsKey(a.getCorreo())) {
+//						Administradores.put(a.getCorreo(), a);
+//					}
+//					
+//				}
+//			}
+//			sc.close();
+//		} catch (FileNotFoundException e) {
+//			
+//			e.printStackTrace();
+//		}
+//		
+//			
+//		
+//		
+//	}
 	/**
 	 * Método que carga el mapa Compras por cliente  desde la Base de datos, cuya clave es el dni del cliente y el valor es otro mapa
 	 * con clave la fecha de compra y valor la lista de compras hecha por el cliente
