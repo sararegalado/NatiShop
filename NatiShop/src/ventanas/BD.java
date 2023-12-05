@@ -270,12 +270,19 @@ public class BD {
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql); //Apunta a la primera de las tuplas devueltas por la select
 			while(rs.next()) { //Recorremos todas las tuplas devueltas por la select
-				String dni = rs.getString("dni");
-				String nom = rs.getString("nom");
-				String fnac = rs.getString("fechanacimiento");
-				String contra = rs.getString("contrasenia");
-				//Administrador a = new Administrador(d, nom, apell, fNac,email, tlf, p, fIniEmp, jornada, puesto, contra);
-				//m.putIfAbsent(a.getDni(), a);
+				String d= rs.getString("DNI");
+				String nom = rs.getString("NOMBRE");
+				String apell = rs.getString("APELLIDO");
+				String fNac = rs.getString("FECHA_DE_NACIMIENTO");
+				String email = rs.getString("EMAIL");
+				String tlf= rs.getString("TELEFONO");
+				String p = rs.getString("PROVINCIA");
+				String fIniEmp = rs.getString("FECHA_INICIO_EMPRESA");
+				String jornada = rs.getString("JORNADA");
+				String puesto = rs.getString("PUESTO");
+				String contra = rs.getString("CONTRASEÑA");
+				Administrador a = new Administrador(d, nom, apell, fNac,email, tlf, p, fIniEmp, jornada, puesto, contra);
+				m.putIfAbsent(a.getDni(), a);
 			}
 			rs.close();
 			st.close();
