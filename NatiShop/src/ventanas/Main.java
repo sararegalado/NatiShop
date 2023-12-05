@@ -10,6 +10,7 @@ import uk.co.caprica.vlcj.factory.discovery.NativeDiscovery;
 public class Main {
 
 	public static void main(String[] args) {
+		Tienda.cargarArticulos("articulos.csv");
 		
 		Connection con = BD.initBD("NatiShop.db");
 		BD.crearTablas(con);	
@@ -19,10 +20,11 @@ public class Main {
 		Tienda.cargarKeyMapaClientes();
 		System.out.println(Tienda.getComprasPorCliente());
 		
+
 		VentanaPrincipal vent = new VentanaPrincipal(null);
 //		Tienda.cargarAdministradores("Administradores.csv");
 		System.out.println(Tienda.getAdministradores());
-		
+
 		
 		
 //		NO LO BORREIS ES PARA LA PORTADA DEL PRINCIPIO

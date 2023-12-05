@@ -3,6 +3,14 @@ package ventanas;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.lang.System.Logger;
+import java.util.ArrayList;
+import java.util.Set;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -21,22 +29,30 @@ import java.awt.GraphicsEnvironment;
 
 
 import clases.Articulo;
+import clases.Cliente;
 import clases.Talla;
 import clases.Tienda;
 
 
 public class VentanaTienda extends JFrame {
-	private static final long serialVersionUID = 1L;
-	private JPanel pEeste,pOeste,pNorte,pTallas;
-	private JButton btnAniadirArticuloAlCarrito;
-	private JLabel lblTallas;
+	private JPanel pSur,pEeste,pOeste,pNorte,pCenter, pFoto, pTallas;
+	private JButton btnVolver,btnAniadirArticuloAlCarrito, btnFinalizarCompra, btnVerCarrito;
+	private JFrame vActual,vAnterior;
+	private JLabel lblFotoArticulo, lblTallas;
+	
+	
 	private JLabelGrafico foto;
 	private JComboBox<Talla> cbTallas;
+	
+	private VentanaCompras ventanaCompras;
+	
 	
 	/*private DefaultListModel<Articulo> modeloListaArticulos; 
 	private JList<Articulo> listaArticulos; 
 	private JScrollPane scrollListaArticulos;*/
 	
+	
+
 	public VentanaTienda(Articulo articulo) {
 		JFrame vActual = this;
 		this.setTitle("Producto");
@@ -87,14 +103,6 @@ public class VentanaTienda extends JFrame {
 		});
 		
 		
-		
-		
-		
-	
-		
-		
-
-		
 	
         pTallas = new JPanel();
         pTallas.setBounds(35, 20, 438, 371);
@@ -106,6 +114,13 @@ public class VentanaTienda extends JFrame {
         pTallas.setLayout(null);
         
 
+	        JLabel lblTallas = new JLabel("Tallas disponibles");
+	        lblTallas.setFont(new Font("Baskerville", Font.PLAIN, 20));
+	        
+	       
+	        
+	        pCenter.add(lblTallas);
+		
         lblTallas = new JLabel("Tallas disponibles");
         lblTallas.setBounds(143, 57, 170, 43);
         pTallas.add(lblTallas);
@@ -114,7 +129,7 @@ public class VentanaTienda extends JFrame {
         lblTallas.setFont(new Font("Baskerville", Font.PLAIN, 20));
         
         cbTallas = new JComboBox<Talla>();
-        TreeSet<Talla> tallasTree = Tienda.tallasPorArticulo(articulo);
+       TreeSet<Talla> tallasTree = Tienda.tallasPorArticulo(articulo);
         for (Talla t : tallasTree) {
         	cbTallas.addItem(t);
         	
@@ -133,11 +148,24 @@ public class VentanaTienda extends JFrame {
 		scrollListaArticulos.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		cargarArticulos();*/
 		
+		//
 	       
-
+	    //ESTO LO TENGO QUE ARREGLAR
+//		btnVolver.addActionListener(new ActionListener() {
+//		    @Override
+//		    public void actionPerformed(ActionEvent e) {
+//		        ventanaPrincipal.setVisible(true);
+//		        VentanaTienda.this.dispose();
+//		    }
+//		});
+//
+		btnVerCarrito.addActionListener((e)->{
+			new VentanaCompras(vActual);
+			vActual.setVisible(false);
+		});
 
 		
-	/*	btnAniadirArticuloAlCarrito.addActionListener(new ActionListener() {
+	/*btnAniadirArticuloAlCarrito.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int pos = listaArticulos.getSelectedIndex(); 
@@ -159,39 +187,37 @@ public class VentanaTienda extends JFrame {
 		}); */
 		
 
-		/*btnVerCarrito.addActionListener((e)->{
-		Cliente c = Ventana.getCliente();
-		String texto = "CLIENTE: "+c.getDni() +" "+c.getNombre()+"\n\n";
-		texto = texto + "ARTICULOS EN EL CARRITO: \n";
-		for(Articulo a: Ventana.getCarrito()) {
-			texto = texto + a.toString() + "\n";
-		}
-		areaCarrito.setText(texto);
-	});
-	*/
-	
-		
-		/*	btnFinalizarCompra.addActionListener((e)->{
-		Tienda.getCompras().put(Ventana.getCliente(), Ventana.getCarrito());
-		areaCarrito.setText("");
-		JOptionPane.showMessageDialog(null, "Compra finalizada correctamente");
-	});
-		
-	}
-	
-	
+		  
+		btnAniadirArticuloAlCarrito.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            Talla tallaSeleccionada = (Talla) cbTallas.getSelectedItem();
+	            Articulo articuloSeleccionado = obtenerArticuloSeleccionado(tallaSeleccionada);
 
+	            if (articuloSeleccionado != null) {
+	                VentanaCompras.cargarTabla(articuloSeleccionado, 1, articuloSeleccionado.getPrecio());
+	                //Logger.getLogger(getClass().getName()).info("Artículo añadido al carrito: " + articuloSeleccionado.getNombre());
+	                //mostrarFotoArticulo(articuloSeleccionado);
+	            	 ventanaCompras.cargarTabla();
+	            }
+	        }
 
-	/*private void cargarArticulos() {
-		for(Articulo a: Tienda.getArticulos()) { 
-			modeloListaArticulos.addElement(a); 
-		}*/
-		
+			private Articulo obtenerArticuloSeleccionado(Talla tallaSeleccionada) {				
+				 Set<Articulo> todosLosArticulos = Tienda.getArticulos();
+				    for (Articulo articulo : todosLosArticulos) {
+				        TreeSet<Talla> tallasDisponibles = Tienda.tallasPorArticulo(articulo);
+				        if (tallasDisponibles.contains(tallaSeleccionada)) {
+				            return articulo;
+				        }
+				    }
+				return null;
+			}
+	    });
 
 	
-//	setVisible(true)
+		setVisible(true);
 //		
-//	}
+//	
 //
 //	public void mostrarFotoArticulo(Articulo articulo) {
 //		String rutaFoto = articulo.getFoto();

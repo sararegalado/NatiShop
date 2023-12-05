@@ -65,6 +65,7 @@ public class VentanaPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
 	static VentanaInicioSesion ventanaInicio;
 	static VentanaRegistro reg;
+	static VentanaCompras ventanaCompras;
 
 	private JFrame vActual, vAnterior;
 	
@@ -74,6 +75,8 @@ public class VentanaPrincipal extends JFrame {
 	private JPanel contentPane;
 	
 	private JTextField tfBuscador;
+	
+
 	
 	private static Tienda tienda = new Tienda();
 	
@@ -100,7 +103,6 @@ public class VentanaPrincipal extends JFrame {
 	
 	
 	
-
 
 	private static boolean clienteHaIniciadoSesion = false;
 	
@@ -271,6 +273,14 @@ public class VentanaPrincipal extends JFrame {
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
         lblUsuario.setBounds(1155, 11, 52, 52);
         
+       
+        
+        JLabel lblCarro = new JLabel("");
+        lblCarro.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/carro.png")));
+        lblCarro.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCarro.setBounds(1076, 21, 52, 52);
+        contentPane.add(lblCarro);
+        
         
         JPopupMenu menuCliente = new JPopupMenu();
         JMenuItem perfil = new JMenuItem("Ver perfil");
@@ -310,6 +320,15 @@ public class VentanaPrincipal extends JFrame {
         
         contentPane.add(lblUsuario);
         
+        lblCarro.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	new VentanaCompras(vActual);
+            	//new VentanaC();
+            }
+        });
+        contentPane.add(lblCarro);
+        
         
         int anchoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
         int altoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
@@ -325,21 +344,37 @@ public class VentanaPrincipal extends JFrame {
         JLabelGrafico fotoPortada = new JLabelGrafico("/imagenes/portada.png",pnlArticulos.getWidth(),pnlArticulos.getHeight());
         fotoPortada.setLocation(0, 0);
         pnlArticulos.add(fotoPortada);
-         
-      
+        
+  
+        lblUsuario.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+ 		        filtrado.setVisible(false);
+                if (clienteHaIniciadoSesion) {
+                	Cliente c = VentanaInicioSesion.getCliente();
+                	new VentanaDatosUsuario(vActual, c);
+                } else {
+                    new VentanaInicioSesion(vActual);
+                }
+            }
+        });
+        
+        
         lblNomU = new JLabel("Iniciar Sesión");
         lblNomU.setHorizontalAlignment(SwingConstants.CENTER);
         lblNomU.setVerticalAlignment(SwingConstants.TOP);
         lblNomU.setBounds(1138, 67, 87, 19);
         contentPane.add(lblNomU);
         
-       
+        
+        
+        
+     
 
- 
-     
-     
         //LISTENERS DE LOS ITEMS DE HOMBRE
         
+       
         menuItemCamiH.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -415,9 +450,6 @@ public class VentanaPrincipal extends JFrame {
         	}
         });
         
-        
-
-
         //LISTENERS DE LOS ITEMS DE MUJER
         
         menuItemCamiM.addActionListener(new ActionListener() {
@@ -570,11 +602,11 @@ public class VentanaPrincipal extends JFrame {
         	}
         });
         
+        setVisible(true);
+        
 
-       setVisible(true);
 	}
-	
-
+        
 	public boolean clienteHaIniciadoSesion() {
 	    return clienteHaIniciadoSesion;
 	}
@@ -668,7 +700,6 @@ public class VentanaPrincipal extends JFrame {
 		
 		return panelArticulo;
 		
-		
 	
 
 		/* if (UsuarioHaIniciadoSesion()) {
@@ -692,8 +723,7 @@ public class VentanaPrincipal extends JFrame {
 			
 		
 		
-  
-  
+ 
 	}
 	
 	public void buscarArticulos(String textoBusqueda, JPanel pnlArticulos,JComboBox filtrado) {
@@ -757,7 +787,7 @@ public class VentanaPrincipal extends JFrame {
                         }
                         
                     }
-                }
+               }
                 
             }
                 
