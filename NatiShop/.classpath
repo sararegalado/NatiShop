@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="vlcj-4.7.1/vlcj-4.7.1.jar"/>
 	<classpathentry kind="lib" path="jcalendar-1.4.jar"/>
 	<classpathentry kind="lib" path="sqlite-jdbc-3.32.3.2.jar"/>
+	<classpathentry kind="lib" path="sqlite-jdbc-3.32.3.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
