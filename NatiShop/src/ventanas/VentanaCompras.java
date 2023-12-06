@@ -96,7 +96,7 @@ public class VentanaCompras extends JFrame{
 		
 		
 		
-		btnComprar = new JButton("COMPRAR");
+		btnComprar = new JButton("FINALIZAR COMPRA");
 		pSur.add(btnComprar);
 		
 		btnComprar.addActionListener((e)->{
@@ -105,7 +105,7 @@ public class VentanaCompras extends JFrame{
 		    Tienda.getCompras().put((Cliente) usuarioActual, articulosSeleccionados);
 		 
 		   // modeloTablaCompras.setRowCount(0);	// hago que una vez realizada la compra se borre
-		    new VentanaProcesarElPago();
+		    //new VentanaProcesarElPago();
 		    System.out.println("La compra se ha realizado correctamente.");
 		});
 		
@@ -183,6 +183,7 @@ public class VentanaCompras extends JFrame{
 	        modeloTablaCompras.setValueAt(nuevoPrecio, fila, 2);
 	    }
 	}
+	
 
 
 	

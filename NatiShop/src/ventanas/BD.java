@@ -152,8 +152,8 @@ public class BD {
 		}
 	}
 	
-	public static void modificarNombreCliente(Connection con, String dni, String nuevoNombre) {
-		String sql = String.format("UPDATE cliente SET nom='%s' WHERE dni='%s'", nuevoNombre,dni);
+	public static void modificarEmailCliente(Connection con, String dni, String nuevoEmail) {
+		String sql = String.format("UPDATE cliente SET EMAIL='%s' WHERE DNI='%s'", nuevoEmail ,dni);
 		try {
 			Statement st = con.createStatement();
 			st.executeUpdate(sql);
@@ -162,6 +162,30 @@ public class BD {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void modificarTlfCliente(Connection con, String dni, String nuevoTlf) {
+		String sql = String.format("UPDATE cliente SET TELEFONO='%s' WHERE DNI='%s'", nuevoTlf ,dni);
+		try {
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void modificarContraCliente(Connection con, String dni, String nuevaContra) {
+		String sql = String.format("UPDATE cliente SET CONTRASEÑA='%s' WHERE DNI='%s'", nuevaContra ,dni);
+		try {
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	
 	/*Devuelve una lista con los clientes de la tabla Clientes*/
 	public static List<Cliente> obtenerListaClientes(Connection con){
@@ -240,7 +264,7 @@ public class BD {
 	}
 	
 	public static void borrarAdmin(Connection con, String dni) {
-		String sql = String.format("DELETE FROM cliente WHERE dni='%s'", dni);
+		String sql = String.format("DELETE FROM cliente WHERE DNI='%s'", dni);
 		try {
 			Statement st = con.createStatement();
 			st.executeUpdate(sql);
@@ -250,8 +274,8 @@ public class BD {
 		}
 	}
 	
-	public static void modificarJornadaAdmin(Connection con, String dni, String nuevoNombre) {
-		String sql = String.format("UPDATE cliente SET nom='%s' WHERE dni='%s'", nuevoNombre,dni);
+	public static void modificarJornadaAdmin(Connection con, String dni, String nuevaJornada) {
+		String sql = String.format("UPDATE administrador SET JORNADA='%s' WHERE DNI='%s'", nuevaJornada,dni);
 		try {
 			Statement st = con.createStatement();
 			st.executeUpdate(sql);

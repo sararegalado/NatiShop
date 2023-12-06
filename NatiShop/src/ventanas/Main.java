@@ -23,7 +23,7 @@ public class Main {
 
 		VentanaPrincipal vent = new VentanaPrincipal(null);
 //		Tienda.cargarAdministradores("Administradores.csv");
-		System.out.println(Tienda.getAdministradores());
+
 
 		
 		

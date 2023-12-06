@@ -19,7 +19,7 @@ public class Tienda {
 	private static List<Cliente> clientes = new ArrayList<>();
 	private static HashMap<Cliente, ArrayList<Articulo>> compras = new HashMap<>();
 	private static HashMap<String, HashMap<String, ArrayList<Articulo>>> comprasPorCliente = new HashMap<>();
-	private static HashMap<String, Administrador>Administradores = new HashMap<>();
+	private static HashMap<String, Administrador>administradores = new HashMap<>();
 	//mapa admin (clave: correo, valor admin)
 	
 	private static final String nomfichClientes = "Clientes.csv";
@@ -32,6 +32,21 @@ public class Tienda {
 
 	public static String getNomfichadmins() {
 		return nomfichAdmins;
+	}
+	
+	public static List<Cliente> getClientes() {
+		Connection con = BD.initBD("NatiShop.db");
+		clientes = BD.obtenerListaClientes(con);
+		BD.closeBD(con);
+		return clientes;
+	}
+	
+
+	public static HashMap<String, Administrador> getAdministradores() {
+		Connection con = BD.initBD("NatiShop.db");
+		administradores =BD.volcarTablaAdminAMapa(con);
+		BD.closeBD(con);
+		return administradores;
 	}
 
 
@@ -57,15 +72,6 @@ public class Tienda {
 	    return tallas;
 	}
 
-	//
-	
-
-	public static HashMap<String, Administrador> getAdministradores() {
-		Connection con = BD.initBD("NatiShop.db");
-		BD.volcarTablaAdminAMapa(con);
-		BD.closeBD(con);
-		return Administradores;
-	}
 
 
 	/**
@@ -108,10 +114,6 @@ public class Tienda {
 	}
 	
 	
-	
-	public static List<Cliente> getClientes() {
-		return clientes;
-	}
 
 	public static void setUsuarios(List<Cliente> clientes) {
 		Tienda.clientes = clientes;
@@ -259,18 +261,18 @@ public class Tienda {
 	 * 
 	 * @param nomfich Fichero en el que vamos a guardar nuestra lista de usuarios
 	 */
-	public static void guardarClientes(String nomfichClientes) {
-		try {
-			PrintWriter pw = new PrintWriter(nomfichClientes);
-			for(Cliente c : clientes) {
-				pw.println(c.getDni()+";"+c.getNombre()+";"+c.getfNacStr()+";"+c.getCorreo()+";"+c.getTlf()+";"+c.getProvinciaStr()+";"+c.getContrasenia()+";"+c.getNumTarjeta());
-			}
-			pw.flush();
-			pw.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void guardarClientes(String nomfichClientes) {
+//		try {
+//			PrintWriter pw = new PrintWriter(nomfichClientes);
+//			for(Cliente c : clientes) {
+//				pw.println(c.getDni()+";"+c.getNombre()+";"+c.getfNacStr()+";"+c.getCorreo()+";"+c.getTlf()+";"+c.getProvinciaStr()+";"+c.getContrasenia()+";"+c.getNumTarjeta());
+//			}
+//			pw.flush();
+//			pw.close();
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	/**
 	 * Metodo que busca a un usuario por su dni
@@ -278,44 +280,44 @@ public class Tienda {
 	 * @return
 	 */
 	
-	public static Cliente buscarCliente(String dni) {
-		boolean enc = false;
-		int pos = 0;
-		Cliente c = null;
-		while(!enc && pos<clientes.size()) {
-			c = clientes.get(pos);
-			if(c.getDni().equals(dni)) {
-				enc = true;
-			}else {
-				pos++;
-			}
-		}
-		if(enc) {
-			return c;
-		}else{
-			return null;
-		}
-	}
+//	public static Cliente buscarCliente(String dni) {
+//		boolean enc = false;
+//		int pos = 0;
+//		Cliente c = null;
+//		while(!enc && pos<clientes.size()) {
+//			c = clientes.get(pos);
+//			if(c.getDni().equals(dni)) {
+//				enc = true;
+//			}else {
+//				pos++;
+//			}
+//		}
+//		if(enc) {
+//			return c;
+//		}else{
+//			return null;
+//		}
+//	}
 	
-	public static Cliente buscarClientePorNomCon(String nombre, String con) {
-		boolean enc = false;
-		int pos = 0;
-		Cliente c = null;
-		while(!enc && pos<clientes.size()) {
-			c = clientes.get(pos);
-			if (c.getNombre().equals(nombre) && c.getContrasenia().equals(con)) {
-				enc = true;
-			}else {
-				pos++;
-			}	
-		}
-		if(enc) {
-			return c;
-		}else {
-			return null;
-		}
-	}
-	
+//	public static Cliente buscarClientePorNomCon(String nombre, String con) {
+//		boolean enc = false;
+//		int pos = 0;
+//		Cliente c = null;
+//		while(!enc && pos<clientes.size()) {
+//			c = clientes.get(pos);
+//			if (c.getNombre().equals(nombre) && c.getContrasenia().equals(con)) {
+//				enc = true;
+//			}else {
+//				pos++;
+//			}	
+//		}
+//		if(enc) {
+//			return c;
+//		}else {
+//			return null;
+//		}
+//	}
+//	
 	
 	/**
 	 * Método que carga el fichero articulos en una lista de articulos

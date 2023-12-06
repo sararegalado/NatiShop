@@ -305,18 +305,6 @@ public class VentanaPrincipal extends JFrame {
         menuCliente.add(perfil);
         menuCliente.add(compras);
 
-        lblUsuario.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
- 		        filtrado.setVisible(false);
-                if (clienteHaIniciadoSesion) {
-                	menuCliente.show(lblUsuario, 0, lblUsuario.getHeight());
-                } else {
-                    new VentanaInicioSesion(vActual);
-                }
-            }
-        });
         
         contentPane.add(lblUsuario);
         
@@ -689,7 +677,7 @@ public class VentanaPrincipal extends JFrame {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				VentanaTienda producto = new VentanaTienda(articulo);
+				VentanaArticulo producto = new VentanaArticulo(articulo);
 				producto.setVisible(true);
 				
 			}

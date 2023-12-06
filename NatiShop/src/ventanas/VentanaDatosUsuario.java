@@ -200,10 +200,11 @@ public class VentanaDatosUsuario extends JFrame{
         
         btnModificar = new JButton("MODIFICAR");
         btnModificar.addActionListener(e -> {
+        	Connection con = BD.initBD("NatiShop.db");
             switch (intModif) {
                 case 1:
                     if (c.getCorreo().equals(tfActual.getText())) {
-                        c.setCorreo(tfNuevo.getText());
+                        BD.modificarEmailCliente(con, c.getDni(), tfNuevo.getText());
                         btnCorreo.setText(tfNuevo.getText());
                         tfActual.setText("");
                         tfNuevo.setText("");
@@ -215,7 +216,7 @@ public class VentanaDatosUsuario extends JFrame{
 
                 case 2:
                     if (c.getTlf().equals(tfActual.getText())) {
-                        c.setTlf(tfNuevo.getText());
+                        BD.modificarTlfCliente(con, c.getDni(), tfNuevo.getText());
                         btnTfn.setText(tfNuevo.getText());
                         tfActual.setText("");
                         tfNuevo.setText("");
@@ -227,7 +228,7 @@ public class VentanaDatosUsuario extends JFrame{
 
                 case 3:
                     if (c.getContrasenia().equals(jpActual.getText())) {
-                        c.setContrasenia(jpNueva.getText());
+                        BD.modificarContraCliente(con, c.getDni(), jpNueva.getText());
                         btnContrasenia.setText("*".repeat(jpNueva.getText().length()));
                         jpActual.setText("");
                         jpNueva.setText("");
@@ -237,8 +238,9 @@ public class VentanaDatosUsuario extends JFrame{
                     }
                     break;
             }
+            BD.closeBD(con);
 
-            Tienda.guardarClientes(Tienda.getNomfichclientes());
+            //Tienda.guardarClientes(Tienda.getNomfichclientes());
         });
 
 		
