@@ -39,7 +39,7 @@ import clases.Usuario;
 
 public class VentanaCompras extends JFrame{
 	private JPanel pCentro,pSur;
-	private JButton btnVolver, btnComprar, btnFinalizarCompra, btnAniadirArticuloAlCarrito;
+	private JButton btnVolver, btnComprar, btnAniadirArticuloAlCarrito;
 	private JFrame vActual,vAnterior;
 	
 	private DefaultTableModel modeloTablaCompras; 
@@ -75,7 +75,7 @@ public class VentanaCompras extends JFrame{
 		scrollTablaCompras = new JScrollPane(tablaCompras);
 		getContentPane().add(scrollTablaCompras, BorderLayout.CENTER);
 		
-		//cargarTabla();
+		cargarTabla();
 		
 		//NUEVA TABLA PARA LOS FAVORITOS
 		
@@ -102,21 +102,12 @@ public class VentanaCompras extends JFrame{
 		btnComprar.addActionListener((e)->{
 		    Usuario usuarioActual = obtenerClienteActual();
 		    ArrayList<Articulo> articulosSeleccionados = obtenerArticulosSeleccionados();
-		    Tienda.getCompras().put((Cliente) usuarioActual, articulosSeleccionados);
-		 
-		   // modeloTablaCompras.setRowCount(0);	// hago que una vez realizada la compra se borre
+		    //Tienda.getCompras().put((Cliente) usuarioActual, articulosSeleccionados);
+			//Tienda.getCompras().put(VentanaInicioSesion.getCliente(), VentanaInicioSesion.getCarrito());
+		    modeloTablaCompras.setRowCount(0);	// hago que una vez realizada la compra se borre
 		    new VentanaProcesarElPago();
 		    System.out.println("La compra se ha realizado correctamente.");
 		});
-		
-		/*btnFinalizarCompra.addActionListener((e)->{
-			Tienda.getCompras().put(VentanaInicioSesion.getCliente(), VentanaInicioSesion.getCarrito());
-			JOptionPane.showMessageDialog(null, "Compra finalizada correctamente");
-		});
-		*/
-		
-		
-		
 		
 		
         
@@ -138,6 +129,11 @@ public class VentanaCompras extends JFrame{
 	    return comprasUsuario;
 	}
 	
+	public void agregarArticuloAlCarrito(Articulo articulo) {
+		Object[] fila = {articulo, 1, articulo.getPrecio()};
+        modeloTablaCompras.addRow(fila);
+    }
+
 	
 
     

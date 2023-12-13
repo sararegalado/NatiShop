@@ -197,7 +197,9 @@ public class VentanaTienda extends JFrame {
 	            if (articuloSeleccionado != null) {
 	                //Logger.getLogger(getClass().getName()).info("Artículo añadido al carrito: " + articuloSeleccionado.getNombre());
 	                //mostrarFotoArticulo(articuloSeleccionado);
-	            	 ventanaCompras.cargarTabla();
+	            	 //ventanaCompras.cargarTabla();
+	            	 ventanaCompras.agregarArticuloAlCarrito(articuloSeleccionado);
+		               
 	            }
 	        }
 
@@ -212,6 +214,7 @@ public class VentanaTienda extends JFrame {
 				return null;
 			}
 	    });
+
 
 	
 		setVisible(true);
