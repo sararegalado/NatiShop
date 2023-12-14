@@ -9,6 +9,7 @@ import clases.Usuario;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -19,7 +20,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class VentanaDatosUsuario extends JFrame{
@@ -180,20 +183,29 @@ public class VentanaDatosUsuario extends JFrame{
 		
 		pnlDcha = new JPanel(new BorderLayout());
 		pnlDchaCtro = new JPanel(new GridLayout(14, 1));
-		lblTarj = new JLabel("<html><center><u>¿DESEAS AÑADIR UN NUMERO DE TARJETA<u><br><u>A TU CUENTA?<u></center></html>");
-		lblTarj.setFont(new Font("Baskerville", Font.BOLD, 11));
+		lblTarj = new JLabel("<html><center><u><b>¿DESEAS AÑADIR UN NÚMERO DE TARJETA<br>A TU CUENTA?</b></u></center></html>");
+		lblTarj.setFont(new Font("Baskerville", Font.BOLD, 10));
 		lblTarj.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
 				 if (!elementoAgregado) {
-					 agregarElementosAlPanel(c);
-					 elementoAgregado = true;
-	                };
+			            agregarElementosAlPanel(c);
+			            elementoAgregado = true;
+			        } else {
+			        	ocultarAñadirT();
+			            pnlDchaCtro.revalidate();
+			            pnlDchaCtro.repaint();
+			            elementoAgregado = false;
+			        }
+				 
 				
 			}
 		});
 		
+		pnlDchaCtro.add(new JPanel());
 		pnlDchaCtro.add(lblTarj);
+		//pnlDchaCtro.add(new JPanel());
 		pnlDcha.add(pnlDchaCtro, BorderLayout.CENTER);
 		pnlDatos.add(pnlDcha);
 		
@@ -316,7 +328,6 @@ public class VentanaDatosUsuario extends JFrame{
         JLabel lblAño = new JLabel("AÑO");
     	pnlDchaCtro.add(lblAño);
         JComboBox <Object> JCbaños = new JComboBox<Object>();
-        JCbaños.addItem("AÑO");
         int añoActual = Calendar.getInstance().get(Calendar.YEAR);
         for (int a = añoActual; a <= añoActual + 20; a++) {
         	JCbaños.addItem(a);   
@@ -326,7 +337,6 @@ public class VentanaDatosUsuario extends JFrame{
         JLabel lblMes = new JLabel("MES");
     	pnlDchaCtro.add(lblMes);
         JComboBox <Object> JCbmeses = new JComboBox<Object>();
-        JCbmeses.addItem("MES");
         for (int i = 1; i <= 12; i++) {
             String mesFormateado = String.format("%02d", i);
             JCbmeses.addItem(mesFormateado);
@@ -354,10 +364,30 @@ public class VentanaDatosUsuario extends JFrame{
 				if(comprobarNTarj()) {
 		        	if(comprobarTitular()) {
 		        		if(comprobarCVV()) {
-		        			Connection con = BD.initBD("NatiShop.db");
-		        			BD.modificarNumTarj(con, c.getDni() , tfNumTarj.getText());
-		        			BD.closeBD(con);
-		        			JOptionPane.showMessageDialog(null, "Numero de tarjeta añadido");
+		        			if (c.getNumTarjeta().equals("Tarjeta sin registrar")) {
+		        				Connection con = BD.initBD("NatiShop.db");
+			        			BD.modificarNumTarj(con, c.getDni() , tfNumTarj.getText());
+			        			BD.closeBD(con);
+			        			JOptionPane.showMessageDialog(null, "Numero de tarjeta añadido");
+		        			}else {
+		        				int confirmacion = JOptionPane.showConfirmDialog(null, "Ya tienes un numero de tarjeta para tu cuenta, ¿Deseas remplazarlo?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+		        				if (confirmacion == JOptionPane.YES_OPTION) {
+		        					Connection con = BD.initBD("NatiShop.db");
+				        			BD.modificarNumTarj(con, c.getDni() , tfNumTarj.getText());
+				        			BD.closeBD(con);
+				        			ocultarAñadirT();
+						            pnlDchaCtro.revalidate();
+						            pnlDchaCtro.repaint();
+						            elementoAgregado = false;
+		        				}else {
+		        					System.out.println("No ha modificado la tarjeta");
+		        					ocultarAñadirT();
+		    			            pnlDchaCtro.revalidate();
+		    			            pnlDchaCtro.repaint();
+		    			            elementoAgregado = false;
+		        				}
+		        			}
+		        			
 		        			
 		        		}else {
 		        			JOptionPane.showMessageDialog(null, "El CVV introducido no es correcto, debe tener 3 dígitos númericos");
@@ -378,6 +408,25 @@ public class VentanaDatosUsuario extends JFrame{
         // Actualizar la interfaz para que los cambios sean visibles
         revalidate();
         repaint();
+    }
+    
+    private void ocultarAñadirT() {
+        // Obtener los componentes del panel
+        Component[] components = pnlDchaCtro.getComponents();
+
+        // Mantener los dos primeros componentes
+        List<Component> componentList = new ArrayList<>();
+        componentList.add(components[0]); // Primer componente
+        componentList.add(components[1]); // Segundo componente
+
+        // Eliminar los demás componentes
+        for (int i = 2; i < components.length; i++) {
+            pnlDchaCtro.remove(components[i]);
+        }
+
+        // Revalidar y repintar el panel
+        pnlDchaCtro.revalidate();
+        pnlDchaCtro.repaint();
     }
     
 	private boolean comprobarNTarj() {

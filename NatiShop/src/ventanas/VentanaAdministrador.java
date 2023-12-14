@@ -226,9 +226,9 @@ public class VentanaAdministrador extends JFrame{
         
         
        
-		pnlCentro = new JPanel();
+		pnlCentro = new JPanel(new BorderLayout());
 		getContentPane().add(pnlCentro, BorderLayout.CENTER);
-		pnlCentro.setLayout(new GridLayout(1,1));
+		//pnlCentro.setLayout(new GridLayout(1,1));
 		
 		
 		menuBarAdmin= new JMenuBar();
@@ -343,13 +343,25 @@ public class VentanaAdministrador extends JFrame{
 		List<Cliente> c = BD.obtenerListaClientes(con);
 		BD.closeBD(con);
 		tablaClientes.setModel(new ModeloTablaClientes(c));
-		pnlCentro.add(sTablaUsuarios);
+		pnlCentro.add(sTablaUsuarios, BorderLayout.CENTER);
+		JLabel lblUsuarios = new JLabel("<html><u>" + "USUARIOS" + "</u></html>");
+		lblUsuarios.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 30));
+		lblUsuarios.setHorizontalAlignment(JLabel.CENTER);
+		pnlCentro.add(lblUsuarios, BorderLayout.NORTH);
 		pnlCentro.setVisible(true);
 	}
 	
 	public void cargarCompras() {
 		JCalendar jcCompras = new JCalendar(new Date());
-		pnlCentro.add(jcCompras);
+		JPanel pnlCalendar = new JPanel(new GridLayout(2,1));
+		pnlCalendar.add(jcCompras);
+		JTextArea jTaCom = new JTextArea();
+		pnlCalendar.add(jTaCom);
+		pnlCentro.add(pnlCalendar, BorderLayout.CENTER);
+		JLabel lblCompras = new JLabel("<html><u>" + "COMPRAS" + "</u></html>");
+		lblCompras.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 30));
+		lblCompras.setHorizontalAlignment(JLabel.CENTER);
+		pnlCentro.add(lblCompras, BorderLayout.NORTH);
 		pnlCentro.setVisible(true);
 	}
 

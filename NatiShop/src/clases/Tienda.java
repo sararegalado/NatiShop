@@ -22,18 +22,6 @@ public class Tienda {
 	private static HashMap<String, Administrador>administradores = new HashMap<>();
 	//mapa admin (clave: correo, valor admin)
 	
-	private static final String nomfichClientes = "Clientes.csv";
-	private  static final String nomfichAdmins= "Administradores.csv";
-
-	public static String getNomfichclientes() {
-		return nomfichClientes;
-	}
-	
-
-	public static String getNomfichadmins() {
-		return nomfichAdmins;
-	}
-	
 	public static List<Cliente> getClientes() {
 		Connection con = BD.initBD("NatiShop.db");
 		clientes = BD.obtenerListaClientes(con);
