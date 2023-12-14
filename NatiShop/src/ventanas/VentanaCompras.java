@@ -30,6 +30,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 import clases.Articulo;
@@ -37,7 +38,7 @@ import clases.Cliente;
 import clases.Tienda;
 import clases.Usuario;
 
-public class VentanaCompras extends JFrame{
+public class VentanaCompras extends JFrame {
 	private JPanel pCentro,pSur;
 	private JButton btnVolver, btnComprar, btnAniadirArticuloAlCarrito;
 	private JFrame vActual,vAnterior;
@@ -45,9 +46,8 @@ public class VentanaCompras extends JFrame{
 	private DefaultTableModel modeloTablaCompras; 
 	private JTable tablaCompras; 
 	private JScrollPane scrollTablaCompras;
-	private JSpinner sCantidad;
 	private JButton btnMas, btnMenos;
-	private JSpinner sPrecio;
+	private JSpinner sCantidad;
 	
 	
 	private static int fila;
@@ -62,16 +62,48 @@ public class VentanaCompras extends JFrame{
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);	
 		
 		
+		
 		btnMas = new JButton("+");
         btnMenos = new JButton("-");
         
 		pSur = new JPanel();
 		getContentPane().add(pSur, BorderLayout.SOUTH);
 		
-		Object [] titulos = {"ARTICULO","CANTIDAD","PRECIO ARTÍCULO"};
-		modeloTablaCompras = new DefaultTableModel();
+		Object [] titulos = {"ARTICULO","CANTIDAD","PRECIO"};
+		modeloTablaCompras = new DefaultTableModel() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				if(column==1)
+					return true;
+				return false;
+			}
+		};
 		modeloTablaCompras.setColumnIdentifiers(titulos);
 		tablaCompras = new JTable(modeloTablaCompras);
+		//tablaCompras = new JTable(new ModeloTablaCompras(null));
+		//tablaCompras.setDefaultRenderer(Object.class, new RendererTablaCompras());
+		tablaCompras.setDefaultRenderer(Object.class, new TableCellRenderer() {
+			
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+					int row, int column) {
+				if(column==0) {
+					System.out.println(value.toString());
+					ImageIcon icono = new ImageIcon(value.toString());
+					JLabel l = new JLabel(icono);
+					l.setOpaque(true);
+					return l;
+				}else if(column==1) {
+					JSpinner sCantidad = new JSpinner(new SpinnerNumberModel(Integer.parseInt(value.toString()), 0, 100, 1));
+					sCantidad.addChangeListener(e -> actualizarPrecioFila());
+					return sCantidad;
+				}else {
+					JLabel l = new JLabel(value.toString());
+					l.setOpaque(true);
+					return l;
+				}
+			}
+		});
 		scrollTablaCompras = new JScrollPane(tablaCompras);
 		getContentPane().add(scrollTablaCompras, BorderLayout.CENTER);
 		
@@ -95,12 +127,11 @@ public class VentanaCompras extends JFrame{
         columnModel.getColumn(1).setCellEditor(new SpinnerEditor()); */  
 		
 		
-		
 		btnComprar = new JButton("COMPRAR");
 		pSur.add(btnComprar);
 		
 		btnComprar.addActionListener((e)->{
-		    Usuario usuarioActual = obtenerClienteActual();
+		    Cliente clienteActual = obtenerClienteActual();
 		    ArrayList<Articulo> articulosSeleccionados = obtenerArticulosSeleccionados();
 		    //Tienda.getCompras().put((Cliente) usuarioActual, articulosSeleccionados);
 			//Tienda.getCompras().put(VentanaInicioSesion.getCliente(), VentanaInicioSesion.getCarrito());
@@ -110,13 +141,14 @@ public class VentanaCompras extends JFrame{
 		});
 		
 		
+		
         
 		setVisible(true);
 	
 	}
 	
 	
-	private Usuario obtenerClienteActual() {
+	private Cliente obtenerClienteActual() {
     	 return new Cliente();
     }
 	 
@@ -130,9 +162,14 @@ public class VentanaCompras extends JFrame{
 	}
 	
 	public void agregarArticuloAlCarrito(Articulo articulo) {
-		Object[] fila = {articulo, 1, articulo.getPrecio()};
+	    ImageIcon icono = new ImageIcon(getClass().getResource(articulo.getFoto()));
+	    sCantidad = new JSpinner(); 
+	    sCantidad.addChangeListener(e -> actualizarPrecioFila());
+
+	    Object[] fila = {articulo.getFoto(), 1, articulo.getPrecio()};	
+		//Object[] fila = {articulo, 1, articulo.getPrecio()};	lo que tiene por defecto
         modeloTablaCompras.addRow(fila);
-    }
+	}
 
 	
 
@@ -153,22 +190,21 @@ public class VentanaCompras extends JFrame{
 	}*/
 	
 	public void cargarTabla() {
-	    modeloTablaCompras.setRowCount(0);
-	    Usuario usuarioActual = obtenerClienteActual();
-	    ArrayList<Articulo> articulosCarrito = Tienda.getCompras().get(usuarioActual);
+	    //modeloTablaCompras.setRowCount(0);
+	    Cliente clienteActual = obtenerClienteActual();
+	    ArrayList<Articulo> articulosCarrito = Tienda.getCompras().get(clienteActual);
 
 	    if (articulosCarrito != null) {
 	        for (Articulo articulo : articulosCarrito) {
 	        	//agregarArticuloALaTabla(articulo);
 	        	sCantidad.addChangeListener(e -> actualizarPrecioFila());
-	            ImageIcon icono = new ImageIcon(getClass().getResource(articulo.getFoto()));
-	            Object[] fila = {icono, sCantidad, articulo.getPrecio()};
+	            //ImageIcon icono = new ImageIcon(getClass().getResource(articulo.getFoto()));
+	            Object[] fila = {"/imagenes/atras.png", articulo.getUnidades(), articulo.getPrecio()};	//pero aqui no va a salir el precio actualizado en la 3 columna no ??
 	            modeloTablaCompras.addRow(fila);
 	        }
+	    	//tablaCompras.setModel(new ModeloTablaCompras(articulosCarrito));
 	    }
 	}
-	
-
 	
 	private void actualizarPrecioFila() {
 	    for (int fila = 0; fila < modeloTablaCompras.getRowCount(); fila++) {
@@ -178,7 +214,11 @@ public class VentanaCompras extends JFrame{
 	        double nuevoPrecio = cantidad * precioUnitario;
 	        modeloTablaCompras.setValueAt(nuevoPrecio, fila, 2);
 	    }
+		
+		
 	}
+
+
 
 
 	

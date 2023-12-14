@@ -59,6 +59,10 @@ public class VentanaTienda extends JFrame {
 		int anchoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
         int altoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
         setSize(anchoP, altoP);
+        
+        
+        
+        this.ventanaCompras = new VentanaCompras(this);
 		
 		pEeste = new JPanel();
 		pEeste.setBackground(Color.WHITE);
@@ -114,12 +118,7 @@ public class VentanaTienda extends JFrame {
         pTallas.setLayout(null);
         
 
-	        JLabel lblTallas = new JLabel("Tallas disponibles");
-	        lblTallas.setFont(new Font("Baskerville", Font.PLAIN, 20));
-	        
-	       
-	        
-	        pCenter.add(lblTallas);
+	    
 		
         lblTallas = new JLabel("Tallas disponibles");
         lblTallas.setBounds(143, 57, 170, 43);
@@ -141,70 +140,34 @@ public class VentanaTienda extends JFrame {
        btnAniadirArticuloAlCarrito.setBounds(71, 279, 325, 29);
        pTallas.add(btnAniadirArticuloAlCarrito);
 
-		/*modeloListaArticulos = new DefaultListModel<>();
-		listaArticulos = new JList<>(modeloListaArticulos);
-		scrollListaArticulos = new JScrollPane(listaArticulos);
-		scrollListaArticulos.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollListaArticulos.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		cargarArticulos();*/
 		
-		//
-	       
-	    //ESTO LO TENGO QUE ARREGLAR
-//		btnVolver.addActionListener(new ActionListener() {
-//		    @Override
-//		    public void actionPerformed(ActionEvent e) {
-//		        ventanaPrincipal.setVisible(true);
-//		        VentanaTienda.this.dispose();
-//		    }
-//		});
-//
+       btnVerCarrito= new JButton();
 		btnVerCarrito.addActionListener((e)->{
 			new VentanaCompras(vActual);
 			vActual.setVisible(false);
 		});
 
 		
-	/*btnAniadirArticuloAlCarrito.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int pos = listaArticulos.getSelectedIndex(); 
-				if(pos == -1) {
-					JOptionPane.showMessageDialog(null, "Tienes que seleccionar un artículo");
-				}else {
-					//Articulo a = listaArticulos.getSelectedValue(); 
-					Articulo a = modeloListaArticulos.getElementAt(pos);
-					if(a.getUnidades() == 0) {
-						JOptionPane.showMessageDialog(null, "No nos quedan unidades");
-					}else {
-					//	Ventana.getCarrito().add(a); 
-						a.setUnidades(a.getUnidades()-1);
-						modeloListaArticulos.set(pos, a);
-						JOptionPane.showMessageDialog(null, "Artículo añadido al carrito");
-					}
-				}
-			}
-		}); */
-		
 
 		  
 		btnAniadirArticuloAlCarrito.addActionListener(new ActionListener() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
-	            Talla tallaSeleccionada = (Talla) cbTallas.getSelectedItem();
-	            Articulo articuloSeleccionado = obtenerArticuloSeleccionado(tallaSeleccionada);
-
-	            if (articuloSeleccionado != null) {
-	                //Logger.getLogger(getClass().getName()).info("Artículo añadido al carrito: " + articuloSeleccionado.getNombre());
-	                //mostrarFotoArticulo(articuloSeleccionado);
-	            	 //ventanaCompras.cargarTabla();
-	            	 ventanaCompras.agregarArticuloAlCarrito(articuloSeleccionado);
-		               
-	            }
-	        }
-
+		            Talla tallaSeleccionada = (Talla) cbTallas.getSelectedItem();
+		            Articulo articuloSeleccionado = obtenerArticuloSeleccionado(tallaSeleccionada);
+	
+		            
+		            if (articuloSeleccionado != null) {
+		                //Logger.getLogger(getClass().getName()).info("Artículo añadido al carrito: " + articuloSeleccionado.getNombre());
+		                //mostrarFotoArticulo(articuloSeleccionado);
+		            	 //ventanaCompras.cargarTabla();
+		            	 ventanaCompras.agregarArticuloAlCarrito(articuloSeleccionado);
+			               
+		            }
+		        }
+	        
 			private Articulo obtenerArticuloSeleccionado(Talla tallaSeleccionada) {				
-				 Set<Articulo> todosLosArticulos = Tienda.getArticulos();
+					Set<Articulo> todosLosArticulos = Tienda.getArticulos();
 				    for (Articulo articulo : todosLosArticulos) {
 				        TreeSet<Talla> tallasDisponibles = Tienda.tallasPorArticulo(articulo);
 				        if (tallasDisponibles.contains(tallaSeleccionada)) {
@@ -214,7 +177,6 @@ public class VentanaTienda extends JFrame {
 				return null;
 			}
 	    });
-
 
 	
 		setVisible(true);
