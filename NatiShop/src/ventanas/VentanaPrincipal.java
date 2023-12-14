@@ -117,7 +117,7 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 
-	private static JLabel lblNomU;
+	private static JLabel lblNomU, lblSaldo;
 	private static Object titulos;
 	
 	public static JLabel getLblNomU() {
@@ -127,6 +127,8 @@ public class VentanaPrincipal extends JFrame {
 	public static void setLblNomU(JLabel lblNomU) {
 		VentanaPrincipal.lblNomU = lblNomU;
 	}
+	
+	
 
 	public VentanaPrincipal(JFrame va) {
 		vActual = this;
@@ -210,13 +212,13 @@ public class VentanaPrincipal extends JFrame {
         
         tfBuscador = new JTextField();
         tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
-        tfBuscador.setBounds(845, 32, 220, 26);
+        tfBuscador.setBounds(798, 26, 220, 26);
         contentPane.add(tfBuscador);
         tfBuscador.setColumns(10);
         
         String[] categorias = {"Todos los géneros","Hombre","Mujer","Niños"};
 		JComboBox<String> filtrado = new JComboBox<>(categorias);
-        filtrado.setBounds(845, 63, 220, 27);
+        filtrado.setBounds(798, 61, 220, 27);
         contentPane.add(filtrado);
         filtrado.setVisible(false);
         
@@ -266,8 +268,6 @@ public class VentanaPrincipal extends JFrame {
         spArticulos.setBounds(72,159,1153,490);
         contentPane.add(spArticulos);
         
-
-        
         JLabel lblUsuario = new JLabel("");
         lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/usuario.png")));
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
@@ -278,7 +278,7 @@ public class VentanaPrincipal extends JFrame {
         JLabel lblCarro = new JLabel("");
         lblCarro.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/carro.png")));
         lblCarro.setHorizontalAlignment(SwingConstants.CENTER);
-        lblCarro.setBounds(1076, 21, 52, 52);
+        lblCarro.setBounds(1048, 11, 67, 52);
         contentPane.add(lblCarro);
         
         
@@ -305,17 +305,21 @@ public class VentanaPrincipal extends JFrame {
         menuCliente.add(perfil);
         menuCliente.add(compras);
 
+        lblUsuario.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+ 		        filtrado.setVisible(false);
+                if (clienteHaIniciadoSesion) {
+                	menuCliente.show(lblUsuario, 0, lblUsuario.getHeight());
+                } else {
+                    new VentanaInicioSesion(vActual);
+                }
+            }
+        });
         
         contentPane.add(lblUsuario);
         
-        lblCarro.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            	new VentanaCompras(vActual);
-            	//new VentanaC();
-            }
-        });
-        contentPane.add(lblCarro);
         
         
         int anchoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
@@ -323,30 +327,12 @@ public class VentanaPrincipal extends JFrame {
         setSize(anchoP, altoP);
         setExtendedState(MAXIMIZED_BOTH);
         
-
-        
-        
-        
+   
         //PORTADA DE LA TIENDA
         pnlArticulos.setLayout(null);
         JLabelGrafico fotoPortada = new JLabelGrafico("/imagenes/portada.png",pnlArticulos.getWidth(),pnlArticulos.getHeight());
         fotoPortada.setLocation(0, 0);
         pnlArticulos.add(fotoPortada);
-        
-  
-        lblUsuario.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            	tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
- 		        filtrado.setVisible(false);
-                if (clienteHaIniciadoSesion) {
-                	Cliente c = VentanaInicioSesion.getCliente();
-                	new VentanaDatosUsuario(vActual, c);
-                } else {
-                    new VentanaInicioSesion(vActual);
-                }
-            }
-        });
         
         
         lblNomU = new JLabel("Iniciar Sesión");
@@ -354,6 +340,12 @@ public class VentanaPrincipal extends JFrame {
         lblNomU.setVerticalAlignment(SwingConstants.TOP);
         lblNomU.setBounds(1138, 67, 87, 19);
         contentPane.add(lblNomU);
+        
+        //Saldo
+        lblSaldo = new JLabel("");
+        lblSaldo.setBounds(1066, 72, 49, 14);
+        contentPane.add(lblSaldo);
+        
         
         
         
@@ -598,11 +590,25 @@ public class VentanaPrincipal extends JFrame {
 	public boolean clienteHaIniciadoSesion() {
 	    return clienteHaIniciadoSesion;
 	}
+	
+	public static boolean clienteTieneTarjeta(Cliente c) {
+		if (c.getNumTarjeta().equals("Tarjeta sin registrar")) {
+			return false;
+		}else {
+			return true;
+		}
+	}
 
 
 	public static void asignarNombreCliente(Cliente c) {
 		lblNomU.setText(c.getNombre());
 	};
+	
+	public static void asignarSaldo(Cliente c) {
+		if (!clienteTieneTarjeta(c)) {
+			lblSaldo.setText(c.getSaldo() + "€");
+		}
+	}
 	
 	public static void eliminarNombreCliente() {
 		lblNomU.setText("Iniciar sesión");
@@ -787,5 +793,4 @@ public class VentanaPrincipal extends JFrame {
 		
 		
 		}		        
-	
 }

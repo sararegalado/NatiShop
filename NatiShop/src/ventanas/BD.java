@@ -53,7 +53,7 @@ public class BD {
 	}
 	
 	public static void crearTablas(Connection con) {
-		String sql = "CREATE TABLE IF NOT EXISTS cliente (DNI String, NOMBRE String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, CONTRASEÑA String, NUMERO_DE_TARJETA String )";
+		String sql = "CREATE TABLE IF NOT EXISTS cliente (DNI String, NOMBRE String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, CONTRASEÑA String, NUMERO_DE_TARJETA String, SALDO Double)";
 		String sql2 = "CREATE TABLE IF NOT EXISTS administrador (DNI String, NOMBRE String, APELLIDO String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, FECHA_INICIO_EMPRESA String, JORNADA String, PUESTO String, CONTRASEÑA String)";
 		String sql3 = "CREATE TABLE IF NOT EXISTS articulo (ID String, NOMBRE Integer, UNIDADES Integer, PRECIO Double, GENERO Genero, TALLA Talla, FOTO String, CATEGORIA Categoria)";
 		try {
@@ -66,6 +66,7 @@ public class BD {
 			e.printStackTrace();
 		}
 	}
+	
 	
 	//METODOS PARA LOS CLIENTES
 	
@@ -82,7 +83,6 @@ public class BD {
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql); //Ejecuto la consulta
 			if(rs.next()) { //La select ha devuelto 1 ó más tuplas
-				String d= rs.getString("DNI");
 				String nom = rs.getString("NOMBRE");
 				String fNac = rs.getString("FECHA_DE_NACIMIENTO");
 				String email = rs.getString("EMAIL");
@@ -90,7 +90,8 @@ public class BD {
 				String p = rs.getString("PROVINCIA");
 				String contra = rs.getString("CONTRASEÑA");
 				String nTarj = rs.getString("NUMERO_DE_TARJETA");
-				c = new Cliente(d, nom,fNac,email, tlf, p, contra, nTarj);
+				double saldo = rs.getDouble("SALDO");
+				c = new Cliente(dni, nom, fNac, email, tlf, p, contra, nTarj, saldo);
 				
 			}
 			rs.close();
@@ -109,14 +110,13 @@ public class BD {
 			ResultSet rs = st.executeQuery(sql); //Ejecuto la consulta
 			if(rs.next()) { //La select ha devuelto 1 ó más tuplas
 				String d= rs.getString("DNI");
-				String n = rs.getString("NOMBRE");
 				String fNac = rs.getString("FECHA_DE_NACIMIENTO");
 				String email = rs.getString("EMAIL");
 				String tlf= rs.getString("TELEFONO");
 				String p = rs.getString("PROVINCIA");
-				String contra = rs.getString("CONTRASEÑA");
 				String nTarj = rs.getString("NUMERO_DE_TARJETA");
-				c = new Cliente(d, n,fNac,email, tlf, p, contra, nTarj);
+				double saldo = rs.getDouble("SALDO");
+				c = new Cliente(d, nom, fNac, email, tlf, p, contr, nTarj, saldo);
 				
 			}
 			rs.close();
@@ -129,7 +129,7 @@ public class BD {
 	
 	public static void insertarCliente(Connection con, Cliente c) {
 		if(buscarCliente(con, c.getDni()) == null) {
-			String sql = String.format("INSERT INTO cliente VALUES('%s','%s','%s','%s','%s','%s','%s','%s')", c.getDni(), c.getNombre(), c.getfNacStr(), c.getCorreo(), c.getTlf(), c.getProvinciaStr(), c.getContrasenia(), c.getNumTarjeta() );
+			String sql = String.format("INSERT INTO cliente VALUES('%s','%s','%s','%s','%s','%s','%s','%s', '%f')", c.getDni(), c.getNombre(), c.getfNacStr(), c.getCorreo(), c.getTlf(), c.getProvinciaStr(), c.getContrasenia(), c.getNumTarjeta(), c.getSaldo() );
 			try {
 				Statement st = con.createStatement();
 				st.executeUpdate(sql);
@@ -185,6 +185,27 @@ public class BD {
 		}
 	}
 	
+	public static void modificarNumTarj(Connection con, String dni, String numT) {
+		String sql = String.format("UPDATE cliente SET NUMERO_DE_TARJETA='%s' WHERE DNI='%s'", numT ,dni);
+		try {
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void modificarSaldo(Connection con, String dni, String saldo) {
+		String sql = String.format("UPDATE cliente SET SALDO='%f' WHERE DNI='%s'", saldo ,dni);
+		try {
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	
 	/*Devuelve una lista con los clientes de la tabla Clientes*/
@@ -203,7 +224,8 @@ public class BD {
 				String p = rs.getString("PROVINCIA");
 				String contra = rs.getString("CONTRASEÑA");
 				String nTarj = rs.getString("NUMERO_DE_TARJETA");
-				Cliente c = new Cliente(d, n,fNac,email, tlf, p, contra, nTarj);
+				double saldo = rs.getDouble("SALDO");
+				Cliente c = new Cliente(d, n, fNac, email, tlf, p, contra, nTarj, saldo);
 				l.add(c);
 			}
 			rs.close();

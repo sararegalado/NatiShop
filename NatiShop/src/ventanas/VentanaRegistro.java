@@ -132,6 +132,7 @@ public class VentanaRegistro extends JFrame{
 			String con1 = tfCon1.getText();
 			String con2 = tfCon2.getText();
 			String numT = "Tarjeta sin registrar";
+			double saldo = 0.0;
 			
 			if(!dni.equals("") && !nom.equals("") && !con1.equals("") && !con2.equals("") && fNac!=null) {
 				if(con1.equals(con2)) {
@@ -144,7 +145,7 @@ public class VentanaRegistro extends JFrame{
 								if(letraDNICorrecta()) {
 									if(comprobarEmail()) {
 										if(comprobarTlf()) {
-											Cliente c = new Cliente (dni, nom, fNac , email, tlf, prov, con1, numT);
+											Cliente c = new Cliente (dni, nom, fNac , email, tlf, prov, con1, numT, saldo);
 											
 											BD.insertarCliente(con, c);
 											//Tienda.aniadirCliente(c);
@@ -246,7 +247,7 @@ public class VentanaRegistro extends JFrame{
 	 * @return Devuelve un bolean indicando si sigue el patron o no
 	 */
 	private boolean comprobarNombre() {
-		String patron = "[A-Z][A-Za-z]{0,}";
+		String patron = "[A-Za-z][0-9]{0,}";
 		return Pattern.matches(patron, tfNombre.getText());
 	}
 	

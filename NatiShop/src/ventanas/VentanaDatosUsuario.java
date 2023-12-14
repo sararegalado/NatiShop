@@ -1,35 +1,45 @@
 package ventanas;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 import clases.Cliente;
 import clases.Tienda;
 import clases.Usuario;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Connection;
+import java.util.Calendar;
+import java.util.regex.Pattern;
 
 public class VentanaDatosUsuario extends JFrame{
 	private static JPanel pnlDatos ;
-	private JPanel pnlIzq;
-	private JPanel pnlDcha;
-	private JPanel pnlCentrarB1;
-	private JPanel pnlCentrarB2;
-	private JPanel pnlCentrarB3;
+	private JPanel pnlIzq, pnlCentro, pnlDcha, pnlDchaCtro ;
+
 	private JLabel lblTitulo, lblNombre, lblAtras, lblEmail, lblTlf, lblCon;
 	private static JButton btnCorreo, btnTfn, btnContrasenia;
 	private static JButton btnModificar;
-	private JLabel lblCerrar, lblElim;
+	private JLabel lblCerrar, lblElim, lblTarj;
 	private JTextField tfEmail;
 	private static int intModif = 0;
 	private JFrame vActual, vAnterior;
 	
 	private static JTextField tfActual, tfNuevo;
+	JTextField tfNumTarj, tftitular, tfCVV;
 	private static JPasswordField jpActual, jpNueva;
+	
+	private boolean panelVisible = false;
+	private boolean elementoAgregado = false;
 	
 	
 	public VentanaDatosUsuario(JFrame va, Cliente c) {
@@ -39,7 +49,7 @@ public class VentanaDatosUsuario extends JFrame{
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100,  778, 455);
 		
-		pnlDatos = new JPanel(new GridLayout(1, 2));
+		pnlDatos = new JPanel(new GridLayout(1, 5));
 		getContentPane().add(pnlDatos, BorderLayout.CENTER);
 		
 		
@@ -64,26 +74,24 @@ public class VentanaDatosUsuario extends JFrame{
 		
 		lblNombre = new JLabel (c.getNombre());
 		lblEmail = new JLabel("EMAIL");
-		pnlCentrarB1 = new JPanel (new GridLayout(1,2));
+
 		btnCorreo = new JButton(c.getCorreo());
 		btnCorreo.setHorizontalAlignment(SwingConstants.LEFT);
-		pnlCentrarB1.add(btnCorreo);
-		pnlCentrarB1.add(new JPanel());
-		
-		
-		pnlCentrarB2 = new JPanel (new GridLayout(1,2));
+		btnCorreo.setBackground(new Color(220, 220, 220));
+		btnCorreo.setBorder(new LineBorder(Color.BLACK));
+
 		lblTlf = new JLabel ("TELÉFONO");
 		btnTfn = new JButton(c.getTlf());
 		btnTfn.setHorizontalAlignment(SwingConstants.LEFT);
-		pnlCentrarB2.add(btnTfn);
-		pnlCentrarB2.add(new JPanel());
-		
-		pnlCentrarB3 = new JPanel (new GridLayout(1,2));
+		btnTfn.setBackground(new Color(220, 220, 220));
+		btnTfn.setBorder(new LineBorder(Color.BLACK));
+
 		lblCon = new JLabel("CONTRASEÑA");
 		btnContrasenia = new JButton("*".repeat(c.getContrasenia().length()));
 		btnContrasenia.setHorizontalAlignment(SwingConstants.LEFT);
-		pnlCentrarB3.add(btnContrasenia);
-		pnlCentrarB3.add(new JPanel());
+		btnContrasenia.setBackground(new Color(220, 220, 220));
+		btnContrasenia.setBorder(new LineBorder(Color.BLACK));
+
 		
 		lblCerrar = new JLabel("<html><u>" + "Cerrar sesión" + "</u></html>");
 		lblCerrar.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
@@ -93,11 +101,11 @@ public class VentanaDatosUsuario extends JFrame{
 		pnlIzq.add(new JPanel());
 		pnlIzq.add(lblNombre);
 		pnlIzq.add(lblEmail);
-		pnlIzq.add(pnlCentrarB1);
+		pnlIzq.add(btnCorreo);
 		pnlIzq.add(lblTlf);
-		pnlIzq.add(pnlCentrarB2);
+		pnlIzq.add(btnTfn);
 		pnlIzq.add(lblCon);
-		pnlIzq.add(pnlCentrarB3);
+		pnlIzq.add(btnContrasenia);
 		
 		pnlIzq.add(new JPanel());
 		pnlIzq.add(lblCerrar);
@@ -106,30 +114,34 @@ public class VentanaDatosUsuario extends JFrame{
 		
 		pnlDatos.add(pnlIzq);
 		
-		pnlDcha = new JPanel(new BorderLayout());
 		
+		pnlCentro = new JPanel(new BorderLayout());
+
 		btnCorreo.addActionListener(e -> {
 			intModif = 1;
-			pnlDcha.removeAll();
-			agregarCampos(pnlDcha, "EMAIL ", c);
-			pnlDcha.revalidate();
-			pnlDcha.repaint();
+			pnlCentro.removeAll();
+			agregarCampos(pnlCentro, "EMAIL ", c);
+			pnlCentro.revalidate();
+			pnlCentro.repaint();
+			visibilidad();
 		});
 		
 		btnTfn.addActionListener(e -> {
 			intModif = 2;
-			pnlDcha.removeAll();
-			agregarCampos(pnlDcha, "TELEFONO ", c);
-			pnlDcha.revalidate();
-			pnlDcha.repaint();
+			pnlCentro.removeAll();
+			agregarCampos(pnlCentro, "TELEFONO ", c);
+			pnlCentro.revalidate();
+			pnlCentro.repaint();
+			visibilidad();
 		});
 		
 		btnContrasenia.addActionListener(e -> {
 			intModif = 3;
-			pnlDcha.removeAll();
-			agregarCampos(pnlDcha, "CONTRASEÑA ", c);
-			pnlDcha.revalidate();
-			pnlDcha.repaint();
+			pnlCentro.removeAll();
+			agregarCampos(pnlCentro, "CONTRASEÑA ", c);
+			pnlCentro.revalidate();
+			pnlCentro.repaint();
+			visibilidad();
 		});
 		
 		lblCerrar.addMouseListener(new MouseAdapter() {
@@ -163,7 +175,29 @@ public class VentanaDatosUsuario extends JFrame{
 			}
 		});
 		
+		pnlDatos.add(pnlCentro);
+		
+		
+		pnlDcha = new JPanel(new BorderLayout());
+		pnlDchaCtro = new JPanel(new GridLayout(14, 1));
+		lblTarj = new JLabel("<html><center><u>¿DESEAS AÑADIR UN NUMERO DE TARJETA<u><br><u>A TU CUENTA?<u></center></html>");
+		lblTarj.setFont(new Font("Baskerville", Font.BOLD, 11));
+		lblTarj.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				 if (!elementoAgregado) {
+					 agregarElementosAlPanel(c);
+					 elementoAgregado = true;
+	                };
+				
+			}
+		});
+		
+		pnlDchaCtro.add(lblTarj);
+		pnlDcha.add(pnlDchaCtro, BorderLayout.CENTER);
 		pnlDatos.add(pnlDcha);
+		
+		
 		
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -171,8 +205,8 @@ public class VentanaDatosUsuario extends JFrame{
 		
 	}
 	
-    private static void agregarCampos(JPanel pnlDcha, String label, Cliente c) {
-    	JPanel panelModif = new JPanel(new GridLayout(6,1));
+    private static void agregarCampos(JPanel p, String label, Cliente c) {
+    	JPanel panelModif = new JPanel(new GridLayout(7,1));
         JLabel etiqueta = new JLabel(label);
         panelModif.add(etiqueta);
         
@@ -209,6 +243,10 @@ public class VentanaDatosUsuario extends JFrame{
                         tfActual.setText("");
                         tfNuevo.setText("");
                         JOptionPane.showMessageDialog(null, "Datos modificados correctamente");
+                        p.removeAll();
+                	    p.revalidate();
+                	    p.repaint();
+                        
                     } else {
                         JOptionPane.showMessageDialog(null, "El email actual introducido no es correcto");
                     }
@@ -221,6 +259,9 @@ public class VentanaDatosUsuario extends JFrame{
                         tfActual.setText("");
                         tfNuevo.setText("");
                         JOptionPane.showMessageDialog(null, "Datos modificados correctamente");
+                        p.removeAll();
+                	    p.revalidate();
+                	    p.repaint();
                     } else {
                         JOptionPane.showMessageDialog(null, "El telefono actual introducido no es correcto");
                     }
@@ -233,6 +274,9 @@ public class VentanaDatosUsuario extends JFrame{
                         jpActual.setText("");
                         jpNueva.setText("");
                         JOptionPane.showMessageDialog(null, "Datos modificados correctamente");
+                        p.removeAll();
+                	    p.revalidate();
+                	    p.repaint();
                     } else {
                         JOptionPane.showMessageDialog(null, "La contraseña actual introducida no es correcta");
                     }
@@ -240,7 +284,6 @@ public class VentanaDatosUsuario extends JFrame{
             }
             BD.closeBD(con);
 
-            //Tienda.guardarClientes(Tienda.getNomfichclientes());
         });
 
 		
@@ -251,9 +294,106 @@ public class VentanaDatosUsuario extends JFrame{
         panelModif.add(pnlBoton);
         
 
-        pnlDcha.add(panelModif, BorderLayout.CENTER);
+        p.add(panelModif, BorderLayout.CENTER);
+		p.add(new JPanel(), BorderLayout.WEST);
+		p.add(new JPanel(), BorderLayout.EAST);
         
        
     }
+    
+    private void visibilidad() {
+    	panelVisible = !panelVisible;
+        pnlCentro.setVisible(panelVisible);
+    }
+    
+    private void agregarElementosAlPanel(Cliente c) {
+        // Crear y agregar nuevos elementos al panel
+    	JLabel lblT = new JLabel("NUMERO DE TARJETA");
+    	pnlDchaCtro.add(lblT);
+        tfNumTarj = new JTextField();
+        pnlDchaCtro.add(tfNumTarj);
+        
+        JLabel lblAño = new JLabel("AÑO");
+    	pnlDchaCtro.add(lblAño);
+        JComboBox <Object> JCbaños = new JComboBox<Object>();
+        JCbaños.addItem("AÑO");
+        int añoActual = Calendar.getInstance().get(Calendar.YEAR);
+        for (int a = añoActual; a <= añoActual + 20; a++) {
+        	JCbaños.addItem(a);   
+        }
+        pnlDchaCtro.add(JCbaños);
+        
+        JLabel lblMes = new JLabel("MES");
+    	pnlDchaCtro.add(lblMes);
+        JComboBox <Object> JCbmeses = new JComboBox<Object>();
+        JCbmeses.addItem("MES");
+        for (int i = 1; i <= 12; i++) {
+            String mesFormateado = String.format("%02d", i);
+            JCbmeses.addItem(mesFormateado);
+        }
+        pnlDchaCtro.add(JCbmeses);
+        
+        JLabel lblTit = new JLabel("TITULAR DE LA TARJETA");
+    	pnlDchaCtro.add(lblTit);
+        tftitular = new JTextField();
+        pnlDchaCtro.add(tftitular);
+        
+        JLabel lblCVV = new JLabel("CVV");
+    	pnlDchaCtro.add(lblCVV);
+    	tfCVV = new JTextField();
+        pnlDchaCtro.add(tfCVV);
+        
+        pnlDchaCtro.add(new JPanel());
+        
+        JButton btnAnadir = new JButton("AÑADIR TARJETA");
+        pnlDchaCtro.add(btnAnadir);
+        btnAnadir.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(comprobarNTarj()) {
+		        	if(comprobarTitular()) {
+		        		if(comprobarCVV()) {
+		        			Connection con = BD.initBD("NatiShop.db");
+		        			BD.modificarNumTarj(con, c.getDni() , tfNumTarj.getText());
+		        			BD.closeBD(con);
+		        			JOptionPane.showMessageDialog(null, "Numero de tarjeta añadido");
+		        			
+		        		}else {
+		        			JOptionPane.showMessageDialog(null, "El CVV introducido no es correcto, debe tener 3 dígitos númericos");
+		        		}
+		        	}else {
+		        		JOptionPane.showMessageDialog(null, "El nombre del tutular introducido no es correcto");
+		        	}
+		        }else {
+		        	JOptionPane.showMessageDialog(null, "El numero de tarjeta introducido no es correcto, debe tener 16 dígitos númericos");
+		        }
+				
+			}
+		});
+        
+        
+        
+        
+        // Actualizar la interfaz para que los cambios sean visibles
+        revalidate();
+        repaint();
+    }
+    
+	private boolean comprobarNTarj() {
+		String patron = "[0-9]{16}";
+		return Pattern.matches(patron, tfNumTarj.getText());
+	}
+	
+	private boolean comprobarTitular() {
+		String patron = "[A-Za-z]{0,}";
+		return Pattern.matches(patron, tftitular.getText());
+	}
+	
+	private boolean comprobarCVV() {
+		String patron = "[0-9]{3}";
+		return Pattern.matches(patron, tfCVV.getText());
+	}
+    
 
 }
