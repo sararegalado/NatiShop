@@ -226,16 +226,6 @@ public class VentanaCompras extends JFrame {
 };
 
 
-//VENTANA TIENDA
-/*JButton btnAddToFavorites = new JButton("Añadir a Favoritos");
-
-//Add action listener to the button to mark the item as a favorite
-btnAddToFavorites.addActionListener(e -> {
-   int selectedRow = tablaTienda.getSelectedRow();
-   Articulo selectedArticulo = /* Get the selected Articulo from the table ;
-   selectedArticulo.setEsFavorito(true);
-});*/
-
 
 
 
