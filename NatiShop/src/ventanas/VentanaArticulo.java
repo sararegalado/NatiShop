@@ -4,8 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Set;
 import java.util.TreeSet;
 
 import javax.swing.ImageIcon;
@@ -32,6 +35,8 @@ public class VentanaArticulo extends JFrame {
 	private JLabelGrafico foto;
 	private JComboBox<Talla> cbTallas;
 	
+	private VentanaCompras ventanaCompras;
+	
 	/*private DefaultListModel<Articulo> modeloListaArticulos; 
 	private JList<Articulo> listaArticulos; 
 	private JScrollPane scrollListaArticulos;*/
@@ -48,6 +53,8 @@ public class VentanaArticulo extends JFrame {
 	    setSize(anchoP, altoP);
 	    setExtendedState(MAXIMIZED_BOTH);
 		getContentPane().setLayout(new BorderLayout());
+		
+		this.ventanaCompras = new VentanaCompras(this);
 		
 		pCentro = new JPanel(new GridLayout(1, 2));
 		pCentro.setBackground(Color.WHITE);
@@ -131,80 +138,38 @@ public class VentanaArticulo extends JFrame {
        panelCT.add(pnlBoton);
        pCentro.add(panelCT);
        
-
-		/*modeloListaArticulos = new DefaultListModel<>();
-		listaArticulos = new JList<>(modeloListaArticulos);
-		scrollListaArticulos = new JScrollPane(listaArticulos);
-		scrollListaArticulos.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollListaArticulos.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		cargarArticulos();*/
-		
-	       
-
-
-		
-	/*	btnAniadirArticuloAlCarrito.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int pos = listaArticulos.getSelectedIndex(); 
-				if(pos == -1) {
-					JOptionPane.showMessageDialog(null, "Tienes que seleccionar un artículo");
-				}else {
-					//Articulo a = listaArticulos.getSelectedValue(); 
-					Articulo a = modeloListaArticulos.getElementAt(pos);
-					if(a.getUnidades() == 0) {
-						JOptionPane.showMessageDialog(null, "No nos quedan unidades");
-					}else {
-					//	Ventana.getCarrito().add(a); 
-						a.setUnidades(a.getUnidades()-1);
-						modeloListaArticulos.set(pos, a);
-						JOptionPane.showMessageDialog(null, "Artículo añadido al carrito");
-					}
-				}
-			}
-		}); */
-		
-
-		/*btnVerCarrito.addActionListener((e)->{
-		Cliente c = Ventana.getCliente();
-		String texto = "CLIENTE: "+c.getDni() +" "+c.getNombre()+"\n\n";
-		texto = texto + "ARTICULOS EN EL CARRITO: \n";
-		for(Articulo a: Ventana.getCarrito()) {
-			texto = texto + a.toString() + "\n";
-		}
-		areaCarrito.setText(texto);
-	});
-	*/
+       btnAniadirArticuloAlCarrito.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+		            Talla tallaSeleccionada = (Talla) cbTallas.getSelectedItem();
+		            Articulo articuloSeleccionado = obtenerArticuloSeleccionado(tallaSeleccionada);
 	
-		
-		/*	btnFinalizarCompra.addActionListener((e)->{
-		Tienda.getCompras().put(Ventana.getCliente(), Ventana.getCarrito());
-		areaCarrito.setText("");
-		JOptionPane.showMessageDialog(null, "Compra finalizada correctamente");
-	});
-		
+		            
+		            if (articuloSeleccionado != null) {
+		                //Logger.getLogger(getClass().getName()).info("Artículo añadido al carrito: " + articuloSeleccionado.getNombre());
+		                //mostrarFotoArticulo(articuloSeleccionado);
+		            	 //ventanaCompras.cargarTabla();
+		            	 ventanaCompras.agregarArticuloAlCarrito(articuloSeleccionado);
+			               
+		            }
+		        }
+       });
+       
+       
+       
+
+
 	}
 	
-	
-
-
-	/*private void cargarArticulos() {
-		for(Articulo a: Tienda.getArticulos()) { 
-			modeloListaArticulos.addElement(a); 
-		}*/
-		
-
-	
-//	setVisible(true)
-//		
-//	}
-//
-//	public void mostrarFotoArticulo(Articulo articulo) {
-//		String rutaFoto = articulo.getFoto();
-//		ImageIcon icono = new ImageIcon(getClass().getResource(rutaFoto));
-//		lblFotoArticulo.setIcon(icono);
-//	}
-
+	private Articulo obtenerArticuloSeleccionado(Talla tallaSeleccionada) {				
+		Set<Articulo> todosLosArticulos = Tienda.getArticulos();
+	    for (Articulo articulo : todosLosArticulos) {
+	        TreeSet<Talla> tallasDisponibles = Tienda.tallasPorArticulo(articulo);
+	        if (tallasDisponibles.contains(tallaSeleccionada)) {
+	            return articulo;
+	        }
+	    }
+	return null;
 	}
 	
 }

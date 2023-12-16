@@ -281,6 +281,16 @@ public class VentanaPrincipal extends JFrame {
         lblCarro.setBounds(1048, 11, 67, 52);
         contentPane.add(lblCarro);
         
+        lblCarro.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new VentanaCompras(vActual);
+				vActual.setVisible(false);
+				
+			}
+		});
+        
         
         JPopupMenu menuCliente = new JPopupMenu();
         JMenuItem perfil = new JMenuItem("Ver perfil");
