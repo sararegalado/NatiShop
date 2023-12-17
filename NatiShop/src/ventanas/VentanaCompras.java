@@ -80,8 +80,10 @@ public class VentanaCompras extends JFrame {
 		};
 		modeloTablaCompras.setColumnIdentifiers(titulos);
 		tablaCompras = new JTable(modeloTablaCompras);
-		//tablaCompras = new JTable(new ModeloTablaCompras(null));
-		//tablaCompras.setDefaultRenderer(Object.class, new RendererTablaCompras());
+		
+		
+		this.tablaCompras.setRowHeight(80);
+		
 		tablaCompras.setDefaultRenderer(Object.class, new TableCellRenderer() {
 			
 			@Override
@@ -97,6 +99,8 @@ public class VentanaCompras extends JFrame {
 					JSpinner sCantidad = new JSpinner(new SpinnerNumberModel(Integer.parseInt(value.toString()), 0, 100, 1));
 					sCantidad.addChangeListener(e -> actualizarPrecioFila());
 					return sCantidad;
+					//JLabel l = new JLabel(value.toString());
+					//return l;
 				}else {
 					JLabel l = new JLabel(value.toString());
 					l.setOpaque(true);
@@ -104,6 +108,10 @@ public class VentanaCompras extends JFrame {
 				}
 			}
 		});
+		
+		
+
+          
 		scrollTablaCompras = new JScrollPane(tablaCompras);
 		getContentPane().add(scrollTablaCompras, BorderLayout.CENTER);
 		
@@ -175,9 +183,12 @@ public class VentanaCompras extends JFrame {
 		//Object[] fila = {articulo, 1, articulo.getPrecio()};	lo que tiene por defecto
         modeloTablaCompras.addRow(fila);
 	}
-
+	
 	
 
+	 
+
+	 
     
     
 	/*private void cargarTabla() {
@@ -203,8 +214,8 @@ public class VentanaCompras extends JFrame {
 	        for (Articulo articulo : articulosCarrito) {
 	        	//agregarArticuloALaTabla(articulo);
 	        	sCantidad.addChangeListener(e -> actualizarPrecioFila());
-	            //ImageIcon icono = new ImageIcon(getClass().getResource(articulo.getFoto()));
-	            Object[] fila = {"/imagenes/atras.png", articulo.getUnidades(), articulo.getPrecio()};	//pero aqui no va a salir el precio actualizado en la 3 columna no ??
+	            ImageIcon icono = new ImageIcon(getClass().getResource(articulo.getFoto()));
+	            Object[] fila = {icono, articulo.getUnidades(), articulo.getPrecio()};	//pero aqui no va a salir el precio actualizado en la 3 columna no ??
 	            modeloTablaCompras.addRow(fila);
 	        }
 	    	//tablaCompras.setModel(new ModeloTablaCompras(articulosCarrito));
@@ -222,6 +233,12 @@ public class VentanaCompras extends JFrame {
 		
 		
 	}
+	
+	 
+	   
+
+	
+	
 	
 
 

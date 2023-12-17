@@ -138,6 +138,8 @@ public class VentanaArticulo extends JFrame {
        panelCT.add(pnlBoton);
        pCentro.add(panelCT);
        
+        
+       
        btnAniadirArticuloAlCarrito.addActionListener(new ActionListener() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
@@ -153,7 +155,21 @@ public class VentanaArticulo extends JFrame {
 			               
 		            }
 		        }
-       });
+	        
+			private Articulo obtenerArticuloSeleccionado(Talla tallaSeleccionada) {				
+					Set<Articulo> todosLosArticulos = Tienda.getArticulos();
+				    for (Articulo articulo : todosLosArticulos) {
+				        TreeSet<Talla> tallasDisponibles = Tienda.tallasPorArticulo(articulo);
+				        if (tallasDisponibles.contains(tallaSeleccionada)) {
+				            return articulo;
+				        }
+				    }
+				return null;
+			}
+			
+			
+	    });
+
        
        
        
