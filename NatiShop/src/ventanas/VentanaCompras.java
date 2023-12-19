@@ -3,8 +3,11 @@ package ventanas;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +63,10 @@ public class VentanaCompras extends JFrame {
 		setResizable(false);
 		setBounds(300, 200, 600, 400);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);	
-		
+		int anchoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
+	    int altoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
+	    setSize(anchoP, altoP);
+	    setExtendedState(MAXIMIZED_BOTH);
 		
 		
 		btnMas = new JButton("+");
@@ -90,11 +96,27 @@ public class VentanaCompras extends JFrame {
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 					int row, int column) {
 				if(column==0) {
-					System.out.println(value.toString());
-					ImageIcon icono = new ImageIcon(value.toString());
-					JLabel l = new JLabel(icono);
-					l.setOpaque(true);
-					return l;
+		            String imagePath = (String) value;
+		            ImageIcon originalIcon = createImageIcon(imagePath);
+
+		            if (originalIcon != null) {
+		                // Tamaño deseado para la imagen (ajusta según tus necesidades)
+		                int width = 30;
+		                int height = 30;
+
+		                // Redimensionar la imagen al tamaño deseado
+		                Image resizedImage = originalIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+		                ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+		                JLabel l = new JLabel(resizedIcon);
+		                l.setOpaque(true);
+		                return l;
+		            } else {
+		                // Si no se puede cargar la imagen, muestra el valor como texto
+		                JLabel l = new JLabel(value.toString());
+		                l.setOpaque(true);
+		                return l;
+		            }
 				}else if(column==1) {
 					JSpinner sCantidad = new JSpinner(new SpinnerNumberModel(Integer.parseInt(value.toString()), 0, 100, 1));
 					sCantidad.addChangeListener(e -> actualizarPrecioFila());
@@ -235,7 +257,16 @@ public class VentanaCompras extends JFrame {
 	}
 	
 	 
-	   
+    private ImageIcon createImageIcon(String imagePath) {
+        try {
+            // Obtener la URL del archivo local usando el protocolo "file:"
+            URL url = getClass().getResource(imagePath);
+            return new ImageIcon(url);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }   
 
 	
 	
@@ -247,7 +278,6 @@ public class VentanaCompras extends JFrame {
 	
 	
 };
-
 
 
 

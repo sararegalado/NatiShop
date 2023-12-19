@@ -156,16 +156,7 @@ public class VentanaArticulo extends JFrame {
 		            }
 		        }
 	        
-			private Articulo obtenerArticuloSeleccionado(Talla tallaSeleccionada) {				
-					Set<Articulo> todosLosArticulos = Tienda.getArticulos();
-				    for (Articulo articulo : todosLosArticulos) {
-				        TreeSet<Talla> tallasDisponibles = Tienda.tallasPorArticulo(articulo);
-				        if (tallasDisponibles.contains(tallaSeleccionada)) {
-				            return articulo;
-				        }
-				    }
-				return null;
-			}
+	
 			
 			
 	    });
@@ -176,6 +167,8 @@ public class VentanaArticulo extends JFrame {
 
 
 	}
+	
+	
 	
 	private Articulo obtenerArticuloSeleccionado(Talla tallaSeleccionada) {				
 		Set<Articulo> todosLosArticulos = Tienda.getArticulos();
@@ -194,6 +187,8 @@ public class VentanaArticulo extends JFrame {
 
 	
 	
+
+
 
 
 	
