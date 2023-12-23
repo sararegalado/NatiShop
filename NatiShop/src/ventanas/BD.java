@@ -467,5 +467,49 @@ public class BD {
 		}
 		return articulos;
 	}
+	public static Articulo buscarArticulo(Connection con, String id) {
+	    String sql = String.format("SELECT * FROM articulo WHERE ID = '%s'", id);
+	    
+	    try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+	        if (rs.next()) {
+	            String nom = rs.getString("NOMBRE");
+	            String unidades = rs.getString("UNIDADES");
+	            String precio = rs.getString("PRECIO");
+	            String genero = rs.getString("GENERO");
+	            String talla = rs.getString("TALLA");
+	            String foto = rs.getString("FOTO");
+	            String categoria = rs.getString("CATEGORIA");
+
+	            // Definir un tipo genérico Articulo
+	            Articulo articulo = null;
+
+	            // Crear instancias específicas según la categoría
+	            switch (Categoria.valueOf(categoria)) {
+	                case CAMISETA:
+	                    articulo = new Camiseta(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio), Genero.valueOf(genero), Talla.valueOf(talla), foto, Categoria.valueOf(categoria));
+	                    break;
+	                case JERSEY:
+	                    articulo = new Jersey(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio), Genero.valueOf(genero), Talla.valueOf(talla), foto, Categoria.valueOf(categoria));
+	                    break;
+	                case PANTALON:
+	                    articulo = new Pantalon(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio), Genero.valueOf(genero), Talla.valueOf(talla), foto, Categoria.valueOf(categoria));
+	                    break;
+	                case CALZADO:
+	                    articulo = new Zapato(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio), Genero.valueOf(genero), Talla.valueOf(talla), foto, Categoria.valueOf(categoria));
+	                    break;
+	                default:
+	                    // Puedes manejar otras categorías aquí según tus necesidades
+	                    break;
+	            }
+
+	            return articulo;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return null;
+	}
+
 
 }

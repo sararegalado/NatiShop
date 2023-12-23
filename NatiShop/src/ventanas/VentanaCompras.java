@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class VentanaCompras extends JFrame {
     private JButton btnVolver, btnComprar;
     private JFrame vActual, vAnterior;
 
-    private DefaultTableModel modeloTablaCompras;
+    private static DefaultTableModel modeloTablaCompras;
     private static JTable tablaCompras;
     private JScrollPane scrollTablaCompras;
     private JButton btnMas, btnMenos;
@@ -44,7 +45,7 @@ public class VentanaCompras extends JFrame {
         vAnterior = va;
         setResizable(false);
         setBounds(300, 200, 600, 400);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);	
+        //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);	
         int anchoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
         int altoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
         setSize(anchoP, altoP);
@@ -56,17 +57,17 @@ public class VentanaCompras extends JFrame {
         pSur = new JPanel();
         getContentPane().add(pSur, BorderLayout.SOUTH);
 
-        Object[] titulos = { "ARTICULO", "DESCRIPCION", "TALLA", "CANTIDAD", "PRECIO" };
-        modeloTablaCompras = new DefaultTableModel() {
+        Object[] titulos = { "ID", "ARTICULO", "DESCRIPCION", "TALLA", "CANTIDAD", "PRECIO"};
+        setModeloTablaCompras(new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                if (column == 3)
+                if (column == 4)
                     return true;
                 return false;
             }
-        };
-        modeloTablaCompras.setColumnIdentifiers(titulos);
-        tablaCompras = new JTable(modeloTablaCompras);
+        });
+        getModeloTablaCompras().setColumnIdentifiers(titulos);
+        tablaCompras = new JTable(getModeloTablaCompras());
         scrollTablaCompras = new JScrollPane(tablaCompras);
         getContentPane().add(scrollTablaCompras, BorderLayout.CENTER);
 
@@ -76,7 +77,7 @@ public class VentanaCompras extends JFrame {
 
         // Configurar el editor de la columna "CANTIDAD" para usar JSpinner
         TableColumnModel columnModel = tablaCompras.getColumnModel();
-        TableColumn cantidadColumna = columnModel.getColumn(3);
+        TableColumn cantidadColumna = columnModel.getColumn(4);
 
         SpinnerEditor spinnerEditor = new SpinnerEditor();
         cantidadColumna.setCellEditor(spinnerEditor);
@@ -87,9 +88,9 @@ public class VentanaCompras extends JFrame {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                     boolean hasFocus, int row, int column) {
-                if (column == 0) {
+                if (column == 1) {
                     try {
-                        ImageIcon originalIcon = (ImageIcon) modeloTablaCompras.getValueAt(row, column);
+                        ImageIcon originalIcon = (ImageIcon) getModeloTablaCompras().getValueAt(row, column);
                         int nuevoAncho = 80;
                         int nuevoAlto = 80;
 
@@ -109,10 +110,6 @@ public class VentanaCompras extends JFrame {
                         errorLabel.setOpaque(true);
                         return errorLabel;
                     }
-                } else if (column == 3) {
-                    JLabel label = new JLabel(value.toString());
-                    label.setOpaque(true);
-                    return label;
 
                 } else {
                     JLabel l = new JLabel(value.toString());
@@ -138,59 +135,77 @@ public class VentanaCompras extends JFrame {
             ArrayList<Articulo> articulosSeleccionados = obtenerArticulosSeleccionados();
             Tienda.getCompras().put((Cliente) clienteActual, articulosSeleccionados);
 
-            modeloTablaCompras.setRowCount(0);
+            getModeloTablaCompras().setRowCount(0);
             System.out.println("La compra se ha realizado correctamente.");
         });
     }
 
     private void cargarArticuloTabla() {
-        for (Cliente c : Tienda.getCestaPorCliente().keySet()) {
+    	if (VentanaPrincipal.isClienteHaIniciadoSesion() == true) {
+    		for (Cliente c : Tienda.getCestaPorCliente().keySet()) {
             List<Articulo> aCesta = Tienda.getCestaPorCliente().get(c);
             for (Articulo a : aCesta) {
                 try {
                     ImageIcon icono = new ImageIcon(getClass().getResource(a.getFoto()));
-                    Object[] fila = { icono, a.getNombre(), a.getTallaStr(), 1, a.getPrecio() };
-                    modeloTablaCompras.addRow(fila);
+                    Object[] fila = {a.getId(), icono, a.getNombre(), a.getTallaStr(), 1, a.getPrecio() };
+                    getModeloTablaCompras().addRow(fila);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
+    	}
+        
     }
 
+    
     static class SpinnerEditor extends AbstractCellEditor implements TableCellEditor, TableCellRenderer {
         private JSpinner spinner;
 
         public SpinnerEditor() {
-            spinner = new JSpinner(new SpinnerNumberModel(1, 1, 100, 1));
-            spinner.setFocusable(false);
-            spinner.addChangeListener(e -> {
-                // Obtener la fila y columna seleccionadas
-                int fila = tablaCompras.getEditingRow();
-                int columna = tablaCompras.getEditingColumn();
-
-                // Asegurarse de que estamos en la columna correcta (1)
-                if (columna == 3) {
-                    // Actualizar la cantidad en la columna 1
-                    tablaCompras.getModel().setValueAt(spinner.getValue(), fila, columna);
-
-                    // Obtener el precio unitario original de la columna 3
-                    double precioUnitario = (double) tablaCompras.getValueAt(fila, 4);  // Cambiado de 3 a 2
-
-                    // Calcular y actualizar el precio total en la columna 2
-                    double nuevoPrecio = (int) spinner.getValue() * precioUnitario;
-                    tablaCompras.getModel().setValueAt(nuevoPrecio, fila, 4);
-
-                    // Notificar que se ha realizado la edición
-                    fireEditingStopped();
-                }
-            });
         }
 
         @Override
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
                 int column) {
-            spinner.setValue(value);
+            // Obtener el valor actual de la celda
+            int cantidad = (int) value;
+
+            // Configurar un nuevo JSpinner con el valor actual de la celda
+            spinner = new JSpinner(new SpinnerNumberModel(cantidad, 1, 100, 1));
+            spinner.setFocusable(false);
+
+            // Agregar un cambio de estado al nuevo JSpinner
+            spinner.addChangeListener(e -> {
+            	int fila = tablaCompras.getEditingRow();
+                int columna = tablaCompras.getEditingColumn();
+                if (fila != -1) {
+                	Connection c = BD.initBD("NatiShop.db");
+                    Articulo a = BD.buscarArticulo(c, tablaCompras.getValueAt(fila, 0).toString());
+                    BD.closeBD(c);
+                    double precioUnitario = a.getPrecio();
+
+                    // Asegurarse de que estamos en la columna correcta (1)
+                    if (columna == 4) {
+                        // Actualizar la cantidad en la columna 1
+                        tablaCompras.getModel().setValueAt(spinner.getValue(), fila, columna);
+
+                        // Obtener el precio unitario original de la columna 3
+                        //double precioUnitario = (double) tablaCompras.getValueAt(fila, 5);  // Cambiado de 3 a 2
+
+                        // Calcular y actualizar el precio total en la columna 2
+                        double nuevoPrecio = (int) spinner.getValue() * precioUnitario;
+                        tablaCompras.getModel().setValueAt(nuevoPrecio, fila, 5);
+
+                        // Notificar que se ha realizado la edición
+                        fireEditingStopped();
+                    }
+                }
+                
+            });
+            
+            
+
             return spinner;
         }
 
@@ -202,10 +217,18 @@ public class VentanaCompras extends JFrame {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                 boolean hasFocus, int row, int column) {
-            spinner.setValue(value);
+            // Obtener el valor actual de la celda
+            int cantidad = (int) value;
+
+            // Configurar un nuevo JSpinner con el valor actual de la celda
+            spinner = new JSpinner(new SpinnerNumberModel(cantidad, 1, 100, 1));
+            spinner.setFocusable(false);
+
             return spinner;
         }
     }
+
+
 
     private Cliente obtenerClienteActual() {
         return VentanaInicioSesion.getCliente();
@@ -213,16 +236,25 @@ public class VentanaCompras extends JFrame {
 
     private ArrayList<Articulo> obtenerArticulosSeleccionados() {
         ArrayList<Articulo> comprasUsuario = new ArrayList<>();
-        for (int fila = 0; fila < modeloTablaCompras.getRowCount(); fila++) {
-            Articulo articulo = (Articulo) modeloTablaCompras.getValueAt(fila, 0);
+        for (int fila = 0; fila < getModeloTablaCompras().getRowCount(); fila++) {
+            Articulo articulo = (Articulo) getModeloTablaCompras().getValueAt(fila, 0);
             comprasUsuario.add(articulo);
         }
         return comprasUsuario;
     }
+
+	public static DefaultTableModel getModeloTablaCompras() {
+		return modeloTablaCompras;
+	}
+
+	public static void setModeloTablaCompras(DefaultTableModel modeloTablaCompras) {
+		VentanaCompras.modeloTablaCompras = modeloTablaCompras;
+	}
+    
+    
+    
+    
 }
-
-
-
 
 
 

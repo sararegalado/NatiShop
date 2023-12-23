@@ -160,18 +160,47 @@ public class VentanaArticulo extends JFrame {
 		                //mostrarFotoArticulo(articuloSeleccionado);
 		            	 //ventanaCompras.cargarTabla();
 		            	 //ventanaCompras.agregarArticuloAlCarrito(articuloSeleccionado);
-		            	if (Tienda.getCestaPorCliente().containsKey(VentanaInicioSesion.getCliente())) {
+		            	if (!VentanaPrincipal.isClienteHaIniciadoSesion()) {
+		                    // Mostrar cuadro de diálogo de advertencia
+		                    int choice = JOptionPane.showOptionDialog(
+		                            null,
+		                            "PARA AÑADIR UN ARTÍCULO AL CARRITO, DEBES INICIAR SESIÓN PRIMERO",
+		                            "Advertencia",
+		                            JOptionPane.YES_NO_OPTION,
+		                            JOptionPane.WARNING_MESSAGE,
+		                            null,
+		                            new Object[]{"Iniciar Sesión", "Cancelar"},
+		                            "Iniciar Sesión");
+
+		                    switch (choice) {
+		                        case 0:
+		                            new VentanaInicioSesion(vActual);
+		                            //ventanaInicioSesion.setVisible(true);
+
+		                            // Luego de iniciar sesión, vuelve a llamar a actionPerformed
+		                            //actionPerformed(e);
+		                            break;
+		                        case 1:
+		                            // Código para la opción Cancelar
+		                            System.out.println("Operación cancelada");
+		                            break;
+		                        default:
+		                            // Cualquier otra lógica que puedas necesitar
+		                            break;
+		                    }
+		            	}else if (Tienda.getCestaPorCliente().containsKey(VentanaInicioSesion.getCliente())) {
 		            		Tienda.getCestaPorCliente().get(VentanaInicioSesion.getCliente()).add(articulo);
+		            		JOptionPane.showMessageDialog(null, "TALLA " + tallaSeleccionada + " AÑADIDO A TU CESTA DE LA COMPRA", "",JOptionPane.INFORMATION_MESSAGE);
+			            	dispose();
 		            	}else {
 		            		ArrayList<Articulo> nuevaLista = new ArrayList<>();
 		                    nuevaLista.add(articulo);
 		            		Tienda.getCestaPorCliente().put (VentanaInicioSesion.getCliente(),nuevaLista);
+		            		JOptionPane.showMessageDialog(null, "TALLA " + tallaSeleccionada + " AÑADIDO A TU CESTA DE LA COMPRA", "",JOptionPane.INFORMATION_MESSAGE);
+			            	dispose();
 		            	}
-		            	
-		            	 System.out.println(articulo);
-		            	 JOptionPane.showMessageDialog(null, "TALLA " + tallaSeleccionada + " AÑADIDO A TU CESTA DE LA COMPRA", "",JOptionPane.INFORMATION_MESSAGE);
-		            	 dispose();
-			               
+		            	System.out.println(Tienda.getCestaPorCliente());
+      
 		            }
 		        }
 			
@@ -196,3 +225,7 @@ public class VentanaArticulo extends JFrame {
 	return null;
 	}
 }
+
+
+	
+	
