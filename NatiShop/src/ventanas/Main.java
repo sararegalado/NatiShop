@@ -10,19 +10,17 @@ import uk.co.caprica.vlcj.factory.discovery.NativeDiscovery;
 public class Main {
 
 	public static void main(String[] args) {
-		Tienda.cargarArticulos("articulos.csv");
 		
 		Connection con = BD.initBD("NatiShop.db");
-		BD.crearTablas(con);	
+		BD.crearTablas(con);
+		BD.volcarCSVArticulos(con, "articulos.csv");
 		BD.closeBD(con);
 		
-		Tienda.cargarArticulos("articulos.csv");	
 		Tienda.cargarKeyMapaClientes();
 		System.out.println(Tienda.getComprasPorCliente());
 		
 
 		VentanaPrincipal vent = new VentanaPrincipal(null);
-//		Tienda.cargarAdministradores("Administradores.csv");
 
 
 		

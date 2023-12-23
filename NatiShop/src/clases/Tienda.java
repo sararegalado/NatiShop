@@ -20,7 +20,9 @@ public class Tienda {
 	private static HashMap<Cliente, ArrayList<Articulo>> compras = new HashMap<>();
 	private static HashMap<String, HashMap<String, ArrayList<Articulo>>> comprasPorCliente = new HashMap<>();
 	private static HashMap<String, Administrador>administradores = new HashMap<>();
+	private static HashMap<Cliente, ArrayList<Articulo>> cestaPorCliente = new HashMap<>();
 	//mapa admin (clave: correo, valor admin)
+	
 	
 	public static List<Cliente> getClientes() {
 		Connection con = BD.initBD("NatiShop.db");
@@ -29,6 +31,16 @@ public class Tienda {
 		return clientes;
 	}
 	
+
+	public static HashMap<Cliente, ArrayList<Articulo>> getCestaPorCliente() {
+		return cestaPorCliente;
+	}
+
+
+	public static void setCestaPorCliente(HashMap<Cliente, ArrayList<Articulo>> cestaPorCliente) {
+		Tienda.cestaPorCliente = cestaPorCliente;
+	}
+
 
 	public static HashMap<String, Administrador> getAdministradores() {
 		Connection con = BD.initBD("NatiShop.db");
@@ -43,6 +55,9 @@ public class Tienda {
 	}
 	
 	public static Set<Articulo> getArticulos() {
+		Connection con = BD.initBD("NatiShop.db");
+		articulos = BD.obtenerListaArticulos(con);
+		BD.closeBD(con);
 		return articulos;
 	}
 
@@ -121,7 +136,7 @@ public class Tienda {
 	public static HashMap<String, HashMap<String, ArrayList<Articulo>>> getComprasPorCliente() {
 		return comprasPorCliente;
 	}
-
+	
 	/**
 	 * Método que añade un nuevo articulo comprado a la lista de articulos del cliente 
 	 * @param c Cliente que realiza las compras en NatyShop
@@ -148,49 +163,7 @@ public class Tienda {
 		comprasPorCliente.get(c.getDni()).get(fechaCompra).add(a);
 		
 	}
-	/**
-	 * Metodo que cargar el fichero de Admins en un mapa de Administradore
-	 * @param nomfichAdmins
-	 */
 	
-//	public static void cargarAdministradores(String nomfichAdmins) {
-//		Scanner sc;
-//		try {
-//			sc = new Scanner(new FileReader(nomfichAdmins));
-//			String linea;
-//			sc.nextLine();
-//			while(sc.hasNext()){
-//				linea= sc.nextLine();
-//				String[] partes = linea.split(";");
-//				if(partes.length > 0) {
-//					String dni = partes[0];
-//					String nom= partes[1];
-//					String apellido= partes[2];
-//					String correo = partes[3];
-//					String tlf = partes[4];
-//					String provincia = (partes[5]);
-//					String Fnac = partes[6];
-//					String Finic = partes[7];
-//					String jornada=partes[8];
-//					String puesto = partes[9];
-//					String con= partes[10];
-//					Administrador a = new Administrador(dni,nom,apellido,correo,tlf,provincia,Fnac,Finic,jornada,puesto,con);
-//					if(!Administradores.containsKey(a.getCorreo())) {
-//						Administradores.put(a.getCorreo(), a);
-//					}
-//					
-//				}
-//			}
-//			sc.close();
-//		} catch (FileNotFoundException e) {
-//			
-//			e.printStackTrace();
-//		}
-//		
-//			
-//		
-//		
-//	}
 	/**
 	 * Método que carga el mapa Compras por cliente  desde la Base de datos, cuya clave es el dni del cliente y el valor es otro mapa
 	 * con clave la fecha de compra y valor la lista de compras hecha por el cliente
@@ -205,175 +178,6 @@ public class Tienda {
 			comprasPorCliente.putIfAbsent(c.getDni(), new HashMap<>());
 		}
 		
-	}
-
-
-	/**
-	 * Método que carga el fichero usuarios en una lista de usuarios
-	 * 
-	 * @param nomfich Fichero que tiene todos los usuarios registrados 
-	 */
-	/*public static void cargarClientes(String nomfichClientes) {
-
-		try {
-			Scanner sc= new Scanner(new FileReader(nomfichClientes));
-			String linea;
-			while(sc.hasNext()) {
-				linea = sc.nextLine();
-				String [] partes = linea.split(";");
-				if(partes.length > 0) {
-					String dni = partes[0];
-					String nom = partes[1];
-					String fNac = partes[2];
-					String correo = partes[3];
-					String tfn = partes [4];
-					String p = partes[5];
-					String con = partes[6];
-					String numT = partes[7];;
-					Cliente c = new Cliente(dni, nom, fNac, correo, tfn, p, con, numT);
-					if(buscarCliente(dni) == null) {
-						clientes.add(c);
-						comprasPorCliente.putIfAbsent(c.getDni(), new HashMap<>());
-					}
-				}
-				
-			}
-			sc.close();
-		} catch (FileNotFoundException e) {
-			
-		}	
-	}
-	
-	/**
-	 * Método que guarda la lista de usuarios en un fichero
-	 * 
-	 * @param nomfich Fichero en el que vamos a guardar nuestra lista de usuarios
-	 */
-//	public static void guardarClientes(String nomfichClientes) {
-//		try {
-//			PrintWriter pw = new PrintWriter(nomfichClientes);
-//			for(Cliente c : clientes) {
-//				pw.println(c.getDni()+";"+c.getNombre()+";"+c.getfNacStr()+";"+c.getCorreo()+";"+c.getTlf()+";"+c.getProvinciaStr()+";"+c.getContrasenia()+";"+c.getNumTarjeta());
-//			}
-//			pw.flush();
-//			pw.close();
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
-	/**
-	 * Metodo que busca a un usuario por su dni
-	 * @param dni DNI del usuari que queremos buscar
-	 * @return
-	 */
-	
-//	public static Cliente buscarCliente(String dni) {
-//		boolean enc = false;
-//		int pos = 0;
-//		Cliente c = null;
-//		while(!enc && pos<clientes.size()) {
-//			c = clientes.get(pos);
-//			if(c.getDni().equals(dni)) {
-//				enc = true;
-//			}else {
-//				pos++;
-//			}
-//		}
-//		if(enc) {
-//			return c;
-//		}else{
-//			return null;
-//		}
-//	}
-	
-//	public static Cliente buscarClientePorNomCon(String nombre, String con) {
-//		boolean enc = false;
-//		int pos = 0;
-//		Cliente c = null;
-//		while(!enc && pos<clientes.size()) {
-//			c = clientes.get(pos);
-//			if (c.getNombre().equals(nombre) && c.getContrasenia().equals(con)) {
-//				enc = true;
-//			}else {
-//				pos++;
-//			}	
-//		}
-//		if(enc) {
-//			return c;
-//		}else {
-//			return null;
-//		}
-//	}
-//	
-	
-	/**
-	 * Método que carga el fichero articulos en una lista de articulos
-	 * 
-	 * @param nomfich Fichero que tiene todos los articulos registrados 
-	 */
-	public static void cargarArticulos(String nomfichArt) {
-
-		try {
-			Scanner sc= new Scanner(new FileReader(nomfichArt));
-			String linea;
-			while(sc.hasNext()) {
-				linea= sc.nextLine();
-				String [] partes= linea.split(";");
-				String id= partes[0];
-				String nom= partes[1];
-				String unidades= partes[2];
-				String precio= partes[3];
-				String genero = partes[4];
-				System.out.println(genero);
-				String talla = partes[5];
-				String foto = partes[6];
-				String categoria = partes[7];
-				if (Categoria.valueOf(categoria) == Categoria.CAMISETA) {
-					Camiseta c = new Camiseta(id, nom, Integer.parseInt(unidades), Double.parseDouble(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto,Categoria.valueOf(categoria));
-					aniadirArticulos(c);
-					
-				}
-				else if (Categoria.valueOf(categoria) == Categoria.JERSEY) {
-					Jersey j = new Jersey(id, nom, Integer.parseInt(unidades), Double.parseDouble(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
-					aniadirArticulos(j);
-
-				} 
-				else if (Categoria.valueOf(categoria) == Categoria.PANTALON) {
-					Pantalon p = new Pantalon(id, nom, Integer.parseInt(unidades), Double.parseDouble(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
-					aniadirArticulos(p);
-				}
-				else {
-					Zapato z = new Zapato(id, nom, Integer.parseInt(unidades), Double.parseDouble(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
-					aniadirArticulos(z);
-					} 
-
-				}
-				
-			
-			sc.close();
-		} catch (FileNotFoundException e) {
-			
-		}	
-	}
-	
-	
-	/**
-	 * Método que guarda la lista de articulos en un fichero
-	 * 
-	 * @param nomfich Fichero en el que vamos a guardar nuestra lista de articulos
-	 */
-	public static void guardarArticulos(String nomFichArticulos) {
-		try {
-			PrintWriter pw = new PrintWriter(nomFichArticulos);
-			for(Articulo a : articulos) {
-				pw.println(a.getId()+";"+a.getNombre()+";"+a.getUnidades()+";"+a.getPrecio()+";"+a.genero+";"+a.getTalla()+";"+a.getFoto()+";"+ a.getCategoria());
-			}
-			pw.flush();
-			pw.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	

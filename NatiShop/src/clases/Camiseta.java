@@ -6,7 +6,7 @@ public class Camiseta extends Articulo {
 		super();
 	}
 
-	public Camiseta(String id,String nombre, int unidades, double precio,Genero genero, Talla talla, String foto, Categoria categoria) {
+	public Camiseta(String id,String nombre, int unidades, float precio,Genero genero, Talla talla, String foto, Categoria categoria) {
 		super(id, nombre, unidades, precio, genero, talla, foto, categoria);
 	}
 

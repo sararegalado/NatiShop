@@ -4,33 +4,23 @@ import java.awt.event.ActionEvent;
 import clases.Articulo;
 
 import java.awt.event.ActionListener;
-import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import clases.Articulo;
 import clases.Camiseta;
 import clases.Cliente;
 import clases.Genero;
@@ -41,25 +31,19 @@ import clases.Zapato;
 
 import javax.swing.JMenuBar;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.List;
-import java.awt.Point;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
-import java.awt.Image;
 
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 
 import java.awt.BorderLayout;
-import java.awt.Canvas;
 
 public class VentanaPrincipal extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -285,8 +269,8 @@ public class VentanaPrincipal extends JFrame {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new VentanaCompras(vActual);
-				vActual.setVisible(false);
+				VentanaCompras c = new VentanaCompras(vActual);
+				c.setVisible(true);
 				
 			}
 		});

@@ -53,7 +53,7 @@ public class VentanaInicioSesion extends JFrame {
 	
 	//Para guardar el usuario que Inicia Sesion y asignar el un carrito vacio que se ira llenando
 	private static Cliente cliente;
-	private static List<Articulo> carrito;
+	private static ArrayList<Articulo> carrito;
 	
 	public static Cliente getCliente() {
 		return cliente;
@@ -70,7 +70,7 @@ public class VentanaInicioSesion extends JFrame {
 	}
 
 
-	public static void setCarrito(List<Articulo> carrito) {
+	public static void setCarrito(ArrayList<Articulo> carrito) {
 		VentanaInicioSesion.carrito = carrito;
 	}
 	
@@ -193,6 +193,7 @@ public class VentanaInicioSesion extends JFrame {
 					JOptionPane.showMessageDialog(null, "Bienvenido!","SESIÓN INICIADA",JOptionPane.INFORMATION_MESSAGE);
 					cliente = c; //Guardamos la información del cliente que ha iniciado sesión
 					carrito = new ArrayList<>(); //Inicializamos su carrito a una lista vacía
+					Tienda.getCestaPorCliente().put(c, carrito);
 					VentanaPrincipal.setClienteHaIniciadoSesion(true);
 					VentanaPrincipal.asignarNombreCliente(c);
 					vActual.setVisible(false);
@@ -214,4 +215,5 @@ public class VentanaInicioSesion extends JFrame {
 
 	}
 }
+
 

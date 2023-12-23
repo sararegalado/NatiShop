@@ -15,7 +15,6 @@ import com.toedter.calendar.JCalendar;
 
 import clases.Cliente;
 import clases.Provincia;
-import clases.Tienda;
 
 public class VentanaRegistro extends JFrame{
 	
@@ -140,7 +139,7 @@ public class VentanaRegistro extends JFrame{
 					
 					
 					if(cl == null) { 
-						if(comprobarNombre()) {
+						//if(comprobarNombre()) {
 							if(comprobarDni()) {
 								if(letraDNICorrecta()) {
 									if(comprobarEmail()) {
@@ -168,9 +167,9 @@ public class VentanaRegistro extends JFrame{
 								JOptionPane.showMessageDialog(null, "El dni no es correcto");
 							}
 							
-						}else {
-							JOptionPane.showMessageDialog(null, "El nombre tiene que empezar por una letra mayúscula");
-						}
+//						}else {
+//							JOptionPane.showMessageDialog(null, "El nombre tiene que empezar por una letra mayúscula");
+//						}
 							
 								
 						
@@ -242,14 +241,14 @@ public class VentanaRegistro extends JFrame{
 		return Pattern.matches(patron, tfDNI.getText());
 	}
 	
-	/**
-	 * Metodo que comprueba si el nombre indicado sigue el patron indicado
-	 * @return Devuelve un bolean indicando si sigue el patron o no
-	 */
-	private boolean comprobarNombre() {
-		String patron = "[A-Za-z][0-9]{0,}";
-		return Pattern.matches(patron, tfNombre.getText());
-	}
+//	/**
+//	 * Metodo que comprueba si el nombre indicado sigue el patron indicado
+//	 * @return Devuelve un bolean indicando si sigue el patron o no
+//	 */
+//	private boolean comprobarNombre() {
+//		String patron = "[A-Za-z][0-9]{0,}";
+//		return Pattern.matches(patron, tfNombre.getText());
+//	}
 	
 	/**
 	 * Metodo que comprueba si el email introducido es correcto
@@ -272,3 +271,4 @@ public class VentanaRegistro extends JFrame{
 	}
 
 }
+
