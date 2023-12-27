@@ -11,6 +11,9 @@ public class Articulo implements Comparable<Articulo>{
 	protected Categoria categoria;
 	private String titulos;
 	
+	private int cantidadSeleccionada;
+	private float precioPorUnidad;
+	
 	public Articulo() {
 		super();
 	}
@@ -24,6 +27,9 @@ public class Articulo implements Comparable<Articulo>{
 		this.talla= talla;
 		this.foto = foto;
 		this.categoria = categoria;
+		this.cantidadSeleccionada = 1; 
+		this.precioPorUnidad = precio;
+		
 	}
 	
 	public Articulo(String id, String nombre, int unidades, float precio, String genero, String talla, String foto, String categoria) {
@@ -36,6 +42,8 @@ public class Articulo implements Comparable<Articulo>{
 		setTallaStr(talla);
 		this.foto = foto;
 		setCategoriaStr(categoria);
+		this.cantidadSeleccionada = 1; 
+		this.precioPorUnidad = precio;
 	}
 	public String getId() {
 		return id;
@@ -111,6 +119,21 @@ public class Articulo implements Comparable<Articulo>{
 	
 	public void setCategoriaStr(String categoria) {
 		this.categoria = Categoria.valueOf(categoria); //Convierte de String a enum
+	}
+	
+    public int getCantidadSeleccionada() {
+        return cantidadSeleccionada;
+    }
+
+    public void setCantidadSeleccionada(int cantidadSeleccionada) {
+        this.cantidadSeleccionada = cantidadSeleccionada;
+    }
+    
+	public float getPrecioPorUnidad() {
+		return precioPorUnidad;
+	}
+	public void setPrecioPorUnidad(float precioPorUnidad) {
+		this.precioPorUnidad = precioPorUnidad;
 	}
 	@Override
 	public String toString() {

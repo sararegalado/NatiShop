@@ -344,6 +344,7 @@ public class VentanaPrincipal extends JFrame {
         
         
         
+        
      
 
         //LISTENERS DE LOS ITEMS DE HOMBRE
@@ -590,6 +591,12 @@ public class VentanaPrincipal extends JFrame {
 			return false;
 		}else {
 			return true;
+		}
+	}
+	
+	public static void asignarSaldoCliente(Cliente c) {
+		if (!c.getNumTarjeta().equals("Tarjeta sin registrar")) {
+			lblSaldo.setText(c.getSaldo() + "€");
 		}
 	}
 

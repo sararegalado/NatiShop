@@ -196,6 +196,7 @@ public class VentanaInicioSesion extends JFrame {
 					Tienda.getCestaPorCliente().put(c, carrito);
 					VentanaPrincipal.setClienteHaIniciadoSesion(true);
 					VentanaPrincipal.asignarNombreCliente(c);
+					VentanaPrincipal.asignarSaldoCliente(c);
 					vActual.setVisible(false);
 				}else {
 					JOptionPane.showMessageDialog(null, "Para poder iniciar sesión tienes que estar registrado","ERROR",JOptionPane.ERROR_MESSAGE);
