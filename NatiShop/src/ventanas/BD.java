@@ -66,7 +66,7 @@ public class BD {
 		}
 	}
 	
-	public static void crearTablas(Connection con) {
+	public static void crearTablas(Connection con) throws SQLException{
 		String sql = "CREATE TABLE IF NOT EXISTS cliente (DNI String, NOMBRE String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, CONTRASEÑA String, NUMERO_DE_TARJETA String, SALDO Double)";
 		String sql2 = "CREATE TABLE IF NOT EXISTS administrador (DNI String, NOMBRE String, APELLIDO String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, FECHA_INICIO_EMPRESA String, JORNADA String, PUESTO String, CONTRASEÑA String)";
 		String sql3 = "CREATE TABLE IF NOT EXISTS articulo (ID String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
@@ -90,6 +90,31 @@ public class BD {
 	 * @param dni  Dni de la persona buscada
 	 * @return     null si la persona no está en la BBDD, el objeto Persona si sí lo encuentra
 	 */
+	public static void insertarCliente(Connection con, Cliente c) {
+		if(buscarCliente(con, c.getDni()) == null) {
+			String sql = String.format("INSERT INTO cliente VALUES (?,?,?,?,?,?,?,?,?)");
+
+		    try {
+		    	PreparedStatement st = con.prepareStatement(sql);
+		    	st.setString(1, c.getDni());
+		    	st.setString(2, c.getNombre());
+		    	st.setString(3, c.getfNacStr());
+		    	st.setString(4, c.getCorreo());
+		    	st.setString(5, c.getTlf());
+		    	st.setString(6, c.getProvinciaStr());
+		    	st.setString(7, c.getContrasenia());
+		    	st.setString(8, c.getNumTarjeta());
+		    	st.setDouble(9, c.getSaldo());
+		    	
+		    	st.execute();
+		        st.close();
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		}
+	
+	}
+	
 	public static Cliente buscarCliente(Connection con, String dni) {
 		String sql = String.format("SELECT * FROM cliente WHERE DNI = '%s'", dni);
 		Cliente c = null;
@@ -141,31 +166,6 @@ public class BD {
 		return c;
 	}
 	
-	public static void insertarCliente(Connection con, Cliente c) {
-		if(buscarCliente(con, c.getDni()) == null) {
-			String sql = String.format("INSERT INTO cliente VALUES('%s','%s','%s','%s','%s','%s','%s','%s', '%f')", c.getDni(), c.getNombre(), c.getfNacStr(), c.getCorreo(), c.getTlf(), c.getProvinciaStr(), c.getContrasenia(), c.getNumTarjeta(), c.getSaldo() );
-			try {
-				Statement st = con.createStatement();
-				st.executeUpdate(sql);
-				st.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	
-	}
-	
-	public static void borrarCliente(Connection con, String dni) {
-		String sql = String.format("DELETE FROM cliente WHERE dni='%s'", dni);
-		try {
-			Statement st = con.createStatement();
-			st.executeUpdate(sql);
-			st.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public static void modificarEmailCliente(Connection con, String dni, String nuevoEmail) {
 		String sql = String.format("UPDATE cliente SET EMAIL='%s' WHERE DNI='%s'", nuevoEmail ,dni);
 		try {
@@ -210,17 +210,40 @@ public class BD {
 		}
 	}
 	
-	public static void modificarSaldo(Connection con, String dni, String saldo) {
-		String sql = String.format("UPDATE cliente SET SALDO='%f' WHERE DNI='%s'", saldo ,dni);
-		try {
-			Statement st = con.createStatement();
-			st.executeUpdate(sql);
-			st.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public static void modificarSaldo(Connection con, String dni, double saldo) {
+	    // Formatear el saldo como una cadena usando el formato correcto
+	    String saldoFormateado = String.format("%.2f", saldo).replace(",", ".");
+
+	    // Construir la consulta SQL con el saldo formateado como cadena
+	    String sql = String.format("UPDATE cliente SET SALDO=%s WHERE DNI='%s'", saldoFormateado, dni);
+
+	    try {
+	        Statement st = con.createStatement();
+	        st.executeUpdate(sql);
+	        st.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
+	public static int contarClientes(Connection con) {
+		String sql = "SELECT COUNT(*) FROM cliente;";
+		int cont=0;
+		
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			cont = rs.getInt(1);
+			rs.close();
+			st.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cont;
+	}
+
+
 	
 	/*Devuelve una lista con los clientes de la tabla Clientes*/
 	public static List<Cliente> obtenerListaClientes(Connection con){
@@ -250,6 +273,19 @@ public class BD {
 		}
 		return l;
 	}
+	
+	
+	public static void borrarCliente(Connection con, String dni) {
+		String sql = String.format("DELETE FROM cliente WHERE dni='%s'", dni);
+		try {
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	//METODOS PARA ADMINISTRADORES
 	

@@ -3,6 +3,7 @@ package ventanas;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import clases.Tienda;
 import uk.co.caprica.vlcj.factory.discovery.NativeDiscovery;
@@ -12,7 +13,12 @@ public class Main {
 	public static void main(String[] args) {
 		
 		Connection con = BD.initBD("NatiShop.db");
-		BD.crearTablas(con);
+		try {
+			BD.crearTablas(con);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		BD.volcarCSVArticulos(con, "articulos.csv");
 		BD.closeBD(con);
 		
