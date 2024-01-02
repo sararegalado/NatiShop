@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -367,11 +368,21 @@ public class BD {
 //	}
 	//111;Camiset rayas;4;19.78;HOMBRE;S;/imagenes/camisetasHombre/camiseta1H.png;CAMISETA
 	public static void insertarArticulo(Connection con, Articulo a) {
-		String sql = String.format(Locale.US, "INSERT INTO articulo VALUES ('%s','%s',%d,%f,'%s','%s','%s','%s')", a.getId(), a.getNombre(), a.getUnidades(), a.getPrecio(), a.getGeneroStr(), a.getTallaStr(), a.getFoto(), a.getCategoria());
+		String sql = String.format("INSERT INTO articulo VALUES (?,?,?,?,?,?,?,?)");
 
 	    try {
-	        Statement st = con.createStatement();
-	        st.executeUpdate(sql);
+	    	PreparedStatement st = con.prepareStatement(sql);
+	    	st.setString(1, a.getId());
+	    	st.setString(2, a.getNombre());
+	    	st.setInt(3, a.getUnidades());
+	    	st.setFloat(4, a.getPrecio());
+	    	st.setString(5, a.getGeneroStr());
+	    	st.setString(6, a.getTallaStr());
+	    	st.setString(7, a.getFoto());
+	    	st.setString(8, a.getCategoriaStr());
+	    	
+	    	
+	    	st.execute();
 	        st.close();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -391,7 +402,6 @@ public class BD {
 					String unidades= partes[2];
 					String precio= partes[3];
 					String genero = partes[4];
-					System.out.println(genero);
 					String talla = partes[5];
 					String foto = partes[6];
 					String categoria = partes[7];
