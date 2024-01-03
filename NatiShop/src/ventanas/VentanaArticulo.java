@@ -54,7 +54,7 @@ public class VentanaArticulo extends JFrame {
 	    setExtendedState(MAXIMIZED_BOTH);
 		getContentPane().setLayout(new BorderLayout());
 		
-		this.ventanaCompras = new VentanaCompras(this);
+		//this.ventanaCompras = new VentanaCompras(this);
 		
 		pCentro = new JPanel(new GridLayout(1, 2));
 		pCentro.setBackground(Color.WHITE);

@@ -281,6 +281,7 @@ public class VentanaPrincipal extends JFrame {
         lblCarro.setBounds(1048, 11, 67, 52);
         contentPane.add(lblCarro);
         
+        
         lblCarro.addMouseListener(new MouseAdapter() {
 			
 			@Override

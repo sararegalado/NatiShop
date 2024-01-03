@@ -58,8 +58,11 @@ public class VentanaCompras extends JFrame {
 	
 	public VentanaCompras(JFrame va) {
 		super();
+		//this.ventanaPrincipal = (VentanaPrincipal) ventanaPrincipal;
+		
 		vActual = this;
 		vAnterior = va;	
+		
 		setResizable(false);
 		setBounds(300, 200, 600, 400);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);	
@@ -88,7 +91,7 @@ public class VentanaCompras extends JFrame {
 		tablaCompras = new JTable(modeloTablaCompras);
 		
 		
-		this.tablaCompras.setRowHeight(80);
+		this.tablaCompras.setRowHeight(120);
 		
 		tablaCompras.setDefaultRenderer(Object.class, new TableCellRenderer() {
 			
@@ -101,8 +104,8 @@ public class VentanaCompras extends JFrame {
 
 		            if (originalIcon != null) {
 		                // Tamaño deseado para la imagen (ajusta según tus necesidades)
-		                int width = 30;
-		                int height = 30;
+		                int width = 120;
+		                int height = 120;
 
 		                // Redimensionar la imagen al tamaño deseado
 		                Image resizedImage = originalIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
@@ -140,11 +143,12 @@ public class VentanaCompras extends JFrame {
 		cargarTabla();
 		
 		//NUEVA TABLA PARA LOS FAVORITOS
-		
-		btnVolver = new JButton("VOLVER");
 		pSur.add(btnVolver);
 		
 		btnVolver.addActionListener((e)->{
+			/*VentanaCompras.this.dispose();
+			ventanaPrincipal.setVisible(true);*/
+			
 			vAnterior.setVisible(true);
 			vActual.dispose();
 		});
@@ -228,7 +232,6 @@ public class VentanaCompras extends JFrame {
 	}*/
 	
 	public void cargarTabla() {
-	    //modeloTablaCompras.setRowCount(0);
 	    Cliente clienteActual = obtenerClienteActual();
 	    ArrayList<Articulo> articulosCarrito = Tienda.getCompras().get(clienteActual);
 
