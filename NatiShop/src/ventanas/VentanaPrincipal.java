@@ -12,7 +12,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -118,20 +117,11 @@ public class VentanaPrincipal extends JFrame {
 		
 		pnlArticulos = new JPanel(new BorderLayout());
         //PORTADA DE LA TIENDA
-		JLabelGrafico fotoPortada = new JLabelGrafico("/imagenes/portada.png",1200,450);
+		JLabelGrafico fotoPortada = new JLabelGrafico("/imagenes/portada.png",1190,450);
         pnlArticulos.add(fotoPortada, BorderLayout.CENTER);
-        pnlArticulos.setPreferredSize(new Dimension(1200,450)); // Ajusta esto según el tamaño de tu imagen
+        //pnlArticulos.setPreferredSize(new Dimension(1200,450)); // Ajusta esto según el tamaño de tu imagen
         
-        fotoPortada.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				//AQUI SE TE LLEVARA A LOS PRODUCTOS DE LA NUEVA TEMPORADA
-				System.out.println("Has clicado en la foto");
-				
-			}
-		});
+
 
 		spArticulos = new JScrollPane(pnlArticulos);
         spArticulos.setBounds(72,159,1153,490);
