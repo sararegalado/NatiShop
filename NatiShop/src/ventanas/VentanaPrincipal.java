@@ -12,6 +12,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -20,6 +21,8 @@ import java.util.TreeSet;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import clases.Articulo;
 import clases.Camiseta;
@@ -115,9 +118,20 @@ public class VentanaPrincipal extends JFrame {
 		
 		pnlArticulos = new JPanel(new BorderLayout());
         //PORTADA DE LA TIENDA
-		JLabelGrafico fotoPortada = new JLabelGrafico("/imagenes/portada.png",1270,490);
+		JLabelGrafico fotoPortada = new JLabelGrafico("/imagenes/portada.png",1200,450);
         pnlArticulos.add(fotoPortada, BorderLayout.CENTER);
+        pnlArticulos.setPreferredSize(new Dimension(1200,450)); // Ajusta esto según el tamaño de tu imagen
         
+        fotoPortada.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				//AQUI SE TE LLEVARA A LOS PRODUCTOS DE LA NUEVA TEMPORADA
+				System.out.println("Has clicado en la foto");
+				
+			}
+		});
 
 		spArticulos = new JScrollPane(pnlArticulos);
         spArticulos.setBounds(72,159,1153,490);
@@ -198,7 +212,7 @@ public class VentanaPrincipal extends JFrame {
 
         tfBuscador = new JTextField();
         tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
-        tfBuscador.setBounds(798, 26, 220, 26);
+        tfBuscador.setBounds(701, 26, 220, 26);
         pnlNorte.add(tfBuscador);
         tfBuscador.setColumns(10);
         
@@ -214,8 +228,10 @@ public class VentanaPrincipal extends JFrame {
         JPopupMenu menuCliente = new JPopupMenu();
         JMenuItem perfil = new JMenuItem("Ver perfil");
         JMenuItem compras = new JMenuItem("Ver mis compras");
+        JMenuItem articulos = new JMenuItem("Ver articulos que puedo comprar");
         menuCliente.add(perfil);
         menuCliente.add(compras);
+        menuCliente.add(articulos);
         
         JLabel lblLogo = new JLabel("");
         lblLogo.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/nombreTienda.png")));
@@ -243,7 +259,7 @@ public class VentanaPrincipal extends JFrame {
         JLabel lblUsuario = new JLabel("");
         lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/usuario.png")));
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-        lblUsuario.setBounds(1162, 11, 52, 52);
+        lblUsuario.setBounds(1053, 11, 52, 52);
         pnlNorte.add(lblUsuario);
         
         lblUsuario.addMouseListener(new MouseAdapter() {
@@ -260,7 +276,7 @@ public class VentanaPrincipal extends JFrame {
         });
         
         //FILTRO MENU
-        pnlDchaMenu= new JPanel(new GridLayout(10, 1));
+        pnlDchaMenu= new JPanel(new GridLayout(8, 1));
         pnlDchaMenu.setPreferredSize(new Dimension(225,500));
         pnlDchaMenu.setVisible(false);
         pnlContenedora.add(pnlDchaMenu, BorderLayout.EAST);
@@ -278,7 +294,7 @@ public class VentanaPrincipal extends JFrame {
 		JComboBox<String> cbGenero = new JComboBox<>(opciones);
 		pnlDchaMenu.add(cbGenero);
 		
-		pnlDchaMenu.add(new JPanel());
+		//pnlDchaMenu.add(new JPanel());
 		JLabel lblTalla = new JLabel ("Selecciona una talla:");
 		pnlDchaMenu.add(lblTalla);
 		tallasSeleccionadas = new ArrayList<>();
@@ -328,7 +344,7 @@ public class VentanaPrincipal extends JFrame {
         	tallasSeleccionadas.add("XXL");
         	buscarArticulos(textoBusqueda, pnlArticulos, cbGenero, tallasSeleccionadas);
 		});        
-		pnlDchaMenu.add(new JPanel());
+		//pnlDchaMenu.add(new JPanel());
 		JLabel lblPrecio = new JLabel("Selecciona un precio:");
 		pnlDchaMenu.add(lblPrecio);
 		JSlider sPrecio = new JSlider(0, 100, 0);
@@ -343,7 +359,7 @@ public class VentanaPrincipal extends JFrame {
         btnDesplegar = new JButton();
 		btnDesplegar.setBackground(Color.WHITE);
 		btnDesplegar.setPreferredSize(new Dimension(27,27));
-		btnDesplegar.setBounds(1248, 11, 52, 52);
+		btnDesplegar.setBounds(1147, 11, 52, 52);
 		pnlNorte.add(btnDesplegar);
 		btnDesplegar.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/btnDesplegar.png")));
 
@@ -377,7 +393,7 @@ public class VentanaPrincipal extends JFrame {
         JLabel lblCarro = new JLabel("");
         lblCarro.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/carro.png")));
         lblCarro.setHorizontalAlignment(SwingConstants.CENTER);
-        lblCarro.setBounds(1066, 11, 67, 52);
+        lblCarro.setBounds(955, 11, 67, 52);
         pnlNorte.add(lblCarro);
         
         lblCarro.addMouseListener(new MouseAdapter() {
@@ -399,17 +415,75 @@ public class VentanaPrincipal extends JFrame {
             }
         });
         
+//        articulos.addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				//cargarArticulosQuePuedoComprar();
+//				tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+// 		        //filtrado.setVisible(false);
+//            	limpiarPanel(pnlArticulos);
+//            	pnlArticulos.setBorder(new EmptyBorder(10, 10, 10, 10));
+//    			pnlArticulos.setLayout(new BorderLayout());
+//    			JPanel pnlElems = new JPanel(new GridLayout(0, 4, 10, 10));
+//                pnlArticulos.add(pnlElems, BorderLayout.CENTER);
+//                //JPanel pnlOpciones = new JPanel(new FlowLayout());
+//                
+//             // ... (otro código)
+//
+//                DefaultListModel<String> modeloListaArticulos = new DefaultListModel<>();
+//                JList<String> listaArticulos = new JList<>(modeloListaArticulos);
+//                JScrollPane scrollListaArticulos = new JScrollPane(listaArticulos);
+//                pnlArticulos.add(scrollListaArticulos, BorderLayout.WEST);
+//
+//                ArrayList<Articulo> arrayListArticulos = new ArrayList<>(Tienda.getArticulos());
+//                List<List<Articulo>> resultado = Tienda.combinaciones(arrayListArticulos, VentanaInicioSesion.getCliente().getSaldo(), 0);
+//
+//                for (int i = 1; i <= resultado.size(); i++) {
+//                    String opcion = "Opcion" + i;
+//                    modeloListaArticulos.addElement(opcion);
+//                }
+//
+//                listaArticulos.addListSelectionListener(new ListSelectionListener() {
+//                    @Override
+//                    public void valueChanged(ListSelectionEvent e) {
+//                        if (!e.getValueIsAdjusting()) {
+//                            int selectedOptionIndex = listaArticulos.getSelectedIndex();
+//
+//                            if (selectedOptionIndex >= 0 && selectedOptionIndex < resultado.size()) {
+//                                List<Articulo> selectedList = resultado.get(selectedOptionIndex);
+//
+//                                TreeSet<Articulo> art = new TreeSet<>(selectedList);
+//                                setArticulosQuePuedoComprar(art, pnlElems);
+//                            }
+//                        }
+//                    }
+//                });
+//
+//
+//        		
+////        		System.out.println("LLAMADA RECURSIVA");
+////        		System.out.println(resultado);
+////        		for (List<Articulo> a : resultado) {
+////        			TreeSet<Articulo> art = new TreeSet<Articulo>(a);
+////        			setArticulosQuePuedoComprar(art, pnlElems);
+////        		}
+//        		
+//				
+//			}
+//		});
+        
 
         lblNomU = new JLabel("Iniciar Sesión");
         lblNomU.setHorizontalAlignment(SwingConstants.CENTER);
         lblNomU.setVerticalAlignment(SwingConstants.TOP);
-        lblNomU.setBounds(1147, 67, 87, 19);
+        lblNomU.setBounds(1037, 70, 87, 19);
         pnlNorte.add(lblNomU);
         
         //Saldo
         lblSaldo = new JLabel("");
         lblSaldo.setHorizontalAlignment(SwingConstants.CENTER);
-        lblSaldo.setBounds(1076, 69, 57, 19);
+        lblSaldo.setBounds(965, 72, 57, 19);
         pnlNorte.add(lblSaldo);
         
         //LISTENERS DE LOS ITEMS DE HOMBRE
@@ -886,6 +960,14 @@ public class VentanaPrincipal extends JFrame {
 			
 			
 			
-			}		        
+			}	
+		
+		public void setArticulosQuePuedoComprar(Set<Articulo> art, JPanel panel) {
+			this.pnlArticulos = panel;
+			for (Articulo a: art) {
+				JPanel pnlArticulo = crearPanelArticulo(a);
+				panel.add(pnlArticulo);
+			}	
+		}
 	
 }
