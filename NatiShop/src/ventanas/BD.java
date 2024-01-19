@@ -1,23 +1,37 @@
 package ventanas;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 
 import clases.Administrador;
+import clases.Articulo;
+import clases.Camiseta;
 import clases.Categoria;
 import clases.Cliente;
 import clases.Genero;
+import clases.Jersey;
 import clases.Jornada;
+import clases.Pantalon;
 import clases.Provincia;
 import clases.Puesto;
 import clases.Talla;
+import clases.Zapato;
 
 public class BD {
 	
@@ -52,10 +66,10 @@ public class BD {
 		}
 	}
 	
-	public static void crearTablas(Connection con) {
+	public static void crearTablas(Connection con) throws SQLException{
 		String sql = "CREATE TABLE IF NOT EXISTS cliente (DNI String, NOMBRE String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, CONTRASEÑA String, NUMERO_DE_TARJETA String, SALDO Double)";
 		String sql2 = "CREATE TABLE IF NOT EXISTS administrador (DNI String, NOMBRE String, APELLIDO String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, FECHA_INICIO_EMPRESA String, JORNADA String, PUESTO String, CONTRASEÑA String)";
-		String sql3 = "CREATE TABLE IF NOT EXISTS articulo (ID String, NOMBRE Integer, UNIDADES Integer, PRECIO Double, GENERO Genero, TALLA Talla, FOTO String, CATEGORIA Categoria)";
+		String sql3 = "CREATE TABLE IF NOT EXISTS articulo (ID String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
 		try {
 			Statement st = con.createStatement();
 			st.executeUpdate(sql);
@@ -76,6 +90,31 @@ public class BD {
 	 * @param dni  Dni de la persona buscada
 	 * @return     null si la persona no está en la BBDD, el objeto Persona si sí lo encuentra
 	 */
+	public static void insertarCliente(Connection con, Cliente c) {
+		if(buscarCliente(con, c.getDni()) == null) {
+			String sql = String.format("INSERT INTO cliente VALUES (?,?,?,?,?,?,?,?,?)");
+
+		    try {
+		    	PreparedStatement st = con.prepareStatement(sql);
+		    	st.setString(1, c.getDni());
+		    	st.setString(2, c.getNombre());
+		    	st.setString(3, c.getfNacStr());
+		    	st.setString(4, c.getCorreo());
+		    	st.setString(5, c.getTlf());
+		    	st.setString(6, c.getProvinciaStr());
+		    	st.setString(7, c.getContrasenia());
+		    	st.setString(8, c.getNumTarjeta());
+		    	st.setDouble(9, c.getSaldo());
+		    	
+		    	st.execute();
+		        st.close();
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		}
+	
+	}
+	
 	public static Cliente buscarCliente(Connection con, String dni) {
 		String sql = String.format("SELECT * FROM cliente WHERE DNI = '%s'", dni);
 		Cliente c = null;
@@ -127,31 +166,6 @@ public class BD {
 		return c;
 	}
 	
-	public static void insertarCliente(Connection con, Cliente c) {
-		if(buscarCliente(con, c.getDni()) == null) {
-			String sql = String.format("INSERT INTO cliente VALUES('%s','%s','%s','%s','%s','%s','%s','%s', '%f')", c.getDni(), c.getNombre(), c.getfNacStr(), c.getCorreo(), c.getTlf(), c.getProvinciaStr(), c.getContrasenia(), c.getNumTarjeta(), c.getSaldo() );
-			try {
-				Statement st = con.createStatement();
-				st.executeUpdate(sql);
-				st.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	
-	}
-	
-	public static void borrarCliente(Connection con, String dni) {
-		String sql = String.format("DELETE FROM cliente WHERE dni='%s'", dni);
-		try {
-			Statement st = con.createStatement();
-			st.executeUpdate(sql);
-			st.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public static void modificarEmailCliente(Connection con, String dni, String nuevoEmail) {
 		String sql = String.format("UPDATE cliente SET EMAIL='%s' WHERE DNI='%s'", nuevoEmail ,dni);
 		try {
@@ -196,17 +210,40 @@ public class BD {
 		}
 	}
 	
-	public static void modificarSaldo(Connection con, String dni, String saldo) {
-		String sql = String.format("UPDATE cliente SET SALDO='%f' WHERE DNI='%s'", saldo ,dni);
-		try {
-			Statement st = con.createStatement();
-			st.executeUpdate(sql);
-			st.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public static void modificarSaldo(Connection con, String dni, double saldo) {
+	    // Formatear el saldo como una cadena usando el formato correcto
+	    String saldoFormateado = String.format("%.2f", saldo).replace(",", ".");
+
+	    // Construir la consulta SQL con el saldo formateado como cadena
+	    String sql = String.format("UPDATE cliente SET SALDO=%s WHERE DNI='%s'", saldoFormateado, dni);
+
+	    try {
+	        Statement st = con.createStatement();
+	        st.executeUpdate(sql);
+	        st.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
+	public static int contarClientes(Connection con) {
+		String sql = "SELECT COUNT(*) FROM cliente;";
+		int cont=0;
+		
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			cont = rs.getInt(1);
+			rs.close();
+			st.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cont;
+	}
+
+
 	
 	/*Devuelve una lista con los clientes de la tabla Clientes*/
 	public static List<Cliente> obtenerListaClientes(Connection con){
@@ -236,6 +273,19 @@ public class BD {
 		}
 		return l;
 	}
+	
+	
+	public static void borrarCliente(Connection con, String dni) {
+		String sql = String.format("DELETE FROM cliente WHERE dni='%s'", dni);
+		try {
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	//METODOS PARA ADMINISTRADORES
 	
@@ -340,5 +390,172 @@ public class BD {
 		return m;
 	}
 	
+	//METODOS PARA LOS ARTICULOS
+//	public Articulo(String id, String nombre, int unidades, double precio, Genero genero, Talla talla, String foto, Categoria categoria) {
+//		super();
+//		this.id = id;
+//		this.nombre = nombre;
+//		this.unidades = unidades;
+//		this.precio = precio;
+//		this.genero = genero;
+//		this.talla= talla;
+//		this.foto = foto;
+//		this.categoria = categoria;
+//	}
+	//111;Camiset rayas;4;19.78;HOMBRE;S;/imagenes/camisetasHombre/camiseta1H.png;CAMISETA
+	public static void insertarArticulo(Connection con, Articulo a) {
+		String sql = String.format("INSERT INTO articulo VALUES (?,?,?,?,?,?,?,?)");
+
+	    try {
+	    	PreparedStatement st = con.prepareStatement(sql);
+	    	st.setString(1, a.getId());
+	    	st.setString(2, a.getNombre());
+	    	st.setInt(3, a.getUnidades());
+	    	st.setFloat(4, a.getPrecio());
+	    	st.setString(5, a.getGeneroStr());
+	    	st.setString(6, a.getTallaStr());
+	    	st.setString(7, a.getFoto());
+	    	st.setString(8, a.getCategoriaStr());
+	    	
+	    	
+	    	st.execute();
+	        st.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	
+	public static void volcarCSVArticulos(Connection con, String nomfich) {
+		try {
+			Scanner sc= new Scanner(new FileReader(nomfich));
+				String linea;
+				while(sc.hasNext()) {
+					linea= sc.nextLine();
+					String [] partes= linea.split(";");
+					String id= partes[0];
+					String nom= partes[1];
+					String unidades= partes[2];
+					String precio= partes[3];
+					String genero = partes[4];
+					String talla = partes[5];
+					String foto = partes[6];
+					String categoria = partes[7];
+					if (Categoria.valueOf(categoria) == Categoria.CAMISETA) {
+						Camiseta c = new Camiseta(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto,Categoria.valueOf(categoria));
+						System.out.println(c);
+						BD.insertarArticulo(con, c);
+						
+					}
+					else if (Categoria.valueOf(categoria) == Categoria.JERSEY) {
+						Jersey j = new Jersey(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
+						BD.insertarArticulo(con, j);
+					} 
+					else if (Categoria.valueOf(categoria) == Categoria.PANTALON) {
+						Pantalon p = new Pantalon(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
+						BD.insertarArticulo(con, p);
+					}
+					else {
+						Zapato z = new Zapato(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
+						BD.insertarArticulo(con, z);
+						} 
+
+					}
+					
+				
+				sc.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static Set<Articulo> obtenerListaArticulos(Connection con){
+		String sql = "SELECT * FROM articulo";
+		Set<Articulo> articulos = new TreeSet<>();
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while(rs.next()) {
+				String id= rs.getString("ID");
+				String nom= rs.getString("NOMBRE");
+				String unidades= rs.getString("UNIDADES");
+				String precio= rs.getString("PRECIO");
+				String genero = rs.getString("GENERO");
+				String talla = rs.getString("TALLA");
+				String foto = rs.getString("FOTO");
+				String categoria = rs.getString("CATEGORIA");
+				if (Categoria.valueOf(categoria) == Categoria.CAMISETA) {
+					Camiseta c = new Camiseta(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto,Categoria.valueOf(categoria));
+					articulos.add(c);
+					
+				}
+				else if (Categoria.valueOf(categoria) == Categoria.JERSEY) {
+					Jersey j = new Jersey(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
+					articulos.add(j);
+				} 
+				else if (Categoria.valueOf(categoria) == Categoria.PANTALON) {
+					Pantalon p = new Pantalon(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
+					articulos.add(p);
+				}
+				else {
+					Zapato z = new Zapato(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
+					articulos.add(z);	 
+
+				}
+			    
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return articulos;
+	}
+	public static Articulo buscarArticulo(Connection con, String id) {
+	    String sql = String.format("SELECT * FROM articulo WHERE ID = '%s'", id);
+	    
+	    try (Statement st = con.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+	        if (rs.next()) {
+	            String nom = rs.getString("NOMBRE");
+	            String unidades = rs.getString("UNIDADES");
+	            String precio = rs.getString("PRECIO");
+	            String genero = rs.getString("GENERO");
+	            String talla = rs.getString("TALLA");
+	            String foto = rs.getString("FOTO");
+	            String categoria = rs.getString("CATEGORIA");
+
+	            // Definir un tipo genérico Articulo
+	            Articulo articulo = null;
+
+	            // Crear instancias específicas según la categoría
+	            switch (Categoria.valueOf(categoria)) {
+	                case CAMISETA:
+	                    articulo = new Camiseta(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio), Genero.valueOf(genero), Talla.valueOf(talla), foto, Categoria.valueOf(categoria));
+	                    break;
+	                case JERSEY:
+	                    articulo = new Jersey(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio), Genero.valueOf(genero), Talla.valueOf(talla), foto, Categoria.valueOf(categoria));
+	                    break;
+	                case PANTALON:
+	                    articulo = new Pantalon(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio), Genero.valueOf(genero), Talla.valueOf(talla), foto, Categoria.valueOf(categoria));
+	                    break;
+	                case CALZADO:
+	                    articulo = new Zapato(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio), Genero.valueOf(genero), Talla.valueOf(talla), foto, Categoria.valueOf(categoria));
+	                    break;
+	                default:
+	                    // Puedes manejar otras categorías aquí según tus necesidades
+	                    break;
+	            }
+
+	            return articulo;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return null;
+	}
+
 
 }

@@ -1,157 +1,90 @@
-
 package ventanas;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.URL;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.TreeSet;
+import java.util.Map;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import javax.swing.JScrollPane;
-import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
+import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 
 import clases.Articulo;
 import clases.Cliente;
 import clases.Tienda;
-import clases.Usuario;
 
 public class VentanaCompras extends JFrame {
-	private JPanel pCentro,pSur;
-	private JButton btnVolver, btnComprar, btnAniadirArticuloAlCarrito;
-	private JFrame vActual,vAnterior;
-	
-	private DefaultTableModel modeloTablaCompras; 
-	private JTable tablaCompras; 
-	private JScrollPane scrollTablaCompras;
-	private JButton btnMas, btnMenos;
-	private JSpinner sCantidad;
-	
-	
-	private static int fila;
-	
-	
-	public VentanaCompras(JFrame va) {
-		super();
-		//this.ventanaPrincipal = (VentanaPrincipal) ventanaPrincipal;
-		
-		vActual = this;
-		vAnterior = va;	
-		
-		setResizable(false);
-		setBounds(300, 200, 600, 400);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);	
-		int anchoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
-	    int altoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
-	    setSize(anchoP, altoP);
-	    setExtendedState(MAXIMIZED_BOTH);
-		
-		
-		btnMas = new JButton("+");
-        btnMenos = new JButton("-");
-        
-		pSur = new JPanel();
-		getContentPane().add(pSur, BorderLayout.SOUTH);
-		
-		Object [] titulos = {"ARTICULO","CANTIDAD","PRECIO"};
-		modeloTablaCompras = new DefaultTableModel() {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				if(column==1)
-					return true;
-				return false;
-			}
-		};
-		modeloTablaCompras.setColumnIdentifiers(titulos);
-		tablaCompras = new JTable(modeloTablaCompras);
-		
-		
-		this.tablaCompras.setRowHeight(120);
-		
-		tablaCompras.setDefaultRenderer(Object.class, new TableCellRenderer() {
-			
-			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-					int row, int column) {
-				if(column==0) {
-		            String imagePath = (String) value;
-		            ImageIcon originalIcon = createImageIcon(imagePath);
+    private JPanel pCentro, pSur;
+    private JButton btnVolver, btnComprar;
+    private JFrame vActual, vAnterior;
 
-		            if (originalIcon != null) {
-		                // Tamaño deseado para la imagen (ajusta según tus necesidades)
-		                int width = 120;
-		                int height = 120;
+    private static DefaultTableModel modeloTablaCompras;
+    private static JTable tablaCompras;
+    private JScrollPane scrollTablaCompras;
 
-		                // Redimensionar la imagen al tamaño deseado
-		                Image resizedImage = originalIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-		                ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
-		                JLabel l = new JLabel(resizedIcon);
-		                l.setOpaque(true);
-		                return l;
-		            } else {
-		                // Si no se puede cargar la imagen, muestra el valor como texto
-		                JLabel l = new JLabel(value.toString());
-		                l.setOpaque(true);
-		                return l;
-		            }
-				}else if(column==1) {
-					JSpinner sCantidad = new JSpinner(new SpinnerNumberModel(Integer.parseInt(value.toString()), 0, 100, 1));
-					sCantidad.addChangeListener(e -> actualizarPrecioFila());
-					return sCantidad;
-					//JLabel l = new JLabel(value.toString());
-					//return l;
-				}else {
-					JLabel l = new JLabel(value.toString());
-					l.setOpaque(true);
-					return l;
-				}
-			}
-		});
-		
-		
+    public VentanaCompras(JFrame va) {
+        super();
+        vActual = this;
+        vAnterior = va;
+        setResizable(false);
+        setBounds(300, 200, 600, 400);
+        //setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);	
+        int anchoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
+        int altoP = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
+        setSize(anchoP, altoP);
+        setExtendedState(MAXIMIZED_BOTH);
 
+        pCentro = new JPanel(new BorderLayout());
+        pSur = new JPanel();
+        getContentPane().add(pSur, BorderLayout.SOUTH);
+
+        Object[] titulos = { "ID", "ARTICULO", "DESCRIPCION", "TALLA", "CANTIDAD", "PRECIO"};
+        setModeloTablaCompras(new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                if (column == 4)
+                    return true;
+                return false;
+            }
+        });
+        getModeloTablaCompras().setColumnIdentifiers(titulos);
+        tablaCompras = new JTable(getModeloTablaCompras());
+        scrollTablaCompras = new JScrollPane(tablaCompras);
+        pCentro.add(scrollTablaCompras, BorderLayout.CENTER);
+        pCentro.add(new JPanel(),  BorderLayout.EAST );
+        pCentro.add(new JPanel(),  BorderLayout.WEST );
+        getContentPane().add(pCentro, BorderLayout.CENTER);
+
+        cargarArticuloTabla();
+
+        // Configurar el editor de la columna "CANTIDAD" para usar JSpinner
+        TableColumnModel columnModel = tablaCompras.getColumnModel();
+        TableColumn cantidadColumna = columnModel.getColumn(4);
+
+        SpinnerEditor spinnerEditor = new SpinnerEditor();
+        cantidadColumna.setCellEditor(spinnerEditor);
+        cantidadColumna.setCellRenderer(spinnerEditor);
           
-		scrollTablaCompras = new JScrollPane(tablaCompras);
-		getContentPane().add(scrollTablaCompras, BorderLayout.CENTER);
 		
-		cargarTabla();
-		
-		//NUEVA TABLA PARA LOS FAVORITOS
-		pSur.add(btnVolver);
-		
-		btnVolver.addActionListener((e)->{
-			/*VentanaCompras.this.dispose();
-			ventanaPrincipal.setVisible(true);*/
-			
-			vAnterior.setVisible(true);
-			vActual.dispose();
-		});
 		
 		
 		
@@ -160,60 +93,63 @@ public class VentanaCompras extends JFrame {
         columnModel.getColumn(1).setCellRenderer(new SpinnerRenderer());
         columnModel.getColumn(1).setCellEditor(new SpinnerEditor()); */  
 		
-		
+        tablaCompras.setDefaultRenderer(Object.class, new TableCellRenderer() {
 
-		btnComprar = new JButton("COMPRAR");
-		pSur.add(btnComprar);
-		
-		btnComprar.addActionListener((e)->{
-		    Cliente clienteActual = obtenerClienteActual();
-		    ArrayList<Articulo> articulosSeleccionados = obtenerArticulosSeleccionados();
-		    Tienda.getCompras().put((Cliente) clienteActual, articulosSeleccionados);
-		 
-		   // modeloTablaCompras.setRowCount(0);	// hago que una vez realizada la compra se borre
-		    //new VentanaProcesarElPago();
-		    //Tienda.getCompras().put((Cliente) usuarioActual, articulosSeleccionados);
-			//Tienda.getCompras().put(VentanaInicioSesion.getCliente(), VentanaInicioSesion.getCarrito());
-		    modeloTablaCompras.setRowCount(0);	// hago que una vez realizada la compra se borre
-		    //new VentanaProcesarElPago();
-		    System.out.println("La compra se ha realizado correctamente.");
-		});
-		
-		
-		
-        
-		setVisible(true);
-	
-	}
-	
-	
-	private Cliente obtenerClienteActual() {
-    	 return new Cliente();
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
+                if (column == 1) {
+                    try {
+                        ImageIcon originalIcon = (ImageIcon) getModeloTablaCompras().getValueAt(row, column);
+                        int nuevoAncho = 80;
+                        int nuevoAlto = 80;
+
+                        Image imagenOriginal = originalIcon.getImage();
+                        Image imagenRedimensionada = imagenOriginal.getScaledInstance(nuevoAncho, nuevoAlto,
+                                Image.SCALE_SMOOTH);
+
+                        ImageIcon iconoRedimensionado = new ImageIcon(imagenRedimensionada);
+
+                        JLabel label = new JLabel(iconoRedimensionado);
+                        label.setOpaque(true);
+                        return label;
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        JLabel errorLabel = new JLabel("Imagen no disponible");
+                        errorLabel.setOpaque(true);
+                        return errorLabel;
+                    }
+
+                } else {
+                    JLabel l = new JLabel(value.toString());
+                    l.setOpaque(true);
+                    return l;
+                }
+            }
+
+        });
+
+        btnVolver = new JButton("VOLVER");
+        pSur.add(btnVolver);
+
+        btnVolver.addActionListener((e) -> {
+        	dispose();
+        });
+
+        btnComprar = new JButton("COMPRAR");
+        pSur.add(btnComprar);
+
+        btnComprar.addActionListener((e) -> {
+//            Cliente clienteActual = obtenerClienteActual();
+//            ArrayList<Articulo> articulosSeleccionados = obtenerArticulosSeleccionados();
+//            Tienda.getCompras().put((Cliente) clienteActual, articulosSeleccionados);
+
+            System.out.println("La compra se ha realizado correctamente.");
+            System.out.println(obtenerPrecioCompra() );
+            getModeloTablaCompras().setRowCount(0);
+        });
     }
-	 
-	private ArrayList<Articulo> obtenerArticulosSeleccionados() {
-		ArrayList<Articulo> comprasUsuario = new ArrayList<>();
-	    for (int fila = 0; fila < modeloTablaCompras.getRowCount(); fila++) {
-	    	Articulo articulo = (Articulo) modeloTablaCompras.getValueAt(fila, 0);
-	    	comprasUsuario.add(articulo);
-	    }
-	    return comprasUsuario;
-	}
-	
-	public void agregarArticuloAlCarrito(Articulo articulo) {
-	    ImageIcon icono = new ImageIcon(getClass().getResource(articulo.getFoto()));
-	    sCantidad = new JSpinner(); 
-	    sCantidad.addChangeListener(e -> actualizarPrecioFila());
-
-	    Object[] fila = {articulo.getFoto(), 1, articulo.getPrecio()};	
-		//Object[] fila = {articulo, 1, articulo.getPrecio()};	lo que tiene por defecto
-        modeloTablaCompras.addRow(fila);
-	}
-	
-	
-
-	 
-
 	 
     
     
@@ -231,7 +167,10 @@ public class VentanaCompras extends JFrame {
 		}
 	}*/
 	
-	public void cargarTabla() {
+    
+    
+
+	/*public void cargarTabla() {
 	    Cliente clienteActual = obtenerClienteActual();
 	    ArrayList<Articulo> articulosCarrito = Tienda.getCompras().get(clienteActual);
 
@@ -257,33 +196,130 @@ public class VentanaCompras extends JFrame {
 	    }
 		
 		
+	}*/
+	
+
+    private void cargarArticuloTabla() {
+        if (VentanaPrincipal.isClienteHaIniciadoSesion()) {
+            for (Cliente c : Tienda.getCestaPorCliente().keySet()) {
+                List<Articulo> aCesta = Tienda.getCestaPorCliente().get(c);
+                for (Articulo a : aCesta) {
+                    try {
+                        ImageIcon icono = new ImageIcon(getClass().getResource(a.getFoto()));
+                        Object[] fila = {a.getId(), icono, a.getNombre(), a.getTallaStr(), a.getCantidadSeleccionada(), a.getPrecioPorUnidad()};
+                        getModeloTablaCompras().addRow(fila);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    static class SpinnerEditor extends AbstractCellEditor implements TableCellEditor, TableCellRenderer {
+        private final JSpinner spinner;
+
+        public SpinnerEditor() {
+            spinner = new JSpinner();
+            spinner.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));  // Establecer modelo para evitar NullPointerException
+            spinner.addChangeListener(e -> {
+                int fila = tablaCompras.getEditingRow();
+                int columna = tablaCompras.getEditingColumn();
+                if (fila != -1 && columna == 4) {
+                    int nuevaCantidad = (int) spinner.getValue();
+                    tablaCompras.getModel().setValueAt(nuevaCantidad, fila, columna);
+                    
+                    // Actualizar la cantidadSeleccionada en la instancia de Articulo
+                    String idArticulo = (String) tablaCompras.getModel().getValueAt(fila, 0);
+                    Articulo a = obtenerArticuloPorID(idArticulo); // Ajusta esto según la estructura de tu código
+                    a.setCantidadSeleccionada(nuevaCantidad);
+
+                    float precioUnitario = a.getPrecio();
+                    float nuevoPrecio = nuevaCantidad * precioUnitario;
+                    tablaCompras.getModel().setValueAt(nuevoPrecio, fila, 5);
+                    a.setPrecioPorUnidad(nuevoPrecio);
+
+                    // Notificar que se ha realizado la edición
+                    fireEditingStopped();
+                }
+            });
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            int cantidad = (int) value;
+            spinner.setValue(cantidad);
+            return spinner;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return spinner.getValue();
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+                                                       int row, int column) {
+            JSpinner newSpinner = new JSpinner();  // Crear un nuevo JSpinner para cada fila
+            newSpinner.setValue(value);
+            return newSpinner;
+        }
+    }
+
+
+
+    private Cliente obtenerClienteActual() {
+        return VentanaInicioSesion.getCliente();
+    }
+
+//    private ArrayList<Articulo> obtenerArticulosSeleccionados() {
+//        ArrayList<Articulo> comprasUsuario = new ArrayList<>();
+//        for (int fila = 0; fila < getModeloTablaCompras().getRowCount(); fila++) {
+//            Articulo articulo = (Articulo) getModeloTablaCompras().getValueAt(fila, 0);
+//            comprasUsuario.add(articulo);
+//        }
+//        return comprasUsuario;
+//    }
+
+	public static DefaultTableModel getModeloTablaCompras() {
+		return modeloTablaCompras;
+	}
+
+	public static void setModeloTablaCompras(DefaultTableModel modeloTablaCompras) {
+		VentanaCompras.modeloTablaCompras = modeloTablaCompras;
 	}
 	
-	 
-    private ImageIcon createImageIcon(String imagePath) {
-        try {
-            // Obtener la URL del archivo local usando el protocolo "file:"
-            URL url = getClass().getResource(imagePath);
-            return new ImageIcon(url);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }   
-
+	private static Articulo obtenerArticuloPorID(String id) {
+	    // Aquí debes implementar la lógica para obtener el Articulo correspondiente al ID
+	    // Puedes iterar sobre la lista de Articulos en tu cesta y devolver el que tenga el ID correcto
+	    for (Cliente c : Tienda.getCestaPorCliente().keySet()) {
+	        List<Articulo> aCesta = Tienda.getCestaPorCliente().get(c);
+	        for (Articulo a : aCesta) {
+	            if (a.getId() == id) {
+	                return a;
+	            }
+	        }
+	    }
+	    return null; // Manejo del caso en que no se encuentra el Articulo
+	}
 	
-	
-	
+	private static float obtenerPrecioCompra() {
+		float precioTotal = (float) 0.0;
 
+	    for (int fila = 0; fila < getModeloTablaCompras().getRowCount(); fila++) {
+	    	float valor = (float) getModeloTablaCompras().getValueAt(fila, 5);
+	        precioTotal += valor;
+	        
+	    }
 
-
-
-	
-	
-};
-
-
-
+	    return precioTotal;
+		
+	}
+    
+    
+    
+    
+}
 
 
 

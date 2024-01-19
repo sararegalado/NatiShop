@@ -6,7 +6,7 @@ public class Zapato extends Articulo {
 		super();
 	}
 
-	public Zapato(String id, String nombre, int unidades, double precio,Genero genero, Talla talla, String foto, Categoria categoria) {
+	public Zapato(String id, String nombre, int unidades, float precio,Genero genero, Talla talla, String foto, Categoria categoria) {
 		super(id,nombre, unidades, precio, genero, talla, foto,categoria);
 	}
 

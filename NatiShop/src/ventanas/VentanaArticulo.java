@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -16,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
@@ -35,7 +37,7 @@ public class VentanaArticulo extends JFrame {
 	private JLabelGrafico foto;
 	private JComboBox<Talla> cbTallas;
 	
-	private VentanaCompras ventanaCompras;
+	private VentanaCompras ventanaCompras = new VentanaCompras(null);
 	
 	/*private DefaultListModel<Articulo> modeloListaArticulos; 
 	private JList<Articulo> listaArticulos; 
@@ -77,7 +79,7 @@ public class VentanaArticulo extends JFrame {
         //pNorte.setPreferredSize(new Dimension(anchoP,(altoP/6)));
         JLabel lblTitulo = new JLabel(articulo.getNombre());
         lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-        lblTitulo.setFont(new Font("Baskerville", Font.BOLD, 30));
+        lblTitulo.setFont(new Font("Dialog", Font.BOLD, 30));
         pNorte.add(lblAtras);
         pNorte.add(lblTitulo);
         pNorte.add(vacio2);
@@ -116,11 +118,11 @@ public class VentanaArticulo extends JFrame {
         
 
         lblTallas = new JLabel("Tallas disponibles");
-        lblTallas.setBounds(225, 11, 170, 43);
+        lblTallas.setBounds(184, 11, 241, 43);
         pTallas.add(lblTallas);
         
         lblTallas.setHorizontalAlignment(SwingConstants.CENTER);
-        lblTallas.setFont(new Font("Baskerville", Font.PLAIN, 20));
+        lblTallas.setFont(new Font("Dialog", Font.BOLD, 20));
         
         cbTallas = new JComboBox<Talla>();
         TreeSet<Talla> tallasTree = Tienda.tallasPorArticulo(articulo);
@@ -128,8 +130,14 @@ public class VentanaArticulo extends JFrame {
         	cbTallas.addItem(t);
         	
         }
-       cbTallas.setBounds(241, 85, 142, 27);
+       cbTallas.setBounds(235, 65, 142, 27);
        pTallas.add(cbTallas);
+       
+       JLabel lblPrecio = new JLabel(articulo.getPrecio()+"€");
+       lblPrecio.setHorizontalAlignment(SwingConstants.CENTER);
+       lblPrecio.setFont(new Font("Dialog", Font.BOLD, 20));
+       lblPrecio.setBounds(251, 136, 112, 43);
+       pTallas.add(lblPrecio);
        
        btnAniadirArticuloAlCarrito = new JButton("AÑADIR ARTÍCULO AL CARRITO");
        btnAniadirArticuloAlCarrito.setBounds(172, 82, 325, 29);
@@ -144,19 +152,57 @@ public class VentanaArticulo extends JFrame {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 		            Talla tallaSeleccionada = (Talla) cbTallas.getSelectedItem();
-		            Articulo articuloSeleccionado = obtenerArticuloSeleccionado(tallaSeleccionada);
+		            Articulo articuloSeleccionado = articulo;
 	
 		            
-		            if (articuloSeleccionado != null) {
+		            if (articulo != null) {
 		                //Logger.getLogger(getClass().getName()).info("Artículo añadido al carrito: " + articuloSeleccionado.getNombre());
 		                //mostrarFotoArticulo(articuloSeleccionado);
 		            	 //ventanaCompras.cargarTabla();
-		            	 ventanaCompras.agregarArticuloAlCarrito(articuloSeleccionado);
-			               
+		            	 //ventanaCompras.agregarArticuloAlCarrito(articuloSeleccionado);
+		            	if (!VentanaPrincipal.isClienteHaIniciadoSesion()) {
+		                    // Mostrar cuadro de diálogo de advertencia
+		                    int choice = JOptionPane.showOptionDialog(
+		                            null,
+		                            "PARA AÑADIR UN ARTÍCULO AL CARRITO, DEBES INICIAR SESIÓN PRIMERO",
+		                            "Advertencia",
+		                            JOptionPane.YES_NO_OPTION,
+		                            JOptionPane.WARNING_MESSAGE,
+		                            null,
+		                            new Object[]{"Iniciar Sesión", "Cancelar"},
+		                            "Iniciar Sesión");
+
+		                    switch (choice) {
+		                        case 0:
+		                            new VentanaInicioSesion(vActual);
+		                            //ventanaInicioSesion.setVisible(true);
+
+		                            // Luego de iniciar sesión, vuelve a llamar a actionPerformed
+		                            //actionPerformed(e);
+		                            break;
+		                        case 1:
+		                            // Código para la opción Cancelar
+		                            System.out.println("Operación cancelada");
+		                            break;
+		                        default:
+		                            // Cualquier otra lógica que puedas necesitar
+		                            break;
+		                    }
+		            	}else if (Tienda.getCestaPorCliente().containsKey(VentanaInicioSesion.getCliente())) {
+		            		Tienda.getCestaPorCliente().get(VentanaInicioSesion.getCliente()).add(articulo);
+		            		JOptionPane.showMessageDialog(null, "TALLA " + tallaSeleccionada + " AÑADIDO A TU CESTA DE LA COMPRA", "",JOptionPane.INFORMATION_MESSAGE);
+			            	dispose();
+		            	}else {
+		            		ArrayList<Articulo> nuevaLista = new ArrayList<>();
+		                    nuevaLista.add(articulo);
+		            		Tienda.getCestaPorCliente().put (VentanaInicioSesion.getCliente(),nuevaLista);
+		            		JOptionPane.showMessageDialog(null, "TALLA " + tallaSeleccionada + " AÑADIDO A TU CESTA DE LA COMPRA", "",JOptionPane.INFORMATION_MESSAGE);
+			            	dispose();
+		            	}
+		            	System.out.println(Tienda.getCestaPorCliente());
+      
 		            }
 		        }
-	        
-	
 			
 			
 	    });
@@ -168,8 +214,6 @@ public class VentanaArticulo extends JFrame {
 
 	}
 	
-	
-	
 	private Articulo obtenerArticuloSeleccionado(Talla tallaSeleccionada) {				
 		Set<Articulo> todosLosArticulos = Tienda.getArticulos();
 	    for (Articulo articulo : todosLosArticulos) {
@@ -180,17 +224,8 @@ public class VentanaArticulo extends JFrame {
 	    }
 	return null;
 	}
-	
 }
 
 
-
 	
 	
-
-
-
-
-	
-
-

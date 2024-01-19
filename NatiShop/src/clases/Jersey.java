@@ -6,7 +6,7 @@ public class Jersey extends Articulo {
 		super();
 	}
 
-	public Jersey(String id, String nombre, int unidades, double precio, Genero genero, Talla talla, String foto, Categoria categoria) {
+	public Jersey(String id, String nombre, int unidades, float precio, Genero genero, Talla talla, String foto, Categoria categoria) {
 		super(id, nombre, unidades, precio, genero, talla, foto, categoria);
 	}
 
