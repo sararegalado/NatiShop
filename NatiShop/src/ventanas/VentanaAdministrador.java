@@ -7,16 +7,20 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 
 import com.toedter.calendar.JCalendar;
 
 import clases.Articulo;
 import clases.Cliente;
+import clases.Compra;
 import clases.Puesto;
 import clases.Tienda;
 import clases.Usuario;
@@ -39,7 +43,7 @@ public class VentanaAdministrador extends JFrame{
 	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfJornada, tfPuesto;
 	private JButton btnDesplegar;
 	
-	private JTable tablaClientes;
+	private JTable tClientes;
 	private ModeloTablaClientes mClientes;
 	private JScrollPane sTablaUsuarios;
 	private JFrame vActual,vAnterior;
@@ -308,29 +312,7 @@ public class VentanaAdministrador extends JFrame{
 		mItemGraficos.setFont(new Font("Calibri", Font.BOLD, 15));
 		menuEstadisticas.add(mItemGraficos);
 		
-		mClientes = new ModeloTablaClientes(new ArrayList<>());
-		tablaClientes = new JTable(mClientes);
-		sTablaUsuarios = new JScrollPane(tablaClientes);
-		//pnlCentro.add(sTablaUsuarios);
-		pnlCentro.setVisible(false);
 		
-		tablaClientes.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Point p = e.getPoint();
-				int fila = tablaClientes.rowAtPoint(p);
-				String dni = tablaClientes.getModel().getValueAt(fila, 0).toString();
-				String texto = "";
-				for(String fecha: Tienda.getComprasPorCliente().get(dni).keySet()) {
-					texto = "FECHA: "+fecha + "\n";
-					for(Articulo a: Tienda.getComprasPorCliente().get(dni).get(fecha)) {
-						texto = texto + a + "\n";
-					}
-				}
-				JOptionPane.showMessageDialog(null, texto);
-			}
-		});
 		
 		setVisible(true);		
 	}
@@ -341,28 +323,72 @@ public class VentanaAdministrador extends JFrame{
 	public void cargarTablaUsuarios() {
 		Connection con = BD.initBD("NatiShop.db");
 		List<Cliente> c = BD.obtenerListaClientes(con);
-		BD.closeBD(con);
-		tablaClientes.setModel(new ModeloTablaClientes(c));
-		pnlCentro.add(sTablaUsuarios, BorderLayout.CENTER);
+		JTable tClientes = new JTable();
+		JScrollPane spTablaClientes = new JScrollPane(tClientes);
+		pnlCentro.add(spTablaClientes, BorderLayout.CENTER);
+		tClientes.setModel(new ModeloTablaClientes(c));
+		tClientes.getColumnModel().getColumn(7).setCellRenderer(new ComprasRendererEditor(this));		
+		tClientes.getColumnModel().getColumn(7).setCellEditor(new ComprasRendererEditor(this));		
 		JLabel lblUsuarios = new JLabel("<html><u>" + "USUARIOS" + "</u></html>");
 		lblUsuarios.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 30));
 		lblUsuarios.setHorizontalAlignment(JLabel.CENTER);
 		pnlCentro.add(lblUsuarios, BorderLayout.NORTH);
-		pnlCentro.setVisible(true);
+		
+		TableCellRenderer cellRenderer = (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> {
+			JLabel label = new JLabel();
+			
+			label.setText(value.toString());
+	
+			
+			
+			label.setOpaque(true);
+			label.setHorizontalAlignment(JLabel.CENTER);
+			label.setBackground(table.getBackground());
+			return label;
+			
+			
+		};
+		
+		tClientes.setDefaultRenderer(Object.class, cellRenderer);
+		((DefaultTableCellRenderer) tClientes.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 	}
 	
 	public void cargarCompras() {
-		JCalendar jcCompras = new JCalendar(new Date());
-		JPanel pnlCalendar = new JPanel(new GridLayout(2,1));
-		pnlCalendar.add(jcCompras);
-		JTextArea jTaCom = new JTextArea();
-		pnlCalendar.add(jTaCom);
-		pnlCentro.add(pnlCalendar, BorderLayout.CENTER);
-		JLabel lblCompras = new JLabel("<html><u>" + "COMPRAS" + "</u></html>");
-		lblCompras.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 30));
-		lblCompras.setHorizontalAlignment(JLabel.CENTER);
-		pnlCentro.add(lblCompras, BorderLayout.NORTH);
-		pnlCentro.setVisible(true);
+		Connection con = BD.initBD("NatiShop.db");
+		List<Compra> compras = BD.obtenerComprasTotales(con);
+		JTable tablaCompras = new JTable();
+		JScrollPane spTablaCompras = new JScrollPane(tablaCompras);
+		pnlCentro.add(spTablaCompras, BorderLayout.CENTER);
+		tablaCompras.setModel(new ModeloTablaCompras(compras));
+		tablaCompras.getColumnModel().getColumn(3).setCellRenderer(new ArticulosRendererEditor(this));		
+		tablaCompras.getColumnModel().getColumn(3).setCellEditor(new ArticulosRendererEditor(this));		
+		
+		TableCellRenderer cellRenderer = (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> {
+			JLabel label = new JLabel();
+			
+			if (column == 2) {
+		        SimpleDateFormat f1 = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss");
+				float date = (float) value;
+				label.setText(f1.format(date));
+			} else {
+				label.setText(value.toString());
+	
+			}
+			
+			label.setOpaque(true);
+			label.setHorizontalAlignment(JLabel.CENTER);
+			label.setBackground(table.getBackground());
+			return label;
+			
+			
+		};
+		
+		tablaCompras.setDefaultRenderer(Object.class, cellRenderer);
+		((DefaultTableCellRenderer) tablaCompras.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+
+
+
+	
 	}
 
 
