@@ -15,6 +15,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 import com.toedter.calendar.JCalendar;
 
@@ -48,6 +50,10 @@ public class VentanaAdministrador extends JFrame{
 	private JScrollPane sTablaUsuarios;
 	private JFrame vActual,vAnterior;
 	private Administrador admin;
+	
+	private DefaultTreeModel modeloArbolArticulos;
+	private JTree arbolArticulos;
+	private JScrollPane sArbolArticulos;
 	
 	public VentanaAdministrador(JFrame va, Administrador admin) {
 		
@@ -227,12 +233,26 @@ public class VentanaAdministrador extends JFrame{
         	lblSolicitudes.setVisible(false);
         }
        
-        
-        
-       
-		pnlCentro = new JPanel(new BorderLayout());
+        pnlCentro = new JPanel(new BorderLayout());
 		getContentPane().add(pnlCentro, BorderLayout.CENTER);
-		//pnlCentro.setLayout(new GridLayout(1,1));
+        
+		//ARBOL ARTICULOS 
+        DefaultMutableTreeNode raiz= new DefaultMutableTreeNode("ARTICULOS");
+        DefaultMutableTreeNode Jersey = new DefaultMutableTreeNode("JERSEY");
+        DefaultMutableTreeNode Camiseta = new DefaultMutableTreeNode("CAMISETA");
+        DefaultMutableTreeNode Zapato = new DefaultMutableTreeNode("ZAPATO");
+        DefaultMutableTreeNode Pantalon = new DefaultMutableTreeNode("PANTALON");
+        modeloArbolArticulos = new DefaultTreeModel (raiz);
+        modeloArbolArticulos.insertNodeInto(Zapato, raiz, 0);
+        modeloArbolArticulos.insertNodeInto(Jersey, raiz, 1);
+        modeloArbolArticulos.insertNodeInto(Camiseta, raiz, 2);
+        modeloArbolArticulos.insertNodeInto(Pantalon, raiz, 3);
+        arbolArticulos = new JTree(modeloArbolArticulos);
+        sArbolArticulos = new JScrollPane(arbolArticulos);
+       
+       
+		
+		
 		
 		//DECLARACION + ACTIONLISTENER DE LOS MENUITEM
 		menuBarAdmin= new JMenuBar();
@@ -249,6 +269,7 @@ public class VentanaAdministrador extends JFrame{
 		mItemRegistros.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 15));
 		menuClientes.add(mItemRegistros);
 		mItemRegistros.addActionListener(new ActionListener() {
+			
 			/**
 			 * 
 			 * La tabla se carga y visualiza con todos los usuarios registrados en la tienda al pulsar el menutem Registros
@@ -279,6 +300,18 @@ public class VentanaAdministrador extends JFrame{
 		mItemStock = new JMenuItem("GESTION DE STOCK");
 		mItemStock.setFont(new Font("Calibri", Font.BOLD, 15));
 		menuArticulos.add(mItemStock);
+		mItemStock.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pnlCentro.removeAll();
+				pnlCentro.revalidate();
+				pnlCentro.repaint();
+				
+				
+			}
+			
+		});
 		
 		//Janire
 		menuCompras = new JMenu("COMPRAS");
@@ -320,7 +353,7 @@ public class VentanaAdministrador extends JFrame{
 	//METODOS 
 	
 	/**
-	 * Método para cargar los usuarios registrador a la tabla
+	 * Método para cargar los usuarios registrador a la tabla de Usuarios que se vidualiza al pulsar el menuitem "registros"
 	 */
 	public void cargarTablaUsuarios() {
 		Connection con = BD.initBD("NatiShop.db");
@@ -338,7 +371,7 @@ public class VentanaAdministrador extends JFrame{
 			JLabel label = new JLabel();
 			
 			label.setText(value.toString());
-	
+			
 			
 			
 			label.setOpaque(true);
@@ -390,9 +423,10 @@ public class VentanaAdministrador extends JFrame{
 
 	
 	}
+	
 
 	/**
-	 * Método que carga kos datos del Administrador registrado
+	 * Método que carga los datos del Administrador registrado
 	 
 	 */
 	public void cargarDatosAdmin(Administrador admin) {
@@ -410,22 +444,17 @@ public class VentanaAdministrador extends JFrame{
 			tfPuesto.setText(admin.getPuestoStr());
 			
 		}
-		
 	
-		
-		
-		
-		
 	}
 	
-
 
 	
 	/*ERRORES/TAREAS
 	 * Inicio de sesion admins
 	 * Ventana edit admins
 	 * Admins: implemeta al heredar de Usuario ya el compare to?
-	 *
+	 * -----
+	 * Falta añadir arbol al panel centro 
 	  */
 	
 
