@@ -230,7 +230,7 @@ public class VentanaAdministrador extends JFrame{
 		getContentPane().add(pnlCentro, BorderLayout.CENTER);
 		//pnlCentro.setLayout(new GridLayout(1,1));
 		
-		
+		//DECLARACION + ACTIONLISTENER DE LOS MENUITEM
 		menuBarAdmin= new JMenuBar();
 		pnlOesteMenu.add(menuBarAdmin);
 		menuBarAdmin.setFont(new Font("Baskerville", Font.PLAIN, 14));
@@ -335,6 +335,8 @@ public class VentanaAdministrador extends JFrame{
 		setVisible(true);		
 	}
 	
+	//METODOS 
+	
 	/**
 	 * Método para cargar los usuarios registrador a la tabla
 	 */
@@ -365,7 +367,10 @@ public class VentanaAdministrador extends JFrame{
 		pnlCentro.setVisible(true);
 	}
 
-
+	/**
+	 * Método que carga kos datos del Administrador registrado
+	 
+	 */
 	public void cargarDatosAdmin(Administrador admin) {
 		if(admin != null) {
 			System.out.println("NO ES NULO");
@@ -381,6 +386,8 @@ public class VentanaAdministrador extends JFrame{
 			tfPuesto.setText(admin.getPuestoStr());
 			
 		}
+		
+	
 		
 		
 		
