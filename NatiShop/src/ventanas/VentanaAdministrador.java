@@ -327,8 +327,6 @@ public class VentanaAdministrador extends JFrame{
 		JScrollPane spTablaClientes = new JScrollPane(tClientes);
 		pnlCentro.add(spTablaClientes, BorderLayout.CENTER);
 		tClientes.setModel(new ModeloTablaClientes(c));
-		tClientes.getColumnModel().getColumn(7).setCellRenderer(new ComprasRendererEditor(this));		
-		tClientes.getColumnModel().getColumn(7).setCellEditor(new ComprasRendererEditor(this));		
 		JLabel lblUsuarios = new JLabel("<html><u>" + "USUARIOS" + "</u></html>");
 		lblUsuarios.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 30));
 		lblUsuarios.setHorizontalAlignment(JLabel.CENTER);

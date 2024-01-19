@@ -13,7 +13,7 @@ public class ModeloTablaClientes extends DefaultTableModel {
 	
 	
 	
-	private final List<String> titulos= Arrays.asList("DNI","NOMBRE","FECHA DE NACIMIENTO","EMAIL", "TELEFONO", "PROVINCIA", "SALDO", "COMPRAS REALIZADAS" );
+	private final List<String> titulos= Arrays.asList("DNI","NOMBRE","FECHA DE NACIMIENTO","EMAIL", "TELEFONO", "PROVINCIA", "SALDO");
 	
 	public ModeloTablaClientes(List<Cliente> usuarios){
 		this.clientes= usuarios;
@@ -41,7 +41,7 @@ public class ModeloTablaClientes extends DefaultTableModel {
 	
 	@Override
 	public boolean isCellEditable(int row, int column) {
-    	return (column >= titulos.size()-2);
+    	return false;
 	}
 	
 	@Override
@@ -55,7 +55,7 @@ public class ModeloTablaClientes extends DefaultTableModel {
 			case 4: return String.valueOf(c.getTlf());
 			case 5: return String.valueOf(c.getProvinciaStr());
 			case 6: return Double.valueOf(c.getSaldo());
-			case 7: return c;
+			
 			
 			default: return null;
 		}
