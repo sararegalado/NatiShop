@@ -180,6 +180,41 @@ public class Tienda {
 		
 	}
 	
+	//RECURSIVIDAD
+	public static void combinaciones(List<List<Articulo>> resultado, List<Articulo> elementos, double cantidad, double sobra, List<Articulo> temp) {
+		if(cantidad < sobra) {
+			Comparator<Articulo> c = new Comparator<Articulo>() {
+
+				@Override
+				public int compare(Articulo o1, Articulo o2) {
+					return (int) (o1.getPrecio() - o2.getPrecio());
+				}
+			};
+			if(!resultado.contains(temp))
+				resultado.add(new ArrayList<>(temp));
+			
+		}else {
+			for(Articulo a: elementos) {
+				temp.add(a);
+				combinaciones(resultado, elementos, cantidad-a.getPrecio(), sobra, temp);
+				temp.remove(temp.size()-1);
+			}
+		}
+	}
+	public static List<List<Articulo>> combinaciones(List<Articulo> elementos, double cantidad, double sobra) {
+			List<List<Articulo>> resultado = new ArrayList<>();
+			combinaciones(resultado, elementos, cantidad, sobra, new ArrayList<>());
+			return resultado;
+	}
+
+//	public static void main(String[] args) {
+//		List<Articulo> lista = Arrays.asList(new Articulo("1", 6),new Articulo("1", 2),new Articulo("1", 4));
+//		List<List<Articulo>> resultado = combinaciones(lista,10,5);
+//		for(List<Articulo> l: resultado) {
+//			System.out.println(l);
+//		}
+//	}
+	
 	
 	
 	
