@@ -15,13 +15,13 @@ public class Tienda {
 	private static Set<Jersey> jerseys = new TreeSet<>();
 	private static Set<Pantalon> pantalones = new TreeSet<>();
 	private static Set<Zapato> zapatos = new TreeSet<>();
-	
 	private static List<Cliente> clientes = new ArrayList<>();
-	private static HashMap<Cliente, ArrayList<Articulo>> compras = new HashMap<>();
-	private static HashMap<String, HashMap<String, ArrayList<Articulo>>> comprasPorCliente = new HashMap<>();
+
+//	private static HashMap<String, HashMap<String, ArrayList<Articulo>>> comprasPorCliente = new HashMap<>();
 	private static HashMap<String, Administrador>administradores = new HashMap<>();
 	private static HashMap<Cliente, ArrayList<Articulo>> cestaPorCliente = new HashMap<>();
 	//mapa admin (clave: correo, valor admin)
+	
 	
 	
 	public static List<Cliente> getClientes() {
@@ -35,6 +35,11 @@ public class Tienda {
 	public static HashMap<Cliente, ArrayList<Articulo>> getCestaPorCliente() {
 		return cestaPorCliente;
 	}
+	
+	
+
+
+	
 
 
 	public static void setCestaPorCliente(HashMap<Cliente, ArrayList<Articulo>> cestaPorCliente) {
@@ -50,9 +55,9 @@ public class Tienda {
 	}
 
 
-	public static HashMap<Cliente, ArrayList<Articulo>> getCompras() {
-		return compras;
-	}
+//	public static HashMap<Cliente, ArrayList<Articulo>> getCompras() {
+//		return compras;
+//	}
 	
 	public static Set<Articulo> getArticulos() {
 		Connection con = BD.initBD("NatiShop.db");
@@ -133,9 +138,12 @@ public class Tienda {
 	
 	
 
-	public static HashMap<String, HashMap<String, ArrayList<Articulo>>> getComprasPorCliente() {
-		return comprasPorCliente;
-	}
+	
+	
+
+//	public static HashMap<String, HashMap<String, ArrayList<Articulo>>> getComprasPorCliente() {
+//		return comprasPorCliente;
+//	}
 	
 	/**
 	 * Método que añade un nuevo articulo comprado a la lista de articulos del cliente 
@@ -143,42 +151,42 @@ public class Tienda {
 	 * @param a Articulo comprado por el cliente que va a ser añadido a la lista de articulos 
 	 */
 	//METODO QUE HAY QUE AÑADIR AL ACTION LISTENER DEL BOTON COMPRAR
-	public static void aniadirCompraCliente(Cliente c, Articulo a) {
-		
-		
-		if(! compras.containsKey(c)) {
-			compras.put(c, new ArrayList<>());
-		}
-		compras.get(c).add(a);
-		
-		if(!comprasPorCliente.containsKey(c.getDni())) {
-			comprasPorCliente.put(c.getDni(), new HashMap<>());
-		}
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-		Date fActual = new Date(0); //Cuanda  haya compras hay que cpger la fecha de la compra
-		String fechaCompra = sdf.format(fActual);
-		if(!comprasPorCliente.get(c.getDni()).containsKey(fechaCompra)) {
-			comprasPorCliente.get(c.getDni()).put(fechaCompra, new ArrayList<>());
-		}
-		comprasPorCliente.get(c.getDni()).get(fechaCompra).add(a);
-		
-	}
-	
+//	public static void aniadirCompraCliente(Cliente c, Articulo a) {
+//		
+//		
+//		if(! compras.containsKey(c)) {
+//			compras.put(c, new ArrayList<>());
+//		}
+//		compras.get(c).add(a);
+//		
+//		if(!comprasPorCliente.containsKey(c.getDni())) {
+//			comprasPorCliente.put(c.getDni(), new HashMap<>());
+//		}
+//		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+//		Date fActual = new Date(0); //Cuanda  haya compras hay que cpger la fecha de la compra
+//		String fechaCompra = sdf.format(fActual);
+//		if(!comprasPorCliente.get(c.getDni()).containsKey(fechaCompra)) {
+//			comprasPorCliente.get(c.getDni()).put(fechaCompra, new ArrayList<>());
+//		}
+//		comprasPorCliente.get(c.getDni()).get(fechaCompra).add(a);
+//		
+//	}
+//	
 	/**
 	 * Método que carga el mapa Compras por cliente  desde la Base de datos, cuya clave es el dni del cliente y el valor es otro mapa
 	 * con clave la fecha de compra y valor la lista de compras hecha por el cliente
 	 */
 	
-	public static void cargarKeyMapaClientes() {
-		Connection con = BD.initBD("NatiShop.db");
-		List<Cliente> clientes = BD.obtenerListaClientes(con);
-		System.out.println(clientes);
-		BD.closeBD(null);
-		for (Cliente c : clientes) {
-			comprasPorCliente.putIfAbsent(c.getDni(), new HashMap<>());
-		}
-		
-	}
+//	public static void cargarKeyMapaClientes() {
+//		Connection con = BD.initBD("NatiShop.db");
+//		List<Cliente> clientes = BD.obtenerListaClientes(con);
+//		System.out.println(clientes);
+//		BD.closeBD(null);
+//		for (Cliente c : clientes) {
+//			comprasPorCliente.putIfAbsent(c.getDni(), new HashMap<>());
+//		}
+//		
+//	}
 	
 	//RECURSIVIDAD
 	public static void combinaciones(List<List<Articulo>> resultado, List<Articulo> elementos, double cantidad, double sobra, List<Articulo> temp) {

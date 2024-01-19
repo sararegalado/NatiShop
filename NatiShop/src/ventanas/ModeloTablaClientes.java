@@ -13,7 +13,7 @@ public class ModeloTablaClientes extends DefaultTableModel {
 	
 	
 	
-	private final List<String> titulos= Arrays.asList("DNI","NOMBRE","FECHA DE NACIMIENTO","EMAIL", "TELEFONO", "PROVINCIA", "SALDO" );
+	private final List<String> titulos= Arrays.asList("DNI","NOMBRE","FECHA DE NACIMIENTO","EMAIL", "TELEFONO", "PROVINCIA", "SALDO");
 	
 	public ModeloTablaClientes(List<Cliente> usuarios){
 		this.clientes= usuarios;
@@ -27,9 +27,11 @@ public class ModeloTablaClientes extends DefaultTableModel {
 	
 	@Override
 	public int getRowCount() {
-		if(clientes !=null)
+		if (clientes != null) {
 			return clientes.size();
-		return 0;
+		} else { 
+			return 0;
+		}
 	}
 	
 	@Override
@@ -39,20 +41,21 @@ public class ModeloTablaClientes extends DefaultTableModel {
 	
 	@Override
 	public boolean isCellEditable(int row, int column) {
-		return false;
+    	return false;
 	}
 	
 	@Override
 	public Object getValueAt(int row,int column) {
 		Cliente c = clientes.get(row);
-		switch(column) {
-			case 0: return c.getDni(); 
-			case 1: return c.getNombre(); 
-			case 2: return c.getfNacStr();
-			case 3: return c.getCorreo();
-			case 4: return c.getTlf();
-			case 5: return c.getProvinciaStr();
-			case 6: return c.getSaldo();
+		switch(column) { 
+			case 0: return String.valueOf(c.getDni()); 
+			case 1: return String.valueOf(c.getNombre()); 
+			case 2: return String.valueOf(c.getfNacStr());
+			case 3: return String.valueOf(c.getCorreo());
+			case 4: return String.valueOf(c.getTlf());
+			case 5: return String.valueOf(c.getProvinciaStr());
+			case 6: return Double.valueOf(c.getSaldo());
+			
 			
 			default: return null;
 		}
