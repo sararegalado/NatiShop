@@ -20,6 +20,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		BD.volcarCSVArticulos(con, "articulos.csv");
+		BD.volcarCSVAdmin(con, "Administradores.csv");
 		
 		
 

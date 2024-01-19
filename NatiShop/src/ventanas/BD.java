@@ -362,6 +362,40 @@ public class BD {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void volcarCSVAdmin(Connection con, String nomfich) {
+		try {
+			Scanner sc= new Scanner(new FileReader(nomfich));
+				String linea;
+				linea= sc.nextLine(); //titulos
+				while(sc.hasNext()) {
+					linea= sc.nextLine();
+					String [] partes= linea.split(";");
+					String dni= partes[0];
+					String nombre= partes[1];
+					String apellido= partes[2];
+					String correo = partes[3];
+					String tlf = partes[4];
+					String provincia = partes[5];
+					String fNac= partes[6];
+					String fInicEmpresa = partes[7];
+					String jornadaLaboral = partes[8];
+					String puesto = partes[9];
+					String contrasenia = partes[10];
+					
+					Administrador a = new Administrador(dni, nombre, apellido, fNac,  correo, tlf, provincia, fInicEmpresa, 
+							jornadaLaboral, puesto, contrasenia);
+					BD.insertarAdmin(con, a);
+						
+					}
+				
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
 
 	
 	public static HashMap<String, Administrador> volcarTablaAdminAMapa(Connection con){
