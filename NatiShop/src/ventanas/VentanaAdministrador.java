@@ -241,20 +241,7 @@ public class VentanaAdministrador extends JFrame{
         pnlCentro = new JPanel(new BorderLayout());
 		getContentPane().add(pnlCentro, BorderLayout.CENTER);
         
-		//ARBOL ARTICULOS 
-        DefaultMutableTreeNode raiz= new DefaultMutableTreeNode("ARTICULOS");
-        DefaultMutableTreeNode Jersey = new DefaultMutableTreeNode("JERSEY");
-        DefaultMutableTreeNode Camiseta = new DefaultMutableTreeNode("CAMISETA");
-        DefaultMutableTreeNode Zapato = new DefaultMutableTreeNode("ZAPATO");
-        DefaultMutableTreeNode Pantalon = new DefaultMutableTreeNode("PANTALON");
-        modeloArbolArticulos = new DefaultTreeModel (raiz);
-        modeloArbolArticulos.insertNodeInto(Zapato, raiz, 0);
-        modeloArbolArticulos.insertNodeInto(Jersey, raiz, 1);
-        modeloArbolArticulos.insertNodeInto(Camiseta, raiz, 2);
-        modeloArbolArticulos.insertNodeInto(Pantalon, raiz, 3);
-        arbolArticulos = new JTree(modeloArbolArticulos);
-        sArbolArticulos = new JScrollPane(arbolArticulos);
-       
+		
        
 		
 		
@@ -312,6 +299,8 @@ public class VentanaAdministrador extends JFrame{
 				pnlCentro.removeAll();
 				pnlCentro.revalidate();
 				pnlCentro.repaint();
+				cargarArbol();
+				System.out.println("Item funciona");
 				
 				
 			}
@@ -522,14 +511,42 @@ public class VentanaAdministrador extends JFrame{
 	
 	}
 	
+	/**
+	 * Método que crea el Arbol que aparece al pulsar el mItemStock con los tipos de prendas que tiene la tienda como nodos hijos
+	 */
+	
+	public void cargarArbol() {
+		 DefaultMutableTreeNode raiz= new DefaultMutableTreeNode();
+	     DefaultMutableTreeNode Jersey = new DefaultMutableTreeNode("JERSEY");
+	     DefaultMutableTreeNode Camiseta = new DefaultMutableTreeNode("CAMISETA");
+	     DefaultMutableTreeNode Zapato = new DefaultMutableTreeNode("ZAPATO");
+	     DefaultMutableTreeNode Pantalon = new DefaultMutableTreeNode("PANTALON");
+	     modeloArbolArticulos = new DefaultTreeModel (raiz);
+	     modeloArbolArticulos.insertNodeInto(Zapato, raiz, 0);
+	     modeloArbolArticulos.insertNodeInto(Jersey, raiz, 1);
+	     modeloArbolArticulos.insertNodeInto(Camiseta, raiz, 2);
+	     modeloArbolArticulos.insertNodeInto(Pantalon, raiz, 3);
+ 	     arbolArticulos = new JTree(modeloArbolArticulos);
+	     int anchoArbol = 200; // ajusta este valor según tus necesidades
+	     arbolArticulos.setPreferredSize(new Dimension(anchoArbol, arbolArticulos.getPreferredSize().height));
+	     sArbolArticulos = new JScrollPane(arbolArticulos);
+	     arbolArticulos.setCellRenderer(new arbolArticulosRenderer());
+	     arbolArticulos.setVisible(true);
+	     pnlCentro.add(sArbolArticulos, BorderLayout.WEST);
+	     pnlCentro.setVisible(true);
+	     System.out.println("Método Fuciona");
+		
+	}
+	
 
 	
 	/*ERRORES/TAREAS
-	 * Inicio de sesion admins
-	 * Ventana edit admins
-	 * Admins: implemeta al heredar de Usuario ya el compare to?
+	 * Falta llamar  al metodi aniadirCompraCliente() al actioonListener del Boton Comprar -- > Parametros?
+	 * 
+	 * 
 	 * -----
 	 * Falta añadir arbol al panel centro 
+	 * Hacer tabla y añadir el arbol
 	  */
 	
 
