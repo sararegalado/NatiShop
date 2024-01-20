@@ -269,11 +269,17 @@ public class VentanaAdministrador extends JFrame{
 			@Override
 			public void valueChanged(TreeSelectionEvent e) {
 				TreePath tp = e.getPath();
-				String nick= tp.getLastPathComponent().toString();
+				String categoria= tp.getLastPathComponent().toString();
 				
 				Connection con = BD.initBD("Natishop.db");
 				Set<Articulo>articulos = BD.obtenerListaArticulos(con);
 				BD.closeBD(con);
+				
+				for(Articulo a: articulos) {
+					if(a.getCategoria().equals(categoria)) {
+						
+					}
+				}
 				
 				
 				
