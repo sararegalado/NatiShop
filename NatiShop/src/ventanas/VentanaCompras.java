@@ -168,6 +168,7 @@ public class VentanaCompras extends JFrame {
            }
       	
       	//AÑADIR METODO ANIADIRCOMPRAS
+           
       });
   }
         	
