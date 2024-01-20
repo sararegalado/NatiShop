@@ -18,6 +18,7 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Logger;
 
 import clases.Administrador;
 import clases.Articulo;
@@ -35,6 +36,9 @@ import clases.Talla;
 import clases.Zapato;
 
 public class BD {
+	
+	protected static Logger logger = Logger.getLogger(BD.class.getName());
+
 		
 	/**
 	 * Método que realiza la conexión con la base de datos
@@ -49,8 +53,8 @@ public class BD {
 					
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException ex) {
+			logger.warning(String.format("Error conectando con la BBDD: %s", ex.getMessage()));
 		}
 		
 		return con;
@@ -60,8 +64,8 @@ public class BD {
 		if(con!=null) {
 			try {
 				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
+			} catch (SQLException ex) {
+				logger.warning(String.format("Error cerrando conexión con la BBDD: %s", ex.getMessage()));
 			}
 		}
 	}
@@ -71,8 +75,8 @@ public class BD {
 		String sql2 = "CREATE TABLE IF NOT EXISTS administrador (DNI String, NOMBRE String, APELLIDO String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, FECHA_INICIO_EMPRESA String, JORNADA String, PUESTO String, CONTRASEÑA String)";
 		String sqlBorraArticulos = "DROP TABLE IF EXISTS articulo";
 		String sql3 = "CREATE TABLE articulo (ID String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
-		String sql4 = "CREATE TABLE IF NOT EXISTS compras(idCompra INTEGER PRIMARY KEY AUTOINCREMENT, Cliente String, fecha bigint)";
-		String sql5 = "CREATE TABLE IF NOT EXISTS articulosVendidos(idCompra Integer, ID String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
+		String sql4 = "CREATE TABLE IF NOT EXISTS compras(ID_COMPRA INTEGER PRIMARY KEY AUTOINCREMENT, CLIENTE String, FECHA String, PRECIO_COMPRA Float)";
+		String sql5 = "CREATE TABLE IF NOT EXISTS articulosVendidos(ID_COMPRA Integer, ID_ARTICULO String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
 
 		try {
 			Statement st = con.createStatement();
@@ -85,8 +89,9 @@ public class BD {
 
 			st.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warning("Error creando las tablas");
 		}
+		logger.info("Tablas creadas correctamenrte");
 	}
 	
 	
@@ -117,8 +122,9 @@ public class BD {
 		    	st.execute();
 		        st.close();
 		    } catch (SQLException e) {
-		        e.printStackTrace();
+		        logger.warning(String.format("Error insertando cliente %s", c.toString()));
 		    }
+		    logger.info(String.format("Nuevo cliente insertado: %s", c.toString()));
 		}
 	
 	}
@@ -144,7 +150,7 @@ public class BD {
 			rs.close();
 			st.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.info("Error buscando cliente" + e.getMessage());
 		}
 		return c;
 	}
@@ -169,7 +175,7 @@ public class BD {
 			rs.close();
 			st.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warning("Error buscando cliente" + e.getMessage());
 		}
 		return c;
 	}
@@ -181,8 +187,9 @@ public class BD {
 			st.executeUpdate(sql);
 			st.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warning(String.format("Error modificando el email del cliente %s", dni));
 		}
+		logger.info(String.format("Cliente modificado con exito: Nuevo email: %s", nuevoEmail));
 	}
 	
 	public static void modificarTlfCliente(Connection con, String dni, String nuevoTlf) {
@@ -192,8 +199,10 @@ public class BD {
 			st.executeUpdate(sql);
 			st.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warning(String.format("Error modificando el telefono del cliente %s", dni));
 		}
+		logger.info(String.format("Cliente modificado con exito: Nuevo teléfono: %s", nuevoTlf));
+
 	}
 	
 	public static void modificarContraCliente(Connection con, String dni, String nuevaContra) {
@@ -203,8 +212,11 @@ public class BD {
 			st.executeUpdate(sql);
 			st.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warning(String.format("Error modificando la contraseña del cliente %s", dni));
 		}
+		logger.info(String.format("Cliente modificado con exito: Nueva contraseña: %s", nuevaContra));
+
+		
 	}
 	
 	public static void modificarNumTarj(Connection con, String dni, String numT) {
@@ -214,8 +226,10 @@ public class BD {
 			st.executeUpdate(sql);
 			st.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warning(String.format("Error modificando el número de tarjeta del cliente %s", dni));
 		}
+		logger.info(String.format("Cliente modificado con exito: Nuevo nº de tarjeta: %s", numT));
+
 	}
 	
 	public static void modificarSaldo(Connection con, String dni, double saldo) {
@@ -230,8 +244,10 @@ public class BD {
 	        st.executeUpdate(sql);
 	        st.close();
 	    } catch (SQLException e) {
-	        e.printStackTrace();
+			logger.warning(String.format("Error modificando el saldo del cliente %s", dni));
 	    }
+		logger.info(String.format("Cliente modificado con exito: Nuevo saldo: %s", saldo));
+
 	}
 	
 	public static int contarClientes(Connection con) {
@@ -245,8 +261,7 @@ public class BD {
 			rs.close();
 			st.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.warning("Error contando clientes");
 		}
 		return cont;
 	}
@@ -276,8 +291,7 @@ public class BD {
 			rs.close();
 			st.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.warning("Error obteniendo lista de clientes");
 		}
 		return l;
 	}
@@ -290,8 +304,10 @@ public class BD {
 			st.executeUpdate(sql);
 			st.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warning("Error borrando cliente " + dni);
 		}
+		logger.info("Cliente borrado correctamente " + dni);
+
 	}
 	
 	
@@ -324,7 +340,7 @@ public class BD {
 			rs.close();
 			st.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warning("Error buscando administrador" + dni);
 		}
 		return a;
 	}
@@ -337,8 +353,10 @@ public class BD {
 				st.executeUpdate(sql);
 				st.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.warning(String.format("Error insertando administrador: %s", a.toString()));
 			}
+			logger.info(String.format("Administrador insertado correctamente: %s", a.toString()));
+
 		}
 	
 	}
@@ -350,8 +368,10 @@ public class BD {
 			st.executeUpdate(sql);
 			st.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warning(String.format("Error bottando administrador: %s", dni));
 		}
+		logger.info(String.format("Administrador borrado correctamente: %s",dni));
+
 	}
 	
 	public static void modificarJornadaAdmin(Connection con, String dni, String nuevaJornada) {
@@ -361,7 +381,7 @@ public class BD {
 			st.executeUpdate(sql);
 			st.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warning(String.format("Error modificando la jornada laboral del administrador %s",dni));
 		}
 	}
 	
@@ -392,8 +412,7 @@ public class BD {
 					}
 				
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.warning("Error volcando csv de administradores a la BBDD");
 		}
 	}
 	
@@ -425,8 +444,7 @@ public class BD {
 			rs.close();
 			st.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.warning("Error obteniendo datos de la tabla administrador");
 
 		}
 		return m;
@@ -463,7 +481,7 @@ public class BD {
 	    	st.execute();
 	        st.close();
 	    } catch (SQLException e) {
-	        e.printStackTrace();
+	    	logger.warning(String.format("Error insertando articulo %s", a.toString()));
 	    }
 	}
 
@@ -507,8 +525,7 @@ public class BD {
 				
 				sc.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.warning("Error volcando csv de articulos a la BBDD");
 		}
 	}
 	
@@ -550,8 +567,7 @@ public class BD {
 			rs.close();
 			st.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.warning("Error obteniendo lista de articulos");
 		}
 		return articulos;
 	}
@@ -593,7 +609,7 @@ public class BD {
 	            return articulo;
 	        }
 	    } catch (SQLException e) {
-	        e.printStackTrace();
+	    	logger.warning(String.format("Error buscando articulo %s", id));
 	    }
 
 	    return null;
@@ -636,7 +652,7 @@ public class BD {
 	        }
 
 	    } catch (SQLException ex) {
-	        ex.printStackTrace();
+	        logger.warning(String.format("Error añadiendo compra %s", compra.toString()));
 	        return false;
 	    }
 	    return true;
@@ -700,7 +716,7 @@ public class BD {
 			
 			
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.warning("Error obteniendo compras totales");
 		}
 		
 		
