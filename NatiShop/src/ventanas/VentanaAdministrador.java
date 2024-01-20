@@ -15,10 +15,13 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 import com.toedter.calendar.JCalendar;
 
@@ -33,6 +36,7 @@ import clases.Administrador;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 
 
@@ -47,9 +51,10 @@ public class VentanaAdministrador extends JFrame{
 	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfJornada, tfPuesto;
 	private JButton btnDesplegar;
 	
-	private JTable tClientes;
+	private JTable tClientes, tStock;
 	private ModeloTablaClientes mClientes;
-	private JScrollPane sTablaClientes;
+	private ModeloTablaStock mStock;
+	private JScrollPane sTablaClientes, sTablaStock;
 	private JFrame vActual,vAnterior;
 	private Administrador admin;
 	
@@ -241,8 +246,32 @@ public class VentanaAdministrador extends JFrame{
         pnlCentro = new JPanel(new BorderLayout());
 		getContentPane().add(pnlCentro, BorderLayout.CENTER);
         
+		//CREACION DE LA TABLA Stock
+		mStock = new ModeloTablaStock(new ArrayList<>());
+		tStock = new JTable(mStock);
+		sTablaStock = new JScrollPane(tStock);
 		
-       
+		//ACTIONLISTENER DEL ARBOL
+		arbolArticulos.addTreeSelectionListener(new TreeSelectionListener() {
+
+			@Override
+			public void valueChanged(TreeSelectionEvent e) {
+				TreePath tp = e.getPath();
+				String nick= tp.getLastPathComponent().toString();
+				
+				Connection con = BD.initBD("Natishop.db");
+				Set<Articulo>articulos = BD.obtenerListaArticulos(con);
+				BD.closeBD(con);
+				
+				
+				
+				
+				
+				
+				
+			}
+			
+		});
 		
 		
 		
@@ -300,6 +329,7 @@ public class VentanaAdministrador extends JFrame{
 				pnlCentro.revalidate();
 				pnlCentro.repaint();
 				cargarArbol();
+				cargarTablaStock();
 				System.out.println("Item funciona");
 				
 				
@@ -401,6 +431,18 @@ public class VentanaAdministrador extends JFrame{
 		
 		tClientes.setDefaultRenderer(Object.class, cellRenderer);
 		((DefaultTableCellRenderer) tClientes.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+	}
+	
+	public void cargarTablaStock() {
+		Connection con = BD.initBD("Natishop.db");
+		Set<Articulo>a = BD.obtenerListaArticulos(con);
+		BD.closeBD(con);
+		pnlCentro.add(sTablaStock, BorderLayout.CENTER);
+		JLabel lblStock = new JLabel("<html><u>" + "STOCK" + "</u></html>");
+		lblStock.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 30));
+		lblStock.setHorizontalAlignment(JLabel.CENTER);
+		pnlCentro.add(lblStock, BorderLayout.NORTH);
+		pnlCentro.setVisible(true);
 	}
 
 
