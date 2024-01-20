@@ -47,7 +47,7 @@ public class VentanaAdministrador extends JFrame{
 	
 	private JTable tClientes;
 	private ModeloTablaClientes mClientes;
-	private JScrollPane sTablaUsuarios;
+	private JScrollPane sTablaClientes;
 	private JFrame vActual,vAnterior;
 	private Administrador admin;
 	
@@ -345,9 +345,33 @@ public class VentanaAdministrador extends JFrame{
 		mItemGraficos.setFont(new Font("Calibri", Font.BOLD, 15));
 		menuEstadisticas.add(mItemGraficos);
 		
+		mClientes = new ModeloTablaClientes(new ArrayList<>());
+		tClientes = new JTable(mClientes);
+		sTablaClientes = new JScrollPane(tClientes);
+		
+		pnlCentro.setVisible(true);
+		
+		tClientes.addMouseListener(new MouseAdapter() {
+					
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Point p= e.getPoint();
+				int fila= tClientes.rowAtPoint(p);
+				String dni = tClientes.getModel().getValueAt(fila, 0).toString();
+				String texto = "";
+				for(String fecha: Tienda.getComprasPorCliente().get(dni).keySet()) {
+					texto = "FECHA: " + fecha + "\n";
+					for(Articulo a: Tienda.getComprasPorCliente().get(dni).get(fecha)) {
+						texto = texto + a + "\n";
+					}
+				}
+				JOptionPane.showMessageDialog(null, texto);
+			}
+		});
+		
+		setVisible(true);
 		
 		
-		setVisible(true);		
 	}
 	
 	//METODOS 
@@ -358,14 +382,14 @@ public class VentanaAdministrador extends JFrame{
 	public void cargarTablaUsuarios() {
 		Connection con = BD.initBD("NatiShop.db");
 		List<Cliente> c = BD.obtenerListaClientes(con);
-		JTable tClientes = new JTable();
-		JScrollPane spTablaClientes = new JScrollPane(tClientes);
-		pnlCentro.add(spTablaClientes, BorderLayout.CENTER);
+		BD.closeBD(con);
 		tClientes.setModel(new ModeloTablaClientes(c));
+		pnlCentro.add(sTablaClientes, BorderLayout.CENTER);
 		JLabel lblUsuarios = new JLabel("<html><u>" + "USUARIOS" + "</u></html>");
 		lblUsuarios.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 30));
 		lblUsuarios.setHorizontalAlignment(JLabel.CENTER);
 		pnlCentro.add(lblUsuarios, BorderLayout.NORTH);
+		pnlCentro.setVisible(true);
 		
 		TableCellRenderer cellRenderer = (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> {
 			JLabel label = new JLabel();

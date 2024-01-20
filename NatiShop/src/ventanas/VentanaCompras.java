@@ -153,6 +153,8 @@ public class VentanaCompras extends JFrame {
                 getModeloTablaCompras().setRowCount(0);
 
         	}
+        	
+        //AÑADIR METODO ANIADIRCOMPRAS
         });
     }
 
