@@ -277,7 +277,7 @@ public class VentanaAdministrador extends JFrame{
 		sTablaStock = new JScrollPane(tStock);
 		
 		//ACTIONLISTENER DEL ARBOL
-		arbolArticulos.addTreeSelectionListener(new TreeSelectionListener() {
+		/*arbolArticulos.addTreeSelectionListener(new TreeSelectionListener() {
 
 			@Override
 			public void valueChanged(TreeSelectionEvent e) {
@@ -302,7 +302,7 @@ public class VentanaAdministrador extends JFrame{
 				
 			}
 			
-		});
+		});*/
 		
 		
 		
