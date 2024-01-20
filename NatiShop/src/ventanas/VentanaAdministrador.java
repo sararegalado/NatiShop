@@ -48,9 +48,9 @@ public class VentanaAdministrador extends JFrame{
 	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfJornada, tfPuesto;
 	private JButton btnDesplegar, btnAñadirAdmin;
 
-	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfPuesto;
-	private static JTextField tfJornada;
-	private JButton btnDesplegar;
+
+
+
 	
 	private JTable tClientes;
 	private ModeloTablaClientes mClientes;
@@ -569,9 +569,7 @@ public class VentanaAdministrador extends JFrame{
 		
 	}
 
-	public static JTextField getTfJornada() {
-		return tfJornada;
-	}
+
 
 	
 
