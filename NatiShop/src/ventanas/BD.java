@@ -69,7 +69,8 @@ public class BD {
 	public static void crearTablas(Connection con) throws SQLException{
 		String sql = "CREATE TABLE IF NOT EXISTS cliente (DNI String, NOMBRE String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, CONTRASEÑA String, NUMERO_DE_TARJETA String, SALDO Double)";
 		String sql2 = "CREATE TABLE IF NOT EXISTS administrador (DNI String, NOMBRE String, APELLIDO String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, FECHA_INICIO_EMPRESA String, JORNADA String, PUESTO String, CONTRASEÑA String)";
-		String sql3 = "CREATE TABLE IF NOT EXISTS articulo (ID String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
+		String sqlBorraArticulos = "DROP TABLE IF EXISTS articulo";
+		String sql3 = "CREATE TABLE articulo (ID String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
 		String sql4 = "CREATE TABLE IF NOT EXISTS compras(idCompra INTEGER PRIMARY KEY AUTOINCREMENT, Cliente String, fecha bigint)";
 		String sql5 = "CREATE TABLE IF NOT EXISTS articulosVendidos(idCompra Integer, ID String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
 
@@ -77,6 +78,7 @@ public class BD {
 			Statement st = con.createStatement();
 			st.executeUpdate(sql);
 			st.executeUpdate(sql2);
+			st.executeUpdate(sqlBorraArticulos);
 			st.executeUpdate(sql3);
 			st.executeUpdate(sql4);
 			st.executeUpdate(sql5);
