@@ -75,7 +75,7 @@ public class BD {
 		String sql2 = "CREATE TABLE IF NOT EXISTS administrador (DNI String, NOMBRE String, APELLIDO String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, FECHA_INICIO_EMPRESA String, JORNADA String, PUESTO String, CONTRASEÑA String)";
 		String sqlBorraArticulos = "DROP TABLE IF EXISTS articulo";
 		String sql3 = "CREATE TABLE articulo (ID String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
-		String sql4 = "CREATE TABLE IF NOT EXISTS compras(idCompra INTEGER PRIMARY KEY AUTOINCREMENT, Cliente String, fecha bigint)";
+		String sql4 = "CREATE TABLE IF NOT EXISTS compras(idCompra INTEGER PRIMARY KEY AUTOINCREMENT, Cliente String, fecha bigint, PRECIO_COMPRA)";
 		String sql5 = "CREATE TABLE IF NOT EXISTS articulosVendidos(idCompra Integer, ID String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
 
 		try {
@@ -652,7 +652,7 @@ public class BD {
 	        }
 
 	    } catch (SQLException ex) {
-	        logger.warning(String.format("Error añadiendo compra %s", compra.toString()));
+	        logger.warning(String.format("Error añadiendo compra %s", ex.getMessage()));
 	        return false;
 	    }
 	    return true;
