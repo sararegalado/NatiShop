@@ -44,14 +44,13 @@ public class VentanaAdministrador extends JFrame{
 	private JMenu menuClientes,menuArticulos, menuEstadisticas, menuCompras;
 	private JMenuItem mItemRegistros,mItemArticulos,mItemStock,mItemCompras, mItemCalendar, mItemGraficos;
 	private JLabel lblFoto,lblTitulo,lblDNI,lblnom,lblApellido,lblCorreo,lbltfn,lblProvincia,lblFnac,lblFinic,lblJornada,lblPuesto,lblModifJornada,lblSolicitudes,lblAñadirAdmin;
-<<<<<<< HEAD
+
 	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfJornada, tfPuesto;
 	private JButton btnDesplegar, btnAñadirAdmin;
-=======
+
 	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfPuesto;
 	private static JTextField tfJornada;
 	private JButton btnDesplegar;
->>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
 	
 	private JTable tClientes;
 	private ModeloTablaClientes mClientes;
