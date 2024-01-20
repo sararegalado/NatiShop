@@ -5,8 +5,9 @@ import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.sql.Connection;
-import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -148,23 +150,12 @@ public class VentanaCompras extends JFrame {
         pSur.add(btnComprar);
 
         btnComprar.addActionListener((e) -> {
-//            Cliente clienteActual = obtenerClienteActual();
-//            ArrayList<Articulo> articulosSeleccionados = obtenerArticulosSeleccionados();
-//            Tienda.getCompras().put((Cliente) clienteActual, articulosSeleccionados);
-        	long milisegundos = System.currentTimeMillis();
-        	Compra nuevaCompra = new Compra(obtenerClienteActual(), milisegundos, Tienda.getCestaPorCliente().get(obtenerClienteActual()));
-        	
-        	Connection con = BD.initBD("NatiShop.db");
-        	boolean correcto = bd.anyadirCompra(con, nuevaCompra);
-        	if (correcto) {
-        		System.out.println("La compra se ha realizado correctamente.");
-                System.out.println(obtenerPrecioCompra() );
-                getModeloTablaCompras().setRowCount(0);
+//          Cliente clienteActual = obtenerClienteActual();
+//          ArrayList<Articulo> articulosSeleccionados = obtenerArticulosSeleccionados();
+//          Tienda.getCompras().put((Cliente) clienteActual, articulosSeleccionados);
 
-        	}
-        });
-    }
-	 
+        	
+   
     
     
 	/*private void cargarTabla() {
@@ -183,6 +174,35 @@ public class VentanaCompras extends JFrame {
 	
     
     
+
+		  	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		  	Date date = new Date(); // Obtén la fecha actual
+				String f_compra = sdf.format(date);
+		  	Compra nuevaCompra = new Compra(obtenerClienteActual(), f_compra, Tienda.getCestaPorCliente().get(obtenerClienteActual()), obtenerPrecioCompra());
+		  	
+		  	 int respuesta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que quieres finalizar la compra?", "Confirmar compra", JOptionPane.YES_NO_OPTION);
+		
+		       // Comprueba la respuesta del usuario
+		       if (respuesta == JOptionPane.YES_OPTION) {
+		      	Connection con = BD.initBD("NatiShop.db");
+		       	boolean correcto = bd.anyadirCompra(con, nuevaCompra);
+		       	if (correcto) {
+		       		JOptionPane.showMessageDialog(null, "Compra finalizada. Gracias por tu compra.");
+		               System.out.println(obtenerPrecioCompra() );
+		               getModeloTablaCompras().setRowCount(0);
+		
+		       	}
+		           
+		       } else {
+		           JOptionPane.showMessageDialog(null, "Compra cancelada.");
+		       }
+		  	
+		  	//AÑADIR METODO ANIADIRCOMPRAS
+		  });
+		}
+		    	
+        	
+
 
 	/*public void cargarTabla() {
 	    Cliente clienteActual = obtenerClienteActual();
@@ -212,6 +232,11 @@ public class VentanaCompras extends JFrame {
 		
 	}*/
 	
+   
+   /**
+   * Este método revisa si un cliente ha iniciado sesión y, de ser así, carga los artículos
+   * que están en la cesta de compra de dicho cliente en la tabla de compras.
+   */
 
     private void cargarArticuloTabla() {
         if (VentanaPrincipal.isClienteHaIniciadoSesion()) {
@@ -303,10 +328,11 @@ public class VentanaCompras extends JFrame {
 		VentanaCompras.modeloTablaCompras = modeloTablaCompras;
 	}
 	
-	/**
-	 * 
-	 * @param id
-	 * @return
+	/** 
+	 * Este método recorre todas las cestas de compras de los clientes para encontrar un artículo específico
+	 * cuyo identificador coincida con el del parametro. Si encuentra un artículo con el ID correspondiente, lo devuelve.
+	 * @param id El identificador único del artículo que se desea obtener.
+	 * @return El artículo correspondiente al ID proporcionado, o null si no se encuentra.
 	 */
 	private static Articulo obtenerArticuloPorID(String id) {
 	    // Aquí debes implementar la lógica para obtener el Articulo correspondiente al ID
@@ -322,6 +348,8 @@ public class VentanaCompras extends JFrame {
 	    return null; // Manejo del caso en que no se encuentra el Articulo
 	}
 	
+	
+	//obtiene el precio de la compra por cada cliente
 	private static float obtenerPrecioCompra() {
 		float precioTotal = (float) 0.0;
 

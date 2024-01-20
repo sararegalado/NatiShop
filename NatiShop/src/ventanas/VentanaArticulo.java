@@ -145,8 +145,11 @@ public class VentanaArticulo extends JFrame {
        pnlBoton.add(btnAniadirArticuloAlCarrito, BorderLayout.CENTER);
        panelCT.add(pnlBoton);
        pCentro.add(panelCT);
-       
-        
+            
+       /**
+        * Este método maneja la lógica para añadir un artículo seleccionado a la cesta de la compra. 
+        * Se realizan comprobaciones para asegurarse de que el usuario ha iniciado sesión y de que el artículo se añade correctamente a la cesta.
+        */
        
        btnAniadirArticuloAlCarrito.addActionListener(new ActionListener() {
 	        @Override
@@ -213,6 +216,13 @@ public class VentanaArticulo extends JFrame {
 
 
 	}
+	
+	/**
+	 * Obtiene el artículo seleccionado basado en la talla elegida.
+	 * Este método busca entre todos los artículos disponibles en la tienda y retorna aquel que corresponde a la talla seleccionada por el usuario. 
+	 * @param tallaSeleccionada La talla del artículo que se busca.
+	 * @return El artículo que coincide con la talla seleccionada, o null si no se encuentra ninguno.
+	 */
 	
 	private Articulo obtenerArticuloSeleccionado(Talla tallaSeleccionada) {				
 		Set<Articulo> todosLosArticulos = Tienda.getArticulos();

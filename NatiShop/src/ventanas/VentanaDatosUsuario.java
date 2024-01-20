@@ -217,6 +217,14 @@ public class VentanaDatosUsuario extends JFrame{
 		
 	}
 	
+	/**
+	 * Agrega campos de entrada al panel proporcionado para permitir la modificación de datos del cliente.
+	 * Los campos varían dependiendo del tipo de dato a modificar (correo, teléfono, contraseña).
+	 * @param p     El JPanel al que se agregarán los campos.
+	 * @param label Etiqueta descriptiva del dato a modificar (Correo, Teléfono, Contraseña).
+	 * @param c     El cliente cuyos datos están siendo modificados.
+	 */
+	
     private static void agregarCampos(JPanel p, String label, Cliente c) {
     	JPanel panelModif = new JPanel(new GridLayout(7,1));
         JLabel etiqueta = new JLabel(label);
@@ -245,6 +253,13 @@ public class VentanaDatosUsuario extends JFrame{
         }
         
         btnModificar = new JButton("MODIFICAR");
+        
+        /**
+        * Maneja la acción de modificar los datos del cliente, incluyendo correo electrónico,
+        * teléfono y contraseña. Utiliza una conexión a la base de datos para actualizar
+        * estos datos y reflejar los cambios en la interfaz de usuario.
+        * @param e El evento de acción generado por el botón 'btnModificar'.
+        */
         btnModificar.addActionListener(e -> {
         	Connection con = BD.initBD("NatiShop.db");
             switch (intModif) {
@@ -357,6 +372,12 @@ public class VentanaDatosUsuario extends JFrame{
         
         JButton btnAnadir = new JButton("AÑADIR TARJETA");
         pnlDchaCtro.add(btnAnadir);
+        
+        /** Maneja la acción de añadir o modificar el número de tarjeta de un cliente.
+        * Verifica la validez de los datos de la tarjeta, incluyendo número, titular y CVV,
+        * y actualiza la información en la base de datos si es correcta.
+        * @param e El evento de acción generado por el botón 'btnAnadir'.
+        */
         btnAnadir.addActionListener(new ActionListener() {
 			
 			@Override

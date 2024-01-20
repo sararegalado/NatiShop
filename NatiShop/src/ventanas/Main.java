@@ -20,13 +20,17 @@ public class Main {
 			e.printStackTrace();
 		}
 		BD.volcarCSVArticulos(con, "articulos.csv");
-		
-		
+		BD.volcarCSVAdmin(con, "Administradores.csv");
 
 		BD.closeBD(con);
-		
+
 //		Tienda.cargarKeyMapaClientes();
 //		System.out.println(Tienda.getComprasPorCliente());
+
+		
+		Tienda.cargarKeyMapaClientes();
+		System.out.println(Tienda.getComprasPorCliente());
+
 		VentanaPrincipal vent = new VentanaPrincipal(null);
 
 

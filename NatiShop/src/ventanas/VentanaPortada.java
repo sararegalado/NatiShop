@@ -160,11 +160,20 @@ public class VentanaPortada extends JFrame {
         setExtendedState(MAXIMIZED_BOTH);
     }
 
+    /**
+     * Reproduce un medio especificado por su ruta.
+     * Configura el volumen al máximo antes de iniciar la reproducción.
+     * @param mrl La ruta del medio a reproducir (Media Resource Locator).
+     */
     public void lanza(String mrl) {
         mediaPlayerComponent.mediaPlayer().audio().setVolume(100);
         mediaPlayerComponent.mediaPlayer().media().play(mrl);
     }
 
+    /**
+     * Método principal que inicia la aplicación.
+     * Realiza la configuración inicial del reproductor de medios y reproduce un video de bienvenida.
+	*/
     public static void main(String[] args) {
         boolean found = (new NativeDiscovery()).discover();
         if (!found)

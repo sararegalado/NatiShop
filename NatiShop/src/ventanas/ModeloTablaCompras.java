@@ -56,7 +56,7 @@ public class ModeloTablaCompras extends DefaultTableModel {
 		switch (columnIndex) {
 			case 0: return Integer.valueOf(compra.getIdCompra());
 			case 1: return compra.getCliente().getDni();
-			case 2: return Float.valueOf(compra.getFecha());
+			case 2: return compra.getFechaStr();
 			case 3: return compra;
 			default: return null;
 		}
