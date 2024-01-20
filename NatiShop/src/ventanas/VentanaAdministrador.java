@@ -45,11 +45,11 @@ public class VentanaAdministrador extends JFrame{
 	private JMenuItem mItemRegistros,mItemArticulos,mItemStock,mItemCompras, mItemCalendar, mItemGraficos;
 	private JLabel lblFoto,lblTitulo,lblDNI,lblnom,lblApellido,lblCorreo,lbltfn,lblProvincia,lblFnac,lblFinic,lblJornada,lblPuesto,lblModifJornada,lblSolicitudes,lblAñadirAdmin;
 
-	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfJornada, tfPuesto;
+	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfPuesto;
 	private JButton btnDesplegar, btnAñadirAdmin;
 
 
-
+	private static JTextField tfJornada;
 
 	
 	private JTable tClientes;
@@ -569,7 +569,9 @@ public class VentanaAdministrador extends JFrame{
 		
 	}
 
-
+	public static JTextField getTfJornada() {
+		return tfJornada;
+	}
 
 	
 
