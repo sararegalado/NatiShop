@@ -117,7 +117,7 @@ public class Administrador extends Usuario {
 
 	@Override
 	public String toString() {
-		return "Administrador [nombre" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", correo=" + correo +  ", fNac=" + getfNacStr() + ", FInicEmpresa=" + getFInicEmpresaStr() + ", jornadaLaboral="
+		return "Administrador [nombre=" + nombre + ", apellido=" + apellido + ", dni=" + dni + ", correo=" + correo +  ", fNac=" + getfNacStr() + ", FInicEmpresa=" + getFInicEmpresaStr() + ", jornadaLaboral="
 				+ jornadaLaboral + ", puesto=" + puesto + "]";
 	}
 

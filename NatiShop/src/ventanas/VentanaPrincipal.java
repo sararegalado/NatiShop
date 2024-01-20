@@ -405,6 +405,15 @@ public class VentanaPrincipal extends JFrame {
             }
         });
         
+        compras.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new VentanaVerMisCompras(VentanaInicioSesion.getCliente());
+				
+			}
+		});
+        
 //        articulos.addActionListener(new ActionListener() {
 //			
 //			@Override

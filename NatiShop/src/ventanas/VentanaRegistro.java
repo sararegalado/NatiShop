@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -26,6 +27,8 @@ public class VentanaRegistro extends JFrame{
 	private JPasswordField tfCon1, tfCon2;
 	
 	private JButton btnRegistro;
+	
+	public SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	private JFrame vActual,vAnterior;
 	
@@ -124,7 +127,7 @@ public class VentanaRegistro extends JFrame{
 			Connection con = BD.initBD("NatiShop.db");
 			String dni = tfDNI.getText();
 			String nom = tfNombre.getText();
-			String fNac = Utilidades.dateToString(jcFecha.getDate());
+			String fNac = sdf.format(jcFecha.getDate());
 			String email = tfEmail.getText();
 			String tlf = tfTlf.getText();
 			String prov = cbProv.getSelectedItem().toString();
