@@ -24,6 +24,7 @@ import clases.Articulo;
 import clases.Camiseta;
 import clases.Categoria;
 import clases.Cliente;
+import clases.Compra;
 import clases.Genero;
 import clases.Jersey;
 import clases.Jornada;
@@ -34,8 +35,7 @@ import clases.Talla;
 import clases.Zapato;
 
 public class BD {
-	
-	
+		
 	/**
 	 * Método que realiza la conexión con la base de datos
 	 * @param nombreBD : Nombre de la base de datos a la que nos vamos a conectar
@@ -70,11 +70,17 @@ public class BD {
 		String sql = "CREATE TABLE IF NOT EXISTS cliente (DNI String, NOMBRE String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, CONTRASEÑA String, NUMERO_DE_TARJETA String, SALDO Double)";
 		String sql2 = "CREATE TABLE IF NOT EXISTS administrador (DNI String, NOMBRE String, APELLIDO String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, FECHA_INICIO_EMPRESA String, JORNADA String, PUESTO String, CONTRASEÑA String)";
 		String sql3 = "CREATE TABLE IF NOT EXISTS articulo (ID String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
+		String sql4 = "CREATE TABLE IF NOT EXISTS compras(idCompra INTEGER PRIMARY KEY AUTOINCREMENT, Cliente String, fecha bigint)";
+		String sql5 = "CREATE TABLE IF NOT EXISTS articulosVendidos(idCompra Integer, ID String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
+
 		try {
 			Statement st = con.createStatement();
 			st.executeUpdate(sql);
 			st.executeUpdate(sql2);
 			st.executeUpdate(sql3);
+			st.executeUpdate(sql4);
+			st.executeUpdate(sql5);
+
 			st.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -556,6 +562,116 @@ public class BD {
 
 	    return null;
 	}
+	
+	public boolean anyadirCompra(Connection con, Compra compra) {
+		String sql1 = "INSERT INTO compras(cliente, fecha) values ('%s', %d)";
+		String sql2 = String.format("INSERT INTO articulosVendidos VALUES (?,?,?,?,?,?,?,?,?)");
+		try (Statement stmt = con.createStatement()) {
+			stmt.executeUpdate(String.format(sql1, compra.getCliente().getDni(), compra.getFecha()));
+			ResultSet rrss = stmt.getGeneratedKeys();  // Genera un resultset ficticio con las claves generadas del último comando
+			rrss.next();  // Avanza a la única fila 
+			int pk = rrss.getInt( 1 );  // Coge la única columna (la primary key autogenerada)
+			compra.setIdCompra( pk );
+			
+			
+			for (Articulo a : compra.getArticulos()) {
+				PreparedStatement st = con.prepareStatement(sql2);
+		    	st.setInt(1, pk);
+				st.setString(2, a.getId());
+		    	st.setString(3, a.getNombre());
+		    	st.setInt(4, a.getUnidades());
+		    	st.setFloat(5, a.getPrecio());
+		    	st.setString(6, a.getGeneroStr());
+		    	st.setString(7, a.getTallaStr());
+		    	st.setString(8, a.getFoto());
+		    	st.setString(9, a.getCategoriaStr());
+		    	
+		    	
+		    	st.execute();
+			}
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	public static List<Compra> obtenerComprasTotales(Connection con) {
+		List<Compra> ret = new ArrayList<>();
+		String sql1 = "SELECT * FROM compras";
+		String sql2 = "SELECT ID, NOMBRE, UNIDADES, PRECIO, GENERO, TALLA, FOTO, CATEGORIA FROM articulosVendidos WHERE idCompra = %d";
+		
+		try (Statement stmt1 = con.createStatement()) {
+			ResultSet rs1 = stmt1.executeQuery(sql1);
+			while (rs1.next()) {
+				Cliente cliente = buscarCliente(con, rs1.getString("Cliente"));
+				int idCompra = rs1.getInt("idCompra");
+				long fecha = rs1.getLong("fecha");
+				Compra nuevaCompra = new Compra(cliente, fecha, new ArrayList<>());
+				nuevaCompra.setIdCompra(idCompra);
+				Statement stmt2 = con.createStatement();
+				ResultSet rs2 = stmt2.executeQuery(String.format(sql2, idCompra));
+				while (rs2.next()) {
+					String id= rs2.getString("ID");
+					String nom= rs2.getString("NOMBRE");
+					String unidades= rs2.getString("UNIDADES");
+					String precio= rs2.getString("PRECIO");
+					String genero = rs2.getString("GENERO");
+					String talla = rs2.getString("TALLA");
+					String foto = rs2.getString("FOTO");
+					String categoria = rs2.getString("CATEGORIA");
+					if (Categoria.valueOf(categoria) == Categoria.CAMISETA) {
+						Camiseta c = new Camiseta(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto,Categoria.valueOf(categoria));
+						nuevaCompra.getArticulos().add(c);
+						
+					}
+					else if (Categoria.valueOf(categoria) == Categoria.JERSEY) {
+						Jersey j = new Jersey(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
+						nuevaCompra.getArticulos().add(j);
+					} 
+					else if (Categoria.valueOf(categoria) == Categoria.PANTALON) {
+						Pantalon p = new Pantalon(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
+						nuevaCompra.getArticulos().add(p);
+					}
+					else {
+						Zapato z = new Zapato(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio),Genero.valueOf(genero),Talla.valueOf(talla),foto, Categoria.valueOf(categoria));
+						nuevaCompra.getArticulos().add(z);	 
 
+					}
+				    
+				}
+				
+				ret.add(nuevaCompra);	
+					
+				}
+				
+				
+				
+			
+			
+			
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		
+		return ret;
+		
+	}
+	
+	public static List<Compra> getComprasPorCliente(Connection con, Cliente cliente) {
+		List<Compra> comprasTotales = obtenerComprasTotales(con);
+		List<Compra> ret = new ArrayList<>();
+		for (Compra c : comprasTotales) {
+			if (c.getCliente().equals(cliente)) {
+				ret.add(c);
+			}
+			
+		}
+		
+		return ret;
+	}
 
 }

@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.sql.Connection;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,7 @@ import javax.swing.table.TableCellRenderer;
 
 import clases.Articulo;
 import clases.Cliente;
+import clases.Compra;
 import clases.Tienda;
 
 public class VentanaCompras extends JFrame {
@@ -39,6 +41,7 @@ public class VentanaCompras extends JFrame {
     private static DefaultTableModel modeloTablaCompras;
     private static JTable tablaCompras;
     private JScrollPane scrollTablaCompras;
+    private BD bd;
 
 
     public VentanaCompras(JFrame va) {
@@ -75,6 +78,10 @@ public class VentanaCompras extends JFrame {
         getContentPane().add(pCentro, BorderLayout.CENTER);
 
         cargarArticuloTabla();
+
+        this.tablaCompras.setRowHeight(80);
+        
+        bd = new BD();
 
         // Configurar el editor de la columna "CANTIDAD" para usar JSpinner
         TableColumnModel columnModel = tablaCompras.getColumnModel();
@@ -144,10 +151,17 @@ public class VentanaCompras extends JFrame {
 //            Cliente clienteActual = obtenerClienteActual();
 //            ArrayList<Articulo> articulosSeleccionados = obtenerArticulosSeleccionados();
 //            Tienda.getCompras().put((Cliente) clienteActual, articulosSeleccionados);
+        	long milisegundos = System.currentTimeMillis();
+        	Compra nuevaCompra = new Compra(obtenerClienteActual(), milisegundos, Tienda.getCestaPorCliente().get(obtenerClienteActual()));
+        	
+        	Connection con = BD.initBD("NatiShop.db");
+        	boolean correcto = bd.anyadirCompra(con, nuevaCompra);
+        	if (correcto) {
+        		System.out.println("La compra se ha realizado correctamente.");
+                System.out.println(obtenerPrecioCompra() );
+                getModeloTablaCompras().setRowCount(0);
 
-            System.out.println("La compra se ha realizado correctamente.");
-            System.out.println(obtenerPrecioCompra() );
-            getModeloTablaCompras().setRowCount(0);
+        	}
         });
     }
 	 
@@ -289,6 +303,11 @@ public class VentanaCompras extends JFrame {
 		VentanaCompras.modeloTablaCompras = modeloTablaCompras;
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	private static Articulo obtenerArticuloPorID(String id) {
 	    // Aquí debes implementar la lógica para obtener el Articulo correspondiente al ID
 	    // Puedes iterar sobre la lista de Articulos en tu cesta y devolver el que tenga el ID correcto
