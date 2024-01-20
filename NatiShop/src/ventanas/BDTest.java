@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.After;
@@ -12,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import clases.Cliente;
+import clases.Provincia;
 
 public class BDTest {
 
@@ -59,6 +61,37 @@ public class BDTest {
 		
 	}
 	
+	@Test
+	public void testInsertarVariosClientes() {
+	    Cliente c4 = new Cliente("12345678L", "Pedro", "2000-01-15", "pedro@gmail.com", "625784951", "Valencia", "pedro", "Tarjeta sin registrar", 50.5);
+	    Cliente c5 = new Cliente("87654321P", "Ana", "1998-07-22", "ana@gmail.com", "699887766", "Barcelona", "ana", "Tarjeta sin registrar", 75.3);
+	    BD.insertarCliente(con, c4);
+	    BD.insertarCliente(con, c5);
+	    assertNotNull(BD.buscarCliente(con, c4.getDni()));
+	    assertNotNull(BD.buscarCliente(con, c5.getDni()));
+	}
+	
+	@Test(expected = SQLException.class)
+	public void testInsertarClienteDuplicado() {
+	    BD.insertarCliente(con, c1); 
+	}
+	
+	@Test
+	public void testBorrarClienteInexistente() {
+	    String dniInexistente = "00000000X";
+	    BD.borrarCliente(con, dniInexistente);
+	    Cliente c = BD.buscarCliente(con, dniInexistente);
+	    assertNull(c);
+	}
+	
+	
+	@Test
+	public void testActalizacionTrasBorrarCliente() {
+	    int totalInicial = BD.contarClientes(con);
+	    BD.borrarCliente(con, c3.getDni());
+	    int totalFinal = BD.contarClientes(con);
+	    assertEquals(totalInicial - 1, totalFinal);
+	}
 	
 	@Test
 	public void testBuscarCliente() {
