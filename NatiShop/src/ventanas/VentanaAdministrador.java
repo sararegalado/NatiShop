@@ -38,7 +38,7 @@ public class VentanaAdministrador extends JFrame{
 
 	private JMenuBar menuBarAdmin;
 	private JMenu menuClientes,menuArticulos, menuEstadisticas, menuCompras;
-	private JMenuItem mItemRegistros,mItemArticulos,mItemStock,mItemCompras,mItemGraficos;
+	private JMenuItem mItemRegistros,mItemArticulos,mItemStock,mItemCompras, mItemCalendar, mItemGraficos;
 	private JLabel lblFoto,lblTitulo,lblDNI,lblnom,lblApellido,lblCorreo,lbltfn,lblProvincia,lblFnac,lblFinic,lblJornada,lblPuesto,lblModifJornada,lblSolicitudes,lblAñadirAdmin;
 	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfJornada, tfPuesto;
 	private JButton btnDesplegar;
@@ -48,6 +48,8 @@ public class VentanaAdministrador extends JFrame{
 	private JScrollPane sTablaUsuarios;
 	private JFrame vActual,vAnterior;
 	private Administrador admin;
+	
+	public SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	public VentanaAdministrador(JFrame va, Administrador admin) {
 		
@@ -289,6 +291,9 @@ public class VentanaAdministrador extends JFrame{
 		mItemCompras.setFont(new Font("Calibri", Font.BOLD, 15));
 		menuCompras.add(mItemCompras);
 		
+		mItemCalendar = new JMenuItem("VER CALENDARIO");
+		mItemCalendar.setFont(new Font("Calibri", Font.BOLD, 15));
+		menuCompras.add(mItemCalendar);
 		
 		mItemCompras.addActionListener(new ActionListener() {
 			
@@ -298,6 +303,18 @@ public class VentanaAdministrador extends JFrame{
 				pnlCentro.revalidate();
 				pnlCentro.repaint();
 				cargarCompras();
+				
+			}
+		});
+		
+		mItemCalendar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pnlCentro.removeAll();
+				pnlCentro.revalidate();
+				pnlCentro.repaint();
+				cargarCalendario();
 				
 			}
 		});
@@ -383,12 +400,27 @@ public class VentanaAdministrador extends JFrame{
 		
 		tablaCompras.setDefaultRenderer(Object.class, cellRenderer);
 		((DefaultTableCellRenderer) tablaCompras.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
-
-
-
-	
 	}
 
+	
+	public void cargarCalendario() {
+		JCalendar jcCompras = new JCalendar(new Date());
+		JPanel pnlCalendar = new JPanel(new GridLayout(2,1));
+		pnlCalendar.add(jcCompras);
+		JTextArea jTaCom = new JTextArea();
+		pnlCalendar.add(jTaCom);
+		pnlCentro.add(pnlCalendar, BorderLayout.CENTER);
+		JLabel lblCompras = new JLabel("<html><u>" + "COMPRAS" + "</u></html>");
+		lblCompras.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 30));
+		lblCompras.setHorizontalAlignment(JLabel.CENTER);
+		pnlCentro.add(lblCompras, BorderLayout.NORTH);
+		pnlCentro.setVisible(true);
+		
+		//Funcionalidad del calendario
+		String fNac = sdf.format(jcCompras.getDate());
+		
+		
+	}
 
 	public void cargarDatosAdmin(Administrador admin) {
 		if(admin != null) {
