@@ -25,7 +25,6 @@ public class Main {
 		BD.closeBD(con);
 		
 		Tienda.cargarKeyMapaClientes();
-		System.out.println(Tienda.getComprasPorCliente());
 
 		VentanaPrincipal vent = new VentanaPrincipal(null);
 
