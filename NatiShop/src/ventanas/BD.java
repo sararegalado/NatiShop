@@ -70,8 +70,8 @@ public class BD {
 		String sql = "CREATE TABLE IF NOT EXISTS cliente (DNI String, NOMBRE String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, CONTRASEÑA String, NUMERO_DE_TARJETA String, SALDO Double)";
 		String sql2 = "CREATE TABLE IF NOT EXISTS administrador (DNI String, NOMBRE String, APELLIDO String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, FECHA_INICIO_EMPRESA String, JORNADA String, PUESTO String, CONTRASEÑA String)";
 		String sql3 = "CREATE TABLE IF NOT EXISTS articulo (ID String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
-		String sql4 = "CREATE TABLE IF NOT EXISTS compras(idCompra INTEGER PRIMARY KEY AUTOINCREMENT, Cliente String, fecha bigint)";
-		String sql5 = "CREATE TABLE IF NOT EXISTS articulosVendidos(idCompra Integer, ID String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
+		String sql4 = "CREATE TABLE IF NOT EXISTS compras(ID_COMPRA INTEGER PRIMARY KEY AUTOINCREMENT, CLIENTE String, FECHA String, PRECIO_COMPRA Float)";
+		String sql5 = "CREATE TABLE IF NOT EXISTS articulosVendidos(ID_COMPRA Integer, ID_ARTICULO String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
 
 		try {
 			Statement st = con.createStatement();
@@ -598,56 +598,67 @@ public class BD {
 	}
 	
 	public boolean anyadirCompra(Connection con, Compra compra) {
-		String sql1 = "INSERT INTO compras(cliente, fecha) values ('%s', %d)";
-		String sql2 = String.format("INSERT INTO articulosVendidos VALUES (?,?,?,?,?,?,?,?,?)");
-		try (Statement stmt = con.createStatement()) {
-			stmt.executeUpdate(String.format(sql1, compra.getCliente().getDni(), compra.getFecha()));
-			ResultSet rrss = stmt.getGeneratedKeys();  // Genera un resultset ficticio con las claves generadas del último comando
-			rrss.next();  // Avanza a la única fila 
-			int pk = rrss.getInt( 1 );  // Coge la única columna (la primary key autogenerada)
-			compra.setIdCompra( pk );
-			
-			
-			for (Articulo a : compra.getArticulos()) {
-				PreparedStatement st = con.prepareStatement(sql2);
-		    	st.setInt(1, pk);
-				st.setString(2, a.getId());
-		    	st.setString(3, a.getNombre());
-		    	st.setInt(4, a.getUnidades());
-		    	st.setFloat(5, a.getPrecio());
-		    	st.setString(6, a.getGeneroStr());
-		    	st.setString(7, a.getTallaStr());
-		    	st.setString(8, a.getFoto());
-		    	st.setString(9, a.getCategoriaStr());
-		    	
-		    	
-		    	st.execute();
-			}
-			
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return false;
-		}
-		return true;
+	    String sql1 = "INSERT INTO compras(CLIENTE, FECHA, PRECIO_COMPRA) VALUES (?, ?, ?)";
+
+	    try {
+	        PreparedStatement ps = con.prepareStatement(sql1, Statement.RETURN_GENERATED_KEYS);
+	        ps.setString(1, compra.getCliente().getDni());
+	        ps.setString(2, compra.getFechaStr());
+	        ps.setFloat(3, compra.getPrecio());
+
+	        ps.executeUpdate();
+
+
+	        try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+	            if (generatedKeys.next()) {
+	                int idCompra = generatedKeys.getInt(1);
+	                compra.setIdCompra(idCompra);
+	            }
+	        }
+
+	        // Ahora insertamos los artículos vendidos en la tabla articulosVendidos
+	        String sql2 = "INSERT INTO articulosVendidos(ID_COMPRA, ID_ARTICULO, NOMBRE, UNIDADES, PRECIO, GENERO, TALLA, FOTO, CATEGORIA) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	        try (PreparedStatement st = con.prepareStatement(sql2)) {
+	            for (Articulo a : compra.getArticulos()) {
+	                st.setInt(1, compra.getIdCompra());
+	                st.setString(2, a.getId());
+	                st.setString(3, a.getNombre());
+	                st.setInt(4, a.getUnidades());
+	                st.setFloat(5, a.getPrecio());
+	                st.setString(6, a.getGeneroStr());
+	                st.setString(7, a.getTallaStr());
+	                st.setString(8, a.getFoto());
+	                st.setString(9, a.getCategoriaStr());
+	                st.executeUpdate();
+	            }
+	        }
+
+	    } catch (SQLException ex) {
+	        ex.printStackTrace();
+	        return false;
+	    }
+	    return true;
 	}
+
 	
 	public static List<Compra> obtenerComprasTotales(Connection con) {
 		List<Compra> ret = new ArrayList<>();
 		String sql1 = "SELECT * FROM compras";
-		String sql2 = "SELECT ID, NOMBRE, UNIDADES, PRECIO, GENERO, TALLA, FOTO, CATEGORIA FROM articulosVendidos WHERE idCompra = %d";
+		String sql2 = "SELECT ID_ARTICULO, NOMBRE, UNIDADES, PRECIO, GENERO, TALLA, FOTO, CATEGORIA FROM articulosVendidos WHERE ID_COMPRA = %d";
 		
 		try (Statement stmt1 = con.createStatement()) {
 			ResultSet rs1 = stmt1.executeQuery(sql1);
 			while (rs1.next()) {
-				Cliente cliente = buscarCliente(con, rs1.getString("Cliente"));
-				int idCompra = rs1.getInt("idCompra");
-				long fecha = rs1.getLong("fecha");
-				Compra nuevaCompra = new Compra(cliente, fecha, new ArrayList<>());
+				Cliente cliente = buscarCliente(con, rs1.getString("CLIENTE"));
+				int idCompra = rs1.getInt("ID_COMPRA");
+				String fecha = rs1.getString("FECHA");
+				String pre = rs1.getString("PRECIO_COMPRA");
+				Compra nuevaCompra = new Compra(cliente, fecha, new ArrayList<>(), Float.parseFloat(pre));
 				nuevaCompra.setIdCompra(idCompra);
 				Statement stmt2 = con.createStatement();
 				ResultSet rs2 = stmt2.executeQuery(String.format(sql2, idCompra));
 				while (rs2.next()) {
-					String id= rs2.getString("ID");
+					String id= rs2.getString("ID_ARTICULO");
 					String nom= rs2.getString("NOMBRE");
 					String unidades= rs2.getString("UNIDADES");
 					String precio= rs2.getString("PRECIO");
@@ -694,6 +705,7 @@ public class BD {
 		return ret;
 		
 	}
+	
 	
 	public static List<Compra> getComprasPorCliente(Connection con, Cliente cliente) {
 		List<Compra> comprasTotales = obtenerComprasTotales(con);

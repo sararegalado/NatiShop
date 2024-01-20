@@ -1,16 +1,19 @@
 package clases;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class Compra {
 	
 	private int idCompra;
 	private Cliente cliente;
-	private long fecha;
+	private Date fecha;
 	List<Articulo> articulos;
+	private float precio;
+	
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	public Cliente getCliente() {
 		return cliente;
@@ -18,11 +21,23 @@ public class Compra {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	public long getFecha() {
+	public Date getFecha() {
 		return fecha;
 	}
-	public void setFecha(long fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
+	}
+	
+	public String getFechaStr() {
+		return sdf.format(fecha);
+	}
+	
+	public void setFechaStr(String fecha) {
+		try {
+			this.fecha= sdf.parse(fecha);
+		} catch (ParseException e) {
+			this.fecha= new Date();
+		}
 	}
 	public List<Articulo> getArticulos() {
 		return articulos;
@@ -38,18 +53,36 @@ public class Compra {
 	public void setIdCompra(int idCompra) {
 		this.idCompra = idCompra;
 	}
-	public Compra(Cliente cliente, long fecha, List<Articulo> articulos) {
+	
+	public float getPrecio() {
+		return precio;
+	}
+	public void setPrecio(float precio) {
+		this.precio = precio;
+	}
+	
+	public Compra(Cliente cliente, String fecha, List<Articulo> articulos, float precio) {
+		super();
+		this.cliente = cliente;
+		setFechaStr(fecha);
+		this.articulos = articulos;
+		this.precio = precio;
+	}
+	
+	public Compra(Cliente cliente, Date fecha, List<Articulo> articulos, float precio) {
 		super();
 		this.cliente = cliente;
 		this.fecha = fecha;
 		this.articulos = articulos;
+		this.precio = precio;
 	}
+	
+	
 	
 	@Override
 	public String toString() {
 		return "Compra [idCompra=" + idCompra + ", cliente=" + cliente + ", fecha=" + fecha + ", articulos=" + articulos
-				+ "]";
+				+ ", precio=" + precio + "]";
 	}
-	
 
 }

@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 
@@ -325,23 +327,7 @@ public class VentanaAdministrador extends JFrame{
 		mItemCompras.setFont(new Font("Calibri", Font.BOLD, 15));
 		menuCompras.add(mItemCompras);
 		
-		mItemCalendar = new JMenuItem("VER CALENDARIO");
-		mItemCalendar.setFont(new Font("Calibri", Font.BOLD, 15));
-		menuCompras.add(mItemCalendar);
-		
 		mItemCompras.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				pnlCentro.removeAll();
-				pnlCentro.revalidate();
-				pnlCentro.repaint();
-				cargarCompras();
-				
-			}
-		});
-		
-		mItemCalendar.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -427,14 +413,65 @@ public class VentanaAdministrador extends JFrame{
 		tClientes.setDefaultRenderer(Object.class, cellRenderer);
 		((DefaultTableCellRenderer) tClientes.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 	}
+
+
+	public void cargarCalendario() {
+		JCalendar calendar = new JCalendar(new Date());
+		JPanel pnlCalendar = new JPanel(new GridLayout(2,1));
+		pnlCalendar.add(calendar);
+		
+		JTable tablaCompras = new JTable();
+		tablaCompras.setModel(new ModeloTablaCompras(null));
+		JScrollPane spTablaCompras = new JScrollPane(tablaCompras);
+		
+		
+		pnlCalendar.add(spTablaCompras);
+
+		pnlCentro.add(pnlCalendar, BorderLayout.CENTER);
+		JLabel lblCompras = new JLabel("<html><u>" + "COMPRAS" + "</u></html>");
+		lblCompras.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 30));
+		lblCompras.setHorizontalAlignment(JLabel.CENTER);
+		pnlCentro.add(lblCompras, BorderLayout.NORTH);
+		
+		calendar.addPropertyChangeListener("calendar", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                Date nuevaFechaSeleccionada = calendar.getCalendar().getTime();
+                String fecha_Selecionada = sdf.format(nuevaFechaSeleccionada);
+                cargarComprasDia (fecha_Selecionada, tablaCompras );
+
+                
+            }
+        });
+		
+		
+		
+		pnlCentro.setVisible(true);
+		
+		
+		
+		
+		
+	}
+
 	
-	public void cargarCompras() {
+
+	private void cargarComprasDia(String fecha_Selecionada, JTable tablaCompras) {
 		Connection con = BD.initBD("NatiShop.db");
 		List<Compra> compras = BD.obtenerComprasTotales(con);
-		JTable tablaCompras = new JTable();
-		JScrollPane spTablaCompras = new JScrollPane(tablaCompras);
-		pnlCentro.add(spTablaCompras, BorderLayout.CENTER);
-		tablaCompras.setModel(new ModeloTablaCompras(compras));
+		BD.closeBD(con);
+		List<Compra> c_Dia = new ArrayList<>();
+		
+		for (Compra c : compras) {
+			Date date = c.getFecha();
+			String f_compra = sdf.format(date);
+			if (f_compra.equals(fecha_Selecionada)) {
+				c_Dia.add(c);
+			}
+			
+		}
+		tablaCompras.setModel(new ModeloTablaCompras(c_Dia));
+		
 		tablaCompras.getColumnModel().getColumn(3).setCellRenderer(new ArticulosRendererEditor(this));		
 		tablaCompras.getColumnModel().getColumn(3).setCellEditor(new ArticulosRendererEditor(this));		
 		
@@ -442,9 +479,7 @@ public class VentanaAdministrador extends JFrame{
 			JLabel label = new JLabel();
 			
 			if (column == 2) {
-		        SimpleDateFormat f1 = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss");
-				float date = (float) value;
-				label.setText(f1.format(date));
+				label.setText(value.toString());
 			} else {
 				label.setText(value.toString());
 	
@@ -460,28 +495,10 @@ public class VentanaAdministrador extends JFrame{
 		
 		tablaCompras.setDefaultRenderer(Object.class, cellRenderer);
 		((DefaultTableCellRenderer) tablaCompras.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
-	}
-
-	public void cargarCalendario() {
-		JCalendar jcCompras = new JCalendar(new Date());
-		JPanel pnlCalendar = new JPanel(new GridLayout(2,1));
-		pnlCalendar.add(jcCompras);
-		JTextArea jTaCom = new JTextArea();
-		pnlCalendar.add(jTaCom);
-		pnlCentro.add(pnlCalendar, BorderLayout.CENTER);
-		JLabel lblCompras = new JLabel("<html><u>" + "COMPRAS" + "</u></html>");
-		lblCompras.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 30));
-		lblCompras.setHorizontalAlignment(JLabel.CENTER);
-		pnlCentro.add(lblCompras, BorderLayout.NORTH);
-		pnlCentro.setVisible(true);
 		
-		//Funcionalidad del calendario
-		String fNac = sdf.format(jcCompras.getDate());
 		
 		
 	}
-
-	
 
 	/**
 	 * Método que carga los datos del Administrador registrado
