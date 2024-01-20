@@ -20,6 +20,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 
+import javax.swing.table.DefaultTableModel;
+
 import clases.Administrador;
 import clases.Articulo;
 import clases.Camiseta;
@@ -77,6 +79,7 @@ public class BD {
 		String sql3 = "CREATE TABLE articulo (ID String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
 		String sql4 = "CREATE TABLE IF NOT EXISTS compras(ID_COMPRA INTEGER PRIMARY KEY AUTOINCREMENT, CLIENTE String, FECHA String, PRECIO_COMPRA Float)";
 		String sql5 = "CREATE TABLE IF NOT EXISTS articulosVendidos(ID_COMPRA Integer, ID_ARTICULO String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
+		String sql6 = "CREATE TABLE IF NOT EXISTS solicitudesJornada(DNI_ADMIN String, NOMBRE String, APELLIDO String, CORREO String, TELEFONO String, JORNADA_ACTUAL String, JORNADA_SOLICITADA String, RAZON String)";
 
 		try {
 			Statement st = con.createStatement();
@@ -86,6 +89,7 @@ public class BD {
 			st.executeUpdate(sql3);
 			st.executeUpdate(sql4);
 			st.executeUpdate(sql5);
+			st.executeUpdate(sql6);
 
 			st.close();
 		} catch (SQLException e) {
@@ -93,7 +97,6 @@ public class BD {
 		}
 		logger.info("Tablas creadas correctamenrte");
 	}
-	
 	
 	//METODOS PARA LOS CLIENTES
 	
@@ -383,6 +386,59 @@ public class BD {
 		} catch (SQLException e) {
 			logger.warning(String.format("Error modificando la jornada laboral del administrador %s",dni));
 		}
+	}
+	
+	public static void anyadirAdminSolic(Connection con, String dni, String jornSol, String razon) {
+		Administrador a = buscarAdministrador(con, dni);
+		//String sql6 = "CREATE TABLE IF NOT EXISTS solicitudesJornada(DNI_ADMIN String, NOMBRE String, APELLIDO String, CORREO String, TELEFONO String, JORNADA_ACTUAL String, JORNADA_SOLICITADA String, RAZON String)";
+
+		String sql = String.format("INSERT INTO solicitudesJornada VALUES('%s','%s','%s','%s','%s','%s','%s','%s')", a.getDni(), a.getNombre(), a.getApellido(), a.getCorreo(), a.getTlf(), a.getJornadaLaboralStr(), jornSol, razon);
+		try {
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+			st.close();
+		} catch (SQLException e) {
+			logger.warning(String.format("Error insertando administrador para la solicitud de jornada: %s", a.toString()));
+		}
+		logger.info(String.format("Administrador insertado correctamente para la solicitud de jornada: %s", a.toString()));
+
+	}
+	
+	public static void cargarTablaAdminsSolic(Connection con, DefaultTableModel modeloTabla){
+		String sql = "SELECT * FROM solicitudesJornada";
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while(rs.next()) {
+				String d= rs.getString("DNI_ADMIN");
+				String n = rs.getString("NOMBRE");
+				String a = rs.getString("APELLIDO");
+				String c = rs.getString("CORREO");
+				String tlf= rs.getString("TELEFONO");
+				String jA = rs.getString("JORNADA_ACTUAL");
+				String jS = rs.getString("JORNADA_SOLICITADA");
+				String r = rs.getString("RAZON");
+				Object[] fila = {d, n, a, c, tlf, jA, jS, r};
+				modeloTabla.addRow(fila);
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException e) {
+			logger.warning("Error cargando la tabla de solicitudes");
+		}
+	}
+	
+	public static void borrarAdminSolic(Connection con, String dni) {
+		String sql = String.format("DELETE FROM solicitudesJornada WHERE DNI_ADMIN='%s'", dni);
+		try {
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+			st.close();
+		} catch (SQLException e) {
+			logger.warning(String.format("Error borrando administrador para cambiar la solicitud: %s", dni));
+		}
+		logger.info(String.format("Administrador para cambiar la solicitud borrado correctamente: %s",dni));
+
 	}
 	
 	public static void volcarCSVAdmin(Connection con, String nomfich) {

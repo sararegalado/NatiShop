@@ -44,8 +44,14 @@ public class VentanaAdministrador extends JFrame{
 	private JMenu menuClientes,menuArticulos, menuEstadisticas, menuCompras;
 	private JMenuItem mItemRegistros,mItemArticulos,mItemStock,mItemCompras, mItemCalendar, mItemGraficos;
 	private JLabel lblFoto,lblTitulo,lblDNI,lblnom,lblApellido,lblCorreo,lbltfn,lblProvincia,lblFnac,lblFinic,lblJornada,lblPuesto,lblModifJornada,lblSolicitudes,lblAñadirAdmin;
+<<<<<<< HEAD
 	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfJornada, tfPuesto;
 	private JButton btnDesplegar, btnAñadirAdmin;
+=======
+	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfPuesto;
+	private static JTextField tfJornada;
+	private JButton btnDesplegar;
+>>>>>>> branch 'master' of https://github.com/sararegalado/NatiShop.git
 	
 	private JTable tClientes;
 	private ModeloTablaClientes mClientes;
@@ -59,6 +65,8 @@ public class VentanaAdministrador extends JFrame{
 	private DefaultTreeModel modeloArbolArticulos;
 	private JTree arbolArticulos;
 	private JScrollPane sArbolArticulos;
+	
+	
 
 	public VentanaAdministrador(JFrame va, Administrador admin) {
 		
@@ -208,6 +216,15 @@ public class VentanaAdministrador extends JFrame{
         lblSolicitudes.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
         pnlDatosBotones.add(lblSolicitudes);
         lblSolicitudes.setHorizontalAlignment(lblModifJornada.CENTER);
+        lblSolicitudes.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new VentanaARSolicitud();
+				
+			}
+		});
+
 
         lblModifJornada = new JLabel("<html><u>" + "MODIFICAR JORNADA" + "</u></html>");
         lblModifJornada.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
@@ -552,6 +569,11 @@ public class VentanaAdministrador extends JFrame{
 	     System.out.println("Método Fuciona");
 		
 	}
+
+	public static JTextField getTfJornada() {
+		return tfJornada;
+	}
+
 	
 
 	
