@@ -45,7 +45,7 @@ public class VentanaAdministrador extends JFrame{
 	private JMenuItem mItemRegistros,mItemArticulos,mItemStock,mItemCompras, mItemCalendar, mItemGraficos;
 	private JLabel lblFoto,lblTitulo,lblDNI,lblnom,lblApellido,lblCorreo,lbltfn,lblProvincia,lblFnac,lblFinic,lblJornada,lblPuesto,lblModifJornada,lblSolicitudes,lblAñadirAdmin;
 	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfJornada, tfPuesto;
-	private JButton btnDesplegar;
+	private JButton btnDesplegar, btnAñadirAdmin;
 	
 	private JTable tClientes;
 	private ModeloTablaClientes mClientes;
@@ -99,6 +99,8 @@ public class VentanaAdministrador extends JFrame{
 				pnlOesteMenu.setVisible(!pnlOesteMenu.isVisible());
 			}
 		});
+		
+
 		
 		pnlDatos= new JPanel();
 		pnlDatos.setLayout(new GridLayout(3,1));
@@ -237,6 +239,13 @@ public class VentanaAdministrador extends JFrame{
         	lblAñadirAdmin.setVisible(false);
         	lblSolicitudes.setVisible(false);
         }
+        
+        lblAñadirAdmin.addMouseListener(new MouseAdapter () {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		abrirVentanaNuevoAdmin();
+        	}
+        });
        
         pnlCentro = new JPanel(new BorderLayout());
 		getContentPane().add(pnlCentro, BorderLayout.CENTER);
@@ -378,6 +387,12 @@ public class VentanaAdministrador extends JFrame{
 		
 	}
 	
+	protected void abrirVentanaNuevoAdmin() {
+		VentanaNuevoAdmin ventanaNuevoAdmin = new VentanaNuevoAdmin(this);
+		ventanaNuevoAdmin.setVisible(true);
+		
+	}
+
 	//METODOS 
 	
 	/**
