@@ -15,7 +15,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 public class arbolArticulosRenderer extends DefaultTreeCellRenderer {
 	private Font fuente = new Font( "Arial", Font.BOLD, 14);
 	
-	
+
 	@Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);

@@ -526,7 +526,7 @@ public class VentanaAdministrador extends JFrame{
 	     modeloArbolArticulos.insertNodeInto(Jersey, raiz, 1);
 	     modeloArbolArticulos.insertNodeInto(Camiseta, raiz, 2);
 	     modeloArbolArticulos.insertNodeInto(Pantalon, raiz, 3);
-  	     arbolArticulos = new JTree(modeloArbolArticulos);
+ 	     arbolArticulos = new JTree(modeloArbolArticulos);
 	     int anchoArbol = 200; // ajusta este valor según tus necesidades
 	     arbolArticulos.setPreferredSize(new Dimension(anchoArbol, arbolArticulos.getPreferredSize().height));
 	     sArbolArticulos = new JScrollPane(arbolArticulos);
