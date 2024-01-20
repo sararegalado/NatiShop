@@ -71,8 +71,8 @@ public class BD {
 		String sql2 = "CREATE TABLE IF NOT EXISTS administrador (DNI String, NOMBRE String, APELLIDO String, FECHA_DE_NACIMIENTO String, EMAIL String, TELEFONO String, PROVINCIA String, FECHA_INICIO_EMPRESA String, JORNADA String, PUESTO String, CONTRASEÑA String)";
 		String sqlBorraArticulos = "DROP TABLE IF EXISTS articulo";
 		String sql3 = "CREATE TABLE articulo (ID String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
-		String sql4 = "CREATE TABLE IF NOT EXISTS compras(idCompra INTEGER PRIMARY KEY AUTOINCREMENT, Cliente String, fecha bigint)";
-		String sql5 = "CREATE TABLE IF NOT EXISTS articulosVendidos(idCompra Integer, ID String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
+		String sql4 = "CREATE TABLE IF NOT EXISTS compras(ID_COMPRA INTEGER PRIMARY KEY AUTOINCREMENT, CLIENTE String, FECHA String, PRECIO_COMPRA Float)";
+		String sql5 = "CREATE TABLE IF NOT EXISTS articulosVendidos(ID_COMPRA Integer, ID_ARTICULO String, NOMBRE String, UNIDADES Integer, PRECIO Double, GENERO String, TALLA String, FOTO String, CATEGORIA String)";
 
 		try {
 			Statement st = con.createStatement();
