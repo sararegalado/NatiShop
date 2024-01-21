@@ -706,6 +706,20 @@ public class BD {
 	    return null;
 	}
 	
+	public static void modificarUnidsArticulo(Connection con, String id, int unds) {
+		String sql = String.format("UPDATE articulo SET UNIDADES=%d WHERE ID='%s'", unds ,id);
+		try {
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+			st.close();
+		} catch (SQLException e) {
+			logger.warning(String.format("Error modificando las unidades del articulo '%s'", id));
+		}
+		logger.info(String.format("Unidades modificadas con exito: Nueva unidad: %d", unds));
+
+		
+	}
+	
 	public boolean anyadirCompra(Connection con, Compra compra) {
 	    String sql1 = "INSERT INTO compras(CLIENTE, FECHA, PRECIO_COMPRA) VALUES (?, ?, ?)";
 

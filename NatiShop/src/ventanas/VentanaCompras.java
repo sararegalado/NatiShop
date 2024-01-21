@@ -159,21 +159,16 @@ public class VentanaCompras extends JFrame {
                         System.out.println(obtenerPrecioCompra() );
                         Connection conn = BD.initBD("NatiShop.db");
                         BD.modificarSaldo(conn, obtenerClienteActual().getDni(), saldoCliente - obtenerPrecioCompra());
-                        BD.closeBD(conn);
+                        
                         double saldo = saldoCliente - obtenerPrecioCompra();
                         VentanaPrincipal.getLblSaldo().setText(String.format("%.2f€", saldo));
                         Tienda.getCestaPorCliente().put(c, new ArrayList<>());
+                        for (Articulo a : articulosComprados) {
+                        	BD.modificarUnidsArticulo(conn, a.getId(), a.getUnidades()-1);
+                        	
+                        }
+                        BD.closeBD(conn);
                         getModeloTablaCompras().setRowCount(0);
-                        
-//                        for(Articulo  a: articulosComprados) {
-//        	                Tienda.aniadirCompraCliente(c, a);
-//        	                int uCompradas = obtenerUnidadesCompradas(a, articulosComprados);
-//        	                int uActuales = a.getUnidades();
-//        	                a.setUnidades(uActuales - uCompradas);
-//                         
-//        	                
-//        	           	}
-
                    	}
                        
                    } else {
@@ -255,22 +250,6 @@ public class VentanaCompras extends JFrame {
 	    }
 
 	    return precioTotal;
-		
-	}
-	/**
-	 * Metodo que Obtiene las unidades de los productos que hay en la cesta
-	 * @param a Articulo del que queremos saber la unidades
-	 * @param cesta Conjunto de articulos que se van a comprar
-	 * @return devuelve las unidades de ese articulo
-	 */
-    
-	private  int obtenerUnidadesCompradas (Articulo a, ArrayList<Articulo> cesta) {
-		for (Articulo articulo : cesta) {
-			if(articulo.equals(a)) {
-				return articulo.getUnidades();
-			}
-		}
-		return 0;
 		
 	}
 	
