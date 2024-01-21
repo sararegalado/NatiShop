@@ -141,33 +141,41 @@ public class VentanaCompras extends JFrame {
         pSur.add(btnComprar);
 
         btnComprar.addActionListener((e) -> {
-//          Cliente clienteActual = obtenerClienteActual();
-//          ArrayList<Articulo> articulosSeleccionados = obtenerArticulosSeleccionados();
-//          Tienda.getCompras().put((Cliente) clienteActual, articulosSeleccionados);
+        	if(obtenerClienteActual().getSaldo()>= obtenerPrecioCompra() ) {
+        		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+              	Date date = new Date(); // Obtén la fecha actual
+          		String f_compra = sdf.format(date);
+              	Compra nuevaCompra = new Compra(obtenerClienteActual(), f_compra, Tienda.getCestaPorCliente().get(obtenerClienteActual()), obtenerPrecioCompra());
+              	
+              	 int respuesta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que quieres finalizar la compra?", "Confirmar compra", JOptionPane.YES_NO_OPTION);
 
-      	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-      	Date date = new Date(); // Obtén la fecha actual
-  		String f_compra = sdf.format(date);
-      	Compra nuevaCompra = new Compra(obtenerClienteActual(), f_compra, Tienda.getCestaPorCliente().get(obtenerClienteActual()), obtenerPrecioCompra());
+                   // Comprueba la respuesta del usuario
+                   if (respuesta == JOptionPane.YES_OPTION) {
+                  	Connection con = BD.initBD("NatiShop.db");
+                   	boolean correcto = bd.anyadirCompra(con, nuevaCompra);
+                   	if (correcto) {
+                   		JOptionPane.showMessageDialog(null, "Compra finalizada. Gracias por tu compra.");
+                        System.out.println(obtenerPrecioCompra() );
+                        Connection conn = BD.initBD("NatiShop.db");
+                        BD.modificarSaldo(conn, obtenerClienteActual().getDni(), obtenerClienteActual().getSaldo()-obtenerPrecioCompra());
+                        BD.closeBD(conn);
+                        double saldo = obtenerClienteActual().getSaldo() - obtenerPrecioCompra();
+                        VentanaPrincipal.getLblSaldo().setText(String.format("%.2f€", saldo));
+                        getModeloTablaCompras().setRowCount(0);
+
+                   	}
+                       
+                   } else {
+                       JOptionPane.showMessageDialog(null, "Compra cancelada.");
+                   }
+              	
+        		
+        	}else {
+        		JOptionPane.showMessageDialog(null, "No tienes suficiente saldo para realizar esta compra \n" + 
+        					"Saldo actual: " + obtenerClienteActual().getSaldo()+"€ \n" + "Precio compra: " + obtenerPrecioCompra() + "€");
+        	}
+
       	
-      	 int respuesta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que quieres finalizar la compra?", "Confirmar compra", JOptionPane.YES_NO_OPTION);
-
-           // Comprueba la respuesta del usuario
-           if (respuesta == JOptionPane.YES_OPTION) {
-          	Connection con = BD.initBD("NatiShop.db");
-           	boolean correcto = bd.anyadirCompra(con, nuevaCompra);
-           	if (correcto) {
-           		JOptionPane.showMessageDialog(null, "Compra finalizada. Gracias por tu compra.");
-                   System.out.println(obtenerPrecioCompra() );
-                   getModeloTablaCompras().setRowCount(0);
-
-           	}
-               
-           } else {
-               JOptionPane.showMessageDialog(null, "Compra cancelada.");
-           }
-      	
-      	//AÑADIR METODO ANIADIRCOMPRAS
            
       });
   }

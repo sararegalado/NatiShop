@@ -12,6 +12,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -97,7 +98,9 @@ public class VentanaPrincipal extends JFrame {
 		VentanaPrincipal.lblNomU = lblNomU;
 	}
 	
-	
+	public static JLabel getLblSaldo() {
+		return lblSaldo;
+	}
 	
 	public VentanaPrincipal(JFrame va) {
 		
@@ -218,8 +221,10 @@ public class VentanaPrincipal extends JFrame {
         JPopupMenu menuCliente = new JPopupMenu();
         JMenuItem perfil = new JMenuItem("Ver perfil");
         JMenuItem compras = new JMenuItem("Ver mis compras");
+        JMenuItem saldo = new JMenuItem("Añadir saldo a mi cuenta");
         JMenuItem articulos = new JMenuItem("Ver articulos que puedo comprar");
         menuCliente.add(perfil);
+        menuCliente.add(saldo);
         menuCliente.add(compras);
         menuCliente.add(articulos);
         
@@ -249,7 +254,7 @@ public class VentanaPrincipal extends JFrame {
         JLabel lblUsuario = new JLabel("");
         lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/usuario.png")));
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-        lblUsuario.setBounds(1053, 11, 52, 52);
+        lblUsuario.setBounds(1063, 11, 57, 52);
         pnlNorte.add(lblUsuario);
         
         lblUsuario.addMouseListener(new MouseAdapter() {
@@ -414,6 +419,47 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
         
+        saldo.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Cliente c = VentanaInicioSesion.getCliente();
+				if (clienteTieneTarjeta(c)) {
+					SpinnerModel spinnerModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, 0.5);
+					JSpinner moneySpinner = new JSpinner(spinnerModel);
+					
+					//Panel para el OptionPane
+					JPanel panel = new JPanel();
+					panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+					panel.add(new JLabel("Introduce la cantidad de dinero que deseas añadir a tu cuenta:"));
+					panel.add(moneySpinner);
+					panel.setPreferredSize(new Dimension(200, 80));
+					int result = JOptionPane.showOptionDialog( null, panel, "Cantidad de Dinero", JOptionPane.OK_CANCEL_OPTION,
+							JOptionPane.PLAIN_MESSAGE, null, null, null);
+					if (result == JOptionPane.OK_OPTION) {
+						double saldo = (double) moneySpinner.getValue();
+						
+						Connection con = BD.initBD("NatiShop.db");
+						BD.modificarSaldo(con, c.getDni(), saldo);
+						BD.closeBD(con);
+						lblSaldo.setText(saldo+"€");
+						
+						JOptionPane.showMessageDialog(null, "Has añadido " + saldo + "€ a tu cuenta");
+				        } else {
+				            JOptionPane.showMessageDialog(null, "Operación cancelada");
+				        }
+					
+					
+					
+					
+				}else {
+					JOptionPane.showMessageDialog(null, "Para añadir saldo a tu cuenta primero debes tener una tarjeta registrada. \n Registra tu tarjeta en: Ver perfil > ¿DESEAS AÑADIR UN NUMERO DE TARJETA A TU CUENTA? ");
+				}
+				
+			}
+        	
+        });
+        
 //        articulos.addActionListener(new ActionListener() {
 //			
 //			@Override
@@ -476,13 +522,14 @@ public class VentanaPrincipal extends JFrame {
         lblNomU = new JLabel("Iniciar Sesión");
         lblNomU.setHorizontalAlignment(SwingConstants.CENTER);
         lblNomU.setVerticalAlignment(SwingConstants.TOP);
-        lblNomU.setBounds(1037, 70, 87, 19);
+        lblNomU.setBounds(1046, 67, 91, 22);
         pnlNorte.add(lblNomU);
         
         //Saldo
         lblSaldo = new JLabel("");
+        lblSaldo.setFont(new Font("Tahoma", Font.PLAIN, 8));
         lblSaldo.setHorizontalAlignment(SwingConstants.CENTER);
-        lblSaldo.setBounds(965, 72, 57, 19);
+        lblSaldo.setBounds(1046, 87, 91, 8);
         pnlNorte.add(lblSaldo);
         
         //LISTENERS DE LOS ITEMS DE HOMBRE
@@ -743,16 +790,14 @@ public class VentanaPrincipal extends JFrame {
 		}
 		
 		public static boolean clienteTieneTarjeta(Cliente c) {
-			if (c.getNumTarjeta().equals("Tarjeta sin registrar")) {
+			Connection con = BD.initBD("NatiShop.db");
+			String tarj = BD.obtenerTarjCliente(con, c.getDni());
+			BD.closeBD(con);
+			
+			if (tarj.equals("Tarjeta sin registrar")) {
 				return false;
 			}else {
 				return true;
-			}
-		}
-		
-		public static void asignarSaldoCliente(Cliente c) {
-			if (!c.getNumTarjeta().equals("Tarjeta sin registrar")) {
-				lblSaldo.setText(c.getSaldo() + "€");
 			}
 		}
 
@@ -761,12 +806,7 @@ public class VentanaPrincipal extends JFrame {
 			lblNomU.setText(c.getNombre());
 		};
 		
-		public static void asignarSaldo(Cliente c) {
-			if (!clienteTieneTarjeta(c)) {
-				lblSaldo.setText(c.getSaldo() + "€");
-			}
-		}
-		
+
 		public static void eliminarNombreCliente() {
 			lblNomU.setText("Iniciar sesión");
 		};

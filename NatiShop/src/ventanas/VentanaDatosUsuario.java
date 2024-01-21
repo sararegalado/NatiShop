@@ -156,6 +156,7 @@ public class VentanaDatosUsuario extends JFrame{
 				if (confirmacion == JOptionPane.YES_OPTION) {
 					VentanaPrincipal.setClienteHaIniciadoSesion(false);
 					VentanaPrincipal.eliminarNombreCliente();
+					VentanaPrincipal.getLblSaldo().setText("");
 					vActual.setVisible(false);
 				}
 				
@@ -173,6 +174,7 @@ public class VentanaDatosUsuario extends JFrame{
 					BD.closeBD(con);
 					VentanaPrincipal.setClienteHaIniciadoSesion(false);
 					VentanaPrincipal.eliminarNombreCliente();
+					VentanaPrincipal.getLblSaldo().setText("");
 					vActual.setVisible(false);
 				}
 			}
@@ -368,23 +370,28 @@ public class VentanaDatosUsuario extends JFrame{
 		        				Connection con = BD.initBD("NatiShop.db");
 			        			BD.modificarNumTarj(con, c.getDni() , tfNumTarj.getText());
 			        			BD.closeBD(con);
+			        			VentanaPrincipal.getLblSaldo().setText(c.getSaldo()+"€");
 			        			JOptionPane.showMessageDialog(null, "Numero de tarjeta añadido");
+			        			dispose();
 		        			}else {
-		        				int confirmacion = JOptionPane.showConfirmDialog(null, "Ya tienes un numero de tarjeta para tu cuenta, ¿Deseas remplazarlo?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+		        				int confirmacion = JOptionPane.showConfirmDialog(null, "Ya tienes un numero de tarjeta para tu cuenta, ¿Deseas remplazarlo? \n El dinero que tienes en esta cuenta se te ingrasara al numero de tarjeta que tenias anteriormente.", "Confirmacion", JOptionPane.YES_NO_OPTION);
 		        				if (confirmacion == JOptionPane.YES_OPTION) {
 		        					Connection con = BD.initBD("NatiShop.db");
 				        			BD.modificarNumTarj(con, c.getDni() , tfNumTarj.getText());
 				        			BD.closeBD(con);
+				        			VentanaPrincipal.getLblSaldo().setText("0.0€");
 				        			ocultarAñadirT();
 						            pnlDchaCtro.revalidate();
 						            pnlDchaCtro.repaint();
 						            elementoAgregado = false;
+						            dispose();
 		        				}else {
 		        					System.out.println("No ha modificado la tarjeta");
 		        					ocultarAñadirT();
 		    			            pnlDchaCtro.revalidate();
 		    			            pnlDchaCtro.repaint();
 		    			            elementoAgregado = false;
+		    			            dispose();
 		        				}
 		        			}
 		        			
