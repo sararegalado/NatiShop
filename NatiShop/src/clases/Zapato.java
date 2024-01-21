@@ -12,9 +12,7 @@ public class Zapato extends Articulo {
 
 	@Override
 	public String toString() {
-		return "Zapato [id=" + id + ", nombre=" + nombre + ", unidades=" + unidades + ", precio=" + precio + ", genero="
-				+ genero + ", talla=" + talla + ", foto=" + foto + ", categoria=" + categoria + "]";
+		return  id + "	" + nombre + "	" + talla + "	" + precio ;
 	}
-	
 
 }

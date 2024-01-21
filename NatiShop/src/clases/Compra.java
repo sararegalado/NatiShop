@@ -81,8 +81,7 @@ public class Compra {
 	
 	@Override
 	public String toString() {
-		return "Compra [idCompra=" + idCompra + ", cliente=" + cliente + ", fecha=" + fecha + ", articulos=" + articulos
-				+ ", precio=" + precio + "]";
+		return "ID: " + idCompra + ", FECHA: " + sdf.format(fecha) +  ", PRECIO: " + precio ;
 	}
 
 }
