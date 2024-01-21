@@ -320,10 +320,6 @@ public class VentanaAdministrador extends JFrame{
 		menuBarAdmin.add(menuArticulos);
 		
 		
-		mItemArticulos = new JMenuItem("ARTICULOS DISPONIBLES");
-		mItemArticulos.setFont(new Font("Calibri", Font.BOLD, 15));
-		menuArticulos.add(mItemArticulos);
-		
 		
 		mItemStock = new JMenuItem("GESTION DE STOCK");
 		mItemStock.setFont(new Font("Calibri", Font.BOLD, 15));
@@ -421,10 +417,10 @@ public class VentanaAdministrador extends JFrame{
 				for(Articulo a: articulos) {
 					if(a.getCategoria().equals(categoria)) {
 						articulosTabla.add(a);
-						tStock.setModel(new ModeloTablaStock((List<Articulo>) articulosTabla));
+						
 					}
 				}
-				
+				tStock.setModel(new ModeloTablaStock((List<Articulo>) articulosTabla));
 			}
 			
 		});
@@ -475,7 +471,10 @@ public class VentanaAdministrador extends JFrame{
 		tClientes.setDefaultRenderer(Object.class, cellRenderer);
 		((DefaultTableCellRenderer) tClientes.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 	}
-	
+	/**
+	 * Método que Cargar la tabla con rodos los articulos de la tiwnda y sus unidades disponible
+	 * 
+	 */
 	public void cargarTablaStock() {
 		Connection con = BD.initBD("Natishop.db");
 		Set<Articulo>a = BD.obtenerListaArticulos(con);
@@ -632,11 +631,13 @@ public class VentanaAdministrador extends JFrame{
 
 	
 	/*ERRORES/TAREAS
-	 * Falta llamar  al metodi aniadirCompraCliente() al actioonListener del Boton Comprar -- > Parametros?
+	 * Falta llamar  al metodo aniadirCompraCliente() al actioonListener del Boton Comprar -- > Parametros (HECHO)
 	 * Listener del Jtree
-	 * Unidades de los articulos
+	 * Unidades de los articulos (HECHO)
 	 * Estadisticas
-	 * Limpiar codigo
+	 * Comentar Métodos
+	 * Limpiar código
+	 * 
 	 * 
 	 * -----
 	
