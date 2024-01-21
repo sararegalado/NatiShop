@@ -726,7 +726,7 @@ public class BD {
 	        }
 
 	    } catch (SQLException ex) {
-	        logger.warning(String.format("Error añadiendo compra %s", compra.toString()));
+	        logger.warning(String.format("Error añadiendo compra %s", ex.getMessage()));
 	        return false;
 	    }
 	    return true;

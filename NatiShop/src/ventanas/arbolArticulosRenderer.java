@@ -31,9 +31,17 @@ public class arbolArticulosRenderer extends DefaultTreeCellRenderer {
 				int ancho =200;
 				int alto = 130;
 				Image img = imagenRaiz.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
-				
 				l.setIcon(new ImageIcon(img));
+			}else {
+				l.setFont(fuente);
+		        l.setForeground(Color.BLACK);
+				l.setBackground(Color.WHITE);
+				l.setOpaque(true);
 			}
+		if(selected) {
+			l.setBackground(Color.LIGHT_GRAY);
+		}
+			l.setOpaque(true);
 		}
         return l;
 	
