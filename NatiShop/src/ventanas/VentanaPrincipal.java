@@ -222,11 +222,10 @@ public class VentanaPrincipal extends JFrame {
         JMenuItem perfil = new JMenuItem("Ver perfil");
         JMenuItem compras = new JMenuItem("Ver mis compras");
         JMenuItem saldo = new JMenuItem("Añadir saldo a mi cuenta");
-        JMenuItem articulos = new JMenuItem("Ver articulos que puedo comprar");
+        
         menuCliente.add(perfil);
         menuCliente.add(saldo);
         menuCliente.add(compras);
-        menuCliente.add(articulos);
         
         JLabel lblLogo = new JLabel("");
         lblLogo.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/nombreTienda.png")));
@@ -339,16 +338,6 @@ public class VentanaPrincipal extends JFrame {
         	tallasSeleccionadas.add("XXL");
         	buscarArticulos(textoBusqueda, pnlArticulos, cbGenero, tallasSeleccionadas);
 		});        
-		//pnlDchaMenu.add(new JPanel());
-		JLabel lblPrecio = new JLabel("Selecciona un precio:");
-		pnlDchaMenu.add(lblPrecio);
-		JSlider sPrecio = new JSlider(0, 100, 0);
-		sPrecio.setPaintTicks(true);
-		sPrecio.setPaintLabels(true);
-		sPrecio.setMinorTickSpacing(5);
-		sPrecio.setMajorTickSpacing(10);
-		pnlDchaMenu.add(sPrecio);
-		
 		
         
         btnDesplegar = new JButton();
@@ -459,64 +448,6 @@ public class VentanaPrincipal extends JFrame {
 			}
         	
         });
-        
-//        articulos.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				//cargarArticulosQuePuedoComprar();
-//				tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
-// 		        //filtrado.setVisible(false);
-//            	limpiarPanel(pnlArticulos);
-//            	pnlArticulos.setBorder(new EmptyBorder(10, 10, 10, 10));
-//    			pnlArticulos.setLayout(new BorderLayout());
-//    			JPanel pnlElems = new JPanel(new GridLayout(0, 4, 10, 10));
-//                pnlArticulos.add(pnlElems, BorderLayout.CENTER);
-//                //JPanel pnlOpciones = new JPanel(new FlowLayout());
-//                
-//             // ... (otro código)
-//
-//                DefaultListModel<String> modeloListaArticulos = new DefaultListModel<>();
-//                JList<String> listaArticulos = new JList<>(modeloListaArticulos);
-//                JScrollPane scrollListaArticulos = new JScrollPane(listaArticulos);
-//                pnlArticulos.add(scrollListaArticulos, BorderLayout.WEST);
-//
-//                ArrayList<Articulo> arrayListArticulos = new ArrayList<>(Tienda.getArticulos());
-//                List<List<Articulo>> resultado = Tienda.combinaciones(arrayListArticulos, VentanaInicioSesion.getCliente().getSaldo(), 0);
-//
-//                for (int i = 1; i <= resultado.size(); i++) {
-//                    String opcion = "Opcion" + i;
-//                    modeloListaArticulos.addElement(opcion);
-//                }
-//
-//                listaArticulos.addListSelectionListener(new ListSelectionListener() {
-//                    @Override
-//                    public void valueChanged(ListSelectionEvent e) {
-//                        if (!e.getValueIsAdjusting()) {
-//                            int selectedOptionIndex = listaArticulos.getSelectedIndex();
-//
-//                            if (selectedOptionIndex >= 0 && selectedOptionIndex < resultado.size()) {
-//                                List<Articulo> selectedList = resultado.get(selectedOptionIndex);
-//
-//                                TreeSet<Articulo> art = new TreeSet<>(selectedList);
-//                                setArticulosQuePuedoComprar(art, pnlElems);
-//                            }
-//                        }
-//                    }
-//                });
-//
-//
-//        		
-////        		System.out.println("LLAMADA RECURSIVA");
-////        		System.out.println(resultado);
-////        		for (List<Articulo> a : resultado) {
-////        			TreeSet<Articulo> art = new TreeSet<Articulo>(a);
-////        			setArticulosQuePuedoComprar(art, pnlElems);
-////        		}
-//        		
-//				
-//			}
-//		});
         
 
         lblNomU = new JLabel("Iniciar Sesión");
@@ -889,28 +820,7 @@ public class VentanaPrincipal extends JFrame {
 			
 			
 			
-			return panelArticulo;
-			
-		
-
-			/* if (UsuarioHaIniciadoSesion()) {
-	  	  lblUsuario.addMouseListener(new MouseAdapter() {
-	        	@Override
-	        	public void mouseClicked(MouseEvent e) {
-	        		new VentanaInicioSesion(vActual);
-					//vActual.setVisible(false);
-	        		
-	        	}
-	       });       
-	  } else {
-	  	lblUsuario.addMouseListener(new MouseAdapter() {
-	      	@Override
-	      	public void mouseClicked(MouseEvent e) {
-	      		JOptionPane.showMessageDialog(vActual, "Por favor, inicie sesión antes de acceder.");
-	      	}
-	  	});
-	  }*/
-				
+			return panelArticulo;	
 	 
 		}
 		

@@ -1,9 +1,12 @@
 package ventanas;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,14 +23,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
 import clases.Articulo;
@@ -45,6 +42,8 @@ public class VentanaCompras extends JFrame {
     private JScrollPane scrollTablaCompras;
     private BD bd;
     private Cliente c;
+    
+    private int filaABorrar;
 
 
     public VentanaCompras(JFrame va) {
@@ -67,8 +66,6 @@ public class VentanaCompras extends JFrame {
         setModeloTablaCompras(new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                if (column == 4)
-                    return true;
                 return false;
             }
         });
@@ -120,8 +117,36 @@ public class VentanaCompras extends JFrame {
                     l.setOpaque(true);
                     return l;
                 }
+                
             }
 
+        });
+        
+        tablaCompras.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                	int opcion = JOptionPane.showConfirmDialog(
+                            JOptionPane.getRootFrame(),
+                            "¿Quieres borrar este artículo de tu cesta?",
+                            "Confirmar Eliminación",
+                            JOptionPane.YES_NO_OPTION);
+
+                    if (opcion == JOptionPane.YES_OPTION) {
+                    	 int selectedRow = tablaCompras.getSelectedRow();
+                         if (selectedRow != -1) {
+                             filaABorrar = selectedRow;
+                             modeloTablaCompras.removeRow(filaABorrar);
+                             Tienda.getCestaPorCliente().get(VentanaInicioSesion.getCliente()).remove(selectedRow);
+                         }
+                    } else {
+                        // Lógica si el usuario selecciona "Cancelar" o cierra la ventana
+                        System.out.println("Eliminación cancelada");
+                    }
+
+
+                }
+            }
         });
 
         btnVolver = new JButton("VOLVER");
@@ -208,15 +233,6 @@ public class VentanaCompras extends JFrame {
     private Cliente obtenerClienteActual() {
         return VentanaInicioSesion.getCliente();
     }
-
-//    private ArrayList<Articulo> obtenerArticulosSeleccionados() {
-//        ArrayList<Articulo> comprasUsuario = new ArrayList<>();
-//        for (int fila = 0; fila < getModeloTablaCompras().getRowCount(); fila++) {
-//            Articulo articulo = (Articulo) getModeloTablaCompras().getValueAt(fila, 0);
-//            comprasUsuario.add(articulo);
-//        }
-//        return comprasUsuario;
-//    }
 
 	public static DefaultTableModel getModeloTablaCompras() {
 		return modeloTablaCompras;
