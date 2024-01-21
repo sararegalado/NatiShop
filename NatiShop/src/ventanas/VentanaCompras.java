@@ -188,7 +188,7 @@ public class VentanaCompras extends JFrame {
   }
         	
 /**
- * Método que craga los articulos que el cliente, que ha iniciado sesion ha seleccionado
+ * Método que carga los articulos que el cliente, que ha iniciado sesion ha seleccionado
  */
     private void cargarArticuloTabla() {
         if (VentanaPrincipal.isClienteHaIniciadoSesion()) {
@@ -307,6 +307,12 @@ public class VentanaCompras extends JFrame {
 	    return precioTotal;
 		
 	}
+	/**
+	 * Metodo que Obtiene las unidades de los productos que hay en la cesta
+	 * @param a Articulo del que queremos saber la unidades
+	 * @param cesta Conjunto de articulos que se van a comprar
+	 * @return devuelve las unidades de ese articulo
+	 */
     
 	private  int obtenerUnidadesCompradas (Articulo a, ArrayList<Articulo> cesta) {
 		for (Articulo articulo : cesta) {

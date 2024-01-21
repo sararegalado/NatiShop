@@ -332,7 +332,7 @@ public class VentanaAdministrador extends JFrame{
 				pnlCentro.revalidate();
 				pnlCentro.repaint();
 				cargarArbol();
-				cargarTablaStock();
+			
 				System.out.println("Item funciona");
 				
 				
@@ -421,6 +421,7 @@ public class VentanaAdministrador extends JFrame{
 					}
 				}
 				tStock.setModel(new ModeloTablaStock((List<Articulo>) articulosTabla));
+				cargarTablaStock();
 			}
 			
 		});
@@ -632,9 +633,9 @@ public class VentanaAdministrador extends JFrame{
 	
 	/*ERRORES/TAREAS
 	 * Falta llamar  al metodo aniadirCompraCliente() al actioonListener del Boton Comprar -- > Parametros (HECHO)
-	 * Listener del Jtree
-	 * Unidades de los articulos (HECHO)
-	 * Estadisticas
+	 * Listener del Jtree (MARIAN)
+	 * Unidades de los articulos (A MEDIAS / MARIAN)
+	 * Estadisticas 
 	 * Comentar Métodos
 	 * Limpiar código
 	 * 
