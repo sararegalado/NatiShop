@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 
 
@@ -276,33 +277,8 @@ public class VentanaAdministrador extends JFrame{
 		tStock = new JTable(mStock);
 		sTablaStock = new JScrollPane(tStock);
 		
-		//ACTIONLISTENER DEL ARBOL
-		/*arbolArticulos.addTreeSelectionListener(new TreeSelectionListener() {
-
-			@Override
-			public void valueChanged(TreeSelectionEvent e) {
-				TreePath tp = e.getPath();
-				String categoria= tp.getLastPathComponent().toString();
-				
-				Connection con = BD.initBD("Natishop.db");
-				Set<Articulo>articulos = BD.obtenerListaArticulos(con);
-				BD.closeBD(con);
-				
-				for(Articulo a: articulos) {
-					if(a.getCategoria().equals(categoria)) {
-						
-					}
-				}
-				
-				
-				
-				
-				
-				
-				
-			}
-			
-		});*/
+		
+		
 		
 		
 		
@@ -403,7 +379,13 @@ public class VentanaAdministrador extends JFrame{
 		tClientes = new JTable(mClientes);
 		sTablaClientes = new JScrollPane(tClientes);
 		
+		cargarArbol();
+		sArbolArticulos.setVisible(false);
+	   
+		
 		pnlCentro.setVisible(true);
+		
+	//LISTENERS
 		
 		tClientes.addMouseListener(new MouseAdapter() {
 					
@@ -421,6 +403,30 @@ public class VentanaAdministrador extends JFrame{
 				}
 				JOptionPane.showMessageDialog(null, texto);
 			}
+		});
+		
+		arbolArticulos.addTreeSelectionListener(new TreeSelectionListener() {
+	
+			@Override
+			public void valueChanged(TreeSelectionEvent e) {
+				System.out.println("ARBOL");
+				TreePath tp = e.getPath();
+				String categoria= tp.getLastPathComponent().toString();
+				
+				Connection con = BD.initBD("Natishop.db");
+				Set<Articulo>articulos = BD.obtenerListaArticulos(con);
+				BD.closeBD(con);
+				
+				Set<Articulo> articulosTabla = new TreeSet<>();
+				for(Articulo a: articulos) {
+					if(a.getCategoria().equals(categoria)) {
+						articulosTabla.add(a);
+						tStock.setModel(new ModeloTablaStock((List<Articulo>) articulosTabla));
+					}
+				}
+				
+			}
+			
 		});
 		
 		setVisible(true);
@@ -595,25 +601,26 @@ public class VentanaAdministrador extends JFrame{
 	 */
 	
 	public void cargarArbol() {
-		 DefaultMutableTreeNode raiz= new DefaultMutableTreeNode();
-	     DefaultMutableTreeNode Jersey = new DefaultMutableTreeNode("JERSEY");
-	     DefaultMutableTreeNode Camiseta = new DefaultMutableTreeNode("CAMISETA");
-	     DefaultMutableTreeNode Zapato = new DefaultMutableTreeNode("ZAPATO");
-	     DefaultMutableTreeNode Pantalon = new DefaultMutableTreeNode("PANTALON");
-	     modeloArbolArticulos = new DefaultTreeModel (raiz);
-	     modeloArbolArticulos.insertNodeInto(Zapato, raiz, 0);
-	     modeloArbolArticulos.insertNodeInto(Jersey, raiz, 1);
-	     modeloArbolArticulos.insertNodeInto(Camiseta, raiz, 2);
-	     modeloArbolArticulos.insertNodeInto(Pantalon, raiz, 3);
- 	     arbolArticulos = new JTree(modeloArbolArticulos);
-	     int anchoArbol = 200; // ajusta este valor según tus necesidades
-	     arbolArticulos.setPreferredSize(new Dimension(anchoArbol, arbolArticulos.getPreferredSize().height));
-	     sArbolArticulos = new JScrollPane(arbolArticulos);
-	     arbolArticulos.setCellRenderer(new arbolArticulosRenderer());
-	     arbolArticulos.setVisible(true);
-	     pnlCentro.add(sArbolArticulos, BorderLayout.WEST);
-	     pnlCentro.setVisible(true);
-	     System.out.println("Método Fuciona");
+		DefaultMutableTreeNode raiz= new DefaultMutableTreeNode();
+	    DefaultMutableTreeNode Jersey = new DefaultMutableTreeNode("JERSEY");
+	    DefaultMutableTreeNode Camiseta = new DefaultMutableTreeNode("CAMISETA");
+	    DefaultMutableTreeNode Zapato = new DefaultMutableTreeNode("ZAPATO");
+	    DefaultMutableTreeNode Pantalon = new DefaultMutableTreeNode("PANTALON");
+	    modeloArbolArticulos = new DefaultTreeModel (raiz);
+	    modeloArbolArticulos.insertNodeInto(Zapato, raiz, 0);
+	    modeloArbolArticulos.insertNodeInto(Jersey, raiz, 1);
+	    modeloArbolArticulos.insertNodeInto(Camiseta, raiz, 2);
+	    modeloArbolArticulos.insertNodeInto(Pantalon, raiz, 3);
+		arbolArticulos = new JTree(modeloArbolArticulos);
+		int anchoArbol = 200;
+		int altoArbol= 130;  
+	    arbolArticulos.setPreferredSize(new Dimension(anchoArbol, altoArbol));
+		sArbolArticulos = new JScrollPane(arbolArticulos);
+	    arbolArticulos.setCellRenderer(new arbolArticulosRenderer());
+		sArbolArticulos.setVisible(true);
+	    pnlCentro.add(sArbolArticulos, BorderLayout.WEST);
+	    pnlCentro.setVisible(true);
+	    System.out.println("Método Fuciona");
 		
 	}
 
