@@ -633,11 +633,13 @@ public class VentanaAdministrador extends JFrame{
 	
 	/*ERRORES/TAREAS
 	 * Falta llamar  al metodi aniadirCompraCliente() al actioonListener del Boton Comprar -- > Parametros?
-	 * 
+	 * Listener del Jtree
+	 * Unidades de los articulos
+	 * Estadisticas
+	 * Limpiar codigo
 	 * 
 	 * -----
-	 * Falta añadir arbol al panel centro 
-	 * Hacer tabla y añadir el arbol
+	
 	  */
 	
 
