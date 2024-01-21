@@ -527,7 +527,7 @@ public class VentanaAdministrador extends JFrame{
 		
 		
 	}
-
+	
 	
 
 	private void cargarComprasDia(String fecha_Selecionada, JTable tablaCompras) {
@@ -632,10 +632,11 @@ public class VentanaAdministrador extends JFrame{
 
 	
 	/*ERRORES/TAREAS
-	 * Falta llamar  al metodo aniadirCompraCliente() al actioonListener del Boton Comprar -- > Parametros (HECHO)
-	 * Listener del Jtree (MARIAN)
-	 * Unidades de los articulos (A MEDIAS / MARIAN)
-	 * Estadisticas 
+	 *
+	 * Listener del Jtree 
+	 * Unidades de los articulos 
+	 * RENDERER DE LA TABLA
+	 * Estadisticas (ANE Y YO)
 	 * Comentar Métodos
 	 * Limpiar código
 	 * 
