@@ -12,8 +12,7 @@ public class Pantalon extends Articulo {
 
 	@Override
 	public String toString() {
-		return "Pantalon [id=" + id + ", nombre=" + nombre + ", unidades=" + unidades + ", precio=" + precio
-				+ ", genero=" + genero + ", talla=" + talla + ", foto=" + foto + ", categoria=" + categoria + "]";
+		return  id + "	" + nombre + "	" + talla + "	" + precio ;
 	}
 
 	

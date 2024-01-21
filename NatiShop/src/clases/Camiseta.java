@@ -12,7 +12,6 @@ public class Camiseta extends Articulo {
 
 	@Override
 	public String toString() {
-		return "Camiseta [id=" + id + ", nombre=" + nombre + ", unidades=" + unidades + ", precio=" + precio
-				+ ", genero=" + genero + ", talla=" + talla + ", foto=" + foto + ", categoria=" + categoria + "]";
+		return  id + "	" + nombre + "	" + talla + "	" + precio ;
 	}
 }
