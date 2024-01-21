@@ -63,7 +63,7 @@ public class VentanaCompras extends JFrame {
         pSur = new JPanel();
         getContentPane().add(pSur, BorderLayout.SOUTH);
 
-        Object[] titulos = { "ID", "ARTICULO", "DESCRIPCION", "TALLA", "CANTIDAD", "PRECIO"};
+        Object[] titulos = { "ID", "ARTICULO", "DESCRIPCION", "TALLA", "PRECIO"};
         setModeloTablaCompras(new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -82,17 +82,10 @@ public class VentanaCompras extends JFrame {
         
         cargarArticuloTabla();
 
-        this.tablaCompras.setRowHeight(80);
+        tablaCompras.setRowHeight(80);
         
         bd = new BD();
 
-        // Configurar el editor de la columna "CANTIDAD" para usar JSpinner
-        TableColumnModel columnModel = tablaCompras.getColumnModel();
-        TableColumn cantidadColumna = columnModel.getColumn(4);
-
-        SpinnerEditor spinnerEditor = new SpinnerEditor();
-        cantidadColumna.setCellEditor(spinnerEditor);
-        cantidadColumna.setCellRenderer(spinnerEditor);
 
         tablaCompras.setDefaultRenderer(Object.class, new TableCellRenderer() {
 
@@ -169,6 +162,7 @@ public class VentanaCompras extends JFrame {
                         BD.closeBD(conn);
                         double saldo = saldoCliente - obtenerPrecioCompra();
                         VentanaPrincipal.getLblSaldo().setText(String.format("%.2f€", saldo));
+                        Tienda.getCestaPorCliente().put(c, new ArrayList<>());
                         getModeloTablaCompras().setRowCount(0);
                         
 //                        for(Articulo  a: articulosComprados) {
@@ -206,7 +200,7 @@ public class VentanaCompras extends JFrame {
                 for (Articulo a : aCesta) {
                     try {
                         ImageIcon icono = new ImageIcon(getClass().getResource(a.getFoto()));
-                        Object[] fila = {a.getId(), icono, a.getNombre(), a.getTallaStr(), a.getCantidadSeleccionada(), a.getPrecioPorUnidad()};
+                        Object[] fila = {a.getId(), icono, a.getNombre(), a.getTallaStr(), a.getPrecio()};
                         getModeloTablaCompras().addRow(fila);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -215,59 +209,6 @@ public class VentanaCompras extends JFrame {
             }
         }
     }
-
-    
-    static class SpinnerEditor extends AbstractCellEditor implements TableCellEditor, TableCellRenderer {
-        private final JSpinner spinner;
-
-        public SpinnerEditor() {
-            spinner = new JSpinner();
-            spinner.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));  // Establecer modelo para evitar NullPointerException
-            spinner.addChangeListener(e -> {
-                int fila = tablaCompras.getEditingRow();
-                int columna = tablaCompras.getEditingColumn();
-                if (fila != -1 && columna == 4) {
-                    int nuevaCantidad = (int) spinner.getValue();
-                    tablaCompras.getModel().setValueAt(nuevaCantidad, fila, columna);
-                    
-                    // Actualizar la cantidadSeleccionada en la instancia de Articulo
-                    String idArticulo = (String) tablaCompras.getModel().getValueAt(fila, 0);
-                    Articulo a = obtenerArticuloPorID(idArticulo); // Ajusta esto según la estructura de tu código
-                    a.setCantidadSeleccionada(nuevaCantidad);
-
-                    float precioUnitario = a.getPrecio();
-                    float nuevoPrecio = nuevaCantidad * precioUnitario;
-                    tablaCompras.getModel().setValueAt(nuevoPrecio, fila, 5);
-                    a.setPrecioPorUnidad(nuevoPrecio);
-
-                    // Notificar que se ha realizado la edición
-                    fireEditingStopped();
-                }
-            });
-        }
-
-        @Override
-        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-            int cantidad = (int) value;
-            spinner.setValue(cantidad);
-            return spinner;
-        }
-
-        @Override
-        public Object getCellEditorValue() {
-            return spinner.getValue();
-        }
-
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-                                                       int row, int column) {
-            JSpinner newSpinner = new JSpinner();  // Crear un nuevo JSpinner para cada fila
-            newSpinner.setValue(value);
-            return newSpinner;
-        }
-    }
-
-
 
     private Cliente obtenerClienteActual() {
         return VentanaInicioSesion.getCliente();
@@ -308,7 +249,7 @@ public class VentanaCompras extends JFrame {
 		float precioTotal = (float) 0.0;
 
 	    for (int fila = 0; fila < getModeloTablaCompras().getRowCount(); fila++) {
-	    	float valor = (float) getModeloTablaCompras().getValueAt(fila, 5);
+	    	float valor = (float) getModeloTablaCompras().getValueAt(fila, 4);
 	        precioTotal += valor;
 	        
 	    }
