@@ -286,6 +286,23 @@ public class BD {
 		return tarj;
 	}
 	
+	public static double obtenerSaldoCliente(Connection con, String dni) {
+		String sql = String.format("SELECT SALDO FROM cliente WHERE DNI = '%s'", dni);
+		double saldo = 0.0;
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql); //Ejecuto la consulta
+			if(rs.next()) { //La select ha devuelto 1 ó más tuplas
+				saldo = rs.getDouble("SALDO");
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException e) {
+			logger.warning("Error buscando cliente" + e.getMessage());
+		}
+		return saldo;
+	}
+	
 
 
 	

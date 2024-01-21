@@ -142,8 +142,11 @@ public class VentanaCompras extends JFrame {
         pSur.add(btnComprar);
 
         btnComprar.addActionListener((e) -> {
-
-        	if(obtenerClienteActual().getSaldo()>= obtenerPrecioCompra() ) {
+        	
+          	Connection co = BD.initBD("NatiShop.db");
+           	double saldoCliente = BD.obtenerSaldoCliente(co, obtenerClienteActual().getDni());
+           	BD.closeBD(co);
+        	if(saldoCliente>= obtenerPrecioCompra() ) {
         		Cliente c= obtenerClienteActual();
                 ArrayList<Articulo> articulosComprados = Tienda.getCestaPorCliente().get(c);
         		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -157,24 +160,25 @@ public class VentanaCompras extends JFrame {
                    if (respuesta == JOptionPane.YES_OPTION) {
                   	Connection con = BD.initBD("NatiShop.db");
                    	boolean correcto = bd.anyadirCompra(con, nuevaCompra);
+                   	BD.closeBD(con);
                    	if (correcto) {
                    		JOptionPane.showMessageDialog(null, "Compra finalizada. Gracias por tu compra.");
                         System.out.println(obtenerPrecioCompra() );
                         Connection conn = BD.initBD("NatiShop.db");
-                        BD.modificarSaldo(conn, obtenerClienteActual().getDni(), obtenerClienteActual().getSaldo()-obtenerPrecioCompra());
+                        BD.modificarSaldo(conn, obtenerClienteActual().getDni(), saldoCliente - obtenerPrecioCompra());
                         BD.closeBD(conn);
-                        double saldo = obtenerClienteActual().getSaldo() - obtenerPrecioCompra();
+                        double saldo = saldoCliente - obtenerPrecioCompra();
                         VentanaPrincipal.getLblSaldo().setText(String.format("%.2f€", saldo));
                         getModeloTablaCompras().setRowCount(0);
                         
-                        for(Articulo  a: articulosComprados) {
-        	                Tienda.aniadirCompraCliente(c, a);
-        	                int uCompradas = obtenerUnidadesCompradas(a, articulosComprados);
-        	                int uActuales = a.getUnidades();
-        	                a.setUnidades(uActuales - uCompradas);
-                         
-        	                
-        	           	}
+//                        for(Articulo  a: articulosComprados) {
+//        	                Tienda.aniadirCompraCliente(c, a);
+//        	                int uCompradas = obtenerUnidadesCompradas(a, articulosComprados);
+//        	                int uActuales = a.getUnidades();
+//        	                a.setUnidades(uActuales - uCompradas);
+//                         
+//        	                
+//        	           	}
 
                    	}
                        
@@ -185,7 +189,7 @@ public class VentanaCompras extends JFrame {
         		
         	}else {
         		JOptionPane.showMessageDialog(null, "No tienes suficiente saldo para realizar esta compra \n" + 
-        					"Saldo actual: " + obtenerClienteActual().getSaldo()+"€ \n" + "Precio compra: " + obtenerPrecioCompra() + "€");
+        					"Saldo actual: " + saldoCliente +"€ \n" + "Precio compra: " + obtenerPrecioCompra() + "€");
         	}
 
            
