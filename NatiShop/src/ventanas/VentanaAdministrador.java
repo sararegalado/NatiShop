@@ -502,95 +502,6 @@ public class VentanaAdministrador extends JFrame{
 		pnlCentro.setVisible(true);
 	}
 
-	 public void mostrarClienteQueMasHaComprado() {
-	        Connection con = BD.initBD("NatiShop.db");
-	        List<Compra> compras = BD.obtenerComprasTotales(con);
-	        BD.closeBD(con);
-
-	        Cliente clienteMasCompras = clienteQueMasHaComprado(compras);
-	        mostrarEstadisticaEnPnlCentro(clienteMasCompras);
-	    }
-	 
-	 	
-
-	    private void mostrarEstadisticaEnPnlCentro(Cliente cliente) {
-	    	pnlCentro.removeAll();
-	    	pnlCentro.setLayout(new GridLayout(2, 2));
-	    	
-	    	JPanel pnlEsEsteArriba = new JPanel();
-	    	JPanel pnlEsEsteAbajo = new JPanel();
-	    	JPanel pnlEsOesteArriba = new JPanel();
-	    	JPanel pnlEsOesteAbajo = new JPanel();
-	    	
-	    	pnlEsEsteArriba.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-	    	pnlEsEsteArriba.setBackground(new Color(220, 220, 220));
-	    	pnlEsEsteAbajo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-	    	pnlEsEsteAbajo.setBackground(new Color(220, 220, 220));
-	    	pnlEsOesteArriba.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-	    	pnlEsOesteArriba.setBackground(new Color(220, 220, 220));
-	    	pnlEsOesteAbajo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-	    	pnlEsOesteAbajo.setBackground(new Color(220, 220, 220));
-	    	
-	    	pnlCentro.add(pnlEsOesteArriba);
-	    	pnlCentro.add(pnlEsEsteArriba);
-	    	pnlCentro.add(pnlEsEsteAbajo);
-	    	pnlCentro.add(pnlEsOesteAbajo);
-	    	
-
-
-	        JLabel lblTitulo = new JLabel("Cliente que más ha comprado:");
-	        lblTitulo.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 20));
-	        lblTitulo.setHorizontalAlignment(JLabel.CENTER);
-
-	        if (cliente != null) {
-	            JLabel lblCliente = new JLabel("DNI: " + cliente.getDni() + ", Nombre: " + cliente.getNombre());
-	            lblCliente.setFont(new Font("Calibri", Font.PLAIN, 16));
-	            lblCliente.setHorizontalAlignment(JLabel.CENTER);
-	            
-	            pnlEsOesteArriba.setLayout(new GridLayout(2, 1));
-	            pnlEsOesteArriba.add(lblTitulo);
-	            pnlEsOesteArriba.add(lblCliente);
-	            
-	            
-	            
-	        } else {
-	            JLabel lblNoCompras = new JLabel("No hay compras registradas.");
-	            lblNoCompras.setFont(new Font("Calibri", Font.PLAIN, 16));
-	            lblNoCompras.setHorizontalAlignment(JLabel.CENTER);
-	            pnlEsOesteArriba.setLayout(new GridLayout(1, 1));
-	            pnlEsOesteArriba.add(lblNoCompras);
-	        }
-
-	        pnlCentro.setVisible(true);
-	        revalidate();
-	        repaint();
-		
-	}
-
-		private Cliente clienteQueMasHaComprado(List<Compra> compras) {
-	        Map<Cliente, Integer> frecuenciaClientes = new HashMap<>();
-
-	        for (Compra c : compras) {
-	            Cliente cliente = c.getCliente();
-	            int frecuenciaActual = frecuenciaClientes.getOrDefault(cliente, 0);
-	            frecuenciaClientes.put(cliente, frecuenciaActual + 1);
-	        }
-
-	        Cliente clienteMasCompras = null;
-	        int maxFrecuencia = 0;
-
-	        for (Map.Entry<Cliente, Integer> entry : frecuenciaClientes.entrySet()) {
-	            if (entry.getValue() > maxFrecuencia) {
-	                maxFrecuencia = entry.getValue();
-	                clienteMasCompras = entry.getKey();
-	            }
-	        }
-
-	        return clienteMasCompras;
-	    }
-
-	   
-
 
 
 	public void cargarCalendario() {
@@ -601,7 +512,6 @@ public class VentanaAdministrador extends JFrame{
 		JTable tablaCompras = new JTable();
 		tablaCompras.setModel(new ModeloTablaCompras(null));
 		JScrollPane spTablaCompras = new JScrollPane(tablaCompras);
-		
 		
 		pnlCalendar.add(spTablaCompras);
 
@@ -622,13 +532,7 @@ public class VentanaAdministrador extends JFrame{
             }
         });
 		
-		
-		
 		pnlCentro.setVisible(true);
-		
-		
-		
-		
 		
 	}
 	
@@ -731,6 +635,161 @@ public class VentanaAdministrador extends JFrame{
 	public static JTextField getTfJornada() {
 		return tfJornada;
 	}
+	
+	//MÉTODOS ESTADISTISCAS
+	
+	public void mostrarClienteQueMasHaComprado() {
+        Connection con = BD.initBD("NatiShop.db");
+        List<Compra> compras = BD.obtenerComprasTotales(con);
+        BD.closeBD(con);
+
+        Cliente clienteMasCompras = clienteQueMasHaComprado(compras);
+        mostrarEstadisticaEnPnlCentro(clienteMasCompras);
+    }
+ 
+ 	
+
+    private void mostrarEstadisticaEnPnlCentro(Cliente cliente) {
+    	pnlCentro.removeAll();
+    	pnlCentro.setLayout(new GridLayout(2, 2));
+    	
+    	JPanel pnlEsEsteArriba = new JPanel();
+    	JPanel pnlEsEsteAbajo = new JPanel();
+    	JPanel pnlEsOesteArriba = new JPanel();
+    	JPanel pnlEsOesteAbajo = new JPanel();
+    	
+    	pnlEsEsteArriba.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+    	pnlEsEsteArriba.setBackground(new Color(220, 220, 220));
+    	pnlEsEsteAbajo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+    	pnlEsEsteAbajo.setBackground(new Color(220, 220, 220));
+    	pnlEsOesteArriba.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+    	pnlEsOesteArriba.setBackground(new Color(220, 220, 220));
+    	pnlEsOesteAbajo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+    	pnlEsOesteAbajo.setBackground(new Color(220, 220, 220));
+    	
+    	pnlCentro.add(pnlEsOesteArriba);
+    	pnlCentro.add(pnlEsEsteArriba);
+    	pnlCentro.add(pnlEsEsteAbajo);
+    	pnlCentro.add(pnlEsOesteAbajo);
+    	
+
+
+        JLabel lblTitulo = new JLabel("Cliente que más ha comprado:");
+        lblTitulo.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 20));
+        lblTitulo.setHorizontalAlignment(JLabel.CENTER);
+
+        if (cliente != null) {
+            JLabel lblCliente = new JLabel("DNI: " + cliente.getDni() + ", Nombre: " + cliente.getNombre());
+            lblCliente.setFont(new Font("Calibri", Font.PLAIN, 16));
+            lblCliente.setHorizontalAlignment(JLabel.CENTER);
+            
+            pnlEsOesteArriba.setLayout(new GridLayout(2, 1));
+            pnlEsOesteArriba.add(lblTitulo);
+            pnlEsOesteArriba.add(lblCliente);
+            
+            
+            
+        } else {
+            JLabel lblNoCompras = new JLabel("No hay compras registradas.");
+            lblNoCompras.setFont(new Font("Calibri", Font.PLAIN, 16));
+            lblNoCompras.setHorizontalAlignment(JLabel.CENTER);
+            pnlEsOesteArriba.setLayout(new GridLayout(1, 1));
+            pnlEsOesteArriba.add(lblNoCompras);
+        }
+
+        pnlCentro.setVisible(true);
+        revalidate();
+        repaint();
+	
+}
+
+	private Cliente clienteQueMasHaComprado(List<Compra> compras) {
+        Map<Cliente, Integer> frecuenciaClientes = new HashMap<>();
+
+        for (Compra c : compras) {
+            Cliente cliente = c.getCliente();
+            int frecuenciaActual = frecuenciaClientes.getOrDefault(cliente, 0);
+            frecuenciaClientes.put(cliente, frecuenciaActual + 1);
+        }
+
+        Cliente clienteMasCompras = null;
+        int maxFrecuencia = 0;
+
+        for (Map.Entry<Cliente, Integer> entry : frecuenciaClientes.entrySet()) {
+            if (entry.getValue() > maxFrecuencia) {
+                maxFrecuencia = entry.getValue();
+                clienteMasCompras = entry.getKey();
+            }
+        }
+
+        return clienteMasCompras;
+    }
+	
+	/**
+	 * Metodo que calcula cuantas veces se ha comprado un articulo
+	 * @param compras --> Arraylist con todas las compras que se han realizado
+	 * @param a --> Articulo que vamos a analizar cuatas veces se ha comprado
+	 * @return frecuencia --> Devuelve cuantas veces se ha comprado ese articulo 
+	 */
+	public static int FrecuenciaCompraArticulos(List<Compra>compras, Articulo a) {
+		int frecuencia= 0;
+		for (Compra c: compras) {
+			for(Articulo art: c.getArticulos() ) {
+				if(art.equals(a)) {
+					frecuencia ++;
+				}
+			}
+		}
+		return frecuencia;
+		
+	}
+	
+	
+	public static Articulo  ArticuloMasComprado() {
+		Connection con = BD.initBD("NatiShop.db");
+		List<Compra> compras = BD.obtenerComprasTotales(con);
+		BD.closeBD(con);
+		Articulo aMasComprado = null;
+		int  maxFrecuencia = 0;
+		for(Compra c: compras) {
+			for(Articulo a: c.getArticulos()) {
+				int frecAhora = FrecuenciaCompraArticulos(compras, a);
+				if(frecAhora > maxFrecuencia) {
+					maxFrecuencia = frecAhora;
+					aMasComprado= a;
+					System.out.println(aMasComprado);
+					
+				}
+			}   
+		}
+		
+		return aMasComprado;
+		
+		
+	}
+	
+	public static List<Articulo> TresArticulosMasComprados(){
+		Connection con = BD.initBD("NatiShop.db");
+		List<Compra> compras = BD.obtenerComprasTotales(con);
+		BD.closeBD(con);
+		
+		List<Articulo>articulosMasComprados = new ArrayList<>();
+		
+		for(int i = 0; i<3; i++) {
+			Articulo aMasComprado= ArticuloMasComprado();
+			if(aMasComprado != null) {
+				articulosMasComprados.add(aMasComprado);
+			}else {
+				articulosMasComprados.add(null);
+			}
+			System.out.println(articulosMasComprados);
+		}
+		return articulosMasComprados;
+	}
+	
+	
+	
+	
 
 	
 
