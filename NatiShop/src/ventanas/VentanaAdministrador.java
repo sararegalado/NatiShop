@@ -333,7 +333,57 @@ public class VentanaAdministrador extends JFrame{
 				pnlCentro.removeAll();
 				pnlCentro.revalidate();
 				pnlCentro.repaint();
-				cargarArbol();
+				//cargarArbol();
+				//pnlCentro.setVisible(true);
+				DefaultMutableTreeNode raiz= new DefaultMutableTreeNode();
+			    DefaultMutableTreeNode Jersey = new DefaultMutableTreeNode("JERSEY");
+			    DefaultMutableTreeNode Camiseta = new DefaultMutableTreeNode("CAMISETA");
+			    DefaultMutableTreeNode Calzado = new DefaultMutableTreeNode("CALZADO");
+			    DefaultMutableTreeNode Pantalon = new DefaultMutableTreeNode("PANTALON");
+			    modeloArbolArticulos = new DefaultTreeModel (raiz);
+			    modeloArbolArticulos.insertNodeInto(Calzado, raiz, 0);
+			    modeloArbolArticulos.insertNodeInto(Jersey, raiz, 1);
+			    modeloArbolArticulos.insertNodeInto(Camiseta, raiz, 2);
+			    modeloArbolArticulos.insertNodeInto(Pantalon, raiz, 3);
+				arbolArticulos = new JTree(modeloArbolArticulos);
+				int anchoArbol = 200;
+				int altoArbol= 130;  
+			    arbolArticulos.setPreferredSize(new Dimension(anchoArbol, altoArbol));
+				sArbolArticulos = new JScrollPane(arbolArticulos);
+			    arbolArticulos.setCellRenderer(new arbolArticulosRenderer());
+				sArbolArticulos.setVisible(true);
+			    pnlCentro.add(arbolArticulos, BorderLayout.WEST);
+			    pnlCentro.setVisible(true);
+			    System.out.println("Arbol cargado");
+				arbolArticulos.setVisible(true);
+				
+				arbolArticulos.addTreeSelectionListener(new TreeSelectionListener() {
+					
+					@Override
+					public void valueChanged(TreeSelectionEvent e) {
+						System.out.println("ARBOL");
+						TreePath tp = e.getPath();
+						String categoria= tp.getLastPathComponent().toString();
+						
+						Connection con = BD.initBD("Natishop.db");
+						Set<Articulo>articulos = BD.obtenerListaArticulos(con);
+						BD.closeBD(con);
+						
+						List<Articulo> articulosTabla = new ArrayList<>();
+						for(Articulo a: articulos) {
+							if(a.getCategoriaStr().equals(categoria)) {
+								articulosTabla.add(a);
+								
+							}
+						}
+						tStock.setModel(new ModeloTablaStock(articulosTabla));
+						cargarTablaStock();
+					}
+					
+				});
+			   
+				
+				pnlCentro.setVisible(true);
 			
 				System.out.println("Item funciona");
 				
@@ -389,11 +439,8 @@ public class VentanaAdministrador extends JFrame{
 		tClientes = new JTable(mClientes);
 		sTablaClientes = new JScrollPane(tClientes);
 		
-		cargarArbol();
-		sArbolArticulos.setVisible(false);
-	   
+//		cargarArbol();
 		
-		pnlCentro.setVisible(true);
 		
 	//LISTENERS
 		
@@ -415,30 +462,7 @@ public class VentanaAdministrador extends JFrame{
 			}
 		});
 		
-		arbolArticulos.addTreeSelectionListener(new TreeSelectionListener() {
-	
-			@Override
-			public void valueChanged(TreeSelectionEvent e) {
-				System.out.println("ARBOL");
-				TreePath tp = e.getPath();
-				String categoria= tp.getLastPathComponent().toString();
-				
-				Connection con = BD.initBD("Natishop.db");
-				Set<Articulo>articulos = BD.obtenerListaArticulos(con);
-				BD.closeBD(con);
-				
-				Set<Articulo> articulosTabla = new TreeSet<>();
-				for(Articulo a: articulos) {
-					if(a.getCategoria().equals(categoria)) {
-						articulosTabla.add(a);
-						
-					}
-				}
-				tStock.setModel(new ModeloTablaStock((List<Articulo>) articulosTabla));
-				cargarTablaStock();
-			}
-			
-		});
+		
 		
 		setVisible(true);
 		
@@ -626,9 +650,9 @@ public class VentanaAdministrador extends JFrame{
 		sArbolArticulos = new JScrollPane(arbolArticulos);
 	    arbolArticulos.setCellRenderer(new arbolArticulosRenderer());
 		sArbolArticulos.setVisible(true);
-	    pnlCentro.add(sArbolArticulos, BorderLayout.WEST);
+	    pnlCentro.add(arbolArticulos, BorderLayout.WEST);
 	    pnlCentro.setVisible(true);
-	    System.out.println("Método Fuciona");
+	    System.out.println("Arbol cargado");
 		
 	}
 
@@ -813,4 +837,3 @@ public class VentanaAdministrador extends JFrame{
 	
 
 }
-
