@@ -32,7 +32,9 @@ import clases.Administrador;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 
@@ -363,6 +365,18 @@ public class VentanaAdministrador extends JFrame{
 		mItemGraficos.setFont(new Font("Calibri", Font.BOLD, 15));
 		menuEstadisticas.add(mItemGraficos);
 		
+		mItemGraficos.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pnlCentro.removeAll();
+				pnlCentro.revalidate();
+				pnlCentro.repaint();
+				mostrarClienteQueMasHaComprado();
+				
+			}
+		});
+		
 		mClientes = new ModeloTablaClientes(new ArrayList<>());
 		tClientes = new JTable(mClientes);
 		sTablaClientes = new JScrollPane(tClientes);
@@ -433,6 +447,96 @@ public class VentanaAdministrador extends JFrame{
 		tClientes.setDefaultRenderer(Object.class, cellRenderer);
 		((DefaultTableCellRenderer) tClientes.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 	}
+
+	 public void mostrarClienteQueMasHaComprado() {
+	        Connection con = BD.initBD("NatiShop.db");
+	        List<Compra> compras = BD.obtenerComprasTotales(con);
+	        BD.closeBD(con);
+
+	        Cliente clienteMasCompras = clienteQueMasHaComprado(compras);
+	        mostrarEstadisticaEnPnlCentro(clienteMasCompras);
+	    }
+	 
+	 	
+
+	    private void mostrarEstadisticaEnPnlCentro(Cliente cliente) {
+	    	pnlCentro.removeAll();
+	    	pnlCentro.setLayout(new GridLayout(2, 2));
+	    	
+	    	JPanel pnlEsEsteArriba = new JPanel();
+	    	JPanel pnlEsEsteAbajo = new JPanel();
+	    	JPanel pnlEsOesteArriba = new JPanel();
+	    	JPanel pnlEsOesteAbajo = new JPanel();
+	    	
+	    	pnlEsEsteArriba.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+	    	pnlEsEsteArriba.setBackground(new Color(220, 220, 220));
+	    	pnlEsEsteAbajo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+	    	pnlEsEsteAbajo.setBackground(new Color(220, 220, 220));
+	    	pnlEsOesteArriba.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+	    	pnlEsOesteArriba.setBackground(new Color(220, 220, 220));
+	    	pnlEsOesteAbajo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+	    	pnlEsOesteAbajo.setBackground(new Color(220, 220, 220));
+	    	
+	    	pnlCentro.add(pnlEsOesteArriba);
+	    	pnlCentro.add(pnlEsEsteArriba);
+	    	pnlCentro.add(pnlEsEsteAbajo);
+	    	pnlCentro.add(pnlEsOesteAbajo);
+	    	
+
+
+	        JLabel lblTitulo = new JLabel("Cliente que más ha comprado:");
+	        lblTitulo.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 20));
+	        lblTitulo.setHorizontalAlignment(JLabel.CENTER);
+
+	        if (cliente != null) {
+	            JLabel lblCliente = new JLabel("DNI: " + cliente.getDni() + ", Nombre: " + cliente.getNombre());
+	            lblCliente.setFont(new Font("Calibri", Font.PLAIN, 16));
+	            lblCliente.setHorizontalAlignment(JLabel.CENTER);
+	            
+	            pnlEsOesteArriba.setLayout(new GridLayout(2, 1));
+	            pnlEsOesteArriba.add(lblTitulo);
+	            pnlEsOesteArriba.add(lblCliente);
+	            
+	            
+	            
+	        } else {
+	            JLabel lblNoCompras = new JLabel("No hay compras registradas.");
+	            lblNoCompras.setFont(new Font("Calibri", Font.PLAIN, 16));
+	            lblNoCompras.setHorizontalAlignment(JLabel.CENTER);
+	            pnlEsOesteArriba.setLayout(new GridLayout(1, 1));
+	            pnlEsOesteArriba.add(lblNoCompras);
+	        }
+
+	        pnlCentro.setVisible(true);
+	        revalidate();
+	        repaint();
+		
+	}
+
+		private Cliente clienteQueMasHaComprado(List<Compra> compras) {
+	        Map<Cliente, Integer> frecuenciaClientes = new HashMap<>();
+
+	        for (Compra c : compras) {
+	            Cliente cliente = c.getCliente();
+	            int frecuenciaActual = frecuenciaClientes.getOrDefault(cliente, 0);
+	            frecuenciaClientes.put(cliente, frecuenciaActual + 1);
+	        }
+
+	        Cliente clienteMasCompras = null;
+	        int maxFrecuencia = 0;
+
+	        for (Map.Entry<Cliente, Integer> entry : frecuenciaClientes.entrySet()) {
+	            if (entry.getValue() > maxFrecuencia) {
+	                maxFrecuencia = entry.getValue();
+	                clienteMasCompras = entry.getKey();
+	            }
+	        }
+
+	        return clienteMasCompras;
+	    }
+
+	   
+
 
 
 	public void cargarCalendario() {
