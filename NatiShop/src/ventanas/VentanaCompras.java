@@ -44,6 +44,7 @@ public class VentanaCompras extends JFrame {
     private static JTable tablaCompras;
     private JScrollPane scrollTablaCompras;
     private BD bd;
+    private Cliente c;
 
 
     public VentanaCompras(JFrame va) {
@@ -141,15 +142,14 @@ public class VentanaCompras extends JFrame {
         pSur.add(btnComprar);
 
         btnComprar.addActionListener((e) -> {
-//          Cliente clienteActual = obtenerClienteActual();
-//          ArrayList<Articulo> articulosSeleccionados = obtenerArticulosSeleccionados();
-//          Tienda.getCompras().put((Cliente) clienteActual, articulosSeleccionados);
-
       	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
       	Date date = new Date(); // Obtén la fecha actual
   		String f_compra = sdf.format(date);
       	Compra nuevaCompra = new Compra(obtenerClienteActual(), f_compra, Tienda.getCestaPorCliente().get(obtenerClienteActual()), obtenerPrecioCompra());
       	
+      	Cliente c= obtenerClienteActual();
+        ArrayList<Articulo> articulosComprados = Tienda.getCestaPorCliente().get(c);
+        
       	 int respuesta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que quieres finalizar la compra?", "Confirmar compra", JOptionPane.YES_NO_OPTION);
 
            // Comprueba la respuesta del usuario
@@ -158,21 +158,38 @@ public class VentanaCompras extends JFrame {
            	boolean correcto = bd.anyadirCompra(con, nuevaCompra);
            	if (correcto) {
            		JOptionPane.showMessageDialog(null, "Compra finalizada. Gracias por tu compra.");
-                   System.out.println(obtenerPrecioCompra() );
-                   getModeloTablaCompras().setRowCount(0);
-
-           	}
-               
+                System.out.println(obtenerPrecioCompra() );
+                getModeloTablaCompras().setRowCount(0);
+                  
+                   
+                for(Articulo  a: articulosComprados) {
+	                Tienda.aniadirCompraCliente(c, a);
+	                int uCompradas = obtenerUnidadesCompradas(a, articulosComprados);
+	                int uActuales = a.getUnidades();
+	                a.setUnidades(uActuales - uCompradas);
+                 
+	                }
+	           	}
+	               
            } else {
                JOptionPane.showMessageDialog(null, "Compra cancelada.");
            }
+         //AÑADIR METODO ANIADIRCOMPRAS
+//         Cliente clienteActual = obtenerClienteActual();
+//         ArrayList<Articulo> articulosSeleccionados = obtenerArticulosSeleccionados();
+//         Tienda.getCompras().put((Cliente) clienteActual, articulosSeleccionados);
+           
+          
+          
+           
       	
-      	//AÑADIR METODO ANIADIRCOMPRAS
            
       });
   }
         	
-
+/**
+ * Método que carga los articulos que el cliente, que ha iniciado sesion ha seleccionado
+ */
     private void cargarArticuloTabla() {
         if (VentanaPrincipal.isClienteHaIniciadoSesion()) {
             for (Cliente c : Tienda.getCestaPorCliente().keySet()) {
@@ -190,6 +207,7 @@ public class VentanaCompras extends JFrame {
         }
     }
 
+    
     static class SpinnerEditor extends AbstractCellEditor implements TableCellEditor, TableCellRenderer {
         private final JSpinner spinner;
 
@@ -263,9 +281,9 @@ public class VentanaCompras extends JFrame {
 		VentanaCompras.modeloTablaCompras = modeloTablaCompras;
 	}
 	
+	
+	
 	private static Articulo obtenerArticuloPorID(String id) {
-	    // Aquí debes implementar la lógica para obtener el Articulo correspondiente al ID
-	    // Puedes iterar sobre la lista de Articulos en tu cesta y devolver el que tenga el ID correcto
 	    for (Cliente c : Tienda.getCestaPorCliente().keySet()) {
 	        List<Articulo> aCesta = Tienda.getCestaPorCliente().get(c);
 	        for (Articulo a : aCesta) {
@@ -289,7 +307,23 @@ public class VentanaCompras extends JFrame {
 	    return precioTotal;
 		
 	}
+	/**
+	 * Metodo que Obtiene las unidades de los productos que hay en la cesta
+	 * @param a Articulo del que queremos saber la unidades
+	 * @param cesta Conjunto de articulos que se van a comprar
+	 * @return devuelve las unidades de ese articulo
+	 */
     
+	private  int obtenerUnidadesCompradas (Articulo a, ArrayList<Articulo> cesta) {
+		for (Articulo articulo : cesta) {
+			if(articulo.equals(a)) {
+				return articulo.getUnidades();
+			}
+		}
+		return 0;
+		
+	}
+	
     
     
     

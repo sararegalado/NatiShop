@@ -15,10 +15,13 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 import com.toedter.calendar.JCalendar;
 
@@ -33,6 +36,8 @@ import clases.Administrador;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 
@@ -52,9 +57,10 @@ public class VentanaAdministrador extends JFrame{
 	private static JTextField tfJornada;
 
 	
-	private JTable tClientes;
+	private JTable tClientes, tStock;
 	private ModeloTablaClientes mClientes;
-	private JScrollPane sTablaClientes;
+	private ModeloTablaStock mStock;
+	private JScrollPane sTablaClientes, sTablaStock;
 	private JFrame vActual,vAnterior;
 	private Administrador admin;
 	
@@ -266,8 +272,13 @@ public class VentanaAdministrador extends JFrame{
         pnlCentro = new JPanel(new BorderLayout());
 		getContentPane().add(pnlCentro, BorderLayout.CENTER);
         
+		//CREACION DE LA TABLA Stock
+		mStock = new ModeloTablaStock(new ArrayList<>());
+		tStock = new JTable(mStock);
+		sTablaStock = new JScrollPane(tStock);
 		
-       
+		
+		
 		
 		
 		
@@ -309,10 +320,6 @@ public class VentanaAdministrador extends JFrame{
 		menuBarAdmin.add(menuArticulos);
 		
 		
-		mItemArticulos = new JMenuItem("ARTICULOS DISPONIBLES");
-		mItemArticulos.setFont(new Font("Calibri", Font.BOLD, 15));
-		menuArticulos.add(mItemArticulos);
-		
 		
 		mItemStock = new JMenuItem("GESTION DE STOCK");
 		mItemStock.setFont(new Font("Calibri", Font.BOLD, 15));
@@ -325,6 +332,7 @@ public class VentanaAdministrador extends JFrame{
 				pnlCentro.revalidate();
 				pnlCentro.repaint();
 				cargarArbol();
+			
 				System.out.println("Item funciona");
 				
 				
@@ -367,7 +375,13 @@ public class VentanaAdministrador extends JFrame{
 		tClientes = new JTable(mClientes);
 		sTablaClientes = new JScrollPane(tClientes);
 		
+		cargarArbol();
+		sArbolArticulos.setVisible(false);
+	   
+		
 		pnlCentro.setVisible(true);
+		
+	//LISTENERS
 		
 		tClientes.addMouseListener(new MouseAdapter() {
 					
@@ -385,6 +399,31 @@ public class VentanaAdministrador extends JFrame{
 				}
 				JOptionPane.showMessageDialog(null, texto);
 			}
+		});
+		
+		arbolArticulos.addTreeSelectionListener(new TreeSelectionListener() {
+	
+			@Override
+			public void valueChanged(TreeSelectionEvent e) {
+				System.out.println("ARBOL");
+				TreePath tp = e.getPath();
+				String categoria= tp.getLastPathComponent().toString();
+				
+				Connection con = BD.initBD("Natishop.db");
+				Set<Articulo>articulos = BD.obtenerListaArticulos(con);
+				BD.closeBD(con);
+				
+				Set<Articulo> articulosTabla = new TreeSet<>();
+				for(Articulo a: articulos) {
+					if(a.getCategoria().equals(categoria)) {
+						articulosTabla.add(a);
+						
+					}
+				}
+				tStock.setModel(new ModeloTablaStock((List<Articulo>) articulosTabla));
+				cargarTablaStock();
+			}
+			
 		});
 		
 		setVisible(true);
@@ -433,6 +472,21 @@ public class VentanaAdministrador extends JFrame{
 		tClientes.setDefaultRenderer(Object.class, cellRenderer);
 		((DefaultTableCellRenderer) tClientes.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 	}
+	/**
+	 * Método que Cargar la tabla con rodos los articulos de la tiwnda y sus unidades disponible
+	 * 
+	 */
+	public void cargarTablaStock() {
+		Connection con = BD.initBD("Natishop.db");
+		Set<Articulo>a = BD.obtenerListaArticulos(con);
+		BD.closeBD(con);
+		pnlCentro.add(sTablaStock, BorderLayout.CENTER);
+		JLabel lblStock = new JLabel("<html><u>" + "STOCK" + "</u></html>");
+		lblStock.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 30));
+		lblStock.setHorizontalAlignment(JLabel.CENTER);
+		pnlCentro.add(lblStock, BorderLayout.NORTH);
+		pnlCentro.setVisible(true);
+	}
 
 
 	public void cargarCalendario() {
@@ -473,7 +527,7 @@ public class VentanaAdministrador extends JFrame{
 		
 		
 	}
-
+	
 	
 
 	private void cargarComprasDia(String fecha_Selecionada, JTable tablaCompras) {
@@ -547,25 +601,26 @@ public class VentanaAdministrador extends JFrame{
 	 */
 	
 	public void cargarArbol() {
-		 DefaultMutableTreeNode raiz= new DefaultMutableTreeNode();
-	     DefaultMutableTreeNode Jersey = new DefaultMutableTreeNode("JERSEY");
-	     DefaultMutableTreeNode Camiseta = new DefaultMutableTreeNode("CAMISETA");
-	     DefaultMutableTreeNode Zapato = new DefaultMutableTreeNode("ZAPATO");
-	     DefaultMutableTreeNode Pantalon = new DefaultMutableTreeNode("PANTALON");
-	     modeloArbolArticulos = new DefaultTreeModel (raiz);
-	     modeloArbolArticulos.insertNodeInto(Zapato, raiz, 0);
-	     modeloArbolArticulos.insertNodeInto(Jersey, raiz, 1);
-	     modeloArbolArticulos.insertNodeInto(Camiseta, raiz, 2);
-	     modeloArbolArticulos.insertNodeInto(Pantalon, raiz, 3);
- 	     arbolArticulos = new JTree(modeloArbolArticulos);
-	     int anchoArbol = 200; // ajusta este valor según tus necesidades
-	     arbolArticulos.setPreferredSize(new Dimension(anchoArbol, arbolArticulos.getPreferredSize().height));
-	     sArbolArticulos = new JScrollPane(arbolArticulos);
-	     arbolArticulos.setCellRenderer(new arbolArticulosRenderer());
-	     arbolArticulos.setVisible(true);
-	     pnlCentro.add(sArbolArticulos, BorderLayout.WEST);
-	     pnlCentro.setVisible(true);
-	     System.out.println("Método Fuciona");
+		DefaultMutableTreeNode raiz= new DefaultMutableTreeNode();
+	    DefaultMutableTreeNode Jersey = new DefaultMutableTreeNode("JERSEY");
+	    DefaultMutableTreeNode Camiseta = new DefaultMutableTreeNode("CAMISETA");
+	    DefaultMutableTreeNode Zapato = new DefaultMutableTreeNode("ZAPATO");
+	    DefaultMutableTreeNode Pantalon = new DefaultMutableTreeNode("PANTALON");
+	    modeloArbolArticulos = new DefaultTreeModel (raiz);
+	    modeloArbolArticulos.insertNodeInto(Zapato, raiz, 0);
+	    modeloArbolArticulos.insertNodeInto(Jersey, raiz, 1);
+	    modeloArbolArticulos.insertNodeInto(Camiseta, raiz, 2);
+	    modeloArbolArticulos.insertNodeInto(Pantalon, raiz, 3);
+		arbolArticulos = new JTree(modeloArbolArticulos);
+		int anchoArbol = 200;
+		int altoArbol= 130;  
+	    arbolArticulos.setPreferredSize(new Dimension(anchoArbol, altoArbol));
+		sArbolArticulos = new JScrollPane(arbolArticulos);
+	    arbolArticulos.setCellRenderer(new arbolArticulosRenderer());
+		sArbolArticulos.setVisible(true);
+	    pnlCentro.add(sArbolArticulos, BorderLayout.WEST);
+	    pnlCentro.setVisible(true);
+	    System.out.println("Método Fuciona");
 		
 	}
 
@@ -577,12 +632,17 @@ public class VentanaAdministrador extends JFrame{
 
 	
 	/*ERRORES/TAREAS
-	 * Falta llamar  al metodi aniadirCompraCliente() al actioonListener del Boton Comprar -- > Parametros?
+	 *
+	 * Listener del Jtree 
+	 * Unidades de los articulos 
+	 * RENDERER DE LA TABLA
+	 * Estadisticas (ANE Y YO)
+	 * Comentar Métodos
+	 * Limpiar código
 	 * 
 	 * 
 	 * -----
-	 * Falta añadir arbol al panel centro 
-	 * Hacer tabla y añadir el arbol
+	
 	  */
 	
 
