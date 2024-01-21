@@ -20,6 +20,7 @@ public class Tienda {
 	private static HashMap<String, HashMap<String, ArrayList<Articulo>>> comprasPorCliente = new HashMap<>();
 	private static HashMap<String, Administrador>administradores = new HashMap<>();
 	private static HashMap<Cliente, ArrayList<Articulo>> cestaPorCliente = new HashMap<>();
+	
 	//mapa admin (clave: correo, valor admin)
 	
 	

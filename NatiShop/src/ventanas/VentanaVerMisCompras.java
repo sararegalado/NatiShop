@@ -112,36 +112,12 @@ public class VentanaVerMisCompras extends JFrame {
 		        }
 		    }
 		});
-
-
-
-
-
-
-
-
-		
-		
-		
-		
 		
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
 
-
-	private void mostrarTextoPocoAPoco(String texto, JTextArea textoArea) {
-	    SwingUtilities.invokeLater(new Runnable() {
-	        @Override
-	        public void run() {
-	            synchronized (texto) {
-	                String currentText = textoArea.getText();
-	                textoArea.setText(currentText + texto.charAt(currentText.length()));
-	            }
-	        }
-	    });
-	}
 	private void cargarListaDeCompras(Cliente c) {
 		Connection con = BD.initBD("NatiShop.db");
 		List<Compra> compras = BD.getComprasPorCliente(con, c);

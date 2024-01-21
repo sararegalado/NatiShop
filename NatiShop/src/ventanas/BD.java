@@ -268,6 +268,24 @@ public class BD {
 		}
 		return cont;
 	}
+	
+	public static String obtenerTarjCliente(Connection con, String dni) {
+		String sql = String.format("SELECT NUMERO_DE_TARJETA FROM cliente WHERE DNI = '%s'", dni);
+		String tarj = null;
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql); //Ejecuto la consulta
+			if(rs.next()) { //La select ha devuelto 1 ó más tuplas
+				tarj = rs.getString("NUMERO_DE_TARJETA");
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException e) {
+			logger.warning("Error buscando cliente" + e.getMessage());
+		}
+		return tarj;
+	}
+	
 
 
 	
@@ -708,7 +726,7 @@ public class BD {
 	        }
 
 	    } catch (SQLException ex) {
-	        logger.warning(String.format("Error añadiendo compra %s", compra.toString()));
+	        logger.warning(String.format("Error añadiendo compra %s", ex.getMessage()));
 	        return false;
 	    }
 	    return true;

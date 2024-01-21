@@ -180,6 +180,7 @@ public class VentanaInicioSesion extends JFrame {
 					System.out.println(admin);
 					administrador=  admin;
 					new VentanaAdministrador(vActual,admin);
+					Tienda.cargarKeyMapaClientes();
 					vActual.setVisible(false);	
 				}else {
 					JOptionPane.showMessageDialog(null, "Contraseña incorrecta","ERROR",JOptionPane.ERROR_MESSAGE);
@@ -196,7 +197,16 @@ public class VentanaInicioSesion extends JFrame {
 					Tienda.getCestaPorCliente().put(c, carrito);
 					VentanaPrincipal.setClienteHaIniciadoSesion(true);
 					VentanaPrincipal.asignarNombreCliente(c);
-					VentanaPrincipal.asignarSaldoCliente(c);
+					Connection conn = BD.initBD("NatiShop.db");
+					String tarj = BD.obtenerTarjCliente(conn, c.getDni());
+					BD.closeBD(conn);
+					
+					if (tarj.equals("Tarjeta sin registrar")) {
+						VentanaPrincipal.getLblSaldo().setText("Sin tarjeta");
+					}else {
+						VentanaPrincipal.getLblSaldo().setText(c.getSaldo() + "€");
+					}
+					
 					vActual.setVisible(false);
 				}else {
 					JOptionPane.showMessageDialog(null, "Para poder iniciar sesión tienes que estar registrado","ERROR",JOptionPane.ERROR_MESSAGE);
