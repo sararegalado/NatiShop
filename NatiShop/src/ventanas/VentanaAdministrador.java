@@ -45,12 +45,18 @@ import java.util.TreeSet;
 
 public class VentanaAdministrador extends JFrame{
 
-	private JPanel pnlOesteMenu,pnlCentro,pnlOesteArriba,pnlDatos,pnlDatosTitulo,pnlDatosArriba,pnlDatosBotones;
+	private JPanel pnlOesteMenu,pnlCentro,pnlOesteArriba,pnlDatos,pnlDatosTitulo,pnlDatosArriba,pnlDatosBotones,pnlEstadisticas, pnlEsOesteArriba,pnlEsOesteAbajo, pnlEsEsteArriba, pnlEsEsteAbajo;
 
 	private JMenuBar menuBarAdmin;
 	private JMenu menuClientes,menuArticulos, menuEstadisticas, menuCompras;
 	private JMenuItem mItemRegistros,mItemArticulos,mItemStock,mItemCompras, mItemCalendar, mItemGraficos;
-	private JLabel lblFoto,lblTitulo,lblDNI,lblnom,lblApellido,lblCorreo,lbltfn,lblProvincia,lblFnac,lblFinic,lblJornada,lblPuesto,lblModifJornada,lblSolicitudes,lblAñadirAdmin;
+	private JLabel lblFoto,lblTitulo,lblDNI,lblnom,lblApellido,lblCorreo,lbltfn,lblProvincia,lblFnac,lblFinic,lblJornada,lblPuesto,lblModifJornada,lblSolicitudes,lblAñadirAdmin,lblTituloOesteArriba,lblTituloEsteArriba,lblTituloOesteAbajo, lblTituloEsteAbajo,lblClienteEstrella;
+
+	private static JLabel lblTop1;
+
+	private JLabel lblTop2;
+
+	private JLabel lblTop3;
 
 	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfPuesto;
 	private JButton btnDesplegar, btnAñadirAdmin;
@@ -279,8 +285,51 @@ public class VentanaAdministrador extends JFrame{
 		tStock = new JTable(mStock);
 		sTablaStock = new JScrollPane(tStock);
 		
+		pnlEstadisticas = new JPanel();
+		pnlEstadisticas.setLayout(new GridLayout(2,1));
 		
 		
+		pnlEsOesteArriba = new JPanel();
+		pnlEsOesteArriba.setLayout(new GridLayout(2,1));
+		pnlEsOesteArriba.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+    	pnlEsOesteArriba.setBackground(new Color(220, 220, 220));
+    	
+   
+    	lblTituloOesteArriba = new JLabel("<html><u>" + "CLIENTE ESTRELLA" + "</u></html>");
+		lblTituloOesteArriba.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 14));
+		lblTituloOesteArriba.setHorizontalAlignment(JLabel.CENTER);
+		pnlEsOesteArriba.add(lblTituloOesteArriba);
+		
+		lblClienteEstrella = new JLabel(" ");
+		pnlEsOesteArriba.add(lblClienteEstrella);
+		
+		
+		pnlEsOesteAbajo = new JPanel();
+		pnlEsOesteAbajo.setLayout(new GridLayout(4,1));
+    	pnlEsOesteAbajo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+    	pnlEsOesteAbajo.setBackground(new Color(220, 220, 220));
+    	
+    	lblTituloOesteAbajo = new JLabel("<html><u>" + "TOP ARTICULOS" + "</u></html>");
+		lblTituloOesteAbajo.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 14));
+		lblTituloOesteAbajo.setHorizontalAlignment(JLabel.CENTER);
+		pnlEsOesteAbajo.add(lblTituloOesteAbajo);
+    	
+
+    	lblTop1 = new JLabel(" ");
+    	lblTop2 = new JLabel(" ");
+    	lblTop3 = new JLabel(" ");
+    	pnlEsOesteAbajo.add(lblTop1);
+    	pnlEsOesteAbajo.add(lblTop2);
+    	pnlEsOesteAbajo.add(lblTop3);
+    	
+    	pnlEstadisticas.add(pnlEsOesteArriba);
+    	pnlEstadisticas.add(pnlEsOesteAbajo);
+    	
+    	
+    	
+    	
+        
+       
 		
 		
 		
@@ -430,7 +479,9 @@ public class VentanaAdministrador extends JFrame{
 				pnlCentro.removeAll();
 				pnlCentro.revalidate();
 				pnlCentro.repaint();
-				mostrarClienteQueMasHaComprado();
+				pnlCentro.add(pnlEstadisticas);
+				
+				
 				
 			}
 		});
@@ -662,45 +713,10 @@ public class VentanaAdministrador extends JFrame{
 	
 	//MÉTODOS ESTADISTISCAS
 	
-	public void mostrarClienteQueMasHaComprado() {
-        Connection con = BD.initBD("NatiShop.db");
-        List<Compra> compras = BD.obtenerComprasTotales(con);
-        BD.closeBD(con);
-
-        Cliente clienteMasCompras = clienteQueMasHaComprado(compras);
-        mostrarEstadisticaEnPnlCentro(clienteMasCompras);
-    }
- 
+	
  	
 
-    private void mostrarEstadisticaEnPnlCentro(Cliente cliente) {
-    	pnlCentro.removeAll();
-    	pnlCentro.setLayout(new GridLayout(2, 2));
-    	
-    	JPanel pnlEsEsteArriba = new JPanel();
-    	JPanel pnlEsEsteAbajo = new JPanel();
-    	JPanel pnlEsOesteArriba = new JPanel();
-    	JPanel pnlEsOesteAbajo = new JPanel();
-    	
-    	pnlEsEsteArriba.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-    	pnlEsEsteArriba.setBackground(new Color(220, 220, 220));
-    	pnlEsEsteAbajo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-    	pnlEsEsteAbajo.setBackground(new Color(220, 220, 220));
-    	pnlEsOesteArriba.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-    	pnlEsOesteArriba.setBackground(new Color(220, 220, 220));
-    	pnlEsOesteAbajo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-    	pnlEsOesteAbajo.setBackground(new Color(220, 220, 220));
-    	
-    	pnlCentro.add(pnlEsOesteArriba);
-    	pnlCentro.add(pnlEsEsteArriba);
-    	pnlCentro.add(pnlEsEsteAbajo);
-    	pnlCentro.add(pnlEsOesteAbajo);
-    	
-
-
-        JLabel lblTitulo = new JLabel("Cliente que más ha comprado:");
-        lblTitulo.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 20));
-        lblTitulo.setHorizontalAlignment(JLabel.CENTER);
+    private void ClienteEstrella(Cliente cliente) {
 
         if (cliente != null) {
             JLabel lblCliente = new JLabel("DNI: " + cliente.getDni() + ", Nombre: " + cliente.getNombre());
@@ -721,13 +737,11 @@ public class VentanaAdministrador extends JFrame{
             pnlEsOesteArriba.add(lblNoCompras);
         }
 
-        pnlCentro.setVisible(true);
-        revalidate();
-        repaint();
+       
 	
 }
 
-	private Cliente clienteQueMasHaComprado(List<Compra> compras) {
+	private void clienteQueMasHaComprado(List<Compra> compras) {
         Map<Cliente, Integer> frecuenciaClientes = new HashMap<>();
 
         for (Compra c : compras) {
@@ -743,11 +757,14 @@ public class VentanaAdministrador extends JFrame{
             if (entry.getValue() > maxFrecuencia) {
                 maxFrecuencia = entry.getValue();
                 clienteMasCompras = entry.getKey();
+                
             }
+            
         }
 
-        return clienteMasCompras;
+        lblClienteEstrella.setText(clienteMasCompras.getNombre());
     }
+	
 	
 	/**
 	 * Metodo que calcula cuantas veces se ha comprado un articulo
@@ -792,7 +809,7 @@ public class VentanaAdministrador extends JFrame{
 		
 	}
 	
-	public static List<Articulo> TresArticulosMasComprados(){
+	public static List<Articulo>   TresArticulosMasComprados(){
 		Connection con = BD.initBD("NatiShop.db");
 		List<Compra> compras = BD.obtenerComprasTotales(con);
 		BD.closeBD(con);
@@ -806,10 +823,13 @@ public class VentanaAdministrador extends JFrame{
 			}else {
 				articulosMasComprados.add(null);
 			}
-			System.out.println(articulosMasComprados);
 		}
 		return articulosMasComprados;
 	}
+	
+	
+	
+	
 	
 	
 	
