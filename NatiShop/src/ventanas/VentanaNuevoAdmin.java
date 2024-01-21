@@ -103,6 +103,12 @@ public class VentanaNuevoAdmin extends JFrame {
             JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+        if (!correo.toLowerCase().endsWith("@natyshop.es")) {
+        	JOptionPane.showMessageDialog(this, "El correo no es de un administrador", "Error", JOptionPane.ERROR_MESSAGE);
+        	return;
+        }
+        
 
         try {
         	
