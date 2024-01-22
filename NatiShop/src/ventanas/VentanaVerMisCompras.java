@@ -60,6 +60,7 @@ public class VentanaVerMisCompras extends JFrame {
 		panelCentro.add(pnlIzq);
 		
 		texto = new JTextArea();
+		texto.setEditable(false);
 		panelCentro.add(texto);
 		
 		

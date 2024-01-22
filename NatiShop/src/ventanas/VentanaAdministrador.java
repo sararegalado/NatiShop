@@ -45,12 +45,18 @@ import java.util.TreeSet;
 
 public class VentanaAdministrador extends JFrame{
 
-	private JPanel pnlOesteMenu,pnlCentro,pnlOesteArriba,pnlDatos,pnlDatosTitulo,pnlDatosArriba,pnlDatosBotones;
+	private JPanel pnlOesteMenu,pnlCentro,pnlOesteArriba,pnlDatos,pnlDatosTitulo,pnlDatosArriba,pnlDatosBotones,pnlEstadisticas, pnlEsOesteArriba,pnlEsOesteAbajo, pnlEsEsteArriba, pnlEsEsteAbajo;
 
 	private JMenuBar menuBarAdmin;
 	private JMenu menuClientes,menuArticulos, menuEstadisticas, menuCompras;
 	private JMenuItem mItemRegistros,mItemArticulos,mItemStock,mItemCompras, mItemCalendar, mItemGraficos;
-	private JLabel lblFoto,lblTitulo,lblDNI,lblnom,lblApellido,lblCorreo,lbltfn,lblProvincia,lblFnac,lblFinic,lblJornada,lblPuesto,lblModifJornada,lblSolicitudes,lblAñadirAdmin;
+	private JLabel lblFoto,lblTitulo,lblDNI,lblnom,lblApellido,lblCorreo,lbltfn,lblProvincia,lblFnac,lblFinic,lblJornada,lblPuesto,lblModifJornada,lblSolicitudes,lblAñadirAdmin,lblTituloOesteArriba,lblTituloEsteArriba,lblTituloOesteAbajo, lblTituloEsteAbajo,lblClienteEstrella;
+
+	private static JLabel lblTop1;
+
+	private static JLabel lblTop2;
+
+	private static JLabel lblTop3;
 
 	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfPuesto;
 	private JButton btnDesplegar, btnAñadirAdmin;
@@ -279,11 +285,52 @@ public class VentanaAdministrador extends JFrame{
 		tStock = new JTable(mStock);
 		sTablaStock = new JScrollPane(tStock);
 		
+		pnlEstadisticas = new JPanel();
+		pnlEstadisticas.setLayout(new GridLayout(2,1));
 		
 		
+		pnlEsOesteArriba = new JPanel();
+		pnlEsOesteArriba.setLayout(new GridLayout(2,1));
+		pnlEsOesteArriba.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+    	pnlEsOesteArriba.setBackground(new Color(220, 220, 220));
+    	
+   
+    	lblTituloOesteArriba = new JLabel("<html><u>" + "CLIENTE ESTRELLA" + "</u></html>");
+		lblTituloOesteArriba.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 14));
+		lblTituloOesteArriba.setHorizontalAlignment(JLabel.CENTER);
+		pnlEsOesteArriba.add(lblTituloOesteArriba);
+		
+		lblClienteEstrella = new JLabel(" ");
+		pnlEsOesteArriba.add(lblClienteEstrella);
+		lblClienteEstrella.setHorizontalAlignment(JLabel.CENTER);
 		
 		
-		
+		pnlEsOesteAbajo = new JPanel();
+		pnlEsOesteAbajo.setLayout(new GridLayout(4,1));
+    	pnlEsOesteAbajo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+    	pnlEsOesteAbajo.setBackground(new Color(220, 220, 220));
+    	
+    	lblTituloOesteAbajo = new JLabel("<html><u>" + "TOP ARTICULOS" + "</u></html>");
+		lblTituloOesteAbajo.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 14));
+		lblTituloOesteAbajo.setHorizontalAlignment(JLabel.CENTER);
+		pnlEsOesteAbajo.add(lblTituloOesteAbajo);
+    	
+
+    	lblTop1 = new JLabel(" ");
+    	lblTop2 = new JLabel(" ");
+    	lblTop3 = new JLabel(" ");
+    	
+    	lblTop1.setHorizontalAlignment(JLabel.CENTER);
+    	lblTop2.setHorizontalAlignment(JLabel.CENTER);
+    	lblTop3.setHorizontalAlignment(JLabel.CENTER);
+    	
+    	pnlEsOesteAbajo.add(lblTop1);
+    	pnlEsOesteAbajo.add(lblTop2);
+    	pnlEsOesteAbajo.add(lblTop3);
+    	
+    	pnlEstadisticas.add(pnlEsOesteArriba);
+    	pnlEstadisticas.add(pnlEsOesteAbajo);
+    	
 		//DECLARACION + ACTIONLISTENER DE LOS MENUITEM
 		menuBarAdmin= new JMenuBar();
 		pnlOesteMenu.add(menuBarAdmin);
@@ -430,7 +477,14 @@ public class VentanaAdministrador extends JFrame{
 				pnlCentro.removeAll();
 				pnlCentro.revalidate();
 				pnlCentro.repaint();
-				mostrarClienteQueMasHaComprado();
+				pnlCentro.add(pnlEstadisticas);
+				TresArticulosMasComprados();
+				Connection con = BD.initBD("NatiShop.db");
+		        List<Compra> compras = BD.obtenerComprasTotales(con);
+		        BD.closeBD(con);
+
+		        clienteQueMasHaComprado(compras);
+				
 				
 			}
 		});
@@ -452,13 +506,37 @@ public class VentanaAdministrador extends JFrame{
 				int fila= tClientes.rowAtPoint(p);
 				String dni = tClientes.getModel().getValueAt(fila, 0).toString();
 				String texto = "";
-				for(String fecha: Tienda.getComprasPorCliente().get(dni).keySet()) {
-					texto = "FECHA: " + fecha + "\n";
-					for(Articulo a: Tienda.getComprasPorCliente().get(dni).get(fecha)) {
-						texto = texto + a + "\n";
-					}
-				}
-				JOptionPane.showMessageDialog(null, texto);
+				
+				Connection con = BD.initBD("NatiShop.db");
+				Cliente c = BD.buscarCliente(con, dni);
+	            List<Compra> compras = BD.getComprasPorCliente(con, c);
+	            BD.closeBD(con);
+	            
+	            JTextArea textArea = new JTextArea(15, 40);
+	            textArea.setEditable(false);
+	            JScrollPane scroll = new JScrollPane(textArea);
+	            JPanel panel = new JPanel();
+	            
+	            
+	            for (Compra com : compras) {
+	            	textArea.append(com.toString()+ "\n");
+	            }
+	            panel.add(scroll);
+	            
+	            JOptionPane.showMessageDialog(
+	                    null,
+	                    panel,
+	                    "Lista de Compras",
+	                    JOptionPane.PLAIN_MESSAGE);
+	        
+				
+//				for(String fecha: Tienda.getComprasPorCliente().get(dni).keySet()) {
+//					texto = "FECHA: " + fecha + "\n";
+//					for(Articulo a: Tienda.getComprasPorCliente().get(dni).get(fecha)) {
+//						texto = texto + a + "\n";
+//					}
+//				}
+//				JOptionPane.showMessageDialog(null, texto);
 			}
 		});
 		
@@ -662,45 +740,10 @@ public class VentanaAdministrador extends JFrame{
 	
 	//MÉTODOS ESTADISTISCAS
 	
-	public void mostrarClienteQueMasHaComprado() {
-        Connection con = BD.initBD("NatiShop.db");
-        List<Compra> compras = BD.obtenerComprasTotales(con);
-        BD.closeBD(con);
-
-        Cliente clienteMasCompras = clienteQueMasHaComprado(compras);
-        mostrarEstadisticaEnPnlCentro(clienteMasCompras);
-    }
- 
+	
  	
 
-    private void mostrarEstadisticaEnPnlCentro(Cliente cliente) {
-    	pnlCentro.removeAll();
-    	pnlCentro.setLayout(new GridLayout(2, 2));
-    	
-    	JPanel pnlEsEsteArriba = new JPanel();
-    	JPanel pnlEsEsteAbajo = new JPanel();
-    	JPanel pnlEsOesteArriba = new JPanel();
-    	JPanel pnlEsOesteAbajo = new JPanel();
-    	
-    	pnlEsEsteArriba.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-    	pnlEsEsteArriba.setBackground(new Color(220, 220, 220));
-    	pnlEsEsteAbajo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-    	pnlEsEsteAbajo.setBackground(new Color(220, 220, 220));
-    	pnlEsOesteArriba.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-    	pnlEsOesteArriba.setBackground(new Color(220, 220, 220));
-    	pnlEsOesteAbajo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-    	pnlEsOesteAbajo.setBackground(new Color(220, 220, 220));
-    	
-    	pnlCentro.add(pnlEsOesteArriba);
-    	pnlCentro.add(pnlEsEsteArriba);
-    	pnlCentro.add(pnlEsEsteAbajo);
-    	pnlCentro.add(pnlEsOesteAbajo);
-    	
-
-
-        JLabel lblTitulo = new JLabel("Cliente que más ha comprado:");
-        lblTitulo.setFont(new Font("Calibri", Font.BOLD | Font.ITALIC, 20));
-        lblTitulo.setHorizontalAlignment(JLabel.CENTER);
+    private void ClienteEstrella(Cliente cliente) {
 
         if (cliente != null) {
             JLabel lblCliente = new JLabel("DNI: " + cliente.getDni() + ", Nombre: " + cliente.getNombre());
@@ -721,13 +764,11 @@ public class VentanaAdministrador extends JFrame{
             pnlEsOesteArriba.add(lblNoCompras);
         }
 
-        pnlCentro.setVisible(true);
-        revalidate();
-        repaint();
+       
 	
 }
 
-	private Cliente clienteQueMasHaComprado(List<Compra> compras) {
+	private void clienteQueMasHaComprado(List<Compra> compras) {
         Map<Cliente, Integer> frecuenciaClientes = new HashMap<>();
 
         for (Compra c : compras) {
@@ -743,11 +784,20 @@ public class VentanaAdministrador extends JFrame{
             if (entry.getValue() > maxFrecuencia) {
                 maxFrecuencia = entry.getValue();
                 clienteMasCompras = entry.getKey();
+                
             }
+            
+        }
+        if (clienteMasCompras != null) {
+            lblClienteEstrella.setText(clienteMasCompras.getNombre());
+        } else {
+            // Manejar el caso en que no hay clientes o todos los clientes son null
+            lblClienteEstrella.setText("NO HAY CLIENTE");
         }
 
-        return clienteMasCompras;
+      
     }
+	
 	
 	/**
 	 * Metodo que calcula cuantas veces se ha comprado un articulo
@@ -792,7 +842,7 @@ public class VentanaAdministrador extends JFrame{
 		
 	}
 	
-	public static List<Articulo> TresArticulosMasComprados(){
+	public static void   TresArticulosMasComprados(){
 		Connection con = BD.initBD("NatiShop.db");
 		List<Compra> compras = BD.obtenerComprasTotales(con);
 		BD.closeBD(con);
@@ -806,10 +856,22 @@ public class VentanaAdministrador extends JFrame{
 			}else {
 				articulosMasComprados.add(null);
 			}
-			System.out.println(articulosMasComprados);
+		if(!articulosMasComprados.isEmpty()) {
+			 Articulo articulo1 = articulosMasComprados.get(0);
+			 Articulo articulo2 = articulosMasComprados.size() > 1 ? articulosMasComprados.get(1) : null;
+			 Articulo articulo3 = articulosMasComprados.size() > 2 ? articulosMasComprados.get(2) : null;
+			lblTop1.setText("TOP1: " + (articulo1 != null ? articulo1.getNombre() : "NO HAY ARTICULOS"));
+		    lblTop2.setText("TOP2: " + (articulo2 != null ? articulo2.getNombre() : "NO HAY ARTICULOS"));
+		    lblTop3.setText("TOP3: " + (articulo3 != null ? articulo3.getNombre() : "NO HAY ARTICULOS"));
+			}
 		}
-		return articulosMasComprados;
+		
+		
 	}
+	
+	
+	
+	
 	
 	
 	
