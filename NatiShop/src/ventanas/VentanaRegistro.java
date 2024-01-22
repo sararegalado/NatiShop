@@ -258,7 +258,7 @@ public class VentanaRegistro extends JFrame{
 	 * @return Devuelve un bolean indicando si es correcto o no
 	 */
 	private boolean comprobarEmail() {
-		String patron = "[a-zA-Z0-9]{1,}@[a-zA-Z]{1,}.[a-z]{1,}";
+		String patron = "[a-zA-Z0-9.]{1,}@[a-zA-Z]{1,}.[a-z]{1,}";
 		return Pattern.matches(patron, tfEmail.getText());
 		
 	}

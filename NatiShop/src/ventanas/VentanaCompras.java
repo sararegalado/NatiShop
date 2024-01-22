@@ -11,11 +11,8 @@ import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.swing.AbstractCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -194,6 +191,7 @@ public class VentanaCompras extends JFrame {
                         }
                         BD.closeBD(conn);
                         getModeloTablaCompras().setRowCount(0);
+                        dispose();
                    	}
                        
                    } else {

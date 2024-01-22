@@ -113,18 +113,9 @@ public class VentanaPortada extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				new VentanaInicioSesion(vActual);
 				
+				
 			}
 		});
-        
-//        FALTA EL BOTON CESTA
-//        btnCesta.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//		});
         
 
         addWindowListener(new WindowAdapter() {
