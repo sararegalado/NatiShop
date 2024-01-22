@@ -112,7 +112,7 @@ public class VentanaPortada extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new VentanaInicioSesion(vActual);
-				
+				vActual.setVisible(false);
 				
 			}
 		});

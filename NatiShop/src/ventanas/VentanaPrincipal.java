@@ -12,8 +12,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.URL;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +30,6 @@ import clases.Jersey;
 import clases.Pantalon;
 import clases.Tienda;
 import clases.Zapato;
-import uk.co.caprica.vlcj.factory.discovery.NativeDiscovery;
 
 public class VentanaPrincipal extends JFrame {
 	
@@ -215,35 +212,11 @@ public class VentanaPrincipal extends JFrame {
 				limpiarPanel(pnlArticulos);
 				pnlArticulos.setLayout(new BorderLayout());
 				
-				try {
-					boolean found = (new NativeDiscovery()).discover();
-					    if (!found)
-					        System.setProperty("jna.library.path", "c:\\Archivos de programa\\videolan\\vlc-2.1.5");
-
-					    // Obtén la URL del video desde el classpath
-					    URL videoUrl = VentanaPortada.class.getResource("/imagenes/tienda1.mp4");
-
-					    // Verifica si la URL es nula
-					    if (videoUrl == null) {
-					        System.err.println("Error: No se puede encontrar el archivo de video.");
-					        return;
-					    }
-
-					    // Convierte la URL a una ruta de archivo
-					    String videoPath = "";
-					    try {
-					        videoPath = Paths.get(videoUrl.toURI()).toFile().getAbsolutePath();
-					    } catch (Exception ex) {
-					        ex.printStackTrace(); 
-					        return;
-					    }
-
-					    VentanaPortada miVentana = new VentanaPortada(null);
-					    miVentana.lanza(videoPath);
-				} catch (Exception ex) {
-					VentanaPrincipal vent = new VentanaPrincipal(null);
-					
-				}
+		        //PORTADA DE LA TIENDA
+				JLabelGrafico fotoPortada = new JLabelGrafico("/imagenes/portada.png",1270,490);
+		        pnlArticulos.add(fotoPortada, BorderLayout.CENTER);
+		        tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
+		        //filtrado.setVisible(false);
 			}
 			
 		});
@@ -822,15 +795,6 @@ public class VentanaPrincipal extends JFrame {
 	 
 		}
 		
-		/**
-		 * Realiza la búsqueda de artículos en función de los parametros 
-		 * y muestra los resultados en el panel proporcionado.
-		 * @param textoBusqueda Texto utilizado para la búsqueda de artículos.
-		 * @param pnlArticulos Panel donde se mostrarán los artículos resultantes de la búsqueda.
-		 * @param filtrado JComboBox utilizado para filtrar los artículos por género.
-		 * @param tallasSeleccionadas Lista de tallas seleccionadas para filtrar los artículos.
-		 */
-		
 		public void buscarArticulos(String textoBusqueda, JPanel pnlArticulos,JComboBox filtrado, List<String> tallasSeleccionadas) {
 			limpiarPanel(pnlArticulos);
 			pnlArticulos.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -915,13 +879,9 @@ public class VentanaPrincipal extends JFrame {
 			
 			
 			
-		}
+			
+			}	
 		
-		/**
-		 * Asigna y muestra los artículos disponibles para la compra en el panel proporcionado.
-		 * @param art Conjunto de artículos disponibles para la compra.
-		 * @param panel Panel donde se mostrarán los artículos.
-		 */
 		public void setArticulosQuePuedoComprar(Set<Articulo> art, JPanel panel) {
 			this.pnlArticulos = panel;
 			for (Articulo a: art) {
@@ -929,5 +889,5 @@ public class VentanaPrincipal extends JFrame {
 				panel.add(pnlArticulo);
 			}	
 		}
-	
 }
+	

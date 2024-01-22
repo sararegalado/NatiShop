@@ -1,5 +1,8 @@
 package ventanas;
 
+import java.awt.Dimension;
+import java.awt.EventQueue;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -7,9 +10,16 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
+import java.awt.Window.Type;
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.border.LineBorder;
 
 import clases.Administrador;
 import clases.Articulo;
@@ -20,14 +30,17 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.border.BevelBorder;
 import javax.swing.JPasswordField;
+import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
-
+import javax.swing.Action;
+import javax.swing.ImageIcon;
 
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JSpinner;
 
 public class VentanaInicioSesion extends JFrame {
 
@@ -150,6 +163,12 @@ public class VentanaInicioSesion extends JFrame {
 		 * si el dominio del correo del usuario que inicia sesion es @Natyshop será un trabajador el que abrá iniciado sesion 
 		 * y por lo tanto la ventana que se ejecutara no será la principal sino la Ventana Admin conn otras funciones distintas
 		 */
+//		nombreUsuario= textNom.getText();
+//		if(Tienda.getmapaAdmin().containkey(nom) {
+//			new VentanaAdmin();
+//		}else {
+//			new VentanaPrincipal();
+//		}
 		
 		btnIniciarSes.addActionListener((e)->{
 			String nom = tfNombre.getText();
@@ -173,7 +192,6 @@ public class VentanaInicioSesion extends JFrame {
 				BD.closeBD(con);
 				if ( c != null) {;
 					JOptionPane.showMessageDialog(null, "Bienvenido!","SESIÓN INICIADA",JOptionPane.INFORMATION_MESSAGE);
-					new VentanaPrincipal(va);
 					cliente = c; //Guardamos la información del cliente que ha iniciado sesión
 					carrito = new ArrayList<>(); //Inicializamos su carrito a una lista vacía
 					Tienda.getCestaPorCliente().put(c, carrito);
@@ -188,7 +206,7 @@ public class VentanaInicioSesion extends JFrame {
 					}else {
 						VentanaPrincipal.getLblSaldo().setText(c.getSaldo() + "€");
 					}
-					vAnterior.setVisible(false);
+					
 					vActual.setVisible(false);
 				}else {
 					JOptionPane.showMessageDialog(null, "Para poder iniciar sesión tienes que estar registrado","ERROR",JOptionPane.ERROR_MESSAGE);
@@ -202,11 +220,12 @@ public class VentanaInicioSesion extends JFrame {
 			
 		});
 		
-		setAlwaysOnTop(rootPaneCheckingEnabled);
+		//setAlwaysOnTop(rootPaneCheckingEnabled);
 		setLocationRelativeTo(null);
 		setVisible(true);
 
 	}
 }
+
 
 

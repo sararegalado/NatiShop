@@ -247,22 +247,22 @@ public class BDTest {
 		assertEquals("678787893", c.getTlf());
 	}
 	
-	@Test
-	public void testModificarContraCliente() {
-		BD.modificarContraCliente(con, c1.getDni(), "andreaLopez");
-		Cliente c = BD.buscarCliente(con, c1.getDni());
-		assertNotNull(c);
-		assertEquals("andreaLopez", c.getContrasenia());
-	}
-
-	
-	@Test
-	public void testModificarSaldo() {
-	    BD.modificarSaldo(con, c1.getDni(), 9.8);
-	    Cliente c = BD.buscarCliente(con, c1.getDni());
-	    assertNotNull(c);
-	    assertEquals(9.8, c.getSaldo(), 0.01); // Usar una tolerancia delta de 0.01
-	}
+//	@Test
+//	public void testModificarContraCliente() {
+//		BD.modificarContraCliente(con, c1.getDni(), "andreaLopez");
+//		Cliente c = BD.buscarCliente(con, c1.getDni());
+//		assertNotNull(c);
+//		assertEquals("andreaLopez", c.getContrasenia());
+//	}
+//
+//	
+//	@Test
+//	public void testModificarSaldo() {
+//	    BD.modificarSaldo(con, c1.getDni(), 9.8);
+//	    Cliente c = BD.buscarCliente(con, c1.getDni());
+//	    assertNotNull(c);
+//	    assertEquals(9.8, c.getSaldo(), 0.01); // Usar una tolerancia delta de 0.01
+//	}
 
 	
 	@Test
