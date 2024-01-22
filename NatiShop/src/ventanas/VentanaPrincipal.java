@@ -21,8 +21,6 @@ import java.util.TreeSet;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import clases.Articulo;
 import clases.Camiseta;
@@ -57,22 +55,6 @@ public class VentanaPrincipal extends JFrame {
 	public static void setTienda(Tienda t) {
 		tienda = t;
 	}
-	
-	//
-	
-//	private VentanaTienda ventanaTienda;
-//	
-//	public void abrirVentanaTienda(Articulo articulo) {
-//		ventanaTienda = new VentanaTienda(this, articulo);
-//		ventanaTienda.mostrarFotoArticulo(articulo);
-//		ventanaTienda.setVisible(true);
-//		this.setVisible(false);
-//	}
-//	
-//	//
-	
-	
-	
 
 	private static boolean clienteHaIniciadoSesion = false;
 	
@@ -119,12 +101,9 @@ public class VentanaPrincipal extends JFrame {
 		pnlCentral.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 		pnlArticulos = new JPanel(new BorderLayout());
-        //PORTADA DE LA TIENDA
 		JLabelGrafico fotoPortada = new JLabelGrafico("/imagenes/portada.png",1190,450);
         pnlArticulos.add(fotoPortada, BorderLayout.CENTER);
-        //pnlArticulos.setPreferredSize(new Dimension(1200,450)); // Ajusta esto según el tamaño de tu imagen
-        
-
+      
 
 		spArticulos = new JScrollPane(pnlArticulos);
         spArticulos.setBounds(72,159,1153,490);
@@ -208,14 +187,6 @@ public class VentanaPrincipal extends JFrame {
         tfBuscador.setBounds(701, 26, 220, 26);
         pnlNorte.add(tfBuscador);
         tfBuscador.setColumns(10);
-        
-//        String[] categorias = {"Todos los géneros","Hombre","Mujer","Niños"};
-//		JComboBox<String> filtrado = new JComboBox<>(categorias);
-//        filtrado.setBounds(798, 61, 220, 27);
-//        pnlNorte.add(filtrado);
-//        filtrado.setVisible(false);
-        
-        
        
         
         JPopupMenu menuCliente = new JPopupMenu();
