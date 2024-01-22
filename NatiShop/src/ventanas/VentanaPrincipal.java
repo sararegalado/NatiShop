@@ -12,6 +12,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -97,7 +98,9 @@ public class VentanaPrincipal extends JFrame {
 		VentanaPrincipal.lblNomU = lblNomU;
 	}
 	
-	
+	public static JLabel getLblSaldo() {
+		return lblSaldo;
+	}
 	
 	public VentanaPrincipal(JFrame va) {
 		
@@ -218,10 +221,11 @@ public class VentanaPrincipal extends JFrame {
         JPopupMenu menuCliente = new JPopupMenu();
         JMenuItem perfil = new JMenuItem("Ver perfil");
         JMenuItem compras = new JMenuItem("Ver mis compras");
-        JMenuItem articulos = new JMenuItem("Ver articulos que puedo comprar");
+        JMenuItem saldo = new JMenuItem("Añadir saldo a mi cuenta");
+        
         menuCliente.add(perfil);
+        menuCliente.add(saldo);
         menuCliente.add(compras);
-        menuCliente.add(articulos);
         
         JLabel lblLogo = new JLabel("");
         lblLogo.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/nombreTienda.png")));
@@ -249,7 +253,7 @@ public class VentanaPrincipal extends JFrame {
         JLabel lblUsuario = new JLabel("");
         lblUsuario.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/imagenes/usuario.png")));
         lblUsuario.setHorizontalAlignment(SwingConstants.CENTER);
-        lblUsuario.setBounds(1053, 11, 52, 52);
+        lblUsuario.setBounds(1063, 11, 57, 52);
         pnlNorte.add(lblUsuario);
         
         lblUsuario.addMouseListener(new MouseAdapter() {
@@ -334,16 +338,6 @@ public class VentanaPrincipal extends JFrame {
         	tallasSeleccionadas.add("XXL");
         	buscarArticulos(textoBusqueda, pnlArticulos, cbGenero, tallasSeleccionadas);
 		});        
-		//pnlDchaMenu.add(new JPanel());
-		JLabel lblPrecio = new JLabel("Selecciona un precio:");
-		pnlDchaMenu.add(lblPrecio);
-		JSlider sPrecio = new JSlider(0, 100, 0);
-		sPrecio.setPaintTicks(true);
-		sPrecio.setPaintLabels(true);
-		sPrecio.setMinorTickSpacing(5);
-		sPrecio.setMajorTickSpacing(10);
-		pnlDchaMenu.add(sPrecio);
-		
 		
         
         btnDesplegar = new JButton();
@@ -414,75 +408,59 @@ public class VentanaPrincipal extends JFrame {
 			}
 		});
         
-//        articulos.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				//cargarArticulosQuePuedoComprar();
-//				tfBuscador.setText("BUSCA UN ARTICULO, COLOR...");
-// 		        //filtrado.setVisible(false);
-//            	limpiarPanel(pnlArticulos);
-//            	pnlArticulos.setBorder(new EmptyBorder(10, 10, 10, 10));
-//    			pnlArticulos.setLayout(new BorderLayout());
-//    			JPanel pnlElems = new JPanel(new GridLayout(0, 4, 10, 10));
-//                pnlArticulos.add(pnlElems, BorderLayout.CENTER);
-//                //JPanel pnlOpciones = new JPanel(new FlowLayout());
-//                
-//             // ... (otro código)
-//
-//                DefaultListModel<String> modeloListaArticulos = new DefaultListModel<>();
-//                JList<String> listaArticulos = new JList<>(modeloListaArticulos);
-//                JScrollPane scrollListaArticulos = new JScrollPane(listaArticulos);
-//                pnlArticulos.add(scrollListaArticulos, BorderLayout.WEST);
-//
-//                ArrayList<Articulo> arrayListArticulos = new ArrayList<>(Tienda.getArticulos());
-//                List<List<Articulo>> resultado = Tienda.combinaciones(arrayListArticulos, VentanaInicioSesion.getCliente().getSaldo(), 0);
-//
-//                for (int i = 1; i <= resultado.size(); i++) {
-//                    String opcion = "Opcion" + i;
-//                    modeloListaArticulos.addElement(opcion);
-//                }
-//
-//                listaArticulos.addListSelectionListener(new ListSelectionListener() {
-//                    @Override
-//                    public void valueChanged(ListSelectionEvent e) {
-//                        if (!e.getValueIsAdjusting()) {
-//                            int selectedOptionIndex = listaArticulos.getSelectedIndex();
-//
-//                            if (selectedOptionIndex >= 0 && selectedOptionIndex < resultado.size()) {
-//                                List<Articulo> selectedList = resultado.get(selectedOptionIndex);
-//
-//                                TreeSet<Articulo> art = new TreeSet<>(selectedList);
-//                                setArticulosQuePuedoComprar(art, pnlElems);
-//                            }
-//                        }
-//                    }
-//                });
-//
-//
-//        		
-////        		System.out.println("LLAMADA RECURSIVA");
-////        		System.out.println(resultado);
-////        		for (List<Articulo> a : resultado) {
-////        			TreeSet<Articulo> art = new TreeSet<Articulo>(a);
-////        			setArticulosQuePuedoComprar(art, pnlElems);
-////        		}
-//        		
-//				
-//			}
-//		});
+        saldo.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Cliente c = VentanaInicioSesion.getCliente();
+				if (clienteTieneTarjeta(c)) {
+					SpinnerModel spinnerModel = new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, 0.5);
+					JSpinner moneySpinner = new JSpinner(spinnerModel);
+					
+					//Panel para el OptionPane
+					JPanel panel = new JPanel();
+					panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+					panel.add(new JLabel("Introduce la cantidad de dinero que deseas añadir a tu cuenta:"));
+					panel.add(moneySpinner);
+					panel.setPreferredSize(new Dimension(200, 80));
+					int result = JOptionPane.showOptionDialog( null, panel, "Cantidad de Dinero", JOptionPane.OK_CANCEL_OPTION,
+							JOptionPane.PLAIN_MESSAGE, null, null, null);
+					if (result == JOptionPane.OK_OPTION) {
+						double saldo = (double) moneySpinner.getValue();
+						
+						Connection con = BD.initBD("NatiShop.db");
+						BD.modificarSaldo(con, c.getDni(), saldo);
+						BD.closeBD(con);
+						lblSaldo.setText(saldo+"€");
+						
+						JOptionPane.showMessageDialog(null, "Has añadido " + saldo + "€ a tu cuenta");
+				        } else {
+				            JOptionPane.showMessageDialog(null, "Operación cancelada");
+				        }
+					
+					
+					
+					
+				}else {
+					JOptionPane.showMessageDialog(null, "Para añadir saldo a tu cuenta primero debes tener una tarjeta registrada. \n Registra tu tarjeta en: Ver perfil > ¿DESEAS AÑADIR UN NUMERO DE TARJETA A TU CUENTA? ");
+				}
+				
+			}
+        	
+        });
         
 
         lblNomU = new JLabel("Iniciar Sesión");
         lblNomU.setHorizontalAlignment(SwingConstants.CENTER);
         lblNomU.setVerticalAlignment(SwingConstants.TOP);
-        lblNomU.setBounds(1037, 70, 87, 19);
+        lblNomU.setBounds(1046, 67, 91, 22);
         pnlNorte.add(lblNomU);
         
         //Saldo
         lblSaldo = new JLabel("");
+        lblSaldo.setFont(new Font("Tahoma", Font.PLAIN, 8));
         lblSaldo.setHorizontalAlignment(SwingConstants.CENTER);
-        lblSaldo.setBounds(965, 72, 57, 19);
+        lblSaldo.setBounds(1046, 87, 91, 8);
         pnlNorte.add(lblSaldo);
         
         //LISTENERS DE LOS ITEMS DE HOMBRE
@@ -743,16 +721,14 @@ public class VentanaPrincipal extends JFrame {
 		}
 		
 		public static boolean clienteTieneTarjeta(Cliente c) {
-			if (c.getNumTarjeta().equals("Tarjeta sin registrar")) {
+			Connection con = BD.initBD("NatiShop.db");
+			String tarj = BD.obtenerTarjCliente(con, c.getDni());
+			BD.closeBD(con);
+			
+			if (tarj.equals("Tarjeta sin registrar")) {
 				return false;
 			}else {
 				return true;
-			}
-		}
-		
-		public static void asignarSaldoCliente(Cliente c) {
-			if (!c.getNumTarjeta().equals("Tarjeta sin registrar")) {
-				lblSaldo.setText(c.getSaldo() + "€");
 			}
 		}
 
@@ -761,12 +737,7 @@ public class VentanaPrincipal extends JFrame {
 			lblNomU.setText(c.getNombre());
 		};
 		
-		public static void asignarSaldo(Cliente c) {
-			if (!clienteTieneTarjeta(c)) {
-				lblSaldo.setText(c.getSaldo() + "€");
-			}
-		}
-		
+
 		public static void eliminarNombreCliente() {
 			lblNomU.setText("Iniciar sesión");
 		};
@@ -849,28 +820,7 @@ public class VentanaPrincipal extends JFrame {
 			
 			
 			
-			return panelArticulo;
-			
-		
-
-			/* if (UsuarioHaIniciadoSesion()) {
-	  	  lblUsuario.addMouseListener(new MouseAdapter() {
-	        	@Override
-	        	public void mouseClicked(MouseEvent e) {
-	        		new VentanaInicioSesion(vActual);
-					//vActual.setVisible(false);
-	        		
-	        	}
-	       });       
-	  } else {
-	  	lblUsuario.addMouseListener(new MouseAdapter() {
-	      	@Override
-	      	public void mouseClicked(MouseEvent e) {
-	      		JOptionPane.showMessageDialog(vActual, "Por favor, inicie sesión antes de acceder.");
-	      	}
-	  	});
-	  }*/
-				
+			return panelArticulo;	
 	 
 		}
 		

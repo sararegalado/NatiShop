@@ -1,9 +1,12 @@
 package ventanas;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,14 +23,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
 import clases.Articulo;
@@ -44,6 +41,9 @@ public class VentanaCompras extends JFrame {
     private static JTable tablaCompras;
     private JScrollPane scrollTablaCompras;
     private BD bd;
+    private Cliente c;
+    
+    private int filaABorrar;
 
 
     public VentanaCompras(JFrame va) {
@@ -62,12 +62,10 @@ public class VentanaCompras extends JFrame {
         pSur = new JPanel();
         getContentPane().add(pSur, BorderLayout.SOUTH);
 
-        Object[] titulos = { "ID", "ARTICULO", "DESCRIPCION", "TALLA", "CANTIDAD", "PRECIO"};
+        Object[] titulos = { "ID", "ARTICULO", "DESCRIPCION", "TALLA", "PRECIO"};
         setModeloTablaCompras(new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                if (column == 4)
-                    return true;
                 return false;
             }
         });
@@ -78,30 +76,14 @@ public class VentanaCompras extends JFrame {
         pCentro.add(new JPanel(),  BorderLayout.EAST );
         pCentro.add(new JPanel(),  BorderLayout.WEST );
         getContentPane().add(pCentro, BorderLayout.CENTER);
-
+        
         cargarArticuloTabla();
 
-        this.tablaCompras.setRowHeight(80);
+        tablaCompras.setRowHeight(80);
         
         bd = new BD();
 
-        // Configurar el editor de la columna "CANTIDAD" para usar JSpinner
-        TableColumnModel columnModel = tablaCompras.getColumnModel();
-        TableColumn cantidadColumna = columnModel.getColumn(4);
 
-        SpinnerEditor spinnerEditor = new SpinnerEditor();
-        cantidadColumna.setCellEditor(spinnerEditor);
-        cantidadColumna.setCellRenderer(spinnerEditor);
-          
-		
-		
-		
-		
-		/*TableColumnModel columnModel = tablaCompras.getColumnModel();
-		columnModel.getColumn(0).setCellRenderer(new ImageRenderer());
-        columnModel.getColumn(1).setCellRenderer(new SpinnerRenderer());
-        columnModel.getColumn(1).setCellEditor(new SpinnerEditor()); */  
-		
         tablaCompras.setDefaultRenderer(Object.class, new TableCellRenderer() {
 
             @Override
@@ -135,8 +117,36 @@ public class VentanaCompras extends JFrame {
                     l.setOpaque(true);
                     return l;
                 }
+                
             }
 
+        });
+        
+        tablaCompras.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                	int opcion = JOptionPane.showConfirmDialog(
+                            JOptionPane.getRootFrame(),
+                            "¿Quieres borrar este artículo de tu cesta?",
+                            "Confirmar Eliminación",
+                            JOptionPane.YES_NO_OPTION);
+
+                    if (opcion == JOptionPane.YES_OPTION) {
+                    	 int selectedRow = tablaCompras.getSelectedRow();
+                         if (selectedRow != -1) {
+                             filaABorrar = selectedRow;
+                             modeloTablaCompras.removeRow(filaABorrar);
+                             Tienda.getCestaPorCliente().get(VentanaInicioSesion.getCliente()).remove(selectedRow);
+                         }
+                    } else {
+                        // Lógica si el usuario selecciona "Cancelar" o cierra la ventana
+                        System.out.println("Eliminación cancelada");
+                    }
+
+
+                }
+            }
         });
 
         btnVolver = new JButton("VOLVER");
@@ -150,94 +160,59 @@ public class VentanaCompras extends JFrame {
         pSur.add(btnComprar);
 
         btnComprar.addActionListener((e) -> {
-//          Cliente clienteActual = obtenerClienteActual();
-//          ArrayList<Articulo> articulosSeleccionados = obtenerArticulosSeleccionados();
-//          Tienda.getCompras().put((Cliente) clienteActual, articulosSeleccionados);
-
         	
-   
-    
-    
-	/*private void cargarTabla() {
-		for(Usuario u: Tienda.getCompras().keySet()) {
-			//ArrayList<Articulo> comprasUsuario = new ArrayList<>();
-			for(Articulo a: Tienda.getCompras().get(u)) {
-				sCantidad.addChangeListener(e -> actualizarPrecioFila());
-				ImageIcon icono = new ImageIcon(imagen);
-				Object [] fila = {icono, sCantidad,a.getPrecio()};	//CARGAR LA IMAGEN
-				modeloTablaCompras.addRow(fila);
-				// comprasUsuario.add(a);
-			}
-			  compras.put(u, comprasUsuario);
-		}
-	}*/
-	
-    
-    
+          	Connection co = BD.initBD("NatiShop.db");
+           	double saldoCliente = BD.obtenerSaldoCliente(co, obtenerClienteActual().getDni());
+           	BD.closeBD(co);
+        	if(saldoCliente>= obtenerPrecioCompra() ) {
+        		Cliente c= obtenerClienteActual();
+                ArrayList<Articulo> articulosComprados = Tienda.getCestaPorCliente().get(c);
+        		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+              	Date date = new Date(); // Obtén la fecha actual
+          		String f_compra = sdf.format(date);
+              	Compra nuevaCompra = new Compra(obtenerClienteActual(), f_compra, Tienda.getCestaPorCliente().get(obtenerClienteActual()), obtenerPrecioCompra());
+              	
+              	 int respuesta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que quieres finalizar la compra?", "Confirmar compra", JOptionPane.YES_NO_OPTION);
 
-		  	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		  	Date date = new Date(); // Obtén la fecha actual
-				String f_compra = sdf.format(date);
-		  	Compra nuevaCompra = new Compra(obtenerClienteActual(), f_compra, Tienda.getCestaPorCliente().get(obtenerClienteActual()), obtenerPrecioCompra());
-		  	
-		  	 int respuesta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que quieres finalizar la compra?", "Confirmar compra", JOptionPane.YES_NO_OPTION);
-		
-		       // Comprueba la respuesta del usuario
-		       if (respuesta == JOptionPane.YES_OPTION) {
-		      	Connection con = BD.initBD("NatiShop.db");
-		       	boolean correcto = bd.anyadirCompra(con, nuevaCompra);
-		       	if (correcto) {
-		       		JOptionPane.showMessageDialog(null, "Compra finalizada. Gracias por tu compra.");
-		               System.out.println(obtenerPrecioCompra() );
-		               getModeloTablaCompras().setRowCount(0);
-		
-		       	}
-		           
-		       } else {
-		           JOptionPane.showMessageDialog(null, "Compra cancelada.");
-		       }
-		  	
-		  	//AÑADIR METODO ANIADIRCOMPRAS
-		  });
-		}
-		    	
+                   // Comprueba la respuesta del usuario
+                   if (respuesta == JOptionPane.YES_OPTION) {
+                  	Connection con = BD.initBD("NatiShop.db");
+                   	boolean correcto = bd.anyadirCompra(con, nuevaCompra);
+                   	BD.closeBD(con);
+                   	if (correcto) {
+                   		JOptionPane.showMessageDialog(null, "Compra finalizada. Gracias por tu compra.");
+                        System.out.println(obtenerPrecioCompra() );
+                        Connection conn = BD.initBD("NatiShop.db");
+                        BD.modificarSaldo(conn, obtenerClienteActual().getDni(), saldoCliente - obtenerPrecioCompra());
+                        
+                        double saldo = saldoCliente - obtenerPrecioCompra();
+                        VentanaPrincipal.getLblSaldo().setText(String.format("%.2f€", saldo));
+                        Tienda.getCestaPorCliente().put(c, new ArrayList<>());
+                        for (Articulo a : articulosComprados) {
+                        	BD.modificarUnidsArticulo(conn, a.getId(), a.getUnidades()-1);
+                        	
+                        }
+                        BD.closeBD(conn);
+                        getModeloTablaCompras().setRowCount(0);
+                   	}
+                       
+                   } else {
+                       JOptionPane.showMessageDialog(null, "Compra cancelada.");
+                   }
+              	
+        		
+        	}else {
+        		JOptionPane.showMessageDialog(null, "No tienes suficiente saldo para realizar esta compra \n" + 
+        					"Saldo actual: " + saldoCliente +"€ \n" + "Precio compra: " + obtenerPrecioCompra() + "€");
+        	}
+
+           
+      });
+  }
         	
-
-
-	/*public void cargarTabla() {
-	    Cliente clienteActual = obtenerClienteActual();
-	    ArrayList<Articulo> articulosCarrito = Tienda.getCompras().get(clienteActual);
-
-	    if (articulosCarrito != null) {
-	        for (Articulo articulo : articulosCarrito) {
-	        	//agregarArticuloALaTabla(articulo);
-	        	sCantidad.addChangeListener(e -> actualizarPrecioFila());
-	            ImageIcon icono = new ImageIcon(getClass().getResource(articulo.getFoto()));
-	            Object[] fila = {icono, articulo.getUnidades(), articulo.getPrecio()};	//pero aqui no va a salir el precio actualizado en la 3 columna no ??
-	            modeloTablaCompras.addRow(fila);
-	        }
-	    	//tablaCompras.setModel(new ModeloTablaCompras(articulosCarrito));
-	    }
-	}
-	
-	private void actualizarPrecioFila() {
-	    for (int fila = 0; fila < modeloTablaCompras.getRowCount(); fila++) {
-	        JSpinner sCantidad = (JSpinner) modeloTablaCompras.getValueAt(fila, 1);
-	        int cantidad = (int) sCantidad.getValue();
-	        double precioUnitario = (double) modeloTablaCompras.getValueAt(fila, 2);
-	        double nuevoPrecio = cantidad * precioUnitario;
-	        modeloTablaCompras.setValueAt(nuevoPrecio, fila, 2);
-	    }
-		
-		
-	}*/
-	
-   
-   /**
-   * Este método revisa si un cliente ha iniciado sesión y, de ser así, carga los artículos
-   * que están en la cesta de compra de dicho cliente en la tabla de compras.
-   */
-
+/**
+ * Método que carga los articulos que el cliente, que ha iniciado sesion ha seleccionado
+ */
     private void cargarArticuloTabla() {
         if (VentanaPrincipal.isClienteHaIniciadoSesion()) {
             for (Cliente c : Tienda.getCestaPorCliente().keySet()) {
@@ -245,7 +220,7 @@ public class VentanaCompras extends JFrame {
                 for (Articulo a : aCesta) {
                     try {
                         ImageIcon icono = new ImageIcon(getClass().getResource(a.getFoto()));
-                        Object[] fila = {a.getId(), icono, a.getNombre(), a.getTallaStr(), a.getCantidadSeleccionada(), a.getPrecioPorUnidad()};
+                        Object[] fila = {a.getId(), icono, a.getNombre(), a.getTallaStr(), a.getPrecio()};
                         getModeloTablaCompras().addRow(fila);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -255,70 +230,9 @@ public class VentanaCompras extends JFrame {
         }
     }
 
-    static class SpinnerEditor extends AbstractCellEditor implements TableCellEditor, TableCellRenderer {
-        private final JSpinner spinner;
-
-        public SpinnerEditor() {
-            spinner = new JSpinner();
-            spinner.setModel(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));  // Establecer modelo para evitar NullPointerException
-            spinner.addChangeListener(e -> {
-                int fila = tablaCompras.getEditingRow();
-                int columna = tablaCompras.getEditingColumn();
-                if (fila != -1 && columna == 4) {
-                    int nuevaCantidad = (int) spinner.getValue();
-                    tablaCompras.getModel().setValueAt(nuevaCantidad, fila, columna);
-                    
-                    // Actualizar la cantidadSeleccionada en la instancia de Articulo
-                    String idArticulo = (String) tablaCompras.getModel().getValueAt(fila, 0);
-                    Articulo a = obtenerArticuloPorID(idArticulo); // Ajusta esto según la estructura de tu código
-                    a.setCantidadSeleccionada(nuevaCantidad);
-
-                    float precioUnitario = a.getPrecio();
-                    float nuevoPrecio = nuevaCantidad * precioUnitario;
-                    tablaCompras.getModel().setValueAt(nuevoPrecio, fila, 5);
-                    a.setPrecioPorUnidad(nuevoPrecio);
-
-                    // Notificar que se ha realizado la edición
-                    fireEditingStopped();
-                }
-            });
-        }
-
-        @Override
-        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-            int cantidad = (int) value;
-            spinner.setValue(cantidad);
-            return spinner;
-        }
-
-        @Override
-        public Object getCellEditorValue() {
-            return spinner.getValue();
-        }
-
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-                                                       int row, int column) {
-            JSpinner newSpinner = new JSpinner();  // Crear un nuevo JSpinner para cada fila
-            newSpinner.setValue(value);
-            return newSpinner;
-        }
-    }
-
-
-
     private Cliente obtenerClienteActual() {
         return VentanaInicioSesion.getCliente();
     }
-
-//    private ArrayList<Articulo> obtenerArticulosSeleccionados() {
-//        ArrayList<Articulo> comprasUsuario = new ArrayList<>();
-//        for (int fila = 0; fila < getModeloTablaCompras().getRowCount(); fila++) {
-//            Articulo articulo = (Articulo) getModeloTablaCompras().getValueAt(fila, 0);
-//            comprasUsuario.add(articulo);
-//        }
-//        return comprasUsuario;
-//    }
 
 	public static DefaultTableModel getModeloTablaCompras() {
 		return modeloTablaCompras;
@@ -328,15 +242,9 @@ public class VentanaCompras extends JFrame {
 		VentanaCompras.modeloTablaCompras = modeloTablaCompras;
 	}
 	
-	/** 
-	 * Este método recorre todas las cestas de compras de los clientes para encontrar un artículo específico
-	 * cuyo identificador coincida con el del parametro. Si encuentra un artículo con el ID correspondiente, lo devuelve.
-	 * @param id El identificador único del artículo que se desea obtener.
-	 * @return El artículo correspondiente al ID proporcionado, o null si no se encuentra.
-	 */
+	
+	
 	private static Articulo obtenerArticuloPorID(String id) {
-	    // Aquí debes implementar la lógica para obtener el Articulo correspondiente al ID
-	    // Puedes iterar sobre la lista de Articulos en tu cesta y devolver el que tenga el ID correcto
 	    for (Cliente c : Tienda.getCestaPorCliente().keySet()) {
 	        List<Articulo> aCesta = Tienda.getCestaPorCliente().get(c);
 	        for (Articulo a : aCesta) {
@@ -348,13 +256,11 @@ public class VentanaCompras extends JFrame {
 	    return null; // Manejo del caso en que no se encuentra el Articulo
 	}
 	
-	
-	//obtiene el precio de la compra por cada cliente
 	private static float obtenerPrecioCompra() {
 		float precioTotal = (float) 0.0;
 
 	    for (int fila = 0; fila < getModeloTablaCompras().getRowCount(); fila++) {
-	    	float valor = (float) getModeloTablaCompras().getValueAt(fila, 5);
+	    	float valor = (float) getModeloTablaCompras().getValueAt(fila, 4);
 	        precioTotal += valor;
 	        
 	    }
@@ -362,12 +268,11 @@ public class VentanaCompras extends JFrame {
 	    return precioTotal;
 		
 	}
-    
+	
     
     
     
 }
-
 
 
 

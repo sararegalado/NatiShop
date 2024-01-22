@@ -135,11 +135,12 @@ public class Articulo implements Comparable<Articulo>{
 	public void setPrecioPorUnidad(float precioPorUnidad) {
 		this.precioPorUnidad = precioPorUnidad;
 	}
+	
 	@Override
 	public String toString() {
-		return "Articulo [id=" + id + ", nombre=" + nombre + ", unidades=" + unidades + ", precio=" + precio
-				+ ", genero=" + genero + ", talla=" + talla + ", foto=" + foto + ", categoria=" + categoria + "]";
+		return  id + "	" + nombre + "	" + talla + "	" + precio ;
 	}
+	
 	@Override
 	public int compareTo(Articulo o) {
 		

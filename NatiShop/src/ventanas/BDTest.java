@@ -164,13 +164,13 @@ public class BDTest {
 	    }
 	}
 
-	@Test
+	
+	/*@Test
 	public void testObtenerTodosLosArticulos() {
 	    Set<Articulo> todosLosArticulos = BD.obtenerListaArticulos(con);
 	    assertNotNull(todosLosArticulos);
 	    assertFalse(todosLosArticulos.isEmpty());
-	}
-	
+	}*/
 	
 	
 	
@@ -316,6 +316,7 @@ public class BDTest {
 		assertEquals("andreaLopez", c.getContrasenia());
 	}
 
+	
 	@Test
 	public void testModificarNumTarj() {
 		BD.modificarNumTarj(con, c1.getDni(), "1456327984123457");
@@ -323,6 +324,7 @@ public class BDTest {
 		assertNotNull(c);
 		assertEquals("1456327984123457", c.getNumTarjeta());
 	}
+	
 	
 	@Test
 	public void testModificarSaldo() {

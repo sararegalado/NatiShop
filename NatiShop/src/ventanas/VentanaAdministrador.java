@@ -17,10 +17,13 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 import com.toedter.calendar.JCalendar;
 
@@ -34,24 +37,40 @@ import clases.Administrador;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 
 public class VentanaAdministrador extends JFrame{
 
-	private JPanel pnlOesteMenu,pnlCentro,pnlOesteArriba,pnlDatos,pnlDatosTitulo,pnlDatosArriba,pnlDatosBotones;
+	private JPanel pnlOesteMenu,pnlCentro,pnlOesteArriba,pnlDatos,pnlDatosTitulo,pnlDatosArriba,pnlDatosBotones,pnlEstadisticas, pnlEsOesteArriba,pnlEsOesteAbajo, pnlEsEsteArriba, pnlEsEsteAbajo;
 
 	private JMenuBar menuBarAdmin;
 	private JMenu menuClientes,menuArticulos, menuEstadisticas, menuCompras;
 	private JMenuItem mItemRegistros,mItemArticulos,mItemStock,mItemCompras, mItemCalendar, mItemGraficos;
-	private JLabel lblFoto,lblTitulo,lblDNI,lblnom,lblApellido,lblCorreo,lbltfn,lblProvincia,lblFnac,lblFinic,lblJornada,lblPuesto,lblModifJornada,lblSolicitudes,lblAñadirAdmin;
-	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfJornada, tfPuesto;
-	private JButton btnDesplegar;
+	private JLabel lblFoto,lblTitulo,lblDNI,lblnom,lblApellido,lblCorreo,lbltfn,lblProvincia,lblFnac,lblFinic,lblJornada,lblPuesto,lblModifJornada,lblSolicitudes,lblAñadirAdmin,lblTituloOesteArriba,lblTituloEsteArriba,lblTituloOesteAbajo, lblTituloEsteAbajo,lblClienteEstrella;
+
+	private static JLabel lblTop1;
+
+	private static JLabel lblTop2;
+
+	private static JLabel lblTop3;
+
+	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfPuesto;
+	private JButton btnDesplegar, btnAñadirAdmin;
+
+
+	private static JTextField tfJornada;
+
 	
-	private JTable tClientes;
+	private JTable tClientes, tStock;
 	private ModeloTablaClientes mClientes;
-	private JScrollPane sTablaClientes;
+	private ModeloTablaStock mStock;
+	private JScrollPane sTablaClientes, sTablaStock;
 	private JFrame vActual,vAnterior;
 	private Administrador admin;
 	
@@ -61,6 +80,8 @@ public class VentanaAdministrador extends JFrame{
 	private DefaultTreeModel modeloArbolArticulos;
 	private JTree arbolArticulos;
 	private JScrollPane sArbolArticulos;
+	
+	
 
 	public VentanaAdministrador(JFrame va, Administrador admin) {
 		
@@ -101,6 +122,8 @@ public class VentanaAdministrador extends JFrame{
 				pnlOesteMenu.setVisible(!pnlOesteMenu.isVisible());
 			}
 		});
+		
+
 		
 		pnlDatos= new JPanel();
 		pnlDatos.setLayout(new GridLayout(3,1));
@@ -208,6 +231,15 @@ public class VentanaAdministrador extends JFrame{
         lblSolicitudes.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
         pnlDatosBotones.add(lblSolicitudes);
         lblSolicitudes.setHorizontalAlignment(lblModifJornada.CENTER);
+        lblSolicitudes.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new VentanaARSolicitud();
+				
+			}
+		});
+
 
         lblModifJornada = new JLabel("<html><u>" + "MODIFICAR JORNADA" + "</u></html>");
         lblModifJornada.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
@@ -248,28 +280,68 @@ public class VentanaAdministrador extends JFrame{
         	lblAñadirAdmin.setVisible(false);
         	lblSolicitudes.setVisible(false);
         }
+        
+        lblAñadirAdmin.addMouseListener(new MouseAdapter () {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		abrirVentanaNuevoAdmin();
+        	}
+        });
        
         pnlCentro = new JPanel(new BorderLayout());
 		getContentPane().add(pnlCentro, BorderLayout.CENTER);
         
-		//ARBOL ARTICULOS 
-        DefaultMutableTreeNode raiz= new DefaultMutableTreeNode("ARTICULOS");
-        DefaultMutableTreeNode Jersey = new DefaultMutableTreeNode("JERSEY");
-        DefaultMutableTreeNode Camiseta = new DefaultMutableTreeNode("CAMISETA");
-        DefaultMutableTreeNode Zapato = new DefaultMutableTreeNode("ZAPATO");
-        DefaultMutableTreeNode Pantalon = new DefaultMutableTreeNode("PANTALON");
-        modeloArbolArticulos = new DefaultTreeModel (raiz);
-        modeloArbolArticulos.insertNodeInto(Zapato, raiz, 0);
-        modeloArbolArticulos.insertNodeInto(Jersey, raiz, 1);
-        modeloArbolArticulos.insertNodeInto(Camiseta, raiz, 2);
-        modeloArbolArticulos.insertNodeInto(Pantalon, raiz, 3);
-        arbolArticulos = new JTree(modeloArbolArticulos);
-        sArbolArticulos = new JScrollPane(arbolArticulos);
-       
-       
+		//CREACION DE LA TABLA Stock
+		mStock = new ModeloTablaStock(new ArrayList<>());
+		tStock = new JTable(mStock);
+		sTablaStock = new JScrollPane(tStock);
+		
+		pnlEstadisticas = new JPanel();
+		pnlEstadisticas.setLayout(new GridLayout(2,1));
 		
 		
+		pnlEsOesteArriba = new JPanel();
+		pnlEsOesteArriba.setLayout(new GridLayout(2,1));
+		pnlEsOesteArriba.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+    	pnlEsOesteArriba.setBackground(new Color(220, 220, 220));
+    	
+   
+    	lblTituloOesteArriba = new JLabel("<html><u>" + "CLIENTE ESTRELLA" + "</u></html>");
+		lblTituloOesteArriba.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 14));
+		lblTituloOesteArriba.setHorizontalAlignment(JLabel.CENTER);
+		pnlEsOesteArriba.add(lblTituloOesteArriba);
 		
+		lblClienteEstrella = new JLabel(" ");
+		pnlEsOesteArriba.add(lblClienteEstrella);
+		lblClienteEstrella.setHorizontalAlignment(JLabel.CENTER);
+		
+		
+		pnlEsOesteAbajo = new JPanel();
+		pnlEsOesteAbajo.setLayout(new GridLayout(4,1));
+    	pnlEsOesteAbajo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+    	pnlEsOesteAbajo.setBackground(new Color(220, 220, 220));
+    	
+    	lblTituloOesteAbajo = new JLabel("<html><u>" + "TOP ARTICULOS" + "</u></html>");
+		lblTituloOesteAbajo.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 14));
+		lblTituloOesteAbajo.setHorizontalAlignment(JLabel.CENTER);
+		pnlEsOesteAbajo.add(lblTituloOesteAbajo);
+    	
+
+    	lblTop1 = new JLabel(" ");
+    	lblTop2 = new JLabel(" ");
+    	lblTop3 = new JLabel(" ");
+    	
+    	lblTop1.setHorizontalAlignment(JLabel.CENTER);
+    	lblTop2.setHorizontalAlignment(JLabel.CENTER);
+    	lblTop3.setHorizontalAlignment(JLabel.CENTER);
+    	
+    	pnlEsOesteAbajo.add(lblTop1);
+    	pnlEsOesteAbajo.add(lblTop2);
+    	pnlEsOesteAbajo.add(lblTop3);
+    	
+    	pnlEstadisticas.add(pnlEsOesteArriba);
+    	pnlEstadisticas.add(pnlEsOesteAbajo);
+    	
 		//DECLARACION + ACTIONLISTENER DE LOS MENUITEM
 		menuBarAdmin= new JMenuBar();
 		pnlOesteMenu.add(menuBarAdmin);
@@ -308,10 +380,6 @@ public class VentanaAdministrador extends JFrame{
 		menuBarAdmin.add(menuArticulos);
 		
 		
-		mItemArticulos = new JMenuItem("ARTICULOS DISPONIBLES");
-		mItemArticulos.setFont(new Font("Calibri", Font.BOLD, 15));
-		menuArticulos.add(mItemArticulos);
-		
 		
 		mItemStock = new JMenuItem("GESTION DE STOCK");
 		mItemStock.setFont(new Font("Calibri", Font.BOLD, 15));
@@ -323,6 +391,59 @@ public class VentanaAdministrador extends JFrame{
 				pnlCentro.removeAll();
 				pnlCentro.revalidate();
 				pnlCentro.repaint();
+				//cargarArbol();
+				//pnlCentro.setVisible(true);
+				DefaultMutableTreeNode raiz= new DefaultMutableTreeNode();
+			    DefaultMutableTreeNode Jersey = new DefaultMutableTreeNode("JERSEY");
+			    DefaultMutableTreeNode Camiseta = new DefaultMutableTreeNode("CAMISETA");
+			    DefaultMutableTreeNode Calzado = new DefaultMutableTreeNode("CALZADO");
+			    DefaultMutableTreeNode Pantalon = new DefaultMutableTreeNode("PANTALON");
+			    modeloArbolArticulos = new DefaultTreeModel (raiz);
+			    modeloArbolArticulos.insertNodeInto(Calzado, raiz, 0);
+			    modeloArbolArticulos.insertNodeInto(Jersey, raiz, 1);
+			    modeloArbolArticulos.insertNodeInto(Camiseta, raiz, 2);
+			    modeloArbolArticulos.insertNodeInto(Pantalon, raiz, 3);
+				arbolArticulos = new JTree(modeloArbolArticulos);
+				int anchoArbol = 200;
+				int altoArbol= 130;  
+			    arbolArticulos.setPreferredSize(new Dimension(anchoArbol, altoArbol));
+				sArbolArticulos = new JScrollPane(arbolArticulos);
+			    arbolArticulos.setCellRenderer(new arbolArticulosRenderer());
+				sArbolArticulos.setVisible(true);
+			    pnlCentro.add(arbolArticulos, BorderLayout.WEST);
+			    pnlCentro.setVisible(true);
+			    System.out.println("Arbol cargado");
+				arbolArticulos.setVisible(true);
+				
+				arbolArticulos.addTreeSelectionListener(new TreeSelectionListener() {
+					
+					@Override
+					public void valueChanged(TreeSelectionEvent e) {
+						System.out.println("ARBOL");
+						TreePath tp = e.getPath();
+						String categoria= tp.getLastPathComponent().toString();
+						
+						Connection con = BD.initBD("Natishop.db");
+						Set<Articulo>articulos = BD.obtenerListaArticulos(con);
+						BD.closeBD(con);
+						
+						List<Articulo> articulosTabla = new ArrayList<>();
+						for(Articulo a: articulos) {
+							if(a.getCategoriaStr().equals(categoria)) {
+								articulosTabla.add(a);
+								
+							}
+						}
+						tStock.setModel(new ModeloTablaStock(articulosTabla));
+						cargarTablaStock();
+					}
+					
+				});
+			   
+				
+				pnlCentro.setVisible(true);
+			
+				System.out.println("Item funciona");
 				
 				
 			}
@@ -360,11 +481,33 @@ public class VentanaAdministrador extends JFrame{
 		mItemGraficos.setFont(new Font("Calibri", Font.BOLD, 15));
 		menuEstadisticas.add(mItemGraficos);
 		
+		mItemGraficos.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pnlCentro.removeAll();
+				pnlCentro.revalidate();
+				pnlCentro.repaint();
+				pnlCentro.add(pnlEstadisticas);
+				TresArticulosMasComprados();
+				Connection con = BD.initBD("NatiShop.db");
+		        List<Compra> compras = BD.obtenerComprasTotales(con);
+		        BD.closeBD(con);
+
+		        clienteQueMasHaComprado(compras);
+				
+				
+			}
+		});
+		
 		mClientes = new ModeloTablaClientes(new ArrayList<>());
 		tClientes = new JTable(mClientes);
 		sTablaClientes = new JScrollPane(tClientes);
 		
-		pnlCentro.setVisible(true);
+//		cargarArbol();
+		
+		
+	//LISTENERS
 		
 		/**
 		 * Escucha de eventos de clic del ratón a la tabla tClientes.
@@ -389,11 +532,19 @@ public class VentanaAdministrador extends JFrame{
 			}
 		});
 		
+		
+		
 		setVisible(true);
 		
 		
 	}
 	
+	protected void abrirVentanaNuevoAdmin() {
+		VentanaNuevoAdmin ventanaNuevoAdmin = new VentanaNuevoAdmin(this);
+		ventanaNuevoAdmin.setVisible(true);
+		
+	}
+
 	//METODOS 
 	
 	/**
@@ -429,12 +580,33 @@ public class VentanaAdministrador extends JFrame{
 		tClientes.setDefaultRenderer(Object.class, cellRenderer);
 		((DefaultTableCellRenderer) tClientes.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 	}
+
 	
 	/**
 	 * Crea una interfaz con un componente JCalendar para mostrar un calendario y una tabla JTable para visualizar compras. 
 	 * Cuando se selecciona una fecha en el calendario, se actualiza la tabla con las compras correspondientes para esa fecha. 
 	 * La fecha seleccionada se obtiene mediante un escuchador de eventos en el JCalendar.
 	 */
+
+
+	/**
+	 * Método que Cargar la tabla con rodos los articulos de la tiwnda y sus unidades disponible
+	 * 
+	 */
+	public void cargarTablaStock() {
+		Connection con = BD.initBD("Natishop.db");
+		Set<Articulo>a = BD.obtenerListaArticulos(con);
+		BD.closeBD(con);
+		pnlCentro.add(sTablaStock, BorderLayout.CENTER);
+		JLabel lblStock = new JLabel("<html><u>" + "STOCK" + "</u></html>");
+		lblStock.setFont(new Font("Calibri", Font.BOLD| Font.ITALIC, 30));
+		lblStock.setHorizontalAlignment(JLabel.CENTER);
+		pnlCentro.add(lblStock, BorderLayout.NORTH);
+		pnlCentro.setVisible(true);
+	}
+
+
+
 
 	public void cargarCalendario() {
 		JCalendar calendar = new JCalendar(new Date());
@@ -444,7 +616,6 @@ public class VentanaAdministrador extends JFrame{
 		JTable tablaCompras = new JTable();
 		tablaCompras.setModel(new ModeloTablaCompras(null));
 		JScrollPane spTablaCompras = new JScrollPane(tablaCompras);
-		
 		
 		pnlCalendar.add(spTablaCompras);
 
@@ -465,10 +636,9 @@ public class VentanaAdministrador extends JFrame{
             }
         });
 		
-		
-		
 		pnlCentro.setVisible(true);
 		
+
 		
 		
 		
@@ -480,6 +650,12 @@ public class VentanaAdministrador extends JFrame{
 	 * @param fecha_Selecionada La fecha seleccionada para filtrar las compras.
 	 * @param tablaCompras El JTable donde se mostrarán las compras.
 	 */
+
+
+	
+	
+	
+
 
 	private void cargarComprasDia(String fecha_Selecionada, JTable tablaCompras) {
 		Connection con = BD.initBD("NatiShop.db");
@@ -526,10 +702,11 @@ public class VentanaAdministrador extends JFrame{
 	}
 
 	
-	/**
-	 * Carga los datos de un administrador registrado en los campos correspondientes de la interfaz de usuario.
-	 * @param admin El objeto Administrador cuyos datos deben cargarse en la interfaz.
+	/*
+		Método que carga los datos del Administrador registrado
+	 
 	 */
+
 	public void cargarDatosAdmin(Administrador admin) {
 		if(admin != null) {
 			System.out.println("NO ES NULO");
@@ -548,14 +725,192 @@ public class VentanaAdministrador extends JFrame{
 	
 	}
 	
+	/**
+	 * Método que crea el Arbol que aparece al pulsar el mItemStock con los tipos de prendas que tiene la tienda como nodos hijos
+	 */
+	
+	public void cargarArbol() {
+		DefaultMutableTreeNode raiz= new DefaultMutableTreeNode();
+	    DefaultMutableTreeNode Jersey = new DefaultMutableTreeNode("JERSEY");
+	    DefaultMutableTreeNode Camiseta = new DefaultMutableTreeNode("CAMISETA");
+	    DefaultMutableTreeNode Zapato = new DefaultMutableTreeNode("ZAPATO");
+	    DefaultMutableTreeNode Pantalon = new DefaultMutableTreeNode("PANTALON");
+	    modeloArbolArticulos = new DefaultTreeModel (raiz);
+	    modeloArbolArticulos.insertNodeInto(Zapato, raiz, 0);
+	    modeloArbolArticulos.insertNodeInto(Jersey, raiz, 1);
+	    modeloArbolArticulos.insertNodeInto(Camiseta, raiz, 2);
+	    modeloArbolArticulos.insertNodeInto(Pantalon, raiz, 3);
+		arbolArticulos = new JTree(modeloArbolArticulos);
+		int anchoArbol = 200;
+		int altoArbol= 130;  
+	    arbolArticulos.setPreferredSize(new Dimension(anchoArbol, altoArbol));
+		sArbolArticulos = new JScrollPane(arbolArticulos);
+	    arbolArticulos.setCellRenderer(new arbolArticulosRenderer());
+		sArbolArticulos.setVisible(true);
+	    pnlCentro.add(arbolArticulos, BorderLayout.WEST);
+	    pnlCentro.setVisible(true);
+	    System.out.println("Arbol cargado");
+		
+	}
+
+	public static JTextField getTfJornada() {
+		return tfJornada;
+	}
+	
+	//MÉTODOS ESTADISTISCAS
+	
+	
+ 	
+
+    private void ClienteEstrella(Cliente cliente) {
+
+        if (cliente != null) {
+            JLabel lblCliente = new JLabel("DNI: " + cliente.getDni() + ", Nombre: " + cliente.getNombre());
+            lblCliente.setFont(new Font("Calibri", Font.PLAIN, 16));
+            lblCliente.setHorizontalAlignment(JLabel.CENTER);
+            
+            pnlEsOesteArriba.setLayout(new GridLayout(2, 1));
+            pnlEsOesteArriba.add(lblTitulo);
+            pnlEsOesteArriba.add(lblCliente);
+            
+            
+            
+        } else {
+            JLabel lblNoCompras = new JLabel("No hay compras registradas.");
+            lblNoCompras.setFont(new Font("Calibri", Font.PLAIN, 16));
+            lblNoCompras.setHorizontalAlignment(JLabel.CENTER);
+            pnlEsOesteArriba.setLayout(new GridLayout(1, 1));
+            pnlEsOesteArriba.add(lblNoCompras);
+        }
+
+       
+	
+}
+
+	private void clienteQueMasHaComprado(List<Compra> compras) {
+        Map<Cliente, Integer> frecuenciaClientes = new HashMap<>();
+
+        for (Compra c : compras) {
+            Cliente cliente = c.getCliente();
+            int frecuenciaActual = frecuenciaClientes.getOrDefault(cliente, 0);
+            frecuenciaClientes.put(cliente, frecuenciaActual + 1);
+        }
+
+        Cliente clienteMasCompras = null;
+        int maxFrecuencia = 0;
+
+        for (Map.Entry<Cliente, Integer> entry : frecuenciaClientes.entrySet()) {
+            if (entry.getValue() > maxFrecuencia) {
+                maxFrecuencia = entry.getValue();
+                clienteMasCompras = entry.getKey();
+                
+            }
+            
+        }
+        if (clienteMasCompras != null) {
+            lblClienteEstrella.setText(clienteMasCompras.getNombre());
+        } else {
+            // Manejar el caso en que no hay clientes o todos los clientes son null
+            lblClienteEstrella.setText("NO HAY CLIENTE");
+        }
+
+      
+    }
+	
+	
+	/**
+	 * Metodo que calcula cuantas veces se ha comprado un articulo
+	 * @param compras --> Arraylist con todas las compras que se han realizado
+	 * @param a --> Articulo que vamos a analizar cuatas veces se ha comprado
+	 * @return frecuencia --> Devuelve cuantas veces se ha comprado ese articulo 
+	 */
+	public static int FrecuenciaCompraArticulos(List<Compra>compras, Articulo a) {
+		int frecuencia= 0;
+		for (Compra c: compras) {
+			for(Articulo art: c.getArticulos() ) {
+				if(art.equals(a)) {
+					frecuencia ++;
+				}
+			}
+		}
+		return frecuencia;
+		
+	}
+	
+	
+	public static Articulo  ArticuloMasComprado() {
+		Connection con = BD.initBD("NatiShop.db");
+		List<Compra> compras = BD.obtenerComprasTotales(con);
+		BD.closeBD(con);
+		Articulo aMasComprado = null;
+		int  maxFrecuencia = 0;
+		for(Compra c: compras) {
+			for(Articulo a: c.getArticulos()) {
+				int frecAhora = FrecuenciaCompraArticulos(compras, a);
+				if(frecAhora > maxFrecuencia) {
+					maxFrecuencia = frecAhora;
+					aMasComprado= a;
+					System.out.println(aMasComprado);
+					
+				}
+			}   
+		}
+		
+		return aMasComprado;
+		
+		
+	}
+	
+	public static void   TresArticulosMasComprados(){
+		Connection con = BD.initBD("NatiShop.db");
+		List<Compra> compras = BD.obtenerComprasTotales(con);
+		BD.closeBD(con);
+		
+		List<Articulo>articulosMasComprados = new ArrayList<>();
+		
+		for(int i = 0; i<3; i++) {
+			Articulo aMasComprado= ArticuloMasComprado();
+			if(aMasComprado != null) {
+				articulosMasComprados.add(aMasComprado);
+			}else {
+				articulosMasComprados.add(null);
+			}
+		if(!articulosMasComprados.isEmpty()) {
+			 Articulo articulo1 = articulosMasComprados.get(0);
+			 Articulo articulo2 = articulosMasComprados.size() > 1 ? articulosMasComprados.get(1) : null;
+			 Articulo articulo3 = articulosMasComprados.size() > 2 ? articulosMasComprados.get(2) : null;
+			lblTop1.setText("TOP1: " + (articulo1 != null ? articulo1.getNombre() : "NO HAY ARTICULOS"));
+		    lblTop2.setText("TOP2: " + (articulo2 != null ? articulo2.getNombre() : "NO HAY ARTICULOS"));
+		    lblTop3.setText("TOP3: " + (articulo3 != null ? articulo3.getNombre() : "NO HAY ARTICULOS"));
+			}
+		}
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
 
 	
 	/*ERRORES/TAREAS
-	 * Inicio de sesion admins
-	 * Ventana edit admins
-	 * Admins: implemeta al heredar de Usuario ya el compare to?
+	 *
+	 * Listener del Jtree 
+	 * Unidades de los articulos 
+	 * RENDERER DE LA TABLA
+	 * Estadisticas (ANE Y YO)
+	 * Comentar Métodos
+	 * Limpiar código
+	 * 
+	 * 
 	 * -----
-	 * Falta añadir arbol al panel centro 
+	
 	  */
 	
 
@@ -563,4 +918,3 @@ public class VentanaAdministrador extends JFrame{
 	
 
 }
-

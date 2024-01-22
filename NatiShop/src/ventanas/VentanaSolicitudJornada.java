@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Connection;
 
 import javax.swing.*;
 
@@ -68,8 +69,15 @@ public class VentanaSolicitudJornada extends JFrame {
             	if(tfRazones.getText().isEmpty()) {
             		JOptionPane.showMessageDialog(null, "El campo de comentario es obligatorio.", "Error", JOptionPane.ERROR_MESSAGE);
             	}else{
+            		String dni = VentanaInicioSesion.getAdministrador().getDni();
             		String jornadaSeleccionada = cbJornadas.getSelectedItem().toString();
                     String comentario = tfRazones.getText();
+                    Connection con = BD.initBD("NatiShop.db");
+                    BD.anyadirAdminSolic(con, dni, jornadaSeleccionada, comentario);
+                    BD.closeBD(con);
+//                    Connection con = BD.initBD("NatiShop.db");
+//                    BD.modificarJornadaAdmin(con, VentanaInicioSesion.getAdministrador().getDni(), jornadaSeleccionada);
+//                    BD.closeBD(con);
                     JOptionPane.showMessageDialog(null, "Solicitud enviada:\nJornada: " + jornadaSeleccionada + "\nRazones: " + comentario, "ENVIO DE SOLICITUD", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
             	};
