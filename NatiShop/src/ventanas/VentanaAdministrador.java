@@ -214,14 +214,7 @@ public class VentanaAdministrador extends JFrame{
         pnlDatosBotones.add(lblModifJornada);
         lblModifJornada.setHorizontalAlignment(lblModifJornada.CENTER);
         
-        lblSolicitudes.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                // Aquí se llama al método que muestra la nueva ventana con la tabla
-            	new VentanaAceptaciónSolicitud(vActual);
-            }
-        });
-        
+       
 
         
         lblModifJornada.addMouseListener(new MouseAdapter() {

@@ -11,6 +11,7 @@ public class Cliente extends Usuario{
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	public Cliente(String dni, String nombre, Date fNac, String correo, String tlf, Provincia provincia,
 			String contrasenia, String numTarjeta, double saldo) {
 		super(dni, nombre, fNac, correo, tlf, provincia, contrasenia);

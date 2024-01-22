@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
@@ -121,6 +122,33 @@ public class BD {
 	
 	}
 	
+	
+	 public static void insertarAdministrador(Connection con, Administrador a) {
+	        if (buscarAdministrador(con, a.getDni()) == null) {
+	            String sql = "INSERT INTO administrador (DNI, NOMBRE, APELLIDO, FECHA_DE_NACIMIENTO, EMAIL, TELEFONO, PROVINCIA, FECHA_INICIO_EMPRESA, JORNADA, PUESTO, CONTRASEÑA) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	            try (PreparedStatement st = con.prepareStatement(sql)) {
+	                st.setString(1, a.getDni());
+	                st.setString(2, a.getNombre());
+	                st.setString(3, a.getApellido());
+	                st.setString(4, a.getfNacStr());
+	                st.setString(5, a.getCorreo());
+	                st.setString(6, a.getTlf());
+	                st.setString(7, a.getProvinciaStr());
+	                st.setString(8, a.getFInicEmpresaStr());
+	                st.setString(9, a.getJornadaLaboralStr());
+	                st.setString(10, a.getPuestoStr());
+	                st.setString(11, a.getContrasenia());
+	                st.execute();
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+	 
+	
+	
+	
+
 	public static Cliente buscarCliente(Connection con, String dni) {
 		String sql = String.format("SELECT * FROM cliente WHERE DNI = '%s'", dni);
 		Cliente c = null;
@@ -147,6 +175,36 @@ public class BD {
 		return c;
 	}
 	
+	public static Administrador buscarAdministrador(Connection con, String dni) {
+		String sql = String.format("SELECT * FROM administrador WHERE DNI = '%s'", dni);
+		Administrador a = null;
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql); 
+			if(rs.next()) { 
+				String nom = rs.getString("NOMBRE");
+				String apell = rs.getString("APELLIDO");
+				String fNac = rs.getString("FECHA_DE_NACIMIENTO");
+				String email = rs.getString("EMAIL");
+				String tlf= rs.getString("TELEFONO");
+				String p = rs.getString("PROVINCIA");
+				String fIniEmp = rs.getString("FECHA_INICIO_EMPRESA");
+				String jornada = rs.getString("JORNADA");
+				String puesto = rs.getString("PUESTO");
+				String contra = rs.getString("CONTRASEÑA");
+				a = new Administrador(dni, nom, apell, fNac,email, tlf, p, fIniEmp, jornada, puesto, contra);
+				
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return a;
+	}
+	
+	
+
 	public static Cliente buscarClientePorNomCon (Connection con, String nom, String contr) {
 		String sql = String.format("SELECT * FROM cliente WHERE NOMBRE = '%s' AND CONTRASEÑA = '%s'", nom, contr);
 		Cliente c = null;
@@ -232,6 +290,34 @@ public class BD {
 	    }
 	}
 	
+	public static void actualizarCantidadArticulo(Connection con, String id, int nuevaCantidad) {
+	    String sql = "UPDATE articulos SET unidades = ? WHERE id = ?";
+	    try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+	        pstmt.setInt(1, nuevaCantidad);
+	        pstmt.setString(2, id);
+	        pstmt.executeUpdate();
+	        con.commit();
+	    } catch (SQLException e) {
+	        System.out.println(e.getMessage());
+	    }
+	}
+	
+	public static boolean actualizarPrecioArticulo(Connection conexion, String idArticulo, float nuevoPrecio) {
+        String sql = "UPDATE articulos SET precio = ? WHERE id = ?";
+        
+        try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setFloat(1, nuevoPrecio);
+            pstmt.setString(2, idArticulo);
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+	
+	
+	
 	public static int contarClientes(Connection con) {
 		String sql = "SELECT COUNT(*) FROM cliente;";
 		int cont=0;
@@ -280,6 +366,34 @@ public class BD {
 		return l;
 	}
 	
+	public static List<Administrador> obtenerlistarAdministradores(Connection con) {
+	    List<Administrador> administradores = new ArrayList<>();
+	    String sql = "SELECT * FROM administrador";
+	    try (Statement st = con.createStatement();
+	         ResultSet rs = st.executeQuery(sql)) {
+	        while (rs.next()) {
+	        	 String dni = rs.getString("DNI");
+	             String nombre = rs.getString("NOMBRE");
+	             String apellido = rs.getString("APELLIDO");
+	             String fechaNacimiento = rs.getString("FECHA_DE_NACIMIENTO");
+	             String email = rs.getString("EMAIL");
+	             String telefono = rs.getString("TELEFONO");
+	             String provincia = rs.getString("PROVINCIA");
+	             System.out.println("Provincia: " + provincia); 
+	             String fechaInicioEmpresa = rs.getString("FECHA_INICIO_EMPRESA");
+	             String jornada = rs.getString("JORNADA");
+	             String puesto = rs.getString("PUESTO");
+	             String contrasena = rs.getString("CONTRASEÑA");
+
+	             // Suponiendo que tienes un constructor en la clase Administrador que acepta todos estos parámetros
+	             Administrador a = new Administrador(dni, nombre, apellido, fechaNacimiento, email, telefono, provincia, fechaInicioEmpresa, jornada, puesto, contrasena);
+	             administradores.add(a);
+	         }
+	     } catch (SQLException e) {
+	         e.printStackTrace();
+	     }
+	     return administradores;
+	}
 	
 	public static void borrarCliente(Connection con, String dni) {
 		String sql = String.format("DELETE FROM cliente WHERE dni='%s'", dni);
@@ -298,34 +412,6 @@ public class BD {
 //	String dni, String nombre, String apellido, String fNac, String correo, String tlf, String provincia,
 //	String fInicEmpresa, String jornadaLaboral, String puesto, String contrasenia)
 	
-	public static Administrador buscarAdministrador(Connection con, String dni) {
-		String sql = String.format("SELECT * FROM administrador WHERE DNI = '%s'", dni);
-		Administrador a = null;
-		try {
-			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery(sql); //Ejecuto la consulta
-			if(rs.next()) { //La select ha devuelto 1 ó más tuplas
-				String d= rs.getString("DNI");
-				String nom = rs.getString("NOMBRE");
-				String apell = rs.getString("APELLIDO");
-				String fNac = rs.getString("FECHA_DE_NACIMIENTO");
-				String email = rs.getString("EMAIL");
-				String tlf= rs.getString("TELEFONO");
-				String p = rs.getString("PROVINCIA");
-				String fIniEmp = rs.getString("FECHA_INICIO_EMPRESA");
-				String jornada = rs.getString("JORNADA");
-				String puesto = rs.getString("PUESTO");
-				String contra = rs.getString("CONTRASEÑA");
-				a = new Administrador(d, nom, apell, fNac,email, tlf, p, fIniEmp, jornada, puesto, contra);
-				
-			}
-			rs.close();
-			st.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return a;
-	}
 	
 	public static void insertarAdmin(Connection con, Administrador a) {
 		if(buscarAdministrador(con, a.getDni()) == null) {
@@ -342,7 +428,7 @@ public class BD {
 	}
 	
 	public static void borrarAdmin(Connection con, String dni) {
-		String sql = String.format("DELETE FROM cliente WHERE DNI='%s'", dni);
+		String sql = String.format("DELETE FROM administrador WHERE DNI='%s'", dni);
 		try {
 			Statement st = con.createStatement();
 			st.executeUpdate(sql);
@@ -352,8 +438,8 @@ public class BD {
 		}
 	}
 	
-	public static void modificarJornadaAdmin(Connection con, String dni, String nuevaJornada) {
-		String sql = String.format("UPDATE administrador SET JORNADA='%s' WHERE DNI='%s'", nuevaJornada,dni);
+	public static void modificarJornadaAdmin(Connection con, String dni, Jornada jornadaCompleta) {
+		String sql = String.format("UPDATE administrador SET JORNADA='%s' WHERE DNI='%s'", jornadaCompleta,dni);
 		try {
 			Statement st = con.createStatement();
 			st.executeUpdate(sql);
@@ -566,7 +652,6 @@ public class BD {
 	            String foto = rs.getString("FOTO");
 	            String categoria = rs.getString("CATEGORIA");
 
-	            // Definir un tipo genérico Articulo
 	            Articulo articulo = null;
 
 	            // Crear instancias específicas según la categoría
@@ -583,8 +668,7 @@ public class BD {
 	                case CALZADO:
 	                    articulo = new Zapato(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio), Genero.valueOf(genero), Talla.valueOf(talla), foto, Categoria.valueOf(categoria));
 	                    break;
-	                default:
-	                    // Puedes manejar otras categorías aquí según tus necesidades
+	                default:	                 
 	                    break;
 	            }
 
@@ -597,7 +681,37 @@ public class BD {
 	    return null;
 	}
 	
-	public boolean anyadirCompra(Connection con, Compra compra) {
+	public static List<Articulo> buscarArticulosPorCategoria(Connection con, Categoria categoria) {
+	    List<Articulo> articulos = new ArrayList<>();
+	    String sql = "SELECT * FROM articulos WHERE CATEGORIA = ?";
+	    
+	    try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+	        pstmt.setString(1, categoria.name());
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        while (rs.next()) {
+	            String id = rs.getString("ID");
+	            String nombre = rs.getString("NOMBRE");
+	            int unidades = rs.getInt("UNIDADES");
+	            float precio = rs.getFloat("PRECIO");
+	            Genero genero = Genero.valueOf(rs.getString("GENERO"));
+	            Talla talla = Talla.valueOf(rs.getString("TALLA"));
+	            String foto = rs.getString("FOTO");
+
+	            articulos.add(new Articulo(id, nombre, unidades, precio, genero, talla, foto, categoria));
+	            System.out.println("Artículo encontrado: " + articulos); 
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    System.out.println("Número total de artículos encontrados: " + articulos.size()); // Impresión de depuración
+	    return articulos;
+	}
+	
+	     
+
+
+	public static boolean anyadirCompra(Connection con, Compra compra) {
 	    String sql1 = "INSERT INTO compras(CLIENTE, FECHA, PRECIO_COMPRA) VALUES (?, ?, ?)";
 
 	    try {
@@ -615,8 +729,6 @@ public class BD {
 	                compra.setIdCompra(idCompra);
 	            }
 	        }
-
-	        // Ahora insertamos los artículos vendidos en la tabla articulosVendidos
 	        String sql2 = "INSERT INTO articulosVendidos(ID_COMPRA, ID_ARTICULO, NOMBRE, UNIDADES, PRECIO, GENERO, TALLA, FOTO, CATEGORIA) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	        try (PreparedStatement st = con.prepareStatement(sql2)) {
 	            for (Articulo a : compra.getArticulos()) {
@@ -639,6 +751,59 @@ public class BD {
 	    }
 	    return true;
 	}
+	
+	/*public static List<Compra> obtenerComprasTotales(Connection con) {
+	    List<Compra> ret = new ArrayList<>();
+	    String sql = "SELECT c.*, a.ID_ARTICULO, a.NOMBRE, a.UNIDADES, a.PRECIO, a.GENERO, a.TALLA, a.FOTO, a.CATEGORIA " +
+	                 "FROM compras c JOIN articulosVendidos a ON c.ID_COMPRA = a.ID_COMPRA";
+
+	    try (Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+	        Map<Integer, Compra> comprasMap = new HashMap<>();
+
+	        while (rs.next()) {
+	            int idCompra = rs.getInt("ID_COMPRA");
+	            Compra compra = comprasMap.get(idCompra);
+	            if (compra == null) {
+	                Cliente cliente = buscarCliente(con, rs.getString("CLIENTE"));
+	                compra = new Compra(cliente, rs.getString("FECHA"), new ArrayList<>(), rs.getFloat("PRECIO_COMPRA"));
+	                compra.setIdCompra(idCompra);
+	                comprasMap.put(idCompra, compra);
+	                ret.add(compra);
+	            }
+
+	            Articulo articulo = crearArticuloDesdeResultSet(rs);
+	            compra.getArticulos().add(articulo);
+	        }
+	    } catch (SQLException ex) {
+	        ex.printStackTrace();
+	    }
+	    return ret;
+	}
+
+	private static Articulo crearArticuloDesdeResultSet(ResultSet rs) throws SQLException {
+		    String id = rs.getString("ID_ARTICULO");
+		    String nombre = rs.getString("NOMBRE");
+		    int unidades = rs.getInt("UNIDADES");
+		    float precio = rs.getFloat("PRECIO");
+		    Genero genero = Genero.valueOf(rs.getString("GENERO"));
+		    Talla talla = Talla.valueOf(rs.getString("TALLA"));
+		    String foto = rs.getString("FOTO");
+		    Categoria categoria = Categoria.valueOf(rs.getString("CATEGORIA"));
+
+		    switch (categoria) {
+		        case CAMISETA:
+		            return new Camiseta(id, nombre, unidades, precio, genero, talla, foto, categoria);
+		        case JERSEY:
+		            return new Jersey(id, nombre, unidades, precio, genero, talla, foto, categoria);
+		        case PANTALON:
+		            return new Pantalon(id, nombre, unidades, precio, genero, talla, foto, categoria);
+		        case CALZADO:
+		            return new Zapato(id, nombre, unidades, precio, genero, talla, foto, categoria);
+		        default:
+		            throw new IllegalArgumentException("Categoría desconocida: " + categoria);
+		    }
+		}
+*/
 
 	
 	public static List<Compra> obtenerComprasTotales(Connection con) {
@@ -692,10 +857,6 @@ public class BD {
 				}
 				
 				
-				
-			
-			
-			
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -711,13 +872,48 @@ public class BD {
 		List<Compra> comprasTotales = obtenerComprasTotales(con);
 		List<Compra> ret = new ArrayList<>();
 		for (Compra c : comprasTotales) {
-			if (c.getCliente().equals(cliente)) {
+			/*if (c.getCliente().equals(cliente)) {
 				ret.add(c);
+			}*/
+			if (c.getCliente().getDni().equals(cliente.getDni())) {
+			    ret.add(c);
 			}
 			
 		}
 		
 		return ret;
 	}
+	
+	
 
+	public static List<Map<String, Object>> consultarArticulosVendidos(Connection con) {
+        List<Map<String, Object>> listaArticulosVendidos = new ArrayList<>();
+
+        String sql = "SELECT * FROM articulosVendidos";
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Map<String, Object> articulo = new HashMap<>();
+                articulo.put("ID_COMPRA", rs.getInt("ID_COMPRA"));
+                articulo.put("ID_ARTICULO", rs.getString("ID_ARTICULO"));
+                articulo.put("NOMBRE", rs.getString("NOMBRE"));
+                articulo.put("UNIDADES", rs.getInt("UNIDADES"));
+                articulo.put("PRECIO", rs.getDouble("PRECIO"));
+                articulo.put("GENERO", rs.getString("GENERO"));
+                articulo.put("TALLA", rs.getString("TALLA"));
+                articulo.put("FOTO", rs.getString("FOTO"));
+                articulo.put("CATEGORIA", rs.getString("CATEGORIA"));
+
+                listaArticulosVendidos.add(articulo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaArticulosVendidos;
+    }
+	
+	
 }
+	
