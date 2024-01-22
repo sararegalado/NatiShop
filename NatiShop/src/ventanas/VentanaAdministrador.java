@@ -54,9 +54,9 @@ public class VentanaAdministrador extends JFrame{
 
 	private static JLabel lblTop1;
 
-	private JLabel lblTop2;
+	private static JLabel lblTop2;
 
-	private JLabel lblTop3;
+	private static JLabel lblTop3;
 
 	private JTextField tfDNI, tfnom, tfApellido, tfCorreo, tfTfn, tfProvincia, tfFnac, tfnInic, tfPuesto;
 	private JButton btnDesplegar, btnAñadirAdmin;
@@ -302,6 +302,7 @@ public class VentanaAdministrador extends JFrame{
 		
 		lblClienteEstrella = new JLabel(" ");
 		pnlEsOesteArriba.add(lblClienteEstrella);
+		lblClienteEstrella.setHorizontalAlignment(JLabel.CENTER);
 		
 		
 		pnlEsOesteAbajo = new JPanel();
@@ -318,6 +319,11 @@ public class VentanaAdministrador extends JFrame{
     	lblTop1 = new JLabel(" ");
     	lblTop2 = new JLabel(" ");
     	lblTop3 = new JLabel(" ");
+    	
+    	lblTop1.setHorizontalAlignment(JLabel.CENTER);
+    	lblTop2.setHorizontalAlignment(JLabel.CENTER);
+    	lblTop3.setHorizontalAlignment(JLabel.CENTER);
+    	
     	pnlEsOesteAbajo.add(lblTop1);
     	pnlEsOesteAbajo.add(lblTop2);
     	pnlEsOesteAbajo.add(lblTop3);
@@ -325,14 +331,6 @@ public class VentanaAdministrador extends JFrame{
     	pnlEstadisticas.add(pnlEsOesteArriba);
     	pnlEstadisticas.add(pnlEsOesteAbajo);
     	
-    	
-    	
-    	
-        
-       
-		
-		
-		
 		//DECLARACION + ACTIONLISTENER DE LOS MENUITEM
 		menuBarAdmin= new JMenuBar();
 		pnlOesteMenu.add(menuBarAdmin);
@@ -480,7 +478,12 @@ public class VentanaAdministrador extends JFrame{
 				pnlCentro.revalidate();
 				pnlCentro.repaint();
 				pnlCentro.add(pnlEstadisticas);
-				
+				TresArticulosMasComprados();
+				Connection con = BD.initBD("NatiShop.db");
+		        List<Compra> compras = BD.obtenerComprasTotales(con);
+		        BD.closeBD(con);
+
+		        clienteQueMasHaComprado(compras);
 				
 				
 			}
@@ -761,8 +764,14 @@ public class VentanaAdministrador extends JFrame{
             }
             
         }
+        if (clienteMasCompras != null) {
+            lblClienteEstrella.setText(clienteMasCompras.getNombre());
+        } else {
+            // Manejar el caso en que no hay clientes o todos los clientes son null
+            lblClienteEstrella.setText("NO HAY CLIENTE");
+        }
 
-        lblClienteEstrella.setText(clienteMasCompras.getNombre());
+      
     }
 	
 	
@@ -809,7 +818,7 @@ public class VentanaAdministrador extends JFrame{
 		
 	}
 	
-	public static List<Articulo>   TresArticulosMasComprados(){
+	public static void   TresArticulosMasComprados(){
 		Connection con = BD.initBD("NatiShop.db");
 		List<Compra> compras = BD.obtenerComprasTotales(con);
 		BD.closeBD(con);
@@ -823,8 +832,17 @@ public class VentanaAdministrador extends JFrame{
 			}else {
 				articulosMasComprados.add(null);
 			}
+		if(!articulosMasComprados.isEmpty()) {
+			 Articulo articulo1 = articulosMasComprados.get(0);
+			 Articulo articulo2 = articulosMasComprados.size() > 1 ? articulosMasComprados.get(1) : null;
+			 Articulo articulo3 = articulosMasComprados.size() > 2 ? articulosMasComprados.get(2) : null;
+			lblTop1.setText("TOP1: " + (articulo1 != null ? articulo1.getNombre() : "NO HAY ARTICULOS"));
+		    lblTop2.setText("TOP2: " + (articulo2 != null ? articulo2.getNombre() : "NO HAY ARTICULOS"));
+		    lblTop3.setText("TOP3: " + (articulo3 != null ? articulo3.getNombre() : "NO HAY ARTICULOS"));
+			}
 		}
-		return articulosMasComprados;
+		
+		
 	}
 	
 	
