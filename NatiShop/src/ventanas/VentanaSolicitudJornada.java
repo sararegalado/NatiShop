@@ -56,6 +56,13 @@ public class VentanaSolicitudJornada extends JFrame {
 		btnEnvio= new JButton("ENVIAR");
 		btnEnvio.setPreferredSize(new Dimension(50, 50));
 		this.add(btnEnvio, BorderLayout.CENTER);
+		
+		/**
+		 * Maneja la acción del botón 'btnEnvio' para enviar una solicitud con un comentario.
+		 * Verifica si el campo de texto para el comentario está vacío antes de proceder con el envío.
+		 * Muestra un mensaje de confirmación con los detalles de la solicitud una vez enviada.
+		 * @param e El evento de acción generado por el botón 'btnEnvio'.
+		 */
 		btnEnvio.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

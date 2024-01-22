@@ -136,7 +136,7 @@ public abstract class Usuario implements Comparable<Usuario> {
 	public void setProvinciaStr(String provincia) {
 		this.provincia = Provincia.valueOf(provincia); //Convierte de String a enum
 	}
-
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(contrasenia, correo, dni, fNac, nombre, provincia, tlf);

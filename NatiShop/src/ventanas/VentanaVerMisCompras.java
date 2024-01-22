@@ -28,8 +28,8 @@ public class VentanaVerMisCompras extends JFrame {
 	private JTextArea texto;
 	private JLabel titulo;
 	
-	private DefaultListModel<Compra> modeloListaCompras; //La estructura de datos que guarda la información
-	private JList<Compra> listaCompras; //La estructura que presenta la información en pantalla
+	private DefaultListModel<Compra> modeloListaCompras; 
+	private JList<Compra> listaCompras; 
 	private JScrollPane scrollListaCompras;
 	
 	

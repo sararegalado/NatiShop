@@ -5,16 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -29,8 +25,6 @@ import clases.Articulo;
 import clases.Cliente;
 import clases.Compra;
 import clases.Puesto;
-import clases.Tienda;
-import clases.Usuario;
 import clases.Administrador;
 
 import java.util.ArrayList;
@@ -39,7 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 
 
@@ -243,7 +236,16 @@ public class VentanaAdministrador extends JFrame{
         lblModifJornada.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
         pnlDatosBotones.add(lblModifJornada);
         lblModifJornada.setHorizontalAlignment(lblModifJornada.CENTER);
+        
+       
+
+        
         lblModifJornada.addMouseListener(new MouseAdapter() {
+        	/**
+             * Este método se activa cuando se produce un evento de clic de ratón.
+             * Muestra un cuadro de diálogo preguntando al usuario si desea solicitar un cambio de jornada laboral.
+             * @param e El evento de clic del ratón que activa el método.
+             */
         	@Override
 			public void mouseClicked(MouseEvent e) {
         		int respuesta = JOptionPane.showConfirmDialog(null, "A continuación, podrás solicitar un cambio de jornada laboral, ¿Quieres continuar?", "SOLICITUD DE CAMBIO DE JORNADA", JOptionPane.YES_NO_OPTION);
@@ -498,8 +500,13 @@ public class VentanaAdministrador extends JFrame{
 		
 	//LISTENERS
 		
+		/**
+		 * Escucha de eventos de clic del ratón a la tabla tClientes.
+		 * Cuando se hace clic en un elemento de esta tabla, se ejecuta el método mouseClicked, que recopila 
+		 * y muestra información relacionada con el elemento seleccionado.
+		 * @param e El evento de clic del ratón que contiene información sobre el lugar del clic.
+		 */
 		tClientes.addMouseListener(new MouseAdapter() {
-					
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Point p= e.getPoint();
@@ -529,14 +536,6 @@ public class VentanaAdministrador extends JFrame{
 	                    "Lista de Compras",
 	                    JOptionPane.PLAIN_MESSAGE);
 	        
-				
-//				for(String fecha: Tienda.getComprasPorCliente().get(dni).keySet()) {
-//					texto = "FECHA: " + fecha + "\n";
-//					for(Articulo a: Tienda.getComprasPorCliente().get(dni).get(fecha)) {
-//						texto = texto + a + "\n";
-//					}
-//				}
-//				JOptionPane.showMessageDialog(null, texto);
 			}
 		});
 		
@@ -588,6 +587,15 @@ public class VentanaAdministrador extends JFrame{
 		tClientes.setDefaultRenderer(Object.class, cellRenderer);
 		((DefaultTableCellRenderer) tClientes.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 	}
+
+	
+	/**
+	 * Crea una interfaz con un componente JCalendar para mostrar un calendario y una tabla JTable para visualizar compras. 
+	 * Cuando se selecciona una fecha en el calendario, se actualiza la tabla con las compras correspondientes para esa fecha. 
+	 * La fecha seleccionada se obtiene mediante un escuchador de eventos en el JCalendar.
+	 */
+
+
 	/**
 	 * Método que Cargar la tabla con rodos los articulos de la tiwnda y sus unidades disponible
 	 * 
@@ -603,6 +611,7 @@ public class VentanaAdministrador extends JFrame{
 		pnlCentro.add(lblStock, BorderLayout.NORTH);
 		pnlCentro.setVisible(true);
 	}
+
 
 
 
@@ -636,9 +645,18 @@ public class VentanaAdministrador extends JFrame{
 		
 		pnlCentro.setVisible(true);
 		
+
+		
+		
+		
+		
 	}
-	
-	
+
+	/**
+	 * Carga en una tabla las compras realizadas en una fecha específica
+	 * @param fecha_Selecionada La fecha seleccionada para filtrar las compras.
+	 * @param tablaCompras El JTable donde se mostrarán las compras.
+	 */
 
 	private void cargarComprasDia(String fecha_Selecionada, JTable tablaCompras) {
 		Connection con = BD.initBD("NatiShop.db");
@@ -684,10 +702,12 @@ public class VentanaAdministrador extends JFrame{
 		
 	}
 
-	/**
-	 * Método que carga los datos del Administrador registrado
+	
+	/*
+		Método que carga los datos del Administrador registrado
 	 
 	 */
+
 	public void cargarDatosAdmin(Administrador admin) {
 		if(admin != null) {
 			System.out.println("NO ES NULO");
@@ -870,31 +890,6 @@ public class VentanaAdministrador extends JFrame{
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-
-	
-
-	
-	/*ERRORES/TAREAS
-	 *
-	 * Listener del Jtree 
-	 * Unidades de los articulos 
-	 * RENDERER DE LA TABLA
-	 * Estadisticas (ANE Y YO)
-	 * Comentar Métodos
-	 * Limpiar código
-	 * 
-	 * 
-	 * -----
-	
-	  */
-	
-
 	
 	
 

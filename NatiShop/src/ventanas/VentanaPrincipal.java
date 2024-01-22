@@ -795,6 +795,15 @@ public class VentanaPrincipal extends JFrame {
 	 
 		}
 		
+		/**
+		 * Realiza la búsqueda de artículos en función de los parametros 
+		 * y muestra los resultados en el panel proporcionado.
+		 * @param textoBusqueda Texto utilizado para la búsqueda de artículos.
+		 * @param pnlArticulos Panel donde se mostrarán los artículos resultantes de la búsqueda.
+		 * @param filtrado JComboBox utilizado para filtrar los artículos por género.
+		 * @param tallasSeleccionadas Lista de tallas seleccionadas para filtrar los artículos.
+		 */
+		
 		public void buscarArticulos(String textoBusqueda, JPanel pnlArticulos,JComboBox filtrado, List<String> tallasSeleccionadas) {
 			limpiarPanel(pnlArticulos);
 			pnlArticulos.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -879,9 +888,13 @@ public class VentanaPrincipal extends JFrame {
 			
 			
 			
-			
-			}	
+		}
 		
+		/**
+		 * Asigna y muestra los artículos disponibles para la compra en el panel proporcionado.
+		 * @param art Conjunto de artículos disponibles para la compra.
+		 * @param panel Panel donde se mostrarán los artículos.
+		 */
 		public void setArticulosQuePuedoComprar(Set<Articulo> art, JPanel panel) {
 			this.pnlArticulos = panel;
 			for (Articulo a: art) {

@@ -1,5 +1,6 @@
 package ventanas;
 
+import java.beans.Statement;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -23,8 +24,17 @@ public class Main {
 		BD.volcarCSVAdmin(con, "Administradores.csv");
 
 		BD.closeBD(con);
+
+//		Tienda.cargarKeyMapaClientes();
+//		System.out.println(Tienda.getComprasPorCliente());
+
 		
 		Tienda.cargarKeyMapaClientes();
+
+		System.out.println(Tienda.getComprasPorCliente());
+
+
+
 
 		VentanaPrincipal vent = new VentanaPrincipal(null);
 

@@ -8,13 +8,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
@@ -32,8 +29,6 @@ import clases.Genero;
 import clases.Jersey;
 import clases.Jornada;
 import clases.Pantalon;
-import clases.Provincia;
-import clases.Puesto;
 import clases.Talla;
 import clases.Zapato;
 
@@ -132,6 +127,33 @@ public class BD {
 	
 	}
 	
+	
+	 public static void insertarAdministrador(Connection con, Administrador a) {
+	        if (buscarAdministrador(con, a.getDni()) == null) {
+	            String sql = "INSERT INTO administrador (DNI, NOMBRE, APELLIDO, FECHA_DE_NACIMIENTO, EMAIL, TELEFONO, PROVINCIA, FECHA_INICIO_EMPRESA, JORNADA, PUESTO, CONTRASEÑA) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	            try (PreparedStatement st = con.prepareStatement(sql)) {
+	                st.setString(1, a.getDni());
+	                st.setString(2, a.getNombre());
+	                st.setString(3, a.getApellido());
+	                st.setString(4, a.getfNacStr());
+	                st.setString(5, a.getCorreo());
+	                st.setString(6, a.getTlf());
+	                st.setString(7, a.getProvinciaStr());
+	                st.setString(8, a.getFInicEmpresaStr());
+	                st.setString(9, a.getJornadaLaboralStr());
+	                st.setString(10, a.getPuestoStr());
+	                st.setString(11, a.getContrasenia());
+	                st.execute();
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+	 
+	
+	
+	
+
 	public static Cliente buscarCliente(Connection con, String dni) {
 		String sql = String.format("SELECT * FROM cliente WHERE DNI = '%s'", dni);
 		Cliente c = null;
@@ -158,6 +180,36 @@ public class BD {
 		return c;
 	}
 	
+	/*public static Administrador buscarAdministrador(Connection con, String dni) {
+		String sql = String.format("SELECT * FROM administrador WHERE DNI = '%s'", dni);
+		Administrador a = null;
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql); 
+			if(rs.next()) { 
+				String nom = rs.getString("NOMBRE");
+				String apell = rs.getString("APELLIDO");
+				String fNac = rs.getString("FECHA_DE_NACIMIENTO");
+				String email = rs.getString("EMAIL");
+				String tlf= rs.getString("TELEFONO");
+				String p = rs.getString("PROVINCIA");
+				String fIniEmp = rs.getString("FECHA_INICIO_EMPRESA");
+				String jornada = rs.getString("JORNADA");
+				String puesto = rs.getString("PUESTO");
+				String contra = rs.getString("CONTRASEÑA");
+				a = new Administrador(dni, nom, apell, fNac,email, tlf, p, fIniEmp, jornada, puesto, contra);
+				
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return a;
+	}*/
+	
+	
+
 	public static Cliente buscarClientePorNomCon (Connection con, String nom, String contr) {
 		String sql = String.format("SELECT * FROM cliente WHERE NOMBRE = '%s' AND CONTRASEÑA = '%s'", nom, contr);
 		Cliente c = null;
@@ -253,6 +305,34 @@ public class BD {
 
 	}
 	
+	public static void actualizarCantidadArticulo(Connection con, String id, int nuevaCantidad) {
+	    String sql = "UPDATE articulos SET unidades = ? WHERE id = ?";
+	    try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+	        pstmt.setInt(1, nuevaCantidad);
+	        pstmt.setString(2, id);
+	        pstmt.executeUpdate();
+	        con.commit();
+	    } catch (SQLException e) {
+	        System.out.println(e.getMessage());
+	    }
+	}
+	
+	public static boolean actualizarPrecioArticulo(Connection conexion, String idArticulo, float nuevoPrecio) {
+        String sql = "UPDATE articulos SET precio = ? WHERE id = ?";
+        
+        try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setFloat(1, nuevoPrecio);
+            pstmt.setString(2, idArticulo);
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+	
+	
+	
 	public static int contarClientes(Connection con) {
 		String sql = "SELECT COUNT(*) FROM cliente;";
 		int cont=0;
@@ -334,6 +414,34 @@ public class BD {
 		return l;
 	}
 	
+	public static List<Administrador> obtenerlistarAdministradores(Connection con) {
+	    List<Administrador> administradores = new ArrayList<>();
+	    String sql = "SELECT * FROM administrador";
+	    try (Statement st = con.createStatement();
+	         ResultSet rs = st.executeQuery(sql)) {
+	        while (rs.next()) {
+	        	 String dni = rs.getString("DNI");
+	             String nombre = rs.getString("NOMBRE");
+	             String apellido = rs.getString("APELLIDO");
+	             String fechaNacimiento = rs.getString("FECHA_DE_NACIMIENTO");
+	             String email = rs.getString("EMAIL");
+	             String telefono = rs.getString("TELEFONO");
+	             String provincia = rs.getString("PROVINCIA");
+	             System.out.println("Provincia: " + provincia); 
+	             String fechaInicioEmpresa = rs.getString("FECHA_INICIO_EMPRESA");
+	             String jornada = rs.getString("JORNADA");
+	             String puesto = rs.getString("PUESTO");
+	             String contrasena = rs.getString("CONTRASEÑA");
+
+	             // Suponiendo que tienes un constructor en la clase Administrador que acepta todos estos parámetros
+	             Administrador a = new Administrador(dni, nombre, apellido, fechaNacimiento, email, telefono, provincia, fechaInicioEmpresa, jornada, puesto, contrasena);
+	             administradores.add(a);
+	         }
+	     } catch (SQLException e) {
+	         e.printStackTrace();
+	     }
+	     return administradores;
+	}
 	
 	public static void borrarCliente(Connection con, String dni) {
 		String sql = String.format("DELETE FROM cliente WHERE dni='%s'", dni);
@@ -354,6 +462,7 @@ public class BD {
 //	String dni, String nombre, String apellido, String fNac, String correo, String tlf, String provincia,
 //	String fInicEmpresa, String jornadaLaboral, String puesto, String contrasenia)
 	
+
 	public static Administrador buscarAdministrador(Connection con, String dni) {
 		String sql = String.format("SELECT * FROM administrador WHERE DNI = '%s'", dni);
 		Administrador a = null;
@@ -400,7 +509,7 @@ public class BD {
 	}
 	
 	public static void borrarAdmin(Connection con, String dni) {
-		String sql = String.format("DELETE FROM cliente WHERE DNI='%s'", dni);
+		String sql = String.format("DELETE FROM administrador WHERE DNI='%s'", dni);
 		try {
 			Statement st = con.createStatement();
 			st.executeUpdate(sql);
@@ -410,6 +519,17 @@ public class BD {
 		}
 		logger.info(String.format("Administrador borrado correctamente: %s",dni));
 
+	}
+	
+	public static void modificarJornadaAdminEnum(Connection con, String dni, Jornada jornadaCompleta) {
+		String sql = String.format("UPDATE administrador SET JORNADA='%s' WHERE DNI='%s'", jornadaCompleta,dni);
+		try {
+			Statement st = con.createStatement();
+			st.executeUpdate(sql);
+			st.close();
+		} catch (SQLException e) {
+			logger.warning(String.format("Error modificando la jornada laboral del administrador %s",dni));
+		}
 	}
 	
 	public static void modificarJornadaAdmin(Connection con, String dni, String nuevaJornada) {
@@ -662,6 +782,7 @@ public class BD {
 		}
 		return articulos;
 	}
+	
 	public static Articulo buscarArticulo(Connection con, String id) {
 	    String sql = String.format("SELECT * FROM articulo WHERE ID = '%s'", id);
 	    
@@ -675,7 +796,6 @@ public class BD {
 	            String foto = rs.getString("FOTO");
 	            String categoria = rs.getString("CATEGORIA");
 
-	            // Definir un tipo genérico Articulo
 	            Articulo articulo = null;
 
 	            // Crear instancias específicas según la categoría
@@ -692,8 +812,7 @@ public class BD {
 	                case CALZADO:
 	                    articulo = new Zapato(id, nom, Integer.parseInt(unidades), Float.parseFloat(precio), Genero.valueOf(genero), Talla.valueOf(talla), foto, Categoria.valueOf(categoria));
 	                    break;
-	                default:
-	                    // Puedes manejar otras categorías aquí según tus necesidades
+	                default:	                 
 	                    break;
 	            }
 
@@ -706,6 +825,40 @@ public class BD {
 	    return null;
 	}
 	
+
+	public static List<Articulo> buscarArticulosPorCategoria(Connection con, Categoria categoria) {
+	    List<Articulo> articulos = new ArrayList<>();
+	    //CAMBIO
+	    String sql = "SELECT * FROM articulo WHERE CATEGORIA = ?";
+	    
+	    try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+	        pstmt.setString(1, categoria.name());
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        while (rs.next()) {
+	            String id = rs.getString("ID");
+	            String nombre = rs.getString("NOMBRE");
+	            int unidades = rs.getInt("UNIDADES");
+	            float precio = rs.getFloat("PRECIO");
+	            Genero genero = Genero.valueOf(rs.getString("GENERO"));
+	            Talla talla = Talla.valueOf(rs.getString("TALLA"));
+	            String foto = rs.getString("FOTO");
+
+	            articulos.add(new Articulo(id, nombre, unidades, precio, genero, talla, foto, categoria));
+	            System.out.println("Artículo encontrado: " + articulos); 
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    System.out.println("Número total de artículos encontrados: " + articulos.size()); // Impresión de depuración
+	    return articulos;
+	}
+	
+	     
+
+
+	
+
 	public static void modificarUnidsArticulo(Connection con, String id, int unds) {
 		String sql = String.format("UPDATE articulo SET UNIDADES=%d WHERE ID='%s'", unds ,id);
 		try {
@@ -720,7 +873,7 @@ public class BD {
 		
 	}
 	
-	public boolean anyadirCompra(Connection con, Compra compra) {
+	public static boolean anyadirCompra(Connection con, Compra compra) {
 	    String sql1 = "INSERT INTO compras(CLIENTE, FECHA, PRECIO_COMPRA) VALUES (?, ?, ?)";
 
 	    try {
@@ -738,8 +891,6 @@ public class BD {
 	                compra.setIdCompra(idCompra);
 	            }
 	        }
-
-	        // Ahora insertamos los artículos vendidos en la tabla articulosVendidos
 	        String sql2 = "INSERT INTO articulosVendidos(ID_COMPRA, ID_ARTICULO, NOMBRE, UNIDADES, PRECIO, GENERO, TALLA, FOTO, CATEGORIA) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	        try (PreparedStatement st = con.prepareStatement(sql2)) {
 	            for (Articulo a : compra.getArticulos()) {
@@ -815,10 +966,6 @@ public class BD {
 				}
 				
 				
-				
-			
-			
-			
 			
 		} catch (Exception ex) {
 			logger.warning("Error obteniendo compras totales");
@@ -834,8 +981,11 @@ public class BD {
 		List<Compra> comprasTotales = obtenerComprasTotales(con);
 		List<Compra> ret = new ArrayList<>();
 		for (Compra c : comprasTotales) {
-			if (c.getCliente().equals(cliente)) {
+			/*if (c.getCliente().equals(cliente)) {
 				ret.add(c);
+			}*/
+			if (c.getCliente().getDni().equals(cliente.getDni())) {
+			    ret.add(c);
 			}
 			
 		}
@@ -843,5 +993,34 @@ public class BD {
 		return ret;
 	}
 	
+	public static List<Map<String, Object>> consultarArticulosVendidos(Connection con) {
+        List<Map<String, Object>> listaArticulosVendidos = new ArrayList<>();
 
+        String sql = "SELECT * FROM articulosVendidos";
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Map<String, Object> articulo = new HashMap<>();
+                articulo.put("ID_COMPRA", rs.getInt("ID_COMPRA"));
+                articulo.put("ID_ARTICULO", rs.getString("ID_ARTICULO"));
+                articulo.put("NOMBRE", rs.getString("NOMBRE"));
+                articulo.put("UNIDADES", rs.getInt("UNIDADES"));
+                articulo.put("PRECIO", rs.getDouble("PRECIO"));
+                articulo.put("GENERO", rs.getString("GENERO"));
+                articulo.put("TALLA", rs.getString("TALLA"));
+                articulo.put("FOTO", rs.getString("FOTO"));
+                articulo.put("CATEGORIA", rs.getString("CATEGORIA"));
+
+                listaArticulosVendidos.add(articulo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaArticulosVendidos;
+    }
+	
+	
 }
+	
