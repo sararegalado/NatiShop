@@ -145,7 +145,6 @@ public class BDTest {
 	    BD.insertarAdministrador(con, a3);
 	    Administrador admin = BD.buscarAdministrador(con, a3.getDni());
 	    assertNotNull(admin);
-	   
 	}
 	
 	
